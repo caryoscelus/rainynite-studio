@@ -16,8 +16,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "main_window.h"
+#include <fstream>
 
+#include <QFileDialog>
+#include <QDebug>
+
+#include <core/document.h>
+#include <core/filters/svg_path_reader.h>
+
+#include "main_window.h"
 #include "ui_main_window.h"
 
 namespace studio {
@@ -27,10 +34,24 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(std::make_unique<Ui::MainWindow>())
 {
     ui->setupUi(this);
+    connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
 }
 
 MainWindow::~MainWindow() {
+}
+
+void MainWindow::open() {
+    auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
+    auto fname = fname_qt.toStdString();
+    qDebug() << fname_qt;
+    if (fname.empty())
+        return;
+    auto reader = core::filters::SvgPathReader();
+    std::ifstream in(fname);
+    auto document = reader.read_document(in);
+    qDebug() << document->keyframe_amount();
+    in.close();
 }
 
 void MainWindow::quit() {

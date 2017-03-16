@@ -40,6 +40,7 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
 
 private Q_SLOTS:
+    void open();
     void quit();
 };
 
