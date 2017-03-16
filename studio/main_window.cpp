@@ -47,11 +47,15 @@ void MainWindow::open() {
     qDebug() << fname_qt;
     if (fname.empty())
         return;
-    auto reader = core::filters::SvgPathReader();
-    std::ifstream in(fname);
-    auto document = reader.read_document(in);
-    qDebug() << document->keyframe_amount();
-    in.close();
+    try {
+        auto reader = core::filters::SvgPathReader();
+        std::ifstream in(fname);
+        auto document = reader.read_document(in);
+        qDebug() << document->keyframe_amount();
+        in.close();
+    } catch (...) {
+        qDebug() << "Error while opening document";
+    }
 }
 
 void MainWindow::quit() {
