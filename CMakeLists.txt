@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.1)
+
+project(studio)
+
+set(CMAKE_CXX_STANDARD 14) # 17 is not supported by cmake 3.7
+
+## Qt-related stuff
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+add_definitions(-DQT_NO_KEYWORDS)   ## avoid slots/signals definition conflict
+
+find_package(Qt5Widgets REQUIRED)
+
+include(FindPkgConfig)
+pkg_check_modules(SIGCPP REQUIRED sigc++-2.0)
+
+add_subdirectory(studio)
