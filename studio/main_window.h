@@ -23,6 +23,8 @@
 
 #include <QMainWindow>
 
+#include <core/context.h>
+
 namespace Ui {
 class MainWindow;
 }
@@ -37,11 +39,16 @@ public:
     ~MainWindow();
 
 private:
-    std::unique_ptr<Ui::MainWindow> ui;
+    void set_mainarea_image(std::string const& fname);
 
 private Q_SLOTS:
     void open();
     void quit();
+
+private:
+    std::unique_ptr<Ui::MainWindow> ui;
+    std::shared_ptr<core::Document> document;
+    std::shared_ptr<core::Context> context;
 };
 
 }

@@ -23,6 +23,7 @@
 
 #include <core/document.h>
 #include <core/filters/svg_path_reader.h>
+#include <core/renderers/svg_renderer.h>
 
 #include "main_window.h"
 #include "ui_main_window.h"
@@ -50,16 +51,31 @@ void MainWindow::open() {
     try {
         auto reader = core::filters::SvgPathReader();
         std::ifstream in(fname);
-        auto document = reader.read_document(in);
+        document = reader.read_document(in);
+        context = document->get_default_context();
         qDebug() << document->keyframe_amount();
         in.close();
     } catch (...) {
         qDebug() << "Error while opening document";
     }
+    if (context && context->get_document()) {
+        auto rsettings = core::renderers::SvgRendererSettings();
+        rsettings.render_pngs = true;
+        context->mod_render_settings() = rsettings;
+        auto renderer = core::renderers::SvgRenderer();
+        renderer.render(*context);
+        set_mainarea_image("renders/0.000.png");
+    }
 }
 
 void MainWindow::quit() {
     QApplication::quit();
+}
+
+void MainWindow::set_mainarea_image(std::string const& fname) {
+    QPixmap pixmap;
+    pixmap.load(QString::fromStdString(fname));
+    ui->image->setPixmap(pixmap);
 }
 
 }

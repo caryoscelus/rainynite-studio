@@ -12,6 +12,8 @@ target_link_libraries(main_window
     Qt5::Widgets
     document
     filters
+    renderers
+    fmt
     ${SIGCPP_LIBRARIES}
 )
 
