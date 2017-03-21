@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
+    connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
 }
 
 MainWindow::~MainWindow() {
@@ -70,7 +71,7 @@ void MainWindow::render() {
         context->mod_render_settings() = rsettings;
         auto renderer = std::make_shared<core::renderers::SvgRenderer>();
         renderer->finished_frame().connect([this](core::Time frame_time) {
-            set_mainarea_image("renders/0.000.png");
+            redraw();
         });
         if (render_thread.joinable())
             render_thread.join();
@@ -79,6 +80,10 @@ void MainWindow::render() {
             renderer->render(ctx);
         });
     }
+}
+
+void MainWindow::redraw() {
+    set_mainarea_image("renders/0.000.png");
 }
 
 void MainWindow::quit() {

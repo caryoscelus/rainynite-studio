@@ -46,6 +46,7 @@ private Q_SLOTS:
     void open();
     void quit();
     void render();
+    void redraw();
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;
