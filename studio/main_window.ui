@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>construction zone</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -40,7 +40,14 @@
     <addaction name="action_open"/>
     <addaction name="action_quit"/>
    </widget>
+   <widget class="QMenu" name="menu_context">
+    <property name="title">
+     <string>&amp;Context</string>
+    </property>
+    <addaction name="action_render"/>
+   </widget>
    <addaction name="menu_file"/>
+   <addaction name="menu_context"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_quit">
@@ -65,6 +72,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_render">
+   <property name="text">
+    <string>&amp;Render</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
    </property>
   </action>
  </widget>

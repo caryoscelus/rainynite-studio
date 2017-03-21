@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->setupUi(this);
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
+    connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
 }
 
 MainWindow::~MainWindow() {
