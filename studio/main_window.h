@@ -20,6 +20,7 @@
 #define __STUDIO__MAIN_WINDOW_H__D1BD80BA
 
 #include <memory>
+#include <thread>
 
 #include <QMainWindow>
 
@@ -50,6 +51,7 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::shared_ptr<core::Document> document;
     std::shared_ptr<core::Context> context;
+    std::thread render_thread;
 };
 
 }

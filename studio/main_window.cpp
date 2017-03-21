@@ -17,11 +17,11 @@
  */
 
 #include <fstream>
-#include <thread>
 
 #include <QFileDialog>
 #include <QDebug>
 
+#include <core/time.h>
 #include <core/document.h>
 #include <core/filters/svg_path_reader.h>
 #include <core/renderers/svg_renderer.h>
@@ -67,16 +67,22 @@ void MainWindow::render() {
         auto rsettings = core::renderers::SvgRendererSettings();
         rsettings.render_pngs = true;
         context->mod_render_settings() = rsettings;
-        auto renderer = core::renderers::SvgRenderer();
-        std::thread render_thread([&renderer, this]() {
-            renderer.render(*context);
+        auto renderer = std::make_shared<core::renderers::SvgRenderer>();
+        renderer->finished_frame().connect([this](core::Time frame_time) {
+            set_mainarea_image("renders/0.000.png");
         });
-        render_thread.join();
-        set_mainarea_image("renders/0.000.png");
+        if (render_thread.joinable())
+            render_thread.join();
+        auto ctx = *context;
+        render_thread = std::thread([renderer, ctx]() {
+            renderer->render(ctx);
+        });
     }
 }
 
 void MainWindow::quit() {
+    if (render_thread.joinable())
+        render_thread.join();
     QApplication::quit();
 }
 
