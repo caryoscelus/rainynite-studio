@@ -17,6 +17,7 @@
  */
 
 #include <fstream>
+#include <thread>
 
 #include <QFileDialog>
 #include <QDebug>
@@ -58,12 +59,19 @@ void MainWindow::open() {
     } catch (...) {
         qDebug() << "Error while opening document";
     }
+    render();
+}
+
+void MainWindow::render() {
     if (context && context->get_document()) {
         auto rsettings = core::renderers::SvgRendererSettings();
         rsettings.render_pngs = true;
         context->mod_render_settings() = rsettings;
         auto renderer = core::renderers::SvgRenderer();
-        renderer.render(*context);
+        std::thread render_thread([&renderer, this]() {
+            renderer.render(*context);
+        });
+        render_thread.join();
         set_mainarea_image("renders/0.000.png");
     }
 }

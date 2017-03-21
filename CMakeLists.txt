@@ -19,4 +19,6 @@ find_package(geom_helpers REQUIRED)
 find_package(document REQUIRED)
 find_package(filters REQUIRED)
 
+find_package(Threads)
+
 add_subdirectory(studio)

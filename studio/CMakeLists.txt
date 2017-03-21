@@ -14,6 +14,7 @@ target_link_libraries(main_window
     filters
     renderers
     fmt
+    Threads::Threads
     ${SIGCPP_LIBRARIES}
 )
 
