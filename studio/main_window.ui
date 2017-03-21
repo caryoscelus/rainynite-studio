@@ -52,9 +52,16 @@
     </property>
     <addaction name="action_redraw"/>
    </widget>
+   <widget class="QMenu" name="menu_dock">
+    <property name="title">
+     <string>&amp;Dock</string>
+    </property>
+    <addaction name="action_time_dock"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_context"/>
    <addaction name="menu_view"/>
+   <addaction name="menu_dock"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_quit">
@@ -98,6 +105,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="action_time_dock">
+   <property name="text">
+    <string>&amp;Time</string>
    </property>
   </action>
  </widget>

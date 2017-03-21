@@ -1,14 +1,16 @@
-add_library(main_window)
+add_executable(studio main.cpp)
 
-target_sources(main_window
+target_sources(studio
     PRIVATE
         main_window.cpp
         main_window.h
+        time_dock.cpp
+        time_dock.h
 )
 
-target_link_libraries(main_window geom_helpers)
+target_link_libraries(studio geom_helpers)
 
-target_link_libraries(main_window
+target_link_libraries(studio
     Qt5::Widgets
     document
     filters
@@ -18,10 +20,7 @@ target_link_libraries(main_window
     ${SIGCPP_LIBRARIES}
 )
 
-target_include_directories(main_window
+target_include_directories(studio
     SYSTEM BEFORE PUBLIC
         ${SIGCPP_INCLUDE_DIRS}
 )
-
-add_executable(studio main.cpp)
-target_link_libraries(studio main_window)

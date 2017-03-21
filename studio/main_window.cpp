@@ -26,6 +26,7 @@
 #include <core/filters/svg_path_reader.h>
 #include <core/renderers/svg_renderer.h>
 
+#include "time_dock.h"
 #include "main_window.h"
 #include "ui_main_window.h"
 
@@ -40,6 +41,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
+    connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
 }
 
 MainWindow::~MainWindow() {
@@ -96,6 +98,11 @@ void MainWindow::set_mainarea_image(std::string const& fname) {
     QPixmap pixmap;
     pixmap.load(QString::fromStdString(fname));
     ui->image->setPixmap(pixmap);
+}
+
+void MainWindow::add_time_dock() {
+    auto dock = new TimeDock(this);
+    addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
 
 }

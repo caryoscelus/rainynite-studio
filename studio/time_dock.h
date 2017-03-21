@@ -1,5 +1,5 @@
 /*
- *  main_window.h - main window
+ *  time_dock.h - time dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,47 +16,36 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__MAIN_WINDOW_H__D1BD80BA
-#define __STUDIO__MAIN_WINDOW_H__D1BD80BA
+#ifndef __STUDIO__TIME_DOCK_H__476B54A4
+#define __STUDIO__TIME_DOCK_H__476B54A4
 
 #include <memory>
 #include <thread>
 
-#include <QMainWindow>
+#include <QDockWidget>
 
 #include <core/context.h>
 
 namespace Ui {
-class MainWindow;
+class TimeDock;
 }
 
 namespace studio {
 
-class MainWindow : public QMainWindow {
+class TimeDock : public QDockWidget {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit TimeDock(QWidget* parent = 0);
+    ~TimeDock();
+
+protected:
+    virtual void closeEvent(QCloseEvent* event) override;
 
 private:
-    void set_mainarea_image(std::string const& fname);
-
-private Q_SLOTS:
-    void open();
-    void quit();
-    void render();
-    void redraw();
-    void add_time_dock();
-
-private:
-    std::unique_ptr<Ui::MainWindow> ui;
-    std::shared_ptr<core::Document> document;
-    std::shared_ptr<core::Context> context;
-    std::thread render_thread;
+    std::unique_ptr<Ui::TimeDock> ui;
 };
 
 }
 
 #endif
-
