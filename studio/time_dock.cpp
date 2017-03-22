@@ -28,9 +28,19 @@ TimeDock::TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
 {
     ui->setupUi(this);
     connect(ui->time_box, SIGNAL(valueChanged(double)), this, SLOT(change_time(double)));
+    set_context(get_context());
 }
 
 TimeDock::~TimeDock() {
+}
+
+void TimeDock::set_context(std::shared_ptr<core::Context> context_) {
+    ContextListener::set_context(context_);
+    if (auto context = get_context()) {
+        auto connection = context->changed_time.connect([this](core::Time time) {
+            set_time(time);
+        });
+    }
 }
 
 void TimeDock::closeEvent(QCloseEvent* event) {
@@ -41,6 +51,10 @@ void TimeDock::closeEvent(QCloseEvent* event) {
 void TimeDock::change_time(double t) {
     if (auto context = get_context())
         context->set_time(core::Time(t));
+}
+
+void TimeDock::set_time(core::Time time) {
+    ui->time_box->setValue(time.get_seconds());
 }
 
 }

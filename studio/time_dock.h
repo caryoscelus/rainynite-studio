@@ -47,11 +47,17 @@ public:
     explicit TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
     ~TimeDock();
 
+public:
+    virtual void set_context(std::shared_ptr<core::Context> context_) override;
+
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
 
 protected Q_SLOTS:
     virtual void change_time(double t);
+
+protected:
+    void set_time(core::Time time);
 
 private:
     std::unique_ptr<Ui::TimeDock> ui;
