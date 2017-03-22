@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
     connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
+    add_time_dock();
 }
 
 MainWindow::~MainWindow() {
