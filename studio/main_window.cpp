@@ -62,7 +62,7 @@ void MainWindow::open() {
         auto reader = core::filters::SvgPathReader();
         std::ifstream in(fname);
         document = reader.read_document(in);
-        context = document->get_default_context();
+        set_context(document->get_default_context());
         qDebug() << document->keyframe_amount();
         in.close();
     } catch (...) {
@@ -106,8 +106,17 @@ void MainWindow::set_mainarea_image(std::string const& fname) {
 }
 
 void MainWindow::add_time_dock() {
-    auto dock = new TimeDock(this);
+    auto dock = new TimeDock(context, this);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
+}
+
+void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
+    context = context_;
+    for (auto dock : findChildren<QDockWidget*>()) {
+        auto time_dock = dynamic_cast<TimeDock*>(dock);
+        if (time_dock)
+            time_dock->set_context(context_);
+    }
 }
 
 }

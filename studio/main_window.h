@@ -48,6 +48,7 @@ private Q_SLOTS:
     void render();
     void redraw();
     void add_time_dock();
+    void set_context(std::shared_ptr<core::Context> context_);
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;

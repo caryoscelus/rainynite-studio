@@ -32,18 +32,35 @@ class TimeDock;
 
 namespace studio {
 
+/**
+ * Dock for displaying/editing time.
+ *
+ * TODO:
+ *  - separate time editing widget
+ *  - time line
+ *  - generalize ContextDock / ContextWidget
+ */
 class TimeDock : public QDockWidget {
     Q_OBJECT
 
 public:
-    explicit TimeDock(QWidget* parent = 0);
+    explicit TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
     ~TimeDock();
+
+public Q_SLOTS:
+    void set_context(std::shared_ptr<core::Context> context_) {
+        context = context_;
+    }
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
 
+protected Q_SLOTS:
+    virtual void change_time(double t);
+
 private:
     std::unique_ptr<Ui::TimeDock> ui;
+    std::shared_ptr<core::Context> context;
 };
 
 }

@@ -21,11 +21,13 @@
 
 namespace studio {
 
-TimeDock::TimeDock(QWidget* parent) :
+TimeDock::TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
     QDockWidget(parent),
-    ui(std::make_unique<Ui::TimeDock>())
+    ui(std::make_unique<Ui::TimeDock>()),
+    context(context_)
 {
     ui->setupUi(this);
+    connect(ui->time_box, SIGNAL(valueChanged(double)), this, SLOT(change_time(double)));
 }
 
 TimeDock::~TimeDock() {
@@ -34,6 +36,11 @@ TimeDock::~TimeDock() {
 void TimeDock::closeEvent(QCloseEvent* event) {
     QDockWidget::closeEvent(event);
     deleteLater();
+}
+
+void TimeDock::change_time(double t) {
+    if (context)
+        context->set_time(core::Time(t));
 }
 
 }
