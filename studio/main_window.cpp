@@ -112,6 +112,9 @@ void MainWindow::add_time_dock() {
 
 void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
     context = context_;
+    context->changed_time.connect([this](core::Time time){
+        redraw();
+    });
     for (auto dock : findChildren<QDockWidget*>()) {
         auto time_dock = dynamic_cast<TimeDock*>(dock);
         if (time_dock)
