@@ -24,7 +24,8 @@ namespace studio {
 TimeDock::TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
     QDockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::TimeDock>())
+    ui(std::make_unique<Ui::TimeDock>()),
+    destroy_detector(std::make_shared<Null>())
 {
     ui->setupUi(this);
     connect(ui->time_box, SIGNAL(valueChanged(double)), this, SLOT(change_time(double)));
@@ -37,9 +38,12 @@ TimeDock::~TimeDock() {
 void TimeDock::set_context(std::shared_ptr<core::Context> context_) {
     ContextListener::set_context(context_);
     if (auto context = get_context()) {
-        auto connection = context->changed_time.connect([this](core::Time time) {
+        auto lambda = [this](core::Time time) {
             set_time(time);
-        });
+        };
+        auto slot = decltype(context->changed_time)::slot_type(lambda);
+        slot.track_foreign(destroy_detector);
+        context->changed_time.connect(slot);
     }
 }
 
