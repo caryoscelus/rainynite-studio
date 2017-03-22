@@ -1,5 +1,5 @@
 /*
- *  main_window.h - main window
+ *  playback_dock.h - playback controls dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,50 +16,40 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__MAIN_WINDOW_H__D1BD80BA
-#define __STUDIO__MAIN_WINDOW_H__D1BD80BA
+#ifndef __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
+#define __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
 
 #include <memory>
-#include <thread>
 
-#include <QMainWindow>
+#include <QDockWidget>
 
 #include <core/context.h>
 
+#include "context_listener.h"
+
 namespace Ui {
-class MainWindow;
+class PlaybackDock;
 }
 
 namespace studio {
 
-class MainWindow : public QMainWindow {
+/**
+ * Dock with playback controls
+ */
+class PlaybackDock : public QDockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
+    ~PlaybackDock();
+
+protected:
+    virtual void closeEvent(QCloseEvent* event) override;
 
 private:
-    void set_mainarea_image(std::string const& fname);
-
-private Q_SLOTS:
-    void open();
-    void quit();
-    void render();
-    void redraw();
-    void set_context(std::shared_ptr<core::Context> context_);
-
-    void add_time_dock();
-    void add_playback_dock();
-
-private:
-    std::unique_ptr<Ui::MainWindow> ui;
-    std::shared_ptr<core::Document> document;
-    std::shared_ptr<core::Context> context;
-    std::thread render_thread;
+    std::unique_ptr<Ui::PlaybackDock> ui;
 };
 
 }
 
 #endif
-

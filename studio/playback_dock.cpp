@@ -1,5 +1,5 @@
 /*
- *  time_dock.h - time dock
+ *  playback_dock.cpp - playback controls dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,47 +16,25 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__TIME_DOCK_H__476B54A4
-#define __STUDIO__TIME_DOCK_H__476B54A4
-
-#include <memory>
-
-#include <QDockWidget>
-
-#include <core/context.h>
-
-#include "context_listener.h"
-
-namespace Ui {
-class TimeDock;
-}
+#include "playback_dock.h"
+#include "ui_playback_dock.h"
 
 namespace studio {
 
-/**
- * Dock for displaying/editing time.
- *
- * TODO:
- *  - separate time editing widget
- *  - time line
- */
-class TimeDock : public QDockWidget, public ContextListener {
-    Q_OBJECT
-
-public:
-    explicit TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
-    ~TimeDock();
-
-protected:
-    virtual void closeEvent(QCloseEvent* event) override;
-
-protected Q_SLOTS:
-    virtual void change_time(double t);
-
-private:
-    std::unique_ptr<Ui::TimeDock> ui;
-};
-
+PlaybackDock::PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
+    QDockWidget(parent),
+    ContextListener(context_),
+    ui(std::make_unique<Ui::PlaybackDock>())
+{
+    ui->setupUi(this);
 }
 
-#endif
+PlaybackDock::~PlaybackDock() {
+}
+
+void PlaybackDock::closeEvent(QCloseEvent* event) {
+    QDockWidget::closeEvent(event);
+    deleteLater();
+}
+
+}

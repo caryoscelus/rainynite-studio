@@ -4,8 +4,11 @@ target_sources(studio
     PRIVATE
         main_window.cpp
         main_window.h
+        playback_dock.cpp
+        playback_dock.h
         time_dock.cpp
         time_dock.h
+
         context_listener.h
 )
 

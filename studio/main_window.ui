@@ -54,9 +54,10 @@
    </widget>
    <widget class="QMenu" name="menu_dock">
     <property name="title">
-     <string>&amp;Dock</string>
+     <string>Add &amp;dock</string>
     </property>
     <addaction name="action_time_dock"/>
+    <addaction name="action_playback_dock"/>
    </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_context"/>
@@ -110,6 +111,11 @@
   <action name="action_time_dock">
    <property name="text">
     <string>&amp;Time</string>
+   </property>
+  </action>
+  <action name="action_playback_dock">
+   <property name="text">
+    <string>&amp;Playback</string>
    </property>
   </action>
  </widget>

@@ -29,6 +29,7 @@
 #include <core/renderers/svg_renderer.h>
 
 #include "time_dock.h"
+#include "playback_dock.h"
 #include "main_window.h"
 #include "ui_main_window.h"
 
@@ -46,6 +47,8 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
     connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
+    connect(ui->action_playback_dock, SIGNAL(triggered()), this, SLOT(add_playback_dock()));
+    add_playback_dock();
     add_time_dock();
 }
 
@@ -107,6 +110,11 @@ void MainWindow::set_mainarea_image(std::string const& fname) {
 
 void MainWindow::add_time_dock() {
     auto dock = new TimeDock(context, this);
+    addDockWidget(Qt::BottomDockWidgetArea, dock);
+}
+
+void MainWindow::add_playback_dock() {
+    auto dock = new PlaybackDock(context, this);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
 
