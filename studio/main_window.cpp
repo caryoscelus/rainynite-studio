@@ -18,6 +18,8 @@
 
 #include <fstream>
 
+#include <fmt/format.h>
+
 #include <QFileDialog>
 #include <QDebug>
 
@@ -29,6 +31,8 @@
 #include "time_dock.h"
 #include "main_window.h"
 #include "ui_main_window.h"
+
+using namespace fmt::literals;
 
 namespace studio {
 
@@ -85,7 +89,7 @@ void MainWindow::render() {
 }
 
 void MainWindow::redraw() {
-    set_mainarea_image("renders/0.000.png");
+    set_mainarea_image("renders/{:.3f}.png"_format(context->get_time().get_seconds()));
 }
 
 void MainWindow::quit() {
