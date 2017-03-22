@@ -39,7 +39,8 @@ namespace studio {
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
-    ui(std::make_unique<Ui::MainWindow>())
+    ui(std::make_unique<Ui::MainWindow>()),
+    context(std::make_shared<core::Context>())
 {
     ui->setupUi(this);
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
