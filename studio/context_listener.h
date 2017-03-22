@@ -1,5 +1,5 @@
 /*
- *  time_dock.cpp - time dock
+ *  context_listener.h - Context-dependent entity
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,31 +16,31 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "time_dock.h"
-#include "ui_time_dock.h"
+#ifndef __STUDIO__CONTEXT_LISTENER_H__9E128DC4
+#define __STUDIO__CONTEXT_LISTENER_H__9E128DC4
+
+#include <memory>
+
+#include <core/context.h>
 
 namespace studio {
 
-TimeDock::TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
-    QDockWidget(parent),
-    ContextListener(context_),
-    ui(std::make_unique<Ui::TimeDock>())
-{
-    ui->setupUi(this);
-    connect(ui->time_box, SIGNAL(valueChanged(double)), this, SLOT(change_time(double)));
-}
-
-TimeDock::~TimeDock() {
-}
-
-void TimeDock::closeEvent(QCloseEvent* event) {
-    QDockWidget::closeEvent(event);
-    deleteLater();
-}
-
-void TimeDock::change_time(double t) {
-    if (auto context = get_context())
-        context->set_time(core::Time(t));
-}
+class ContextListener {
+public:
+    ContextListener(std::shared_ptr<core::Context> context_) :
+        context(context_)
+    {}
+public:
+    virtual std::shared_ptr<core::Context> get_context() {
+        return context;
+    }
+    virtual void set_context(std::shared_ptr<core::Context> context_) {
+        context = context_;
+    }
+private:
+    std::shared_ptr<core::Context> context;
+};
 
 }
+
+#endif

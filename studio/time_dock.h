@@ -26,6 +26,8 @@
 
 #include <core/context.h>
 
+#include "context_listener.h"
+
 namespace Ui {
 class TimeDock;
 }
@@ -38,19 +40,13 @@ namespace studio {
  * TODO:
  *  - separate time editing widget
  *  - time line
- *  - generalize ContextDock / ContextWidget
  */
-class TimeDock : public QDockWidget {
+class TimeDock : public QDockWidget, public ContextListener {
     Q_OBJECT
 
 public:
     explicit TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
     ~TimeDock();
-
-public Q_SLOTS:
-    void set_context(std::shared_ptr<core::Context> context_) {
-        context = context_;
-    }
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
@@ -60,7 +56,6 @@ protected Q_SLOTS:
 
 private:
     std::unique_ptr<Ui::TimeDock> ui;
-    std::shared_ptr<core::Context> context;
 };
 
 }

@@ -6,6 +6,7 @@ target_sources(studio
         main_window.h
         time_dock.cpp
         time_dock.h
+        context_listener.h
 )
 
 target_link_libraries(studio geom_helpers)
