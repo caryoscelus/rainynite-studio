@@ -124,9 +124,9 @@ void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
         redraw();
     });
     for (auto dock : findChildren<QDockWidget*>()) {
-        auto time_dock = dynamic_cast<TimeDock*>(dock);
-        if (time_dock)
-            time_dock->set_context(context_);
+        auto ctx_dock = dynamic_cast<ContextListener*>(dock);
+        if (ctx_dock)
+            ctx_dock->set_context(context_);
     }
 }
 

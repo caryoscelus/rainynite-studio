@@ -24,9 +24,12 @@ namespace studio {
 PlaybackDock::PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
     QDockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::PlaybackDock>())
+    ui(std::make_unique<Ui::PlaybackDock>()),
+    timer(new QTimer(this))
 {
     ui->setupUi(this);
+    connect(ui->play_button, SIGNAL(toggled(bool)), this, SLOT(toggle_playback(bool)));
+    connect(timer, SIGNAL(timeout()), this, SLOT(next_frame()));
 }
 
 PlaybackDock::~PlaybackDock() {
@@ -35,6 +38,18 @@ PlaybackDock::~PlaybackDock() {
 void PlaybackDock::closeEvent(QCloseEvent* event) {
     QDockWidget::closeEvent(event);
     deleteLater();
+}
+
+void PlaybackDock::toggle_playback(bool play) {
+    if (play)
+        timer->start(1000);
+    else
+        timer->stop();
+}
+
+void PlaybackDock::next_frame() {
+    if (auto context = get_context())
+        context->set_time(context->get_time() + core::Time(1.0));
 }
 
 }

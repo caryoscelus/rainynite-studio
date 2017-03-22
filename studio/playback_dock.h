@@ -22,6 +22,7 @@
 #include <memory>
 
 #include <QDockWidget>
+#include <QTimer>
 
 #include <core/context.h>
 
@@ -46,8 +47,13 @@ public:
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
 
+private Q_SLOTS:
+    void toggle_playback(bool play);
+    void next_frame();
+
 private:
     std::unique_ptr<Ui::PlaybackDock> ui;
+    QTimer* timer;
 };
 
 }
