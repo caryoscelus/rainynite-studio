@@ -41,15 +41,19 @@ void PlaybackDock::closeEvent(QCloseEvent* event) {
 }
 
 void PlaybackDock::toggle_playback(bool play) {
-    if (play)
-        timer->start(1000);
-    else
-        timer->stop();
+    if (auto context = get_context()) {
+        if (play)
+            timer->start(1000/context->get_fps());
+        else
+            timer->stop();
+    }
 }
 
 void PlaybackDock::next_frame() {
-    if (auto context = get_context())
-        context->set_time(context->get_time() + core::Time(1.0));
+    if (auto context = get_context()) {
+        auto time = context->get_time();
+        context->set_time(time + core::Time(0, context->get_fps(), 1));
+    }
 }
 
 }

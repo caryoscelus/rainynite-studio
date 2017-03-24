@@ -54,11 +54,11 @@ void TimeDock::closeEvent(QCloseEvent* event) {
 
 void TimeDock::change_time(double t) {
     if (auto context = get_context())
-        context->set_time(core::Time(t));
+        context->set_time(core::Time(0, context->get_fps(), t));
 }
 
 void TimeDock::set_time(core::Time time) {
-    ui->time_box->setValue(time.get_seconds());
+    ui->time_box->setValue(time.get_frames());
 }
 
 }
