@@ -29,6 +29,7 @@ TimeDock::TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
 {
     ui->setupUi(this);
     connect(ui->time_box, SIGNAL(valueChanged(double)), this, SLOT(change_time(double)));
+    connect(ui->fps_box, SIGNAL(valueChanged(int)), this, SLOT(change_fps(int)));
     set_context(get_context());
 }
 
@@ -55,6 +56,11 @@ void TimeDock::closeEvent(QCloseEvent* event) {
 void TimeDock::change_time(double t) {
     if (auto context = get_context())
         context->set_time(core::Time(0, context->get_fps(), t));
+}
+
+void TimeDock::change_fps(int fps) {
+    if (auto context = get_context())
+        context->set_fps(fps);
 }
 
 void TimeDock::set_time(core::Time time) {

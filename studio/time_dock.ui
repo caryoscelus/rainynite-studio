@@ -18,6 +18,9 @@
     <item>
      <widget class="QDoubleSpinBox" name="time_box"/>
     </item>
+    <item>
+     <widget class="QSpinBox" name="fps_box"/>
+    </item>
    </layout>
   </widget>
  </widget>

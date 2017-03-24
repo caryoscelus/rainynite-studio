@@ -55,6 +55,7 @@ protected:
 
 protected Q_SLOTS:
     virtual void change_time(double t);
+    virtual void change_fps(int fps);
 
 protected:
     void set_time(core::Time time);
