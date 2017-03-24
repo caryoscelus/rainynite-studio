@@ -23,7 +23,6 @@
 #include <QFileDialog>
 #include <QDebug>
 
-#include <core/time.h>
 #include <core/document.h>
 #include <core/filters/svg_path_reader.h>
 #include <core/renderers/svg_renderer.h>
