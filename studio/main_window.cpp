@@ -66,7 +66,6 @@ void MainWindow::open() {
         std::ifstream in(fname);
         document = reader.read_document(in);
         set_context(document->get_default_context());
-        qDebug() << document->keyframe_amount();
         in.close();
     } catch (...) {
         qDebug() << "Error while opening document";
