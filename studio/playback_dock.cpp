@@ -28,6 +28,8 @@ PlaybackDock::PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* par
     timer(new QTimer(this))
 {
     ui->setupUi(this);
+    connect(ui->move_start_button, SIGNAL(clicked()), this, SLOT(move_start()));
+    connect(ui->move_end_button, SIGNAL(clicked()), this, SLOT(move_end()));
     connect(ui->play_button, SIGNAL(toggled(bool)), this, SLOT(toggle_playback(bool)));
     connect(timer, SIGNAL(timeout()), this, SLOT(next_frame()));
 }
@@ -53,6 +55,18 @@ void PlaybackDock::next_frame() {
     if (auto context = get_context()) {
         auto time = context->get_time();
         context->set_time(time + core::Time(0, context->get_fps(), 1));
+    }
+}
+
+void PlaybackDock::move_start() {
+    if (auto context = get_context()) {
+        context->to_start();
+    }
+}
+
+void PlaybackDock::move_end() {
+    if (auto context = get_context()) {
+        context->to_end();
     }
 }
 

@@ -50,6 +50,8 @@ protected:
 private Q_SLOTS:
     void toggle_playback(bool play);
     void next_frame();
+    void move_start();
+    void move_end();
 
 private:
     std::unique_ptr<Ui::PlaybackDock> ui;
