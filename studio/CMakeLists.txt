@@ -9,6 +9,9 @@ target_sources(studio
         time_dock.cpp
         time_dock.h
 
+        timeline_view.cpp
+        timeline_view.h
+
         context_listener.h
 )
 
