@@ -14,70 +14,85 @@
    <string>Playbac&amp;k Dock</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QToolButton" name="move_start_button">
-      <property name="text">
-       <string>To start</string>
-      </property>
-      <property name="icon">
-       <iconset theme="media-skip-backward">
-        <normaloff>.</normaloff>.</iconset>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="button_layout">
+      <item>
+       <widget class="QToolButton" name="move_start_button">
+        <property name="text">
+         <string>To start</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-skip-backward">
+          <normaloff>.</normaloff>.</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="play_button">
+        <property name="text">
+         <string>Play</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-playback-start">
+          <normaloff>.</normaloff>.</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="stop_button">
+        <property name="text">
+         <string>Stop</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-playback-stop">
+          <normaloff>.</normaloff>.</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="move_end_button">
+        <property name="text">
+         <string>To end</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-skip-forward">
+          <normaloff>.</normaloff>.</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QToolButton" name="play_button">
-      <property name="text">
-       <string>Play</string>
-      </property>
-      <property name="icon">
-       <iconset theme="media-playback-start">
-        <normaloff>.</normaloff>.</iconset>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QToolButton" name="stop_button">
-      <property name="text">
-       <string>Stop</string>
-      </property>
-      <property name="icon">
-       <iconset theme="media-playback-stop">
-        <normaloff>.</normaloff>.</iconset>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QToolButton" name="move_end_button">
-      <property name="text">
-       <string>To end</string>
-      </property>
-      <property name="icon">
-       <iconset theme="media-skip-forward">
-        <normaloff>.</normaloff>.</iconset>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
+     <widget class="studio::TimelineView" name="timeline" native="true"/>
     </item>
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>studio::TimelineView</class>
+   <extends>QWidget</extends>
+   <header>timeline_view.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

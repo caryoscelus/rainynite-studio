@@ -32,9 +32,15 @@ PlaybackDock::PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* par
     connect(ui->move_end_button, SIGNAL(clicked()), this, SLOT(move_end()));
     connect(ui->play_button, SIGNAL(toggled(bool)), this, SLOT(toggle_playback(bool)));
     connect(timer, SIGNAL(timeout()), this, SLOT(next_frame()));
+    set_context(get_context());
 }
 
 PlaybackDock::~PlaybackDock() {
+}
+
+void PlaybackDock::set_context(std::shared_ptr<core::Context> context_) {
+    ContextListener::set_context(context_);
+    ui->timeline->set_context(context_);
 }
 
 void PlaybackDock::closeEvent(QCloseEvent* event) {
