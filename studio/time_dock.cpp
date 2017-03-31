@@ -28,8 +28,8 @@ TimeDock::TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
     destroy_detector(std::make_shared<Null>())
 {
     ui->setupUi(this);
-    connect(ui->time_box, SIGNAL(valueChanged(double)), this, SLOT(change_time(double)));
-    connect(ui->fps_box, SIGNAL(valueChanged(int)), this, SLOT(change_fps(int)));
+    connect(ui->time_box, SIGNAL(editingFinished()), this, SLOT(change_time()));
+    connect(ui->fps_box, SIGNAL(editingFinished()), this, SLOT(change_fps()));
     set_context(get_context());
 }
 
@@ -53,14 +53,14 @@ void TimeDock::closeEvent(QCloseEvent* event) {
     deleteLater();
 }
 
-void TimeDock::change_time(double t) {
+void TimeDock::change_time() {
     if (auto context = get_context())
-        context->set_time(core::Time(0, context->get_fps(), t));
+        context->set_time(core::Time(0, context->get_fps(), ui->time_box->value()));
 }
 
-void TimeDock::change_fps(int fps) {
+void TimeDock::change_fps() {
     if (auto context = get_context())
-        context->set_fps(fps);
+        context->set_fps(ui->fps_box->value());
 }
 
 void TimeDock::set_time(core::Time time) {

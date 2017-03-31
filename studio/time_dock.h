@@ -54,8 +54,8 @@ protected:
     virtual void closeEvent(QCloseEvent* event) override;
 
 protected Q_SLOTS:
-    virtual void change_time(double t);
-    virtual void change_fps(int fps);
+    virtual void change_time();
+    virtual void change_fps();
 
 protected:
     void set_time(core::Time time);
