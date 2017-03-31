@@ -27,11 +27,11 @@ namespace studio {
 
 class ContextListener {
 public:
-    ContextListener(std::shared_ptr<core::Context> context_) :
+    ContextListener(std::shared_ptr<core::Context> context_=nullptr) :
         context(context_)
     {}
 public:
-    virtual std::shared_ptr<core::Context> get_context() {
+    virtual std::shared_ptr<core::Context> get_context() const {
         return context;
     }
     virtual void set_context(std::shared_ptr<core::Context> context_) {
