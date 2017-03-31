@@ -16,7 +16,14 @@
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QDoubleSpinBox" name="time_box"/>
+     <widget class="QDoubleSpinBox" name="time_box">
+      <property name="minimum">
+       <double>-65535.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>65535.000000000000000</double>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QSpinBox" name="fps_box"/>
