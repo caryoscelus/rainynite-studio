@@ -18,6 +18,7 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QMouseEvent>
 
 #include "timeline_view.h"
 
@@ -50,21 +51,48 @@ void TimelineView::paintEvent(QPaintEvent* paintEvent) {
     if (auto context = get_context()) {
         QPainter painter(this);
         painter.setPen(time_cursor_pen);
-        int x = context->get_time().get_frames() * 4;
+        int x = frames_to_x(context->get_time().get_frames());
         painter.drawLine(x, 0, x, height());
     }
 }
 
 void TimelineView::mousePressEvent(QMouseEvent* event) {
-    qDebug() << "Press";
+    if (event->button() == Qt::LeftButton)
+        start_moving(event->x());
 }
 
 void TimelineView::mouseReleaseEvent(QMouseEvent* event) {
-    qDebug() << "Release";
+    if (is_moving && event->button() == Qt::LeftButton)
+        stop_moving(event->x());
 }
 
 void TimelineView::mouseMoveEvent(QMouseEvent* event) {
-    qDebug() << "Move";
+    if (is_moving)
+        move(event->x());
+}
+
+void TimelineView::start_moving(double x) {
+    is_moving = true;
+    move(x);
+}
+
+void TimelineView::stop_moving(double x) {
+    is_moving = false;
+    move(x);
+}
+
+void TimelineView::move(double x) {
+    if (auto context = get_context()) {
+        int frames = x_to_frames(x);
+        context->set_frames(frames);
+    }
+}
+
+double TimelineView::frames_to_x(double frames) {
+    return frames * 4;
+}
+double TimelineView::x_to_frames(double x) {
+    return x / 4;
 }
 
 }

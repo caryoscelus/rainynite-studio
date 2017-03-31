@@ -45,6 +45,16 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
+    void start_moving(double x);
+    void stop_moving(double x);
+    void move(double x);
+    bool is_moving = false;
+
+private:
+    double frames_to_x(double frames);
+    double x_to_frames(double x);
+
+private:
     QPen time_cursor_pen;
 
 private:
