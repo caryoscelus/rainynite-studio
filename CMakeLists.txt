@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 14) # 17 is not supported by cmake 3.7
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 add_definitions(-DQT_NO_KEYWORDS)   ## avoid slots/signals definition conflict
 
 find_package(Qt5Widgets REQUIRED)

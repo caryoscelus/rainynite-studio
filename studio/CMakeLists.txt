@@ -13,6 +13,8 @@ target_sources(studio
         timeline_view.h
 
         context_listener.h
+
+        resources.qrc
 )
 
 target_link_libraries(studio geom_helpers)
