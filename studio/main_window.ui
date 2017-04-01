@@ -93,6 +93,7 @@ QScrollArea { background: transparent; }</string>
     </property>
     <addaction name="action_time_dock"/>
     <addaction name="action_playback_dock"/>
+    <addaction name="action_node_tree_dock"/>
    </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_context"/>
@@ -152,6 +153,11 @@ QScrollArea { background: transparent; }</string>
   <action name="action_playback_dock">
    <property name="text">
     <string>&amp;Playback</string>
+   </property>
+  </action>
+  <action name="action_node_tree_dock">
+   <property name="text">
+    <string>&amp;Node tree</string>
    </property>
   </action>
  </widget>

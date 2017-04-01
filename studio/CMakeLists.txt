@@ -8,6 +8,8 @@ target_sources(studio
         playback_dock.h
         time_dock.cpp
         time_dock.h
+        node_tree_dock.cpp
+        node_tree_dock.h
 
         timeline_view.cpp
         timeline_view.h

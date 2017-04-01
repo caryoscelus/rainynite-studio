@@ -51,6 +51,7 @@ private Q_SLOTS:
 
     void add_time_dock();
     void add_playback_dock();
+    void add_node_tree_dock();
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;

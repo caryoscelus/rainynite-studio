@@ -29,6 +29,7 @@
 
 #include "time_dock.h"
 #include "playback_dock.h"
+#include "node_tree_dock.h"
 #include "main_window.h"
 #include "ui_main_window.h"
 
@@ -48,8 +49,10 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
     connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
     connect(ui->action_playback_dock, SIGNAL(triggered()), this, SLOT(add_playback_dock()));
+    connect(ui->action_node_tree_dock, SIGNAL(triggered()), this, SLOT(add_node_tree_dock()));
     add_playback_dock();
     add_time_dock();
+    add_node_tree_dock();
 }
 
 MainWindow::~MainWindow() {
@@ -115,6 +118,11 @@ void MainWindow::add_time_dock() {
 void MainWindow::add_playback_dock() {
     auto dock = new PlaybackDock(context, this);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
+}
+
+void MainWindow::add_node_tree_dock() {
+    auto dock = new NodeTreeDock(context, this);
+    addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 
 void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
