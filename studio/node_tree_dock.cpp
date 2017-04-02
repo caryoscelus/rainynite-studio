@@ -16,6 +16,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <core/document.h>
+
+#include "node_model.h"
 #include "node_tree_dock.h"
 #include "ui_node_tree_dock.h"
 
@@ -27,6 +30,17 @@ NodeTreeDock::NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* par
     ui(std::make_unique<Ui::NodeTreeDock>())
 {
     ui->setupUi(this);
+    set_context(get_context());
+}
+
+void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
+    ContextListener::set_context(context_);
+    if (auto document = context_->get_document()) {
+        model = std::make_unique<NodeModel>(document->get_root());
+    } else {
+        model = std::make_unique<NodeModel>(nullptr);
+    }
+    ui->tree_view->setModel(model.get());
 }
 
 NodeTreeDock::~NodeTreeDock() {

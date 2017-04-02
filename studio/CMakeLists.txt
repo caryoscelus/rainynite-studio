@@ -16,6 +16,9 @@ target_sources(studio
 
         context_listener.h
 
+        node_model.cpp
+        node_model.h
+
         resources.qrc
 )
 

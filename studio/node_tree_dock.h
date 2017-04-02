@@ -29,13 +29,19 @@ class NodeTreeDock;
 
 namespace studio {
 
+class NodeModel;
+
 class NodeTreeDock : public QDockWidget, public ContextListener {
 public:
-    explicit NodeTreeDock(std::shared_ptr<core::Context>, QWidget* parent);
+    explicit NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* parent_);
     virtual ~NodeTreeDock();
+
+public:
+    virtual void set_context(std::shared_ptr<core::Context> context_) override;
 
 private:
     std::unique_ptr<Ui::NodeTreeDock> ui;
+    std::unique_ptr<NodeModel> model;
 };
 
 } // namespace studio
