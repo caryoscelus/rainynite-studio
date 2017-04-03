@@ -59,7 +59,7 @@ QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) con
         return QModelIndex();
     }
     auto pnode = get_node(parent);
-    if (auto parent_node = std::dynamic_pointer_cast<core::AbstractNode>(pnode)) {
+    if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(pnode)) {
         if (row >= parent_node->link_count())
             return QModelIndex();
         auto node = parent_node->get_links()[row];
@@ -85,7 +85,7 @@ core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
     if (index.parent() == QModelIndex())
         return root;
     if (auto pnode = get_node(index.parent())) {
-        if (auto parent_node = std::dynamic_pointer_cast<core::AbstractNode>(pnode))
+        if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(pnode))
             return parent_node->get_links()[index.row()];
     }
     return nullptr;
@@ -100,7 +100,7 @@ QModelIndex NodeModel::parent(QModelIndex const& index) const {
 
 int NodeModel::rowCount(QModelIndex const& parent) const {
     if (auto value = get_node(parent)) {
-        if (auto node = std::dynamic_pointer_cast<core::AbstractNode>(value))
+        if (auto node = std::dynamic_pointer_cast<core::AbstractListLinked>(value))
             return node->link_count();
         return 0;
     }
