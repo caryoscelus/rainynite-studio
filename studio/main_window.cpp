@@ -70,8 +70,11 @@ void MainWindow::open() {
         document = reader.read_document(in);
         set_context(document->get_default_context());
         in.close();
+    } catch (std::exception const& ex) {
+        qDebug() << "Uncaught exception while opening document";
+        qDebug() << ex.what();
     } catch (...) {
-        qDebug() << "Error while opening document";
+        qDebug() << "Unknown error while opening document";
     }
     render();
 }
