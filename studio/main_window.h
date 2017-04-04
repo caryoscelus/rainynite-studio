@@ -30,6 +30,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class QErrorMessage;
+
 namespace studio {
 
 class MainWindow : public QMainWindow {
@@ -55,6 +57,7 @@ private Q_SLOTS:
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;
+    std::unique_ptr<QErrorMessage> error_box;
     std::shared_ptr<core::Document> document;
     std::shared_ptr<core::Context> context;
     std::thread render_thread;

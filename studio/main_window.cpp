@@ -21,6 +21,7 @@
 #include <fmt/format.h>
 
 #include <QFileDialog>
+#include <QErrorMessage>
 #include <QDebug>
 
 #include <core/document.h>
@@ -40,6 +41,7 @@ namespace studio {
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(std::make_unique<Ui::MainWindow>()),
+    error_box(std::make_unique<QErrorMessage>()),
     context(std::make_shared<core::Context>())
 {
     ui->setupUi(this);
@@ -71,8 +73,9 @@ void MainWindow::open() {
         set_context(document->get_default_context());
         in.close();
     } catch (std::exception const& ex) {
-        qDebug() << "Uncaught exception while opening document";
-        qDebug() << ex.what();
+        auto msg = QString::fromStdString("Uncaught exception while opening document:\n{}"_format(ex.what()));
+        qDebug() << msg;
+        error_box->showMessage(msg);
     } catch (...) {
         qDebug() << "Unknown error while opening document";
     }
