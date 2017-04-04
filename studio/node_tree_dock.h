@@ -32,12 +32,20 @@ namespace studio {
 class NodeModel;
 
 class NodeTreeDock : public QDockWidget, public ContextListener {
+    Q_OBJECT
+
 public:
     explicit NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* parent_);
     virtual ~NodeTreeDock();
 
 public:
     virtual void set_context(std::shared_ptr<core::Context> context_) override;
+
+Q_SIGNALS:
+    void activated(core::AbstractReference node);
+
+private Q_SLOTS:
+    void activate(QModelIndex const& index);
 
 private:
     std::unique_ptr<Ui::NodeTreeDock> ui;

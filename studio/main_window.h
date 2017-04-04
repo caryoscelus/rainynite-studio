@@ -49,7 +49,9 @@ private Q_SLOTS:
     void quit();
     void render();
     void redraw();
+
     void set_context(std::shared_ptr<core::Context> context_);
+    void activate();
 
     void add_time_dock();
     void add_playback_dock();

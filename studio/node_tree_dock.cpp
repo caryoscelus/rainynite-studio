@@ -30,6 +30,7 @@ NodeTreeDock::NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* par
     ui(std::make_unique<Ui::NodeTreeDock>())
 {
     ui->setupUi(this);
+    connect(ui->tree_view, SIGNAL(activated(QModelIndex)), this, SLOT(activate(QModelIndex)));
     set_context(get_context());
 }
 
@@ -44,6 +45,11 @@ void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
 }
 
 NodeTreeDock::~NodeTreeDock() {
+}
+
+void NodeTreeDock::activate(QModelIndex const& index) {
+    auto node = dynamic_cast<NodeModel*>(ui->tree_view->model())->get_node(index);
+    Q_EMIT activated(node);
 }
 
 } // namespace studio

@@ -137,10 +137,15 @@ void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
         redraw();
     });
     for (auto dock : findChildren<QDockWidget*>()) {
-        auto ctx_dock = dynamic_cast<ContextListener*>(dock);
-        if (ctx_dock)
+        if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
+        if (dock->metaObject()->indexOfSignal("activated(core::AbstractReference)") != -1)
+            connect(dock, SIGNAL(activated(core::AbstractReference)), this, SLOT(activate()));
     }
+}
+
+void MainWindow::activate() {
+    qDebug() << "xxx [ * * * ] xxx";
 }
 
 }

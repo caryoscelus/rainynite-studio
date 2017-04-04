@@ -43,9 +43,11 @@ public:
     int rowCount(QModelIndex const& parent = QModelIndex()) const override;
     int columnCount(QModelIndex const& parent = QModelIndex()) const override;
 
+public:
+    core::AbstractReference get_node(QModelIndex const& index) const;
+
 private:
     quintptr get_id(core::AbstractReference ref, QModelIndex const& parent = QModelIndex()) const;
-    core::AbstractReference get_node(QModelIndex const& index) const;
 
 private:
     core::AbstractReference root;
