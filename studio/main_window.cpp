@@ -105,6 +105,7 @@ void MainWindow::render() {
 
 void MainWindow::redraw() {
     set_mainarea_image("renders/{:.3f}.png"_format(context->get_time().get_seconds()));
+    redraw_selected_node();
 }
 
 void MainWindow::quit() {
@@ -151,11 +152,15 @@ void MainWindow::activate(core::AbstractReference node) {
     if (node == active_node)
         return;
     active_node = node;
+    redraw_selected_node();
+}
+
+void MainWindow::redraw_selected_node() {
     for (auto const& e : knot_items) {
         scene->removeItem(e.get());
     }
     knot_items.clear();
-    if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(node.get())) {
+    if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(active_node.get())) {
         auto path = bezier_node->get(context->get_time());
         for (auto const& knot : path.knots) {
             auto x = knot.pos.x();

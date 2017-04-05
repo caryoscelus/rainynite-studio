@@ -56,6 +56,7 @@ private Q_SLOTS:
 
     void set_context(std::shared_ptr<core::Context> context_);
     void activate(core::AbstractReference node);
+    void redraw_selected_node();
 
     void add_time_dock();
     void add_playback_dock();
