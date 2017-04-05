@@ -16,9 +16,10 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="central_widget">
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">#central_widget { background-image: url(:/images/transparency.png); }
+#canvas { background: transparent; }</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
