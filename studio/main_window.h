@@ -31,6 +31,8 @@ class MainWindow;
 }
 
 class QErrorMessage;
+class QGraphicsScene;
+class QGraphicsPixmapItem;
 
 namespace studio {
 
@@ -60,6 +62,8 @@ private Q_SLOTS:
 private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<QErrorMessage> error_box;
+    std::unique_ptr<QGraphicsScene> scene;
+    std::unique_ptr<QGraphicsPixmapItem> image;
     std::shared_ptr<core::Document> document;
     std::shared_ptr<core::Context> context;
     std::thread render_thread;

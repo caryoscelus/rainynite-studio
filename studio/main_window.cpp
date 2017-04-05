@@ -20,6 +20,8 @@
 
 #include <fmt/format.h>
 
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
 #include <QFileDialog>
 #include <QErrorMessage>
 #include <QDebug>
@@ -42,6 +44,8 @@ MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(std::make_unique<Ui::MainWindow>()),
     error_box(std::make_unique<QErrorMessage>()),
+    scene(std::make_unique<QGraphicsScene>()),
+    image(std::make_unique<QGraphicsPixmapItem>()),
     context(std::make_shared<core::Context>())
 {
     ui->setupUi(this);
@@ -52,6 +56,8 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
     connect(ui->action_playback_dock, SIGNAL(triggered()), this, SLOT(add_playback_dock()));
     connect(ui->action_node_tree_dock, SIGNAL(triggered()), this, SLOT(add_node_tree_dock()));
+    ui->canvas->setScene(scene.get());
+    scene->addItem(image.get());
     add_playback_dock();
     add_time_dock();
     add_node_tree_dock();
@@ -88,9 +94,6 @@ void MainWindow::render() {
         rsettings.render_pngs = true;
         context->mod_render_settings() = rsettings;
         auto renderer = std::make_shared<core::renderers::SvgRenderer>();
-        renderer->finished_frame().connect([this](core::Time frame_time) {
-            redraw();
-        });
         if (render_thread.joinable())
             render_thread.join();
         auto ctx = *context;
@@ -113,7 +116,7 @@ void MainWindow::quit() {
 void MainWindow::set_mainarea_image(std::string const& fname) {
     QPixmap pixmap;
     pixmap.load(QString::fromStdString(fname));
-    ui->image->setPixmap(pixmap);
+    image->setPixmap(pixmap);
 }
 
 void MainWindow::add_time_dock() {
