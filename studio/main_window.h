@@ -25,6 +25,7 @@
 #include <QMainWindow>
 
 #include <core/context.h>
+#include <core/node.h>
 
 namespace Ui {
 class MainWindow;
@@ -32,6 +33,7 @@ class MainWindow;
 
 class QErrorMessage;
 class QGraphicsScene;
+class QGraphicsItem;
 class QGraphicsPixmapItem;
 
 namespace studio {
@@ -53,7 +55,7 @@ private Q_SLOTS:
     void redraw();
 
     void set_context(std::shared_ptr<core::Context> context_);
-    void activate();
+    void activate(core::AbstractReference node);
 
     void add_time_dock();
     void add_playback_dock();
@@ -64,8 +66,10 @@ private:
     std::unique_ptr<QErrorMessage> error_box;
     std::unique_ptr<QGraphicsScene> scene;
     std::unique_ptr<QGraphicsPixmapItem> image;
+    std::vector<std::unique_ptr<QGraphicsItem>> knot_items;
     std::shared_ptr<core::Document> document;
     std::shared_ptr<core::Context> context;
+    std::shared_ptr<core::AbstractValue> active_node;
     std::thread render_thread;
 };
 

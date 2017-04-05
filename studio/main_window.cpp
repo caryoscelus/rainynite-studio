@@ -143,12 +143,27 @@ void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
         if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
         if (dock->metaObject()->indexOfSignal("activated(core::AbstractReference)") != -1)
-            connect(dock, SIGNAL(activated(core::AbstractReference)), this, SLOT(activate()));
+            connect(dock, SIGNAL(activated(core::AbstractReference)), this, SLOT(activate(core::AbstractReference)));
     }
 }
 
-void MainWindow::activate() {
-    qDebug() << "xxx [ * * * ] xxx";
+void MainWindow::activate(core::AbstractReference node) {
+    if (node == active_node)
+        return;
+    active_node = node;
+    for (auto const& e : knot_items) {
+        scene->removeItem(e.get());
+    }
+    knot_items.clear();
+    if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(node.get())) {
+        auto path = bezier_node->get(context->get_time());
+        for (auto const& knot : path.knots) {
+            auto x = knot.pos.x();
+            auto y = knot.pos.y();
+            auto e = scene->addEllipse(x-2, y-2, 4, 4);
+            knot_items.emplace_back(e);
+        }
+    }
 }
 
 }
