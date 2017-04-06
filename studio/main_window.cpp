@@ -20,8 +20,6 @@
 
 #include <fmt/format.h>
 
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
 #include <QFileDialog>
 #include <QErrorMessage>
 #include <QDebug>
@@ -44,8 +42,6 @@ MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(std::make_unique<Ui::MainWindow>()),
     error_box(std::make_unique<QErrorMessage>()),
-    scene(std::make_unique<QGraphicsScene>()),
-    image(std::make_unique<QGraphicsPixmapItem>()),
     context(std::make_shared<core::Context>())
 {
     ui->setupUi(this);
@@ -56,8 +52,6 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
     connect(ui->action_playback_dock, SIGNAL(triggered()), this, SLOT(add_playback_dock()));
     connect(ui->action_node_tree_dock, SIGNAL(triggered()), this, SLOT(add_node_tree_dock()));
-    ui->canvas->setScene(scene.get());
-    scene->addItem(image.get());
     add_playback_dock();
     add_time_dock();
     add_node_tree_dock();
@@ -105,7 +99,6 @@ void MainWindow::render() {
 
 void MainWindow::redraw() {
     set_mainarea_image("renders/{:.3f}.png"_format(context->get_time().get_seconds()));
-    redraw_selected_node();
 }
 
 void MainWindow::quit() {
@@ -117,7 +110,7 @@ void MainWindow::quit() {
 void MainWindow::set_mainarea_image(std::string const& fname) {
     QPixmap pixmap;
     pixmap.load(QString::fromStdString(fname));
-    image->setPixmap(pixmap);
+    ui->canvas->set_main_image(pixmap);
 }
 
 void MainWindow::add_time_dock() {
@@ -140,7 +133,7 @@ void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
     context->changed_time.connect([this](core::Time time){
         redraw();
     });
-    for (auto dock : findChildren<QDockWidget*>()) {
+    for (auto dock : findChildren<QWidget*>()) {
         if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
         if (dock->metaObject()->indexOfSignal("activated(core::AbstractReference)") != -1)
@@ -152,23 +145,6 @@ void MainWindow::activate(core::AbstractReference node) {
     if (node == active_node)
         return;
     active_node = node;
-    redraw_selected_node();
-}
-
-void MainWindow::redraw_selected_node() {
-    for (auto const& e : knot_items) {
-        scene->removeItem(e.get());
-    }
-    knot_items.clear();
-    if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(active_node.get())) {
-        auto path = bezier_node->get(context->get_time());
-        for (auto const& knot : path.knots) {
-            auto x = knot.pos.x();
-            auto y = knot.pos.y();
-            auto e = scene->addEllipse(x-2, y-2, 4, 4);
-            knot_items.emplace_back(e);
-        }
-    }
 }
 
 }

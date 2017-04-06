@@ -20,25 +20,39 @@
 #define __STUDIO__CONTEXT_LISTENER_H__9E128DC4
 
 #include <memory>
+#include <type_traits>
 
 #include <core/context.h>
+
+namespace core {
+class AbstractValue;
+}
 
 namespace studio {
 
 class ContextListener {
 public:
-    ContextListener(std::shared_ptr<core::Context> context_=nullptr) :
-        context(context_)
-    {}
+    ContextListener(std::shared_ptr<core::Context> context_=nullptr);
+
 public:
-    virtual std::shared_ptr<core::Context> get_context() const {
-        return context;
+    virtual std::shared_ptr<core::Context> get_context() const;
+    virtual void set_context(std::shared_ptr<core::Context> context_);
+
+protected:
+    virtual void time_changed(core::Time time) {}
+    virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) {}
+
+    template <class S, class F>
+    void connect_boost(S& signal, F lambda) {
+        auto slot = typename S::slot_type(lambda);
+        slot.track_foreign(destroy_detector);
+        context->changed_time.connect(slot);
     }
-    virtual void set_context(std::shared_ptr<core::Context> context_) {
-        context = context_;
-    }
+
 private:
     std::shared_ptr<core::Context> context;
+    struct Null {};
+    std::shared_ptr<Null> destroy_detector;
 };
 
 }

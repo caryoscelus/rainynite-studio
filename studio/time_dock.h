@@ -47,8 +47,8 @@ public:
     explicit TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
     ~TimeDock();
 
-public:
-    virtual void set_context(std::shared_ptr<core::Context> context_) override;
+protected:
+    virtual void time_changed(core::Time time) override;
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;

@@ -11,9 +11,12 @@ target_sources(studio
         node_tree_dock.cpp
         node_tree_dock.h
 
+        canvas.cpp
+        canvas.h
         timeline_view.cpp
         timeline_view.h
 
+        context_listener.cpp
         context_listener.h
 
         node_model.cpp

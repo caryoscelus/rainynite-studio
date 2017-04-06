@@ -35,8 +35,8 @@ public:
 public:
     virtual QSize sizeHint() const override;
 
-public:
-    virtual void set_context(std::shared_ptr<core::Context> context_) override;
+protected:
+    virtual void time_changed(core::Time) override;
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent) override;

@@ -35,16 +35,8 @@ QSize TimelineView::sizeHint() const {
     return {20, 20};
 }
 
-void TimelineView::set_context(std::shared_ptr<core::Context> context_) {
-    ContextListener::set_context(context_);
-    if (auto context = get_context()) {
-        auto lambda = [this](core::Time time) {
-            update();
-        };
-        auto slot = decltype(context->changed_time)::slot_type(lambda);
-        slot.track_foreign(destroy_detector);
-        context->changed_time.connect(slot);
-    }
+void TimelineView::time_changed(core::Time) {
+    update();
 }
 
 void TimelineView::paintEvent(QPaintEvent* paintEvent) {

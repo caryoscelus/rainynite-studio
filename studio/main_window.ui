@@ -23,7 +23,7 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QGraphicsView" name="canvas">
+     <widget class="studio::Canvas" name="canvas">
       <property name="styleSheet">
        <string notr="true"/>
       </property>
@@ -133,6 +133,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>studio::Canvas</class>
+   <extends>QGraphicsView</extends>
+   <header>canvas.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
