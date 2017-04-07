@@ -64,6 +64,12 @@ void Canvas::redraw_selected_node() {
             auto y = knot.pos.y();
             auto e = scene->addEllipse(x-2, y-2, 4, 4);
             knot_items.emplace_back(e);
+            if (!knot.uid.empty()) {
+                auto e = scene->addText(QString::fromStdString(knot.uid));
+                e->setX(knot.pos.x());
+                e->setY(knot.pos.y());
+                knot_items.emplace_back(e);
+            }
         }
     }
 }
