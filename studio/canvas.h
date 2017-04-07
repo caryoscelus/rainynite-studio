@@ -45,6 +45,7 @@ public:
 
 protected:
     virtual void time_changed(core::Time) override;
+    virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
 
 private:
     void redraw_selected_node();

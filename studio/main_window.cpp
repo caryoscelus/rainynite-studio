@@ -142,9 +142,7 @@ void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
 }
 
 void MainWindow::activate(core::AbstractReference node) {
-    if (node == active_node)
-        return;
-    active_node = node;
+    context->set_active_node(node);
 }
 
 }

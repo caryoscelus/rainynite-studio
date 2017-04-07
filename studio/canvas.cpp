@@ -47,6 +47,11 @@ void Canvas::time_changed(core::Time) {
     redraw_selected_node();
 }
 
+void Canvas::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+    active_node = node;
+    redraw_selected_node();
+}
+
 void Canvas::redraw_selected_node() {
     for (auto const& e : knot_items) {
         scene->removeItem(e.get());

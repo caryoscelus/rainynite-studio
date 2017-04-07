@@ -40,6 +40,12 @@ void ContextListener::set_context(std::shared_ptr<core::Context> context_) {
                 time_changed(time);
             }
         );
+        connect_boost(
+            context->changed_active_node,
+            [this](std::shared_ptr<core::AbstractValue> node) {
+                active_node_changed(node);
+            }
+        );
     }
 }
 
