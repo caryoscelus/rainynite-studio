@@ -46,7 +46,7 @@ protected:
     void connect_boost(S& signal, F lambda) {
         auto slot = typename S::slot_type(lambda);
         slot.track_foreign(destroy_detector);
-        context->changed_time.connect(slot);
+        signal.connect(slot);
     }
 
 private:
