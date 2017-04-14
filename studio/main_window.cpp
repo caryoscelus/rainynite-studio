@@ -31,6 +31,7 @@
 #include "time_dock.h"
 #include "playback_dock.h"
 #include "node_tree_dock.h"
+#include "node_edit_dock.h"
 #include "main_window.h"
 #include "ui_main_window.h"
 
@@ -55,6 +56,7 @@ MainWindow::MainWindow(QWidget* parent) :
     add_playback_dock();
     add_time_dock();
     add_node_tree_dock();
+    add_node_edit_dock();
 }
 
 MainWindow::~MainWindow() {
@@ -125,6 +127,11 @@ void MainWindow::add_playback_dock() {
 
 void MainWindow::add_node_tree_dock() {
     auto dock = new NodeTreeDock(context, this);
+    addDockWidget(Qt::LeftDockWidgetArea, dock);
+}
+
+void MainWindow::add_node_edit_dock() {
+    auto dock = new NodeEditDock(context, this);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 

@@ -4,12 +4,15 @@ target_sources(studio
     PRIVATE
         main_window.cpp
         main_window.h
+
         playback_dock.cpp
         playback_dock.h
         time_dock.cpp
         time_dock.h
         node_tree_dock.cpp
         node_tree_dock.h
+        node_edit_dock.cpp
+        node_edit_dock.h
 
         canvas.cpp
         canvas.h
