@@ -49,8 +49,12 @@ public:
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
 
+private Q_SLOTS:
+    void write_node();
+
 private:
     std::unique_ptr<Ui::NodeEditDock> ui;
+    std::shared_ptr<core::AbstractValue> active_node;
 };
 
 }

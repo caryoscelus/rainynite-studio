@@ -16,7 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+
 #include <core/document.h>
+#include <core/types.h>
 #include <core/serialize/node_writer.h>
 
 #include "node_model.h"
@@ -32,6 +35,7 @@ NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* par
 {
     ui->setupUi(this);
     ui->edit->setReadOnly(true);
+    connect(ui->edit, SIGNAL(editingFinished()), this, SLOT(write_node()));
     set_context(get_context());
 }
 
@@ -39,7 +43,12 @@ void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node
     if (node->is_const()) {
         auto s = core::serialize::value_to_string(node->any());
         ui->edit->setText(QString::fromStdString(s));
+        ui->edit->setReadOnly(false);
+    } else {
+        ui->edit->setText("");
+        ui->edit->setReadOnly(true);
     }
+    active_node = node;
 }
 
 NodeEditDock::~NodeEditDock() {
@@ -48,6 +57,16 @@ NodeEditDock::~NodeEditDock() {
 void NodeEditDock::closeEvent(QCloseEvent* event) {
     QDockWidget::closeEvent(event);
     deleteLater();
+}
+
+void NodeEditDock::write_node() {
+    if (!active_node) {
+        // this shouldn't really happen
+        return;
+    }
+    qDebug() << ui->edit->text();
+    auto text = ui->edit->text().toStdString();
+    active_node->set_any(core::parse_primitive_type(active_node->get_type(), text));
 }
 
 } // namespace studio
