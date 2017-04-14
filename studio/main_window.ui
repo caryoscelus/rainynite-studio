@@ -22,10 +22,25 @@
 #canvas { background: transparent; }</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="studio::Canvas" name="canvas">
       <property name="styleSheet">
        <string notr="true"/>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
       </property>
      </widget>
     </item>
