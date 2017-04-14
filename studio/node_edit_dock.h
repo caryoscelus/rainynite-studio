@@ -44,7 +44,7 @@ public:
     ~NodeEditDock();
 
 public:
-    virtual void set_context(std::shared_ptr<core::Context> context_) override;
+    virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;

@@ -17,6 +17,7 @@
  */
 
 #include <core/document.h>
+#include <core/serialize/node_writer.h>
 
 #include "node_model.h"
 #include "node_edit_dock.h"
@@ -30,13 +31,15 @@ NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* par
     ui(std::make_unique<Ui::NodeEditDock>())
 {
     ui->setupUi(this);
-    //
+    ui->edit->setReadOnly(true);
     set_context(get_context());
 }
 
-void NodeEditDock::set_context(std::shared_ptr<core::Context> context_) {
-    ContextListener::set_context(context_);
-    //
+void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+    if (node->is_const()) {
+        auto s = core::serialize::value_to_string(node->any());
+        ui->edit->setText(QString::fromStdString(s));
+    }
 }
 
 NodeEditDock::~NodeEditDock() {
