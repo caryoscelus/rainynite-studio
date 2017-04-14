@@ -18,6 +18,8 @@
 
 #include <QDebug>
 
+#include <fmt/format.h>
+
 #include <core/document.h>
 #include <core/types.h>
 #include <core/serialize/node_writer.h>
@@ -25,6 +27,8 @@
 #include "node_model.h"
 #include "node_edit_dock.h"
 #include "ui_node_edit_dock.h"
+
+using namespace fmt::literals;
 
 namespace studio {
 
@@ -41,9 +45,15 @@ NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* par
 
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
     if (node->is_const()) {
-        auto s = core::serialize::value_to_string(node->any());
-        ui->edit->setText(QString::fromStdString(s));
-        ui->edit->setReadOnly(false);
+        try {
+            auto s = core::serialize::value_to_string(node->any());
+            ui->edit->setText(QString::fromStdString(s));
+            ui->edit->setReadOnly(false);
+        } catch (class_init::RuntimeTypeError ex) {
+            auto s = "<Type Exception: {}>"_format(ex.what());
+            ui->edit->setText(QString::fromStdString(s));
+            ui->edit->setReadOnly(true);
+        }
     } else {
         ui->edit->setText("");
         ui->edit->setReadOnly(true);
@@ -64,6 +74,8 @@ void NodeEditDock::write_node() {
         // this shouldn't really happen
         return;
     }
+    if (ui->edit->isReadOnly())
+        return;
     qDebug() << ui->edit->text();
     auto text = ui->edit->text().toStdString();
     active_node->set_any(core::parse_primitive_type(active_node->get_type(), text));
