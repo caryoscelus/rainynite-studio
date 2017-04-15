@@ -44,20 +44,22 @@ NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* par
 }
 
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
-    if (node->is_const()) {
-        try {
-            auto s = core::serialize::value_to_string(node->any());
-            ui->edit->setText(QString::fromStdString(s));
-            ui->edit->setReadOnly(false);
-        } catch (class_init::RuntimeTypeError ex) {
-            auto s = "<Type Exception: {}>"_format(ex.what());
-            ui->edit->setText(QString::fromStdString(s));
-            ui->edit->setReadOnly(true);
-        }
+    bool writeable = node->is_const();
+    boost::any value;
+    if (writeable) {
+        value = node->any();
     } else {
-        ui->edit->setText("");
-        ui->edit->setReadOnly(true);
+        value = node->get_any(get_context()->get_time());
     }
+    try {
+        auto s = core::serialize::value_to_string(value);
+        ui->edit->setText(QString::fromStdString(s));
+    } catch (class_init::RuntimeTypeError ex) {
+        auto s = "<Type Exception: {}>"_format(ex.what());
+        ui->edit->setText(QString::fromStdString(s));
+        writeable = false;
+    }
+    ui->edit->setReadOnly(!writeable);
     active_node = node;
 }
 
