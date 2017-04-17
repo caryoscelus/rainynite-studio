@@ -19,6 +19,10 @@ target_sources(studio
         timeline_view.cpp
         timeline_view.h
 
+        node_editor.cpp
+        node_editor.h
+        custom_widgets.cpp
+        custom_widgets.h
         context_listener.cpp
         context_listener.h
 

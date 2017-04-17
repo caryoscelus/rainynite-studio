@@ -24,7 +24,8 @@
 #include <core/types.h>
 #include <core/serialize/node_writer.h>
 
-#include "node_model.h"
+#include "custom_widgets.h"
+#include "node_editor.h"
 #include "node_edit_dock.h"
 #include "ui_node_edit_dock.h"
 
@@ -38,12 +39,14 @@ NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* par
     ui(std::make_unique<Ui::NodeEditDock>())
 {
     ui->setupUi(this);
-    ui->edit->setReadOnly(true);
-    connect(ui->edit, SIGNAL(editingFinished()), this, SLOT(write_node()));
+    custom_widget = ui->custom_placeholder;
+    ui->text_edit->setReadOnly(true);
+    connect(ui->text_edit, SIGNAL(editingFinished()), this, SLOT(write_node()));
     set_context(get_context());
 }
 
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+    active_node = node;
     bool writeable = node->is_const();
     boost::any value;
     if (writeable) {
@@ -53,14 +56,27 @@ void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node
     }
     try {
         auto s = core::serialize::value_to_string(value);
-        ui->edit->setText(QString::fromStdString(s));
+        ui->text_edit->setText(QString::fromStdString(s));
     } catch (class_init::RuntimeTypeError ex) {
         auto s = "<Type Exception: {}>"_format(ex.what());
-        ui->edit->setText(QString::fromStdString(s));
+        ui->text_edit->setText(QString::fromStdString(s));
         writeable = false;
     }
-    ui->edit->setReadOnly(!writeable);
-    active_node = node;
+    ui->text_edit->setReadOnly(!writeable);
+    setup_custom_widget(node);
+}
+
+void NodeEditDock::setup_custom_widget(std::shared_ptr<core::AbstractValue> node) {
+    QWidget* widget = new_custom_widget(node->get_type());
+    if (!widget) {
+        widget = new QWidget();
+    }
+    ui->content->layout()->replaceWidget(custom_widget, widget);
+    delete custom_widget;
+    custom_widget = widget;
+    if (auto node_editor = dynamic_cast<NodeEditor*>(widget)) {
+        node_editor->set_node(node);
+    }
 }
 
 NodeEditDock::~NodeEditDock() {
@@ -76,10 +92,10 @@ void NodeEditDock::write_node() {
         // this shouldn't really happen
         return;
     }
-    if (ui->edit->isReadOnly())
+    if (ui->text_edit->isReadOnly())
         return;
-    qDebug() << ui->edit->text();
-    auto text = ui->edit->text().toStdString();
+    qDebug() << ui->text_edit->text();
+    auto text = ui->text_edit->text().toStdString();
     active_node->set_any(core::parse_primitive_type(active_node->get_type(), text));
 }
 

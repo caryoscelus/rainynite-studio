@@ -53,7 +53,12 @@ private Q_SLOTS:
     void write_node();
 
 private:
+    void setup_custom_widget(std::shared_ptr<core::AbstractValue> node);
+
+private:
     std::unique_ptr<Ui::NodeEditDock> ui;
+    QWidget* custom_widget;
+
     std::shared_ptr<core::AbstractValue> active_node;
 };
 

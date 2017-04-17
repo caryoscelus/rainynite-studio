@@ -13,10 +13,13 @@
   <property name="windowTitle">
    <string>Node &amp;Edit</string>
   </property>
-  <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+  <widget class="QWidget" name="content">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLineEdit" name="edit"/>
+     <widget class="QLineEdit" name="text_edit"/>
+    </item>
+    <item>
+     <widget class="QWidget" name="custom_placeholder" native="true"/>
     </item>
    </layout>
   </widget>
