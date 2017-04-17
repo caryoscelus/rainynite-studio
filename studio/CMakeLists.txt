@@ -29,6 +29,11 @@ target_sources(studio
         node_model.cpp
         node_model.h
 
+        color_button.cpp
+        color_button.h
+
+        color_widget.cpp
+
         resources.qrc
 )
 

@@ -1,5 +1,5 @@
 /*
- *  node_editor.h - abstract node editor widget class
+ *  color_widget.cpp - color edit widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,27 +16,27 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__NODE_EDITOR_H__8BFEEC92
-#define __STUDIO__NODE_EDITOR_H__8BFEEC92
+#include <QDebug>
+#include <QPushButton>
 
-#include <memory>
+#include <core/class_init.h>
+#include <core/node.h>
+#include <core/color.h>
 
-namespace core {
-class AbstractValue;
-}
+#include "color_button.h"
+#include "custom_widgets.h"
 
 namespace studio {
 
-class NodeEditor {
+class ColorEditFactory :
+    public CustomWidgetFactory,
+    class_init::Registered<ColorEditFactory, core::colors::Color, CustomWidgetFactory>
+{
 public:
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node_);
-    inline std::shared_ptr<core::AbstractValue> get_node() {
-        return node;
+    virtual QWidget* operator()() const override {
+        auto button = new ColorButton();
+        return button;
     }
-private:
-    std::shared_ptr<core::AbstractValue> node = nullptr;
 };
 
 } // namespace studio
-
-#endif
