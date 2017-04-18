@@ -37,7 +37,7 @@ NodeTreeDock::NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* par
 void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
     ContextListener::set_context(context_);
     if (auto document = context_->get_document()) {
-        model = std::make_unique<NodeModel>(document->get_root());
+        model = std::make_unique<NodeModel>(document);
     } else {
         model = std::make_unique<NodeModel>(nullptr);
     }
