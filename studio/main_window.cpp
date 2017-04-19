@@ -130,7 +130,12 @@ void MainWindow::render() {
             render_thread.join();
         auto ctx = *context;
         render_thread = std::thread([renderer, ctx]() {
-            renderer->render(ctx);
+            try {
+                renderer->render(ctx);
+            } catch (std::exception const& ex) {
+                auto msg = QString::fromStdString("Uncaught exception while rendering:\n{}"_format(ex.what()));
+                qDebug() << msg;
+            }
         });
     }
 }
