@@ -83,10 +83,17 @@
     <addaction name="action_playback_dock"/>
     <addaction name="action_node_tree_dock"/>
    </widget>
+   <widget class="QMenu" name="menu_help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_about"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_context"/>
    <addaction name="menu_view"/>
    <addaction name="menu_dock"/>
+   <addaction name="menu_help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_quit">
@@ -157,6 +164,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>&amp;About</string>
    </property>
   </action>
  </widget>

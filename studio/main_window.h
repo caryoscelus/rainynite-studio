@@ -48,6 +48,7 @@ private:
 private Q_SLOTS:
     void open();
     void save();
+    void about();
     void quit();
     void render();
     void redraw();

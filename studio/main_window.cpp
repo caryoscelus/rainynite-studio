@@ -22,6 +22,7 @@
 
 #include <QFileDialog>
 #include <QErrorMessage>
+#include <QMessageBox>
 #include <QDebug>
 
 #include <core/document.h>
@@ -49,6 +50,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->setupUi(this);
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
     connect(ui->action_save, SIGNAL(triggered()), this, SLOT(save()));
+    connect(ui->action_about, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
@@ -117,6 +119,12 @@ void MainWindow::render() {
 
 void MainWindow::redraw() {
     set_mainarea_image("renders/{:.3f}.png"_format(context->get_time().get_seconds()));
+}
+
+void MainWindow::about() {
+    QMessageBox::information(this, "About RainyNite",
+        QString::fromStdString("RainyNite version {}"_format("0.0"))
+    );
 }
 
 void MainWindow::quit() {
