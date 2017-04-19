@@ -83,7 +83,6 @@ void MainWindow::open() {
     } catch (...) {
         qDebug() << "Unknown error while opening document";
     }
-    render();
 }
 
 void MainWindow::save() {
