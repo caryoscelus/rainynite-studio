@@ -27,6 +27,7 @@
 
 #include <core/document.h>
 #include <core/filters/svg_path_reader.h>
+#include <core/filters/json_reader.h>
 #include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
 
@@ -68,11 +69,27 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::open() {
-    auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
+    auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "RainyNite file (*.rnite)(*.rnite);;Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
     auto fname = fname_qt.toStdString();
     qDebug() << fname_qt;
     if (fname.empty())
         return;
+    // TODO: proper filter modularization
+    try {
+        auto reader = core::filters::JsonReader();
+        std::ifstream in(fname);
+        document = reader.read_document(in);
+        if (!document)
+            throw std::runtime_error("Unknown parse failure");
+        set_context(document->get_default_context());
+        in.close();
+        return;
+    } catch (std::exception const& ex) {
+        auto msg = QString::fromStdString("Uncaught exception in JSON filter:\n{}"_format(ex.what()));
+        qDebug() << msg;
+    } catch (...) {
+        qDebug() << "Unknown error while trying to open document via JSON filter";
+    }
     try {
         auto reader = core::filters::SvgPathReader();
         std::ifstream in(fname);
