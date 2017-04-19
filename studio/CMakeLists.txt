@@ -1,6 +1,6 @@
-add_executable(studio main.cpp)
+add_executable(rainynite-studio main.cpp)
 
-target_sources(studio
+target_sources(rainynite-studio
     PRIVATE
         main_window.cpp
         main_window.h
@@ -37,9 +37,9 @@ target_sources(studio
         resources.qrc
 )
 
-target_link_libraries(studio geom_helpers)
+target_link_libraries(rainynite-studio geom_helpers)
 
-target_link_libraries(studio
+target_link_libraries(rainynite-studio
     Qt5::Widgets
     document
     filters
@@ -49,7 +49,7 @@ target_link_libraries(studio
     ${SIGCPP_LIBRARIES}
 )
 
-target_include_directories(studio
+target_include_directories(rainynite-studio
     SYSTEM BEFORE PUBLIC
         ${SIGCPP_INCLUDE_DIRS}
 )
