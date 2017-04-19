@@ -30,6 +30,7 @@
 #include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
 
+#include "version.h"
 #include "time_dock.h"
 #include "playback_dock.h"
 #include "node_tree_dock.h"
@@ -123,7 +124,11 @@ void MainWindow::redraw() {
 
 void MainWindow::about() {
     QMessageBox::information(this, "About RainyNite",
-        QString::fromStdString("RainyNite version {}"_format("0.0"))
+        QString::fromStdString(
+            "RainyNite version {} \"{}\""_format(
+                RAINYNITE_STUDIO_VERSION, RAINYNITE_STUDIO_CODENAME
+            )
+        )
     );
 }
 

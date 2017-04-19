@@ -53,3 +53,5 @@ target_include_directories(rainynite-studio
     SYSTEM BEFORE PUBLIC
         ${SIGCPP_INCLUDE_DIRS}
 )
+
+configure_file(version.h.cmake.in version.h)
