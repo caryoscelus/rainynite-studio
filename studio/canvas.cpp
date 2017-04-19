@@ -16,14 +16,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <fmt/format.h>
+
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QDebug>
 
 #include <geom_helpers/knots.h>
 
 #include <core/node.h>
 
 #include "canvas.h"
+
+using namespace fmt::literals;
 
 namespace studio {
 
@@ -58,7 +63,13 @@ void Canvas::redraw_selected_node() {
     }
     knot_items.clear();
     if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(active_node.get())) {
-        auto path = bezier_node->get(get_context()->get_time());
+        Geom::BezierKnots path;
+        try {
+            path = bezier_node->get(get_context()->get_time());
+        } catch (std::exception const& ex) {
+            qDebug() << QString::fromStdString("Uncaught exception while getting path: {}"_format(ex.what()));
+            return;
+        }
         for (auto const& knot : path.knots) {
             auto x = knot.pos.x();
             auto y = knot.pos.y();

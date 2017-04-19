@@ -49,16 +49,20 @@ void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node
     active_node = node;
     bool writeable = node->is_const();
     boost::any value;
-    if (writeable) {
-        value = node->any();
-    } else {
-        value = node->get_any(get_context()->get_time());
-    }
     try {
+        if (writeable) {
+            value = node->any();
+        } else {
+            value = node->get_any(get_context()->get_time());
+        }
         auto s = core::serialize::value_to_string(value);
         ui->text_edit->setText(QString::fromStdString(s));
-    } catch (class_init::RuntimeTypeError ex) {
+    } catch (class_init::RuntimeTypeError const& ex) {
         auto s = "<Type Exception: {}>"_format(ex.what());
+        ui->text_edit->setText(QString::fromStdString(s));
+        writeable = false;
+    } catch (std::exception const& ex) {
+        auto s = "<Uncaught Exception: {}>"_format(ex.what());
         ui->text_edit->setText(QString::fromStdString(s));
         writeable = false;
     }
