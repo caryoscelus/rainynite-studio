@@ -60,6 +60,7 @@
      <string>Fi&amp;le</string>
     </property>
     <addaction name="action_open"/>
+    <addaction name="action_save"/>
     <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menu_context">
@@ -145,6 +146,17 @@
   <action name="action_node_tree_dock">
    <property name="text">
     <string>&amp;Node tree</string>
+   </property>
+  </action>
+  <action name="action_save">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

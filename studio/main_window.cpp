@@ -26,6 +26,7 @@
 
 #include <core/document.h>
 #include <core/filters/svg_path_reader.h>
+#include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
 
 #include "time_dock.h"
@@ -47,6 +48,7 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
+    connect(ui->action_save, SIGNAL(triggered()), this, SLOT(save()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
@@ -82,6 +84,21 @@ void MainWindow::open() {
         qDebug() << "Unknown error while opening document";
     }
     render();
+}
+
+void MainWindow::save() {
+    auto fname = "saved.rnite";
+    try {
+        auto writer = core::filters::JsonWriter();
+        std::ofstream out(fname);
+        writer.write_document(out, document);
+    } catch (std::exception const& ex) {
+        auto msg = QString::fromStdString("Uncaught exception while saving document:\n{}"_format(ex.what()));
+        qDebug() << msg;
+        error_box->showMessage(msg);
+    } catch (...) {
+        qDebug() << "Unknown error while saving document";
+    }
 }
 
 void MainWindow::render() {
