@@ -24,8 +24,8 @@
 #include <core/types.h>
 #include <core/serialize/node_writer.h>
 
-#include "custom_widgets.h"
-#include "node_editor.h"
+#include <generic/custom_widgets.h>
+#include <generic/node_editor.h>
 #include "node_edit_dock.h"
 #include "ui_node_edit_dock.h"
 

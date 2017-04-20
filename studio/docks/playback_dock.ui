@@ -129,7 +129,7 @@
   <customwidget>
    <class>studio::TimelineView</class>
    <extends>QWidget</extends>
-   <header>timeline_view.h</header>
+   <header location="global">widgets/timeline_view.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

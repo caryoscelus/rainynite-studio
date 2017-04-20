@@ -18,7 +18,7 @@
 
 #include <core/document.h>
 
-#include "node_model.h"
+#include <models/node_model.h>
 #include "node_tree_dock.h"
 #include "ui_node_tree_dock.h"
 

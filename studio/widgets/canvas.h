@@ -23,7 +23,7 @@
 
 #include <QGraphicsView>
 
-#include "context_listener.h"
+#include <generic/context_listener.h>
 
 class QGraphicsScene;
 class QGraphicsItem;

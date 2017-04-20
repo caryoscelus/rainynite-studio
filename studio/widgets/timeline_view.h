@@ -22,7 +22,7 @@
 #include <QWidget>
 #include <QPen>
 
-#include "context_listener.h"
+#include <generic/context_listener.h>
 
 namespace studio {
 

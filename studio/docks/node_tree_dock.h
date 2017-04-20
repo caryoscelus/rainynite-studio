@@ -21,7 +21,11 @@
 
 #include <QDockWidget>
 
-#include "context_listener.h"
+#include <generic/context_listener.h>
+
+namespace core {
+class AbstractValue;
+}
 
 namespace Ui {
 class NodeTreeDock;
@@ -42,7 +46,7 @@ public:
     virtual void set_context(std::shared_ptr<core::Context> context_) override;
 
 Q_SIGNALS:
-    void activated(core::AbstractReference node);
+    void activated(std::shared_ptr<core::AbstractValue> node);
 
 private Q_SLOTS:
     void activate(QModelIndex const& index);

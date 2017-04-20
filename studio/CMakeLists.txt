@@ -1,38 +1,37 @@
-add_executable(rainynite-studio main.cpp)
+add_executable(rainynite-studio main/main.cpp)
 
 target_sources(rainynite-studio
     PRIVATE
-        main_window.cpp
-        main_window.h
+        main/main_window.cpp
+        main/main_window.h
 
-        playback_dock.cpp
-        playback_dock.h
-        time_dock.cpp
-        time_dock.h
-        node_tree_dock.cpp
-        node_tree_dock.h
-        node_edit_dock.cpp
-        node_edit_dock.h
+        docks/playback_dock.cpp
+        docks/playback_dock.h
+        docks/time_dock.cpp
+        docks/time_dock.h
+        docks/node_tree_dock.cpp
+        docks/node_tree_dock.h
+        docks/node_edit_dock.cpp
+        docks/node_edit_dock.h
 
-        canvas.cpp
-        canvas.h
-        timeline_view.cpp
-        timeline_view.h
+        widgets/canvas.cpp
+        widgets/canvas.h
+        widgets/timeline_view.cpp
+        widgets/timeline_view.h
+        widgets/color_button.cpp
+        widgets/color_button.h
 
-        node_editor.cpp
-        node_editor.h
-        custom_widgets.cpp
-        custom_widgets.h
-        context_listener.cpp
-        context_listener.h
+        widgets/color_widget.cpp
 
-        node_model.cpp
-        node_model.h
+        generic/node_editor.cpp
+        generic/node_editor.h
+        generic/custom_widgets.cpp
+        generic/custom_widgets.h
+        generic/context_listener.cpp
+        generic/context_listener.h
 
-        color_button.cpp
-        color_button.h
-
-        color_widget.cpp
+        models/node_model.cpp
+        models/node_model.h
 
         resources.qrc
 )

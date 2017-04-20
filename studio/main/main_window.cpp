@@ -31,11 +31,11 @@
 #include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
 
-#include "version.h"
-#include "time_dock.h"
-#include "playback_dock.h"
-#include "node_tree_dock.h"
-#include "node_edit_dock.h"
+#include <version.h>
+#include <docks/time_dock.h>
+#include <docks/playback_dock.h>
+#include <docks/node_tree_dock.h>
+#include <docks/node_edit_dock.h>
 #include "main_window.h"
 #include "ui_main_window.h"
 

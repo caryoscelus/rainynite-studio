@@ -25,7 +25,7 @@
 
 #include <core/context.h>
 
-#include "context_listener.h"
+#include <generic/context_listener.h>
 
 namespace Ui {
 class TimeDock;

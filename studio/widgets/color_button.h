@@ -1,5 +1,5 @@
 /*
- *  color_widget.cpp - color edit widget
+ *  color_button.h - choose color button
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,27 +16,37 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __STUDIO__COLOR_BUTTON_H__2CC74D64
+#define __STUDIO__COLOR_BUTTON_H__2CC74D64
+
 #include <QDebug>
 #include <QPushButton>
 
-#include <core/class_init.h>
-#include <core/node.h>
 #include <core/color.h>
 
-#include "color_button.h"
-#include "custom_widgets.h"
+#include <generic/node_editor.h>
+
+namespace core {
+template <class T>
+class Value;
+}
 
 namespace studio {
 
-class ColorEditFactory :
-    public CustomWidgetFactory,
-    class_init::Registered<ColorEditFactory, core::colors::Color, CustomWidgetFactory>
-{
+class ColorButton : public QPushButton, public NodeEditor {
+    Q_OBJECT
 public:
-    virtual QWidget* operator()() const override {
-        auto button = new ColorButton();
-        return button;
-    }
+    ColorButton(QWidget* parent = nullptr);
+public:
+    virtual void set_node(std::shared_ptr<core::AbstractValue> node_) override;
+private Q_SLOTS:
+    void choose_color();
+private:
+    void update_color();
+private:
+    core::Value<core::colors::Color>* color_node;
 };
 
 } // namespace studio
+
+#endif

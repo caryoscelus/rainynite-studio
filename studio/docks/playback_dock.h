@@ -1,5 +1,5 @@
 /*
- *  node_edit_dock.h - simple text editing of selecting node
+ *  playback_dock.h - playback controls dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,50 +16,49 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__NODE_EDIT_DOCK_H__49AA85D4
-#define __STUDIO__NODE_EDIT_DOCK_H__49AA85D4
+#ifndef __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
+#define __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
 
 #include <memory>
 
 #include <QDockWidget>
+#include <QTimer>
 
 #include <core/context.h>
 
-#include "context_listener.h"
+#include <generic/context_listener.h>
 
 namespace Ui {
-class NodeEditDock;
+class PlaybackDock;
 }
 
 namespace studio {
 
 /**
- * Dock for simple text node editing
+ * Dock with playback controls
  */
-class NodeEditDock : public QDockWidget, public ContextListener {
+class PlaybackDock : public QDockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
-    ~NodeEditDock();
+    explicit PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
+    ~PlaybackDock();
 
 public:
-    virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
+    virtual void set_context(std::shared_ptr<core::Context> context_) override;
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
 
 private Q_SLOTS:
-    void write_node();
+    void toggle_playback(bool play);
+    void next_frame();
+    void move_start();
+    void move_end();
 
 private:
-    void setup_custom_widget(std::shared_ptr<core::AbstractValue> node);
-
-private:
-    std::unique_ptr<Ui::NodeEditDock> ui;
-    QWidget* custom_widget;
-
-    std::shared_ptr<core::AbstractValue> active_node;
+    std::unique_ptr<Ui::PlaybackDock> ui;
+    QTimer* timer;
 };
 
 }

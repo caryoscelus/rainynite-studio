@@ -182,7 +182,8 @@
   </action>
   <action name="action_save">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -198,7 +199,8 @@
   </action>
   <action name="action_save_as">
    <property name="icon">
-    <iconset theme="document-save-as"/>
+    <iconset theme="document-save-as">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>S&amp;ave as..</string>
@@ -217,7 +219,8 @@
   </action>
   <action name="action_tool_mouse">
    <property name="icon">
-    <iconset theme="input-mouse"/>
+    <iconset theme="input-mouse">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Mouse</string>
@@ -225,7 +228,8 @@
   </action>
   <action name="action_tool_zoom">
    <property name="icon">
-    <iconset theme="zoom"/>
+    <iconset theme="zoom">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Zoom</string>
@@ -236,11 +240,11 @@
   <customwidget>
    <class>studio::Canvas</class>
    <extends>QGraphicsView</extends>
-   <header>canvas.h</header>
+   <header location="global">widgets/canvas.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>
