@@ -50,17 +50,25 @@ MainWindow::MainWindow(QWidget* parent) :
     context(std::make_shared<core::Context>())
 {
     ui->setupUi(this);
+
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
     connect(ui->action_reload, SIGNAL(triggered()), this, SLOT(reload()));
     connect(ui->action_save, SIGNAL(triggered()), this, SLOT(save()));
     connect(ui->action_save_as, SIGNAL(triggered()), this, SLOT(save_as()));
+
     connect(ui->action_about, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
+
+    connect(ui->action_tool_mouse, SIGNAL(triggered()), this, SLOT(tool_mouse()));
+    connect(ui->action_tool_zoom, SIGNAL(triggered()), this, SLOT(tool_zoom()));
+
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
+
     connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
     connect(ui->action_playback_dock, SIGNAL(triggered()), this, SLOT(add_playback_dock()));
     connect(ui->action_node_tree_dock, SIGNAL(triggered()), this, SLOT(add_node_tree_dock()));
+
     add_playback_dock();
     add_time_dock();
     add_node_tree_dock();
@@ -157,6 +165,14 @@ void MainWindow::render() {
 
 void MainWindow::redraw() {
     set_mainarea_image("renders/{:.3f}.png"_format(context->get_time().get_seconds()));
+}
+
+void MainWindow::tool_mouse() {
+    qDebug() << "mouse selected";
+}
+
+void MainWindow::tool_zoom() {
+    qDebug() << "zoom selected";
 }
 
 void MainWindow::about() {

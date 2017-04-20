@@ -50,8 +50,13 @@ private Q_SLOTS:
     void reload();
     void save();
     void save_as();
+
     void about();
     void quit();
+
+    void tool_mouse();
+    void tool_zoom();
+
     void render();
     void redraw();
 
