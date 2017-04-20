@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
+    connect(ui->action_reload, SIGNAL(triggered()), this, SLOT(reload()));
     connect(ui->action_save, SIGNAL(triggered()), this, SLOT(save()));
     connect(ui->action_save_as, SIGNAL(triggered()), this, SLOT(save_as()));
     connect(ui->action_about, SIGNAL(triggered()), this, SLOT(about()));
@@ -72,6 +73,10 @@ MainWindow::~MainWindow() {
 void MainWindow::open() {
     auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "RainyNite file (*.rnite)(*.rnite);;Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
     fname = fname_qt.toStdString();
+    reload();
+}
+
+void MainWindow::reload() {
     if (fname.empty())
         return;
     // TODO: proper filter modularization

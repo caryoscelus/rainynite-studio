@@ -60,8 +60,11 @@
      <string>Fi&amp;le</string>
     </property>
     <addaction name="action_open"/>
+    <addaction name="action_reload"/>
+    <addaction name="separator"/>
     <addaction name="action_save"/>
     <addaction name="action_save_as"/>
+    <addaction name="separator"/>
     <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menu_context">
@@ -181,6 +184,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="action_reload">
+   <property name="text">
+    <string>&amp;Reload</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>

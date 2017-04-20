@@ -47,6 +47,7 @@ private:
 
 private Q_SLOTS:
     void open();
+    void reload();
     void save();
     void save_as();
     void about();
