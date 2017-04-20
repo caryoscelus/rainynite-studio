@@ -39,7 +39,7 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
         return QVariant();
 
     if (auto node = get_node(index))
-        return QString::fromStdString(core::node_name(node));
+        return QString::fromStdString(core::node_name(*node));
 
     return "<Bad node!>";
 }
