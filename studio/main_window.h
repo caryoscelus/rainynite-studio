@@ -48,6 +48,7 @@ private:
 private Q_SLOTS:
     void open();
     void save();
+    void save_as();
     void about();
     void quit();
     void render();
@@ -68,6 +69,7 @@ private:
     std::shared_ptr<core::Context> context;
     std::shared_ptr<core::AbstractValue> active_node;
     std::thread render_thread;
+    std::string fname;
 };
 
 }

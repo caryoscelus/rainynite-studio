@@ -61,6 +61,7 @@
     </property>
     <addaction name="action_open"/>
     <addaction name="action_save"/>
+    <addaction name="action_save_as"/>
     <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menu_context">
@@ -169,6 +170,17 @@
   <action name="action_about">
    <property name="text">
     <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="action_save_as">
+   <property name="icon">
+    <iconset theme="document-save-as"/>
+   </property>
+   <property name="text">
+    <string>S&amp;ave as..</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>

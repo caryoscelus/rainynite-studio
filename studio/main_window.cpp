@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->setupUi(this);
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
     connect(ui->action_save, SIGNAL(triggered()), this, SLOT(save()));
+    connect(ui->action_save_as, SIGNAL(triggered()), this, SLOT(save_as()));
     connect(ui->action_about, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
@@ -70,8 +71,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::open() {
     auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "RainyNite file (*.rnite)(*.rnite);;Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
-    auto fname = fname_qt.toStdString();
-    qDebug() << fname_qt;
+    fname = fname_qt.toStdString();
     if (fname.empty())
         return;
     // TODO: proper filter modularization
@@ -105,8 +105,18 @@ void MainWindow::open() {
     }
 }
 
+void MainWindow::save_as() {
+    auto fname_qt = QFileDialog::getSaveFileName(this, "Save", "", "RainyNite file (*.rnite)(*.rnite);;All files(*)");
+    fname = fname_qt.toStdString();
+    if (!fname.empty())
+        save();
+}
+
 void MainWindow::save() {
-    auto fname = "saved.rnite";
+    if (fname.empty()) {
+        save_as();
+        return;
+    }
     try {
         auto writer = core::filters::JsonWriter();
         std::ofstream out(fname);
