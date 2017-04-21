@@ -225,12 +225,12 @@ void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
     for (auto dock : findChildren<QWidget*>()) {
         if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
-        if (dock->metaObject()->indexOfSignal("activated(core::AbstractReference)") != -1)
-            connect(dock, SIGNAL(activated(core::AbstractReference)), this, SLOT(activate(core::AbstractReference)));
+        if (dock->metaObject()->indexOfSignal("activated(std::shared_ptr<core::AbstractValue>)") != -1)
+            connect(dock, SIGNAL(activated(std::shared_ptr<core::AbstractValue>)), this, SLOT(activate(std::shared_ptr<core::AbstractValue>)));
     }
 }
 
-void MainWindow::activate(core::AbstractReference node) {
+void MainWindow::activate(std::shared_ptr<core::AbstractValue> node) {
     context->set_active_node(node);
 }
 
