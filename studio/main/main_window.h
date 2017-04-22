@@ -59,6 +59,7 @@ private Q_SLOTS:
 
     void render();
     void redraw();
+    void toggle_extra_style(bool checked);
 
     void set_context(std::shared_ptr<core::Context> context_);
     void activate(std::shared_ptr<core::AbstractValue> node);
@@ -76,6 +77,7 @@ private:
     std::shared_ptr<core::AbstractValue> active_node;
     std::thread render_thread;
     std::string fname;
+    bool extra_style = true;
 };
 
 }

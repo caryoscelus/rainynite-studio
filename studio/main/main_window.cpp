@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
+    connect(ui->action_extra_style, SIGNAL(toggled(bool)), this, SLOT(toggle_extra_style(bool)));
 
     connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
     connect(ui->action_playback_dock, SIGNAL(triggered()), this, SLOT(add_playback_dock()));
@@ -147,6 +148,7 @@ void MainWindow::render() {
     if (context && context->get_document()) {
         auto rsettings = core::renderers::SvgRendererSettings();
         rsettings.render_pngs = true;
+        rsettings.extra_style = extra_style;
         context->mod_render_settings() = rsettings;
         auto renderer = std::make_shared<core::renderers::SvgRenderer>();
         if (render_thread.joinable())
@@ -165,6 +167,10 @@ void MainWindow::render() {
 
 void MainWindow::redraw() {
     set_mainarea_image("renders/{:.3f}.png"_format(context->get_time().get_seconds()));
+}
+
+void MainWindow::toggle_extra_style(bool checked) {
+    extra_style = checked;
 }
 
 void MainWindow::tool_mouse() {

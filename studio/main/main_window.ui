@@ -72,6 +72,7 @@
      <string>&amp;Context</string>
     </property>
     <addaction name="action_render"/>
+    <addaction name="action_extra_style"/>
    </widget>
    <widget class="QMenu" name="menu_view">
     <property name="title">
@@ -233,6 +234,20 @@
    </property>
    <property name="text">
     <string>&amp;Zoom</string>
+   </property>
+  </action>
+  <action name="action_extra_style">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable svg styling</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+E</string>
    </property>
   </action>
  </widget>
