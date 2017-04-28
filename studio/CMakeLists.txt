@@ -20,6 +20,8 @@ target_sources(rainynite-studio
         widgets/timeline_view.h
         widgets/color_button.cpp
         widgets/color_button.h
+        widgets/point_editor.cpp
+        widgets/point_editor.h
 
         widgets/editor_factory.cpp
 

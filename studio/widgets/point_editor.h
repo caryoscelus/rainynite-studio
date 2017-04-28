@@ -1,5 +1,5 @@
 /*
- *  editor_factory.cpp - value editors factory instances
+ *  point_editor.h - 2d point editor widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,45 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-#include <QPushButton>
+#ifndef __STUDIO__WIDGETS__POINT_EDITOR_H__2CF69954
+#define __STUDIO__WIDGETS__POINT_EDITOR_H__2CF69954
 
-#include <core/class_init.h>
-#include <core/node.h>
-#include <core/color.h>
+#include <memory>
 
-#include <generic/custom_widgets.h>
-#include "color_button.h"
-#include "point_editor.h"
+#include <QDoubleSpinBox>
+
+#include <2geom/point.h>
 
 namespace studio {
 
-REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, (NodeEditorWidget<ColorButton, core::colors::Color>));
-REGISTER_CUSTOM_WIDGET(PointEdit, Geom::Point, (NodeEditorWidget<PointEditor, Geom::Point>));
+class PointEditor : public QWidget {
+    Q_OBJECT
+
+public:
+    PointEditor(QWidget* parent = nullptr);
+
+public:
+    inline Geom::Point value() const {
+        return _value;
+    }
+    void setReadOnly(bool ro);
+
+Q_SIGNALS:
+    void editingFinished();
+
+protected:
+    void update_value(Geom::Point value_);
+
+private Q_SLOTS:
+    void write_x();
+    void write_y();
+
+private:
+    QDoubleSpinBox* x_input;
+    QDoubleSpinBox* y_input;
+    Geom::Point _value;
+};
 
 } // namespace studio
+
+#endif
