@@ -37,7 +37,7 @@ ColorButton::ColorButton(QWidget* parent) :
 }
 
 void ColorButton::setReadOnly(bool ro) {
-    setEnabled(ro);
+    setEnabled(!ro);
 }
 
 void ColorButton::choose_color() {

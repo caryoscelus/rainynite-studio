@@ -67,7 +67,7 @@ public:
         if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(node_.get())) {
             NodeEditor::set_node(node_);
             this->update_value(value_node->get(get_time()));
-            this->setReadOnly(dynamic_cast<core::Value<ValueType>*>(value_node));
+            this->setReadOnly(!dynamic_cast<core::Value<ValueType>*>(value_node));
         }
     }
 protected:
