@@ -39,7 +39,12 @@ public:
     virtual void set_context(std::shared_ptr<core::Context> context_);
 
 protected:
-    virtual void time_changed(core::Time time) {}
+    virtual core::Time get_time() {
+        return time;
+    }
+    virtual void time_changed(core::Time time_) {
+        time = time_;
+    }
     virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) {}
 
     template <class S, class F>
@@ -51,6 +56,7 @@ protected:
 
 private:
     std::shared_ptr<core::Context> context;
+    core::Time time;
     struct Null {};
     std::shared_ptr<Null> destroy_detector;
 };
