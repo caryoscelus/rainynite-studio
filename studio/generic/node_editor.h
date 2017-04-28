@@ -21,6 +21,10 @@
 
 #include <memory>
 
+#include <QWidget>
+
+#include "context_listener.h"
+
 namespace core {
 class AbstractValue;
 }
@@ -35,6 +39,38 @@ public:
     }
 private:
     std::shared_ptr<core::AbstractValue> node = nullptr;
+};
+
+template <class W, typename T>
+class NodeEditorWidget : public NodeEditor, public ContextListener, public W {
+public:
+    using Widget = W;
+    using ValueType = T;
+public:
+    NodeEditorWidget(QWidget* parent = nullptr) :
+        NodeEditor(),
+        ContextListener(),
+        W(parent)
+    {
+        QObject::connect(
+            this,
+            &W::editingFinished,
+            [this]() {
+                if (auto vnode = dynamic_cast<core::Value<ValueType>*>(value_node)) {
+                    vnode->set(W::value());
+                }
+            }
+        );
+    }
+public:
+    virtual void set_node(std::shared_ptr<core::AbstractValue> node_) override {
+        if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(node_.get())) {
+            NodeEditor::set_node(node_);
+            this->update_value(value_node->get(get_time()));
+        }
+    }
+protected:
+    core::BaseValue<ValueType>* value_node = nullptr;
 };
 
 } // namespace studio

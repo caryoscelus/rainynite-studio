@@ -33,18 +33,24 @@ class Value;
 
 namespace studio {
 
-class ColorButton : public QPushButton, public NodeEditor {
+class ColorButton : public QPushButton {
     Q_OBJECT
 public:
     ColorButton(QWidget* parent = nullptr);
 public:
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node_) override;
+    inline core::colors::Color value() const {
+        return color;
+    }
+Q_SIGNALS:
+    void editingFinished();
+protected:
+    void update_value(core::colors::Color color_);
 private Q_SLOTS:
     void choose_color();
 private:
-    void update_color();
+    void update_button_color();
 private:
-    core::Value<core::colors::Color>* color_node;
+    core::colors::Color color;
 };
 
 } // namespace studio

@@ -33,31 +33,27 @@ namespace studio {
 ColorButton::ColorButton(QWidget* parent) :
     QPushButton(parent)
 {
-}
-
-void ColorButton::set_node(std::shared_ptr<core::AbstractValue> node) {
-    NodeEditor::set_node(node);
-    color_node = dynamic_cast<core::Value<core::colors::Color>*>(node.get());
-    if (color_node) {
-        update_color();
-        connect(this, SIGNAL(clicked(bool)), this, SLOT(choose_color()));
-    }
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(choose_color()));
 }
 
 void ColorButton::choose_color() {
-    auto c = color_node->mod();
-    auto qcolor = QColor(c.r, c.g, c.b, c.a);
+    auto qcolor = QColor(color.r, color.g, color.b, color.a);
     auto selected = QColorDialog::getColor(qcolor, nullptr, "", QColorDialog::ShowAlphaChannel);
-    qDebug() << selected;
-    color_node->set(core::colors::Color(selected.red(), selected.green(), selected.blue(), selected.alpha()));
-    update_color();
+    update_value({selected.red(), selected.green(), selected.blue(), selected.alpha()});
+    update_button_color();
+    Q_EMIT editingFinished();
 }
 
-void ColorButton::update_color() {
-    auto c = core::colors::to_hex24(color_node->mod());
+void ColorButton::update_button_color() {
+    auto c = core::colors::to_hex24(color);
     // TODO: keep colour when focused (perhaps use icon instead of style?)
     auto style = QString::fromStdString("background-color: {}"_format(c));
     setStyleSheet(style);
+}
+
+void ColorButton::update_value(core::colors::Color color_) {
+    color = color_;
+    update_button_color();
 }
 
 } // namespace studio

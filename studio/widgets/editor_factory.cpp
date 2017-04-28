@@ -28,6 +28,6 @@
 
 namespace studio {
 
-REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, ColorButton);
+REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, (NodeEditorWidget<ColorButton, core::colors::Color>));
 
 } // namespace studio
