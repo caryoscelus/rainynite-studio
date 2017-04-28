@@ -21,7 +21,7 @@ target_sources(rainynite-studio
         widgets/color_button.cpp
         widgets/color_button.h
 
-        widgets/color_widget.cpp
+        widgets/editor_factory.cpp
 
         generic/node_editor.cpp
         generic/node_editor.h

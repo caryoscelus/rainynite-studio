@@ -1,5 +1,5 @@
 /*
- *  color_widget.cpp - color edit widget
+ *  editor_factory.cpp - value editors factory instances
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -28,15 +28,6 @@
 
 namespace studio {
 
-class ColorEditFactory :
-    public CustomWidgetFactory,
-    class_init::Registered<ColorEditFactory, core::colors::Color, CustomWidgetFactory>
-{
-public:
-    virtual QWidget* operator()() const override {
-        auto button = new ColorButton();
-        return button;
-    }
-};
+REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, ColorButton);
 
 } // namespace studio

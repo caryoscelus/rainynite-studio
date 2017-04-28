@@ -34,4 +34,15 @@ QWidget* new_custom_widget(std::type_index type);
 
 }
 
+#define REGISTER_CUSTOM_WIDGET(Name, Type, Widget) \
+class Name##Factory : \
+    public CustomWidgetFactory, \
+    class_init::Registered<Name##Factory, Type, CustomWidgetFactory> \
+{ \
+public: \
+    virtual QWidget* operator()() const override { \
+        return new Widget(); \
+    } \
+}
+
 #endif
