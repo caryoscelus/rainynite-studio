@@ -36,6 +36,10 @@ ColorButton::ColorButton(QWidget* parent) :
     connect(this, SIGNAL(clicked(bool)), this, SLOT(choose_color()));
 }
 
+void ColorButton::setReadOnly(bool ro) {
+    setEnabled(ro);
+}
+
 void ColorButton::choose_color() {
     auto qcolor = QColor(color.r, color.g, color.b, color.a);
     auto selected = QColorDialog::getColor(qcolor, nullptr, "", QColorDialog::ShowAlphaChannel);

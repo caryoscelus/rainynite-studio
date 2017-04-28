@@ -41,6 +41,7 @@ public:
     inline core::colors::Color value() const {
         return color;
     }
+    void setReadOnly(bool ro);
 Q_SIGNALS:
     void editingFinished();
 protected:
