@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->action_new, SIGNAL(triggered()), this, SLOT(new_document()));
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
     connect(ui->action_reload, SIGNAL(triggered()), this, SLOT(reload()));
     connect(ui->action_save, SIGNAL(triggered()), this, SLOT(save()));
@@ -77,6 +78,11 @@ MainWindow::MainWindow(QWidget* parent) :
 }
 
 MainWindow::~MainWindow() {
+}
+
+void MainWindow::new_document() {
+    document = std::make_shared<core::Document>();
+    set_context(document->get_default_context());
 }
 
 void MainWindow::open() {

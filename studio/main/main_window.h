@@ -46,6 +46,7 @@ private:
     void set_mainarea_image(std::string const& fname);
 
 private Q_SLOTS:
+    void new_document();
     void open();
     void reload();
     void save();
