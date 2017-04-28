@@ -48,6 +48,9 @@ public:
 Q_SIGNALS:
     void activated(std::shared_ptr<core::AbstractValue> node);
 
+protected:
+    void contextMenuEvent(QContextMenuEvent* event) override;
+
 private Q_SLOTS:
     void activate(QModelIndex const& index);
 

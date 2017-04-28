@@ -16,6 +16,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMenu>
+#include <QContextMenuEvent>
+
 #include <core/document.h>
 
 #include <models/node_model.h>
@@ -34,6 +37,9 @@ NodeTreeDock::NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* par
     set_context(get_context());
 }
 
+NodeTreeDock::~NodeTreeDock() {
+}
+
 void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
     ContextListener::set_context(context_);
     if (auto document = context_->get_document()) {
@@ -44,7 +50,11 @@ void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
     ui->tree_view->setModel(model.get());
 }
 
-NodeTreeDock::~NodeTreeDock() {
+void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event)
+{
+    QMenu menu(this);
+    menu.addAction("No node types available!");
+    menu.exec(event->globalPos());
 }
 
 void NodeTreeDock::activate(QModelIndex const& index) {
