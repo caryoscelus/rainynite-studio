@@ -16,9 +16,6 @@ add_definitions(-DQT_NO_KEYWORDS)   ## avoid slots/signals definition conflict
 
 find_package(Qt5Widgets REQUIRED)
 
-include(FindPkgConfig)
-pkg_check_modules(SIGCPP REQUIRED sigc++-2.0)
-
 find_package(geom_helpers REQUIRED)
 find_package(document REQUIRED)
 find_package(filters REQUIRED)
