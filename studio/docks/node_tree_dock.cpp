@@ -56,19 +56,20 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event)
     auto coord = ui->tree_view->mapFromGlobal(event->globalPos());
     auto index = ui->tree_view->indexAt(coord);
     auto parent_index = index.parent();
-    auto node = model->get_node(index);
-    auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index));
-    size_t node_index = model->get_node_index(index);
-    if (node && parent_node) {
+    if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index))) {
         QMenu menu(this);
-        auto type = node->get_type();
+        auto node = model->get_node(index);
+        size_t node_index = model->get_node_index(index);
+        auto type = parent_node->get_link_type(node_index);
         auto node_infos = core::node_types()[type];
         if (node_infos.size() == 0)
             menu.addAction("No node types available!");
         else for (auto node_info : node_infos) {
             auto name = QString::fromStdString((*node_info)());
             menu.addAction(name, [this, node_info, node, parent_node, node_index]() {
-                auto value = node->get_any(get_time());
+                boost::any value;
+                if (node)
+                    value = node->get_any(get_time());
                 auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), value); 
                 parent_node->set_link(node_index, new_node);
             });
