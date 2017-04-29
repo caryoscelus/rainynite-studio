@@ -68,6 +68,18 @@ QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) con
     return QModelIndex();
 }
 
+bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
+    auto pnode = get_node(parent);
+    if (auto parent_node = dynamic_cast<core::AbstractListLinked*>(pnode.get())) {
+        beginRemoveRows(parent, row, row+count-1);
+        for (int i = 0; i < count; ++i)
+            parent_node->remove(row+i);
+        endRemoveRows();
+        return true;
+    }
+    return false;
+}
+
 quintptr NodeModel::get_id(core::AbstractReference ref, QModelIndex const& parent) const {
     auto raw = ref.get();
     if (indexes.count(raw))

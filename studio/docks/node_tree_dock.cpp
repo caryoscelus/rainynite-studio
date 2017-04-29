@@ -77,8 +77,8 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
             menu.addAction(
                 QIcon::fromTheme("list-remove"),
                 "Remove",
-                [parent_node, node_index]() {
-                    parent_node->remove(node_index);
+                [this, node_index, parent_index]() {
+                    model->removeRow(node_index, parent_index);
                 }
             );
             menu.addSeparator();

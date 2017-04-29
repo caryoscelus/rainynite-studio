@@ -44,6 +44,9 @@ public:
     int columnCount(QModelIndex const& parent = QModelIndex()) const override;
 
 public:
+    virtual bool removeRows(int row, int count, QModelIndex const& parent = QModelIndex()) override;
+
+public:
     core::AbstractReference get_node(QModelIndex const& index) const;
     size_t get_node_index(QModelIndex const& index) const;
 
