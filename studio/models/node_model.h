@@ -45,6 +45,7 @@ public:
 
 public:
     core::AbstractReference get_node(QModelIndex const& index) const;
+    size_t get_node_index(QModelIndex const& index) const;
 
 private:
     quintptr get_id(core::AbstractReference ref, QModelIndex const& parent = QModelIndex()) const;

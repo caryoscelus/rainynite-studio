@@ -20,6 +20,7 @@
 #include <QContextMenuEvent>
 
 #include <core/document.h>
+#include <core/node_info.h>
 
 #include <models/node_model.h>
 #include "node_tree_dock.h"
@@ -52,13 +53,32 @@ void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
 
 void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu menu(this);
-    menu.addAction("No node types available!");
-    menu.exec(event->globalPos());
+    auto coord = ui->tree_view->mapFromGlobal(event->globalPos());
+    auto index = ui->tree_view->indexAt(coord);
+    auto parent_index = index.parent();
+    auto node = model->get_node(index);
+    auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index));
+    size_t node_index = model->get_node_index(index);
+    if (node && parent_node) {
+        QMenu menu(this);
+        auto type = node->get_type();
+        auto node_infos = core::node_types()[type];
+        if (node_infos.size() == 0)
+            menu.addAction("No node types available!");
+        else for (auto node_info : node_infos) {
+            auto name = QString::fromStdString((*node_info)());
+            menu.addAction(name, [this, node_info, node, parent_node, node_index]() {
+                auto value = node->get_any(get_time());
+                auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), value); 
+                parent_node->set_link(node_index, new_node);
+            });
+        }
+        menu.exec(event->globalPos());
+    }
 }
 
 void NodeTreeDock::activate(QModelIndex const& index) {
-    auto node = dynamic_cast<NodeModel*>(ui->tree_view->model())->get_node(index);
+    auto node = model->get_node(index);
     Q_EMIT activated(node);
 }
 

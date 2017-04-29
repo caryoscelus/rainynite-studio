@@ -91,6 +91,10 @@ core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
     return nullptr;
 }
 
+size_t NodeModel::get_node_index(QModelIndex const& index) const {
+    return index.row();
+}
+
 QModelIndex NodeModel::parent(QModelIndex const& index) const {
     if (index == QModelIndex())
         return QModelIndex();
