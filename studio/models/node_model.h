@@ -47,7 +47,12 @@ public:
     virtual bool removeRows(int row, int count, QModelIndex const& parent = QModelIndex()) override;
 
 public:
+    bool can_add_element(QModelIndex const& parent) const;
+    void add_empty_element(QModelIndex const& parent);
+
+public:
     core::AbstractReference get_node(QModelIndex const& index) const;
+    std::shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const;
     size_t get_node_index(QModelIndex const& index) const;
 
 private:

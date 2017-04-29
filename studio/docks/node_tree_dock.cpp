@@ -62,18 +62,18 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         auto type = parent_node->get_link_type(node_index);
         auto node_infos = core::node_types()[type];
 
-        if (auto list_node = dynamic_cast<core::AbstractListLinked*>(node.get())) {
+        if (model->can_add_element(index)) {
             menu.addAction(
                 QIcon::fromTheme("list-add"),
                 "Add element",
-                [list_node]() {
-                    list_node->push_new();
+                [this, index]() {
+                    model->add_empty_element(index);
                 }
             );
             menu.addSeparator();
         }
 
-        if (parent_node->can_remove()) {
+        if (parent_node->is_editable_list()) {
             menu.addAction(
                 QIcon::fromTheme("list-remove"),
                 "Remove",
@@ -96,6 +96,7 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
                 parent_node->set_link(node_index, new_node);
             });
         }
+
         menu.exec(event->globalPos());
     }
 }

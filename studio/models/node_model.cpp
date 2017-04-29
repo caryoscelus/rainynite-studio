@@ -68,6 +68,21 @@ QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) con
     return QModelIndex();
 }
 
+bool NodeModel::can_add_element(QModelIndex const& parent) const {
+    if (auto node = get_list_node(parent))
+        return node->is_editable_list();
+    return false;
+}
+
+void NodeModel::add_empty_element(QModelIndex const& parent) {
+    if (auto node = get_list_node(parent)) {
+        auto last = node->link_count();
+        beginInsertRows(parent, last-1, last-1);
+        node->push_new();
+        endInsertRows();
+    }
+}
+
 bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
     auto pnode = get_node(parent);
     if (auto parent_node = dynamic_cast<core::AbstractListLinked*>(pnode.get())) {
@@ -101,6 +116,10 @@ core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
             return parent_node->get_links()[index.row()];
     }
     return nullptr;
+}
+
+std::shared_ptr<core::AbstractListLinked> NodeModel::get_list_node(QModelIndex const& index) const {
+    return std::dynamic_pointer_cast<core::AbstractListLinked>(get_node(index));
 }
 
 size_t NodeModel::get_node_index(QModelIndex const& index) const {
