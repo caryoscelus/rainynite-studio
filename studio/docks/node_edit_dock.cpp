@@ -47,6 +47,8 @@ NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* par
 
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
     active_node = node;
+    if (!node)
+        return;
     bool writeable = node->is_const();
     boost::any value;
     try {
