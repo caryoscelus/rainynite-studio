@@ -51,8 +51,7 @@ void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
     ui->tree_view->setModel(model.get());
 }
 
-void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event)
-{
+void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
     auto coord = ui->tree_view->mapFromGlobal(event->globalPos());
     auto index = ui->tree_view->indexAt(coord);
     auto parent_index = index.parent();
@@ -69,6 +68,17 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event)
                 "Add element",
                 [list_node]() {
                     list_node->push_new();
+                }
+            );
+            menu.addSeparator();
+        }
+
+        if (parent_node->can_remove()) {
+            menu.addAction(
+                QIcon::fromTheme("list-remove"),
+                "Remove",
+                [parent_node, node_index]() {
+                    parent_node->remove(node_index);
                 }
             );
             menu.addSeparator();
