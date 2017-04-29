@@ -62,6 +62,18 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event)
         size_t node_index = model->get_node_index(index);
         auto type = parent_node->get_link_type(node_index);
         auto node_infos = core::node_types()[type];
+
+        if (auto list_node = dynamic_cast<core::AbstractListLinked*>(node.get())) {
+            menu.addAction(
+                QIcon::fromTheme("list-add"),
+                "Add element",
+                [list_node]() {
+                    list_node->push_new();
+                }
+            );
+            menu.addSeparator();
+        }
+
         if (node_infos.size() == 0)
             menu.addAction("No node types available!");
         else for (auto node_info : node_infos) {
