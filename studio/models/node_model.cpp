@@ -55,15 +55,13 @@ QVariant NodeModel::headerData(int section, Qt::Orientation orientation, int rol
 QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) const {
     if (parent == QModelIndex()) {
         if (row == 0 && column == 0)
-            return createIndex(row, column, get_id(root));
+            return createIndex(0, 0, get_id({}, 0));
         return QModelIndex();
     }
-    auto pnode = get_node(parent);
-    if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(pnode)) {
+    if (auto parent_node = get_node_as<core::AbstractListLinked>(parent)) {
         if (row >= parent_node->link_count())
             return QModelIndex();
-        auto node = parent_node->get_links()[row];
-        return createIndex(row, column, get_id(node, parent));
+        return createIndex(row, column, get_id(parent, row));
     }
     return QModelIndex();
 }
@@ -122,15 +120,15 @@ bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
     return false;
 }
 
-quintptr NodeModel::get_id(core::AbstractReference ref, QModelIndex const& parent) const {
-    auto raw = ref.get();
-    if (indexes.count(raw))
-        return indexes.at(raw);
-    auto index = last_index++;
-    pointers.emplace(index, ref);
-    indexes.emplace(raw, index);
-    parents.emplace(index, parent);
-    return index;
+quintptr NodeModel::get_id(QModelIndex const& parent, size_t i) const {
+    std::pair<QModelIndex,size_t> pair = {parent, i};
+    auto found = indexes.find(pair);
+    if (found != indexes.end())
+        return found->second;
+    auto interal_id = index_count++;
+    indexes.emplace(pair, interal_id);
+    parents.emplace(interal_id, parent);
+    return interal_id;
 }
 
 core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {

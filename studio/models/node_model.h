@@ -61,15 +61,14 @@ public:
     size_t get_node_index(QModelIndex const& index) const;
 
 private:
-    quintptr get_id(core::AbstractReference ref, QModelIndex const& parent = QModelIndex()) const;
+    quintptr get_id(QModelIndex const& parent, size_t i) const;
 
 private:
     core::AbstractReference root;
 private:
-    mutable std::map<quintptr, std::weak_ptr<core::AbstractValue>> pointers;
-    mutable std::map<core::AbstractValue*, quintptr> indexes;
+    mutable std::map<std::pair<QModelIndex, size_t>, quintptr> indexes;
     mutable std::map<quintptr, QModelIndex> parents;
-    mutable quintptr last_index = 0;
+    mutable quintptr index_count = 0;
 };
 
 } // namespace studio
