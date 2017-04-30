@@ -83,6 +83,33 @@ void NodeModel::add_empty_element(QModelIndex const& parent) {
     }
 }
 
+void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time) {
+    if (auto parent_node = get_node_as<core::AbstractListLinked>(index.parent())) {
+        boost::any value;
+        if (auto node = get_node(index))
+            value = node->get_any(time);
+        auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), value);
+
+        // now tell Qt about our intentions
+        size_t old_rows = 0;
+        if (auto node = get_node_as<core::AbstractListLinked>(index))
+            old_rows = node->link_count();
+        size_t new_rows = 0;
+        if (auto new_list = dynamic_cast<core::AbstractListLinked*>(new_node.get()))
+            new_rows = new_list->link_count();
+        if (new_rows > old_rows)
+            beginInsertRows(index, old_rows, new_rows-1);
+        else
+            beginRemoveRows(index, new_rows, old_rows-1);
+        // perform action
+        parent_node->set_link(index.row(), new_node);
+        if (new_rows > old_rows)
+            endInsertRows();
+        else
+            endRemoveRows();
+    }
+}
+
 bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
     auto pnode = get_node(parent);
     if (auto parent_node = dynamic_cast<core::AbstractListLinked*>(pnode.get())) {

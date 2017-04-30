@@ -57,7 +57,6 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
     auto parent_index = index.parent();
     if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index))) {
         QMenu menu(this);
-        auto node = model->get_node(index);
         size_t node_index = model->get_node_index(index);
         auto type = parent_node->get_link_type(node_index);
         auto node_infos = core::node_types()[type];
@@ -87,13 +86,9 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         if (node_infos.size() == 0)
             menu.addAction("No node types available!");
         else for (auto node_info : node_infos) {
-            auto name = QString::fromStdString((*node_info)());
-            menu.addAction(name, [this, node_info, node, parent_node, node_index]() {
-                boost::any value;
-                if (node)
-                    value = node->get_any(get_time());
-                auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), value); 
-                parent_node->set_link(node_index, new_node);
+            auto name = QString::fromStdString(node_info->name());
+            menu.addAction(name, [this, index, node_info]() {
+                model->convert_node(index, node_info, get_time());
             });
         }
 

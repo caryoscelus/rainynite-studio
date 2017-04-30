@@ -21,7 +21,7 @@
 
 #include <QAbstractItemModel>
 
-#include <core/node.h>
+#include <core/node_info.h>
 
 namespace studio {
 
@@ -49,9 +49,14 @@ public:
 public:
     bool can_add_element(QModelIndex const& parent) const;
     void add_empty_element(QModelIndex const& parent);
+    void convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time);
 
 public:
-    core::AbstractReference get_node(QModelIndex const& index) const;
+    template <class T>
+    std::shared_ptr<T> get_node_as(QModelIndex const& index) const {
+        return std::dynamic_pointer_cast<T>(get_node(index));
+    }
+    std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
     std::shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const;
     size_t get_node_index(QModelIndex const& index) const;
 
