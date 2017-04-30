@@ -52,6 +52,21 @@ public:
     void convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time);
 
 public:
+    template <typename T, typename F>
+    T find_nodes(core::AbstractReference node_to_find, F f) const {
+        // TODO: perfect forward f
+        return core::traverse_once<T>(
+            root,
+            [this, &f, &node_to_find](auto const& node) -> boost::optional<T> {
+                if (node == node_to_find)
+                    return f();
+                return boost::none;
+            },
+            core::TraverseDepth::Deeper
+        );
+    }
+
+public:
     template <class T>
     std::shared_ptr<T> get_node_as(QModelIndex const& index) const {
         return std::dynamic_pointer_cast<T>(get_node(index));
