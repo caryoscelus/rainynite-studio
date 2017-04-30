@@ -46,6 +46,8 @@ void ContextListener::set_context(std::shared_ptr<core::Context> context_) {
                 active_node_changed(node);
             }
         );
+        time_changed(context->get_time());
+        fps_changed(context->get_fps());
     }
 }
 

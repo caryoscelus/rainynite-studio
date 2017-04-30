@@ -40,6 +40,10 @@ void TimeDock::time_changed(core::Time time) {
     set_time(time);
 }
 
+void TimeDock::fps_changed(core::Time::fps_type fps) {
+    ui->fps_box->setValue(fps);
+}
+
 void TimeDock::closeEvent(QCloseEvent* event) {
     QDockWidget::closeEvent(event);
     deleteLater();

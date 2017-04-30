@@ -49,6 +49,7 @@ public:
 
 protected:
     virtual void time_changed(core::Time time) override;
+    virtual void fps_changed(core::Time::fps_type fps) override;
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
