@@ -16,8 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__TIME_DOCK_H__476B54A4
-#define __STUDIO__TIME_DOCK_H__476B54A4
+#ifndef __STUDIO__WIDGETS__TIMELINE_VIEW_H__D9D5E306
+#define __STUDIO__WIDGETS__TIMELINE_VIEW_H__D9D5E306
 
 #include <QWidget>
 #include <QPen>
@@ -27,13 +27,16 @@
 namespace studio {
 
 class TimelineView : public QWidget, public ContextListener {
-//     Q_OBJECT
+    Q_OBJECT
 
 public:
-    explicit TimelineView(QWidget* parent);
+    explicit TimelineView(QWidget* parent = nullptr);
 
 public:
     virtual QSize sizeHint() const override;
+
+public Q_SLOTS:
+    void set_zoom_level(int level);
 
 protected:
     virtual void time_changed(core::Time) override;
@@ -53,11 +56,15 @@ private:
 private:
     double frames_to_x(double frames);
     double x_to_frames(double x);
+    inline double zoom_factor() {
+        return std::pow(2, zoom_level);
+    }
 
 private:
     QPen time_cursor_pen;
 
 private:
+    int zoom_level;
     struct Null {};
     std::shared_ptr<Null> destroy_detector;
 };

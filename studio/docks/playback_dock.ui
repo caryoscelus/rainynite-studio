@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
+    <width>363</width>
     <height>150</height>
    </rect>
   </property>
@@ -65,17 +65,14 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <widget class="QSlider" name="timeline_zoom">
+        <property name="maximum">
+         <number>7</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
       </item>
      </layout>
     </item>
@@ -110,7 +107,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>305</width>
+         <width>343</width>
          <height>40</height>
         </rect>
        </property>

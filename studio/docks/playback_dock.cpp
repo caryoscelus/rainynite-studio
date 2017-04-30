@@ -31,6 +31,9 @@ PlaybackDock::PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* par
     connect(ui->move_start_button, SIGNAL(clicked()), this, SLOT(move_start()));
     connect(ui->move_end_button, SIGNAL(clicked()), this, SLOT(move_end()));
     connect(ui->play_button, SIGNAL(toggled(bool)), this, SLOT(toggle_playback(bool)));
+    connect(ui->timeline_zoom, SIGNAL(valueChanged(int)), ui->timeline, SLOT(set_zoom_level(int)));
+
+    // TODO: move actual playing out of dock
     connect(timer, SIGNAL(timeout()), this, SLOT(next_frame()));
     set_context(get_context());
 }

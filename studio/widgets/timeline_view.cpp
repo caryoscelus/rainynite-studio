@@ -35,6 +35,11 @@ QSize TimelineView::sizeHint() const {
     return {20, 20};
 }
 
+void TimelineView::set_zoom_level(int level) {
+    zoom_level = level;
+    update();
+}
+
 void TimelineView::time_changed(core::Time) {
     update();
 }
@@ -81,10 +86,10 @@ void TimelineView::move(double x) {
 }
 
 double TimelineView::frames_to_x(double frames) {
-    return frames * 4;
+    return frames * zoom_factor();
 }
 double TimelineView::x_to_frames(double x) {
-    return x / 4;
+    return x / zoom_factor();
 }
 
 }
