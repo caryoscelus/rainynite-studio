@@ -7,6 +7,21 @@ development.
 It is not really usable by end users at the moment, but developers are highly
 welcome.
 
+Usage examples
+==============
+
+- couple of animations in [an ld38 entry][ld38] (namely sunrise around 10s of
+  [intro][ld38_intro] and animated logo [here][ld38_logo])
+
+Screenshots
+===========
+
+![sunrise editing screenshot](https://caryoscelus.github.io/images/screenshots/2017.04.30-sunrise.png)
+
+[ld38]: https://ldjam.com/events/ludum-dare/38/power-department
+[ld38_intro]: https://media.githubusercontent.com/media/spirulence/power-department-ld38/e4e0915cd6fe2f2f2bc9510c637ffaba8c55ee4d/assets/video/intro-720p.webm
+[ld38_logo]: https://media.githubusercontent.com/media/spirulence/power-department-ld38/e4e0915cd6fe2f2f2bc9510c637ffaba8c55ee4d/assets/video/03_warning.webm
+
 Build instructions
 ==================
 
