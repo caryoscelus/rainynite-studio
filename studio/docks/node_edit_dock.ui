@@ -6,15 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
-    <height>100</height>
+    <width>302</width>
+    <height>112</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Node &amp;Edit</string>
+   <string>&amp;Node Edit</string>
   </property>
   <widget class="QWidget" name="content">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="uid_label">
+      <property name="text">
+       <string>UID</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QLineEdit" name="text_edit"/>
     </item>
