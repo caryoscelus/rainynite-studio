@@ -44,11 +44,11 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
     return "<Bad node!>";
 }
 
-Qt::ItemFlags NodeModel::flags(QModelIndex const& index) const {
+Qt::ItemFlags NodeModel::flags(QModelIndex const&) const {
     return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
-QVariant NodeModel::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant NodeModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const {
     return "header";
 }
 
@@ -58,7 +58,7 @@ QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) con
             return createIndex(0, 0, get_id({}, 0));
         return QModelIndex();
     }
-    if (auto parent_node = get_node_as<core::AbstractListLinked>(parent)) {
+    if (auto parent_node = get_list_node(parent)) {
         if (row >= parent_node->link_count())
             return QModelIndex();
         return createIndex(row, column, get_id(parent, row));
@@ -82,7 +82,7 @@ void NodeModel::add_empty_element(QModelIndex const& parent) {
 }
 
 void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time) {
-    if (auto parent_node = get_node_as<core::AbstractListLinked>(index.parent())) {
+    if (auto parent_node = get_list_node(index.parent())) {
         boost::any value;
         if (auto node = get_node(index))
             value = node->get_any(time);
@@ -90,7 +90,7 @@ void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* nod
 
         // now tell Qt about our intentions
         size_t old_rows = 0;
-        if (auto node = get_node_as<core::AbstractListLinked>(index))
+        if (auto node = get_list_node(index))
             old_rows = node->link_count();
         size_t new_rows = 0;
         if (auto new_list = dynamic_cast<core::AbstractListLinked*>(new_node.get()))
@@ -109,8 +109,7 @@ void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* nod
 }
 
 bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
-    auto pnode = get_node(parent);
-    if (auto parent_node = dynamic_cast<core::AbstractListLinked*>(pnode.get())) {
+    if (auto parent_node = get_list_node(parent)) {
         beginRemoveRows(parent, row, row+count-1);
         for (int i = 0; i < count; ++i)
             parent_node->remove(row+i);
@@ -143,10 +142,6 @@ core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
     return nullptr;
 }
 
-std::shared_ptr<core::AbstractListLinked> NodeModel::get_list_node(QModelIndex const& index) const {
-    return std::dynamic_pointer_cast<core::AbstractListLinked>(get_node(index));
-}
-
 size_t NodeModel::get_node_index(QModelIndex const& index) const {
     return index.row();
 }
@@ -169,7 +164,7 @@ int NodeModel::rowCount(QModelIndex const& parent) const {
     return 0;
 }
 
-int NodeModel::columnCount(QModelIndex const& parent) const {
+int NodeModel::columnCount(QModelIndex const& /*parent*/) const {
     return 1;
 }
 

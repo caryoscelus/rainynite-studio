@@ -67,12 +67,15 @@ public:
     }
 
 public:
+    std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
     template <class T>
     std::shared_ptr<T> get_node_as(QModelIndex const& index) const {
         return std::dynamic_pointer_cast<T>(get_node(index));
     }
-    std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
-    std::shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const;
+    inline std::shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const {
+        return get_node_as<core::AbstractListLinked>(index);
+    }
+
     size_t get_node_index(QModelIndex const& index) const;
 
 private:
