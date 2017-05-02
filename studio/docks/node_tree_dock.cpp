@@ -59,7 +59,7 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         QMenu menu(this);
         size_t node_index = model->get_node_index(index);
         auto type = parent_node->get_link_type(node_index);
-        auto node_infos = core::node_types()[type];
+        auto node_infos = type ? core::node_types()[*type] : core::all_node_infos();
 
         if (model->can_add_element(index)) {
             menu.addAction(
