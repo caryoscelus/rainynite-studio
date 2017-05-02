@@ -231,7 +231,7 @@ void MainWindow::add_node_edit_dock() {
 
 void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
     context = context_;
-    context->changed_time.connect([this](core::Time time){
+    context->changed_time.connect([this](core::Time){
         redraw();
     });
     for (auto dock : findChildren<QWidget*>()) {

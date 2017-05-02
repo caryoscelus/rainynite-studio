@@ -45,8 +45,8 @@ protected:
     virtual void time_changed(core::Time time_) {
         time = time_;
     }
-    virtual void fps_changed(core::Time::fps_type fps) {}
-    virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) {}
+    virtual void fps_changed(core::Time::fps_type) {}
+    virtual void active_node_changed(std::shared_ptr<core::AbstractValue>) {}
 
     template <class S, class F>
     void connect_boost(S& signal, F lambda) {

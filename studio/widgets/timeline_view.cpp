@@ -44,7 +44,7 @@ void TimelineView::time_changed(core::Time) {
     update();
 }
 
-void TimelineView::paintEvent(QPaintEvent* paintEvent) {
+void TimelineView::paintEvent(QPaintEvent* /*event*/) {
     if (auto context = get_context()) {
         QPainter painter(this);
         painter.setPen(time_cursor_pen);
