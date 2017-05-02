@@ -50,6 +50,8 @@ public:
     bool can_add_element(QModelIndex const& parent) const;
     void add_empty_element(QModelIndex const& parent);
     void convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time);
+    bool node_is_connected(QModelIndex const& index) const;
+    void disconnect_node(QModelIndex const& index);
 
 public:
     template <typename T, typename F>

@@ -61,6 +61,17 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         auto type = parent_node->get_link_type(node_index);
         auto node_infos = type ? core::node_types()[*type] : core::all_node_infos();
 
+        if (model->node_is_connected(index)) {
+            menu.addAction(
+                // TODO: better icon?
+                QIcon::fromTheme("edit-copy"),
+                "Disconnect",
+                [this, index]() {
+                    model->disconnect_node(index);
+                }
+            );
+        }
+
         if (model->can_add_element(index)) {
             menu.addAction(
                 QIcon::fromTheme("list-add"),

@@ -108,6 +108,28 @@ void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* nod
     }
 }
 
+bool NodeModel::node_is_connected(QModelIndex const& index) const {
+    if (auto node = get_node(index)) {
+        size_t count = 0;
+        return find_nodes<bool>(
+            node,
+            [&count]() -> boost::optional<bool> {
+                if (count > 0)
+                    return boost::make_optional(true);
+                ++count;
+                return boost::none;
+            }
+        );
+    }
+    return false;
+}
+
+void NodeModel::disconnect_node(QModelIndex const& index) {
+    if (auto parent = get_list_node(index.parent())) {
+        parent->set_link(index.row(), core::shallow_copy(*get_node(index)));
+    }
+}
+
 bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
     if (auto parent_node = get_list_node(parent)) {
         beginRemoveRows(parent, row, row+count-1);
