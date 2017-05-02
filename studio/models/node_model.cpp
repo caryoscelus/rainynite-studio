@@ -125,8 +125,24 @@ bool NodeModel::node_is_connected(QModelIndex const& index) const {
 }
 
 void NodeModel::disconnect_node(QModelIndex const& index) {
+    replace_node(index, core::shallow_copy(*get_node(index)));
+}
+
+void NodeModel::connect_nodes(QList<QModelIndex> const& selection, QModelIndex const& source_index) {
+    if (auto source = get_node(source_index)) {
+        auto type = source->get_type();
+        // TODO: check type of required by parent instead
+        for (auto const& index : selection) {
+            if (index != source_index && get_node(index)->get_type() == type) {
+                replace_node(index, source);
+            }
+        }
+    }
+}
+
+void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference node) {
     if (auto parent = get_list_node(index.parent())) {
-        parent->set_link(index.row(), core::shallow_copy(*get_node(index)));
+        parent->set_link(index.row(), node);
     }
 }
 

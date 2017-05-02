@@ -34,6 +34,7 @@ NodeTreeDock::NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* par
     ui(std::make_unique<Ui::NodeTreeDock>())
 {
     ui->setupUi(this);
+    ui->tree_view->setSelectionMode(QAbstractItemView::SelectionMode::ExtendedSelection);
     connect(ui->tree_view, SIGNAL(activated(QModelIndex)), this, SLOT(activate(QModelIndex)));
     set_context(get_context());
 }
@@ -61,10 +62,20 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         auto type = parent_node->get_link_type(node_index);
         auto node_infos = type ? core::node_types()[*type] : core::all_node_infos();
 
+        auto selection = ui->tree_view->selectionModel()->selectedIndexes();
+        if (selection.size() > 1) {
+            menu.addAction(
+                QIcon::fromTheme("insert-link"),
+                "Connect",
+                [this, index, selection]() {
+                    model->connect_nodes(selection, index);
+                }
+            );
+        }
+
         if (model->node_is_connected(index)) {
             menu.addAction(
-                // TODO: better icon?
-                QIcon::fromTheme("edit-copy"),
+                QIcon::fromTheme("remove-link"),
                 "Disconnect",
                 [this, index]() {
                     model->disconnect_node(index);

@@ -52,6 +52,8 @@ public:
     void convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time);
     bool node_is_connected(QModelIndex const& index) const;
     void disconnect_node(QModelIndex const& index);
+    void connect_nodes(QList<QModelIndex> const& selection, QModelIndex const& source);
+    void replace_node(QModelIndex const& index, core::AbstractReference node);
 
 public:
     template <typename T, typename F>
