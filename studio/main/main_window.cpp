@@ -75,6 +75,8 @@ MainWindow::MainWindow(QWidget* parent) :
     add_time_dock();
     add_node_tree_dock();
     add_node_edit_dock();
+
+    setWindowState(Qt::WindowMaximized);
 }
 
 MainWindow::~MainWindow() {
