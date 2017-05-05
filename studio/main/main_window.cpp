@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget* parent) :
     error_box(std::make_unique<QErrorMessage>()),
     context(std::make_shared<core::Context>())
 {
+    setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
 
     connect(ui->action_new, SIGNAL(triggered()), this, SLOT(new_document()));
@@ -76,7 +77,7 @@ MainWindow::MainWindow(QWidget* parent) :
     add_node_tree_dock();
     add_node_edit_dock();
 
-    setWindowState(Qt::WindowMaximized);
+    new_document();
 }
 
 MainWindow::~MainWindow() {
