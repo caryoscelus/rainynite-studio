@@ -45,6 +45,12 @@ AboutDialog::AboutDialog(QWidget* parent) :
         license.close();
     }
 
+    QFile third_party(":/text/third-party.txt");
+    if (third_party.open(QIODevice::ReadOnly)) {
+        ui->third_party_text->setText(third_party.readAll());
+        third_party.close();
+    }
+
     connect(ui->close_button, SIGNAL(clicked()), this, SLOT(accept()));
 }
 
