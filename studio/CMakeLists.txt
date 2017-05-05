@@ -4,6 +4,8 @@ target_sources(rainynite-studio
     PRIVATE
         main/main_window.cpp
         main/main_window.h
+        main/about.cpp
+        main/about.h
 
         docks/playback_dock.cpp
         docks/playback_dock.h

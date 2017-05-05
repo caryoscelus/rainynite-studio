@@ -16,6 +16,9 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="central_widget">
    <property name="styleSheet">
     <string notr="true">#central_widget { background-image: url(:/images/transparency.png); }

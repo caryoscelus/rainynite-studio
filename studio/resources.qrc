@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="images">
+    <file>sunrise.png</file>
     <file>transparency.png</file>
+  </qresource>
+  <qresource prefix="text">
+    <file>../COPYING.gpl3</file>
   </qresource>
 </RCC>

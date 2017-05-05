@@ -31,11 +31,11 @@
 #include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
 
-#include <version.h>
 #include <docks/time_dock.h>
 #include <docks/playback_dock.h>
 #include <docks/node_tree_dock.h>
 #include <docks/node_edit_dock.h>
+#include "about.h"
 #include "main_window.h"
 #include "ui_main_window.h"
 
@@ -188,13 +188,8 @@ void MainWindow::tool_zoom() {
 }
 
 void MainWindow::about() {
-    QMessageBox::information(this, "About RainyNite",
-        QString::fromStdString(
-            "RainyNite version {} \"{}\""_format(
-                RAINYNITE_STUDIO_VERSION, RAINYNITE_STUDIO_CODENAME
-            )
-        )
-    );
+    AboutDialog dialog;
+    dialog.exec();
 }
 
 void MainWindow::quit() {
