@@ -35,9 +35,9 @@ The build process itself is usual CMake procedure, but there are quite a few dep
 
 Modules:
 
-- [Vector morphing lib](https://notabug.org/caryoscelus/rainy-morph)
+- [vector morphing lib](https://notabug.org/caryoscelus/rainy-morph)
 - [core library](https://notabug.org/caryoscelus/rainynite-core)
-- [command line tool](https://notabug.org/caryoscelus/rainynite-tool)
+- [command line tool](https://notabug.org/caryoscelus/rainynite-tool) (not really worth using atm)
 - [gui editor](https://notabug.org/caryoscelus/rainynite-studio)
 
 Dependencies
@@ -45,7 +45,7 @@ Dependencies
 
 Core:
 
-- [lib2geom](https://github.com/caryoscelus/lib2geom) (yes, you need my fork at the moment; also you need to build dynamic library)
+- [lib2geom](https://github.com/caryoscelus/lib2geom) (yes, you need my fork at the moment; also you need to build & install dynamic library)
 - [boost](http://www.boost.org/)
 - [fmt](https://github.com/fmtlib/fmt)
 - [catch](https://github.com/philsquared/Catch) (bundled in repository)
@@ -55,10 +55,14 @@ Editor:
 
 - [qt](https://www.qt.io/)
 
+Runtime renderer dependency:
+
+- [Inkscape](https://inkscape.org/) - used to render SVG output of RainyNite "renderer"; can be replaced with other command line SVG renderer
+
 Build process
 -------------
 
-- rainy-morph (nothing special: just cmake build)
-- core library (`git submodule update --init`, then normal build)
-- tool (regular cmake build)
-- studio (regular cmake build)
+- rainy-morph (nothing special: just cmake build & install)
+- core library (`git submodule update --init`, then normal build & install)
+- tool (regular cmake build; can be used directly from build directory or installed)
+- studio (same as tool)
