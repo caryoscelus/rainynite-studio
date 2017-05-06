@@ -24,8 +24,9 @@
 
 #include <QMainWindow>
 
-#include <core/context.h>
 #include <core/node.h>
+
+#include <generic/context_listener.h>
 
 namespace Ui {
 class MainWindow;
@@ -35,12 +36,15 @@ class QErrorMessage;
 
 namespace studio {
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow, public ContextListener {
     Q_OBJECT
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+public:
+    virtual void set_context(std::shared_ptr<EditorContext> context_) override;
 
 private:
     void set_mainarea_image(std::string const& fname);
@@ -62,7 +66,6 @@ private Q_SLOTS:
     void redraw();
     void toggle_extra_style(bool checked);
 
-    void set_context(std::shared_ptr<core::Context> context_);
     void activate(std::shared_ptr<core::AbstractValue> node);
 
     void add_time_dock();
@@ -74,7 +77,6 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<QErrorMessage> error_box;
     std::shared_ptr<core::Document> document;
-    std::shared_ptr<core::Context> context;
     std::shared_ptr<core::AbstractValue> active_node;
     std::thread render_thread;
     std::string fname;

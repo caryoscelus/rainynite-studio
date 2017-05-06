@@ -65,7 +65,7 @@ void Canvas::redraw_selected_node() {
     if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(active_node.get())) {
         Geom::BezierKnots path;
         try {
-            path = bezier_node->get(get_context()->get_time());
+            path = bezier_node->get(get_core_context()->get_time());
         } catch (std::exception const& ex) {
             qDebug() << QString::fromStdString("Uncaught exception while getting path: {}"_format(ex.what()));
             return;

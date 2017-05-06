@@ -45,9 +45,9 @@ namespace studio {
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
+    ContextListener(),
     ui(std::make_unique<Ui::MainWindow>()),
-    error_box(std::make_unique<QErrorMessage>()),
-    context(std::make_shared<core::Context>())
+    error_box(std::make_unique<QErrorMessage>())
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
@@ -85,7 +85,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::new_document() {
     document = std::make_shared<core::Document>();
-    set_context(document->get_default_context());
+    set_core_context(document->get_default_context());
 }
 
 void MainWindow::open() {
@@ -104,7 +104,7 @@ void MainWindow::reload() {
         document = reader.read_document(in);
         if (!document)
             throw std::runtime_error("Unknown parse failure");
-        set_context(document->get_default_context());
+        set_core_context(document->get_default_context());
         in.close();
         return;
     } catch (std::exception const& ex) {
@@ -117,7 +117,7 @@ void MainWindow::reload() {
         auto reader = core::filters::SvgPathReader();
         std::ifstream in(fname);
         document = reader.read_document(in);
-        set_context(document->get_default_context());
+        set_core_context(document->get_default_context());
         in.close();
     } catch (std::exception const& ex) {
         auto msg = QString::fromStdString("Uncaught exception while opening document:\n{}"_format(ex.what()));
@@ -154,15 +154,15 @@ void MainWindow::save() {
 }
 
 void MainWindow::render() {
-    if (context && context->get_document()) {
+    if (get_core_context()->get_document()) {
         auto rsettings = core::renderers::SvgRendererSettings();
         rsettings.render_pngs = true;
         rsettings.extra_style = extra_style;
-        context->mod_render_settings() = rsettings;
+        get_core_context()->mod_render_settings() = rsettings;
         auto renderer = std::make_shared<core::renderers::SvgRenderer>();
         if (render_thread.joinable())
             render_thread.join();
-        auto ctx = *context;
+        auto ctx = *get_core_context();
         render_thread = std::thread([renderer, ctx]() {
             try {
                 renderer->render(ctx);
@@ -175,7 +175,7 @@ void MainWindow::render() {
 }
 
 void MainWindow::redraw() {
-    set_mainarea_image("renders/{:.3f}.png"_format(context->get_time().get_seconds()));
+    set_mainarea_image("renders/{:.3f}.png"_format(get_core_context()->get_time().get_seconds()));
 }
 
 void MainWindow::toggle_extra_style(bool checked) {
@@ -208,28 +208,28 @@ void MainWindow::set_mainarea_image(std::string const& fname) {
 }
 
 void MainWindow::add_time_dock() {
-    auto dock = new TimeDock(context, this);
+    auto dock = new TimeDock(get_context(), this);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
 
 void MainWindow::add_playback_dock() {
-    auto dock = new PlaybackDock(context, this);
+    auto dock = new PlaybackDock(get_context(), this);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
 
 void MainWindow::add_node_tree_dock() {
-    auto dock = new NodeTreeDock(context, this);
+    auto dock = new NodeTreeDock(get_context(), this);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 
 void MainWindow::add_node_edit_dock() {
-    auto dock = new NodeEditDock(context, this);
+    auto dock = new NodeEditDock(get_context(), this);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 
-void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
-    context = context_;
-    context->changed_time.connect([this](core::Time){
+void MainWindow::set_context(std::shared_ptr<EditorContext> context_) {
+    ContextListener::set_context(context_);
+    get_context()->changed_time().connect([this](core::Time){
         redraw();
     });
     for (auto dock : findChildren<QWidget*>()) {
@@ -241,7 +241,7 @@ void MainWindow::set_context(std::shared_ptr<core::Context> context_) {
 }
 
 void MainWindow::activate(std::shared_ptr<core::AbstractValue> node) {
-    context->set_active_node(node);
+    get_context()->set_active_node(node);
 }
 
 }

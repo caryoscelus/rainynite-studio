@@ -22,21 +22,25 @@
 #include <memory>
 #include <type_traits>
 
-#include <core/context.h>
-
-namespace core {
-class AbstractValue;
-}
+#include "editor_context.h"
 
 namespace studio {
 
 class ContextListener {
 public:
-    ContextListener(std::shared_ptr<core::Context> context_=nullptr);
+    ContextListener(std::shared_ptr<EditorContext> context_=nullptr);
 
 public:
-    virtual std::shared_ptr<core::Context> get_context() const;
-    virtual void set_context(std::shared_ptr<core::Context> context_);
+    std::shared_ptr<core::Context> get_core_context() const {
+        return context->get_context();
+    }
+    std::shared_ptr<EditorContext> get_context() const {
+        return context;
+    }
+    void set_core_context(std::shared_ptr<core::Context> core_context) {
+        set_context(std::make_shared<EditorContext>(core_context));
+    }
+    virtual void set_context(std::shared_ptr<EditorContext> context_);
 
 protected:
     virtual core::Time get_time() {
@@ -56,7 +60,7 @@ protected:
     }
 
 private:
-    std::shared_ptr<core::Context> context;
+    std::shared_ptr<EditorContext> context;
     core::Time time;
     struct Null {};
     std::shared_ptr<Null> destroy_detector;

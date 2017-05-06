@@ -22,33 +22,31 @@
 
 namespace studio {
 
-ContextListener::ContextListener(std::shared_ptr<core::Context> context_) :
-    context(context_),
+ContextListener::ContextListener(std::shared_ptr<EditorContext> context_) :
     destroy_detector(std::make_shared<Null>())
-{}
-
-std::shared_ptr<core::Context> ContextListener::get_context() const {
-    return context;
+{
+    set_context(context_);
 }
 
-void ContextListener::set_context(std::shared_ptr<core::Context> context_) {
+void ContextListener::set_context(std::shared_ptr<EditorContext> context_) {
+    // TODO: disconnect from previous context!
     context = context_;
-    if (auto context = get_context()) {
-        connect_boost(
-            context->changed_time,
-            [this](core::Time time) {
-                time_changed(time);
-            }
-        );
-        connect_boost(
-            context->changed_active_node,
-            [this](std::shared_ptr<core::AbstractValue> node) {
-                active_node_changed(node);
-            }
-        );
-        time_changed(context->get_time());
-        fps_changed(context->get_fps());
-    }
+    if (context == nullptr)
+        context = global_dummy_context();
+    connect_boost(
+        context->changed_time(),
+        [this](core::Time time) {
+            time_changed(time);
+        }
+    );
+    connect_boost(
+        context->changed_active_node(),
+        [this](std::shared_ptr<core::AbstractValue> node) {
+            active_node_changed(node);
+        }
+    );
+    time_changed(get_core_context()->get_time());
+    fps_changed(get_core_context()->get_fps());
 }
 
 }

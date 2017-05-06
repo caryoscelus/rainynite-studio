@@ -45,7 +45,7 @@ void TimelineView::time_changed(core::Time) {
 }
 
 void TimelineView::paintEvent(QPaintEvent* /*event*/) {
-    if (auto context = get_context()) {
+    if (auto context = get_core_context()) {
         QPainter painter(this);
         painter.setPen(time_cursor_pen);
         int x = frames_to_x(context->get_time().get_frames());
@@ -79,7 +79,7 @@ void TimelineView::stop_moving(double x) {
 }
 
 void TimelineView::move(double x) {
-    if (auto context = get_context()) {
+    if (auto context = get_core_context()) {
         int frames = x_to_frames(x);
         context->set_frames(frames);
     }

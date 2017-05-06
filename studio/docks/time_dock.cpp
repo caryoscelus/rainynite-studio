@@ -21,7 +21,7 @@
 
 namespace studio {
 
-TimeDock::TimeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
+TimeDock::TimeDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     QDockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::TimeDock>()),
@@ -50,12 +50,12 @@ void TimeDock::closeEvent(QCloseEvent* event) {
 }
 
 void TimeDock::change_time() {
-    if (auto context = get_context())
+    if (auto context = get_core_context())
         context->set_time(core::Time(0, context->get_fps(), ui->time_box->value()));
 }
 
 void TimeDock::change_fps() {
-    if (auto context = get_context())
+    if (auto context = get_core_context())
         context->set_fps(ui->fps_box->value());
 }
 

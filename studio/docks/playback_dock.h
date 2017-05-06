@@ -41,11 +41,11 @@ class PlaybackDock : public QDockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* parent = 0);
+    explicit PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* parent = 0);
     ~PlaybackDock();
 
 public:
-    virtual void set_context(std::shared_ptr<core::Context> context_) override;
+    virtual void set_context(std::shared_ptr<EditorContext> context_) override;
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;

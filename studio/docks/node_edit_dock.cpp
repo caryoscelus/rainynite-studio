@@ -35,7 +35,7 @@ using namespace fmt::literals;
 
 namespace studio {
 
-NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
+NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     QDockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::NodeEditDock>())
@@ -44,7 +44,6 @@ NodeEditDock::NodeEditDock(std::shared_ptr<core::Context> context_, QWidget* par
     custom_widget = ui->custom_placeholder;
     ui->text_edit->setReadOnly(true);
     connect(ui->text_edit, SIGNAL(editingFinished()), this, SLOT(write_node()));
-    set_context(get_context());
 }
 
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
@@ -60,7 +59,7 @@ void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node
         if (writeable) {
             value = node->any();
         } else {
-            value = node->get_any(get_context()->get_time());
+            value = node->get_any(get_core_context()->get_time());
         }
         auto s = core::serialize::value_to_string(value);
         ui->text_edit->setText(QString::fromStdString(s));

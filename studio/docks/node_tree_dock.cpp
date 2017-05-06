@@ -28,7 +28,7 @@
 
 namespace studio {
 
-NodeTreeDock::NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
+NodeTreeDock::NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     QDockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::NodeTreeDock>())
@@ -42,9 +42,9 @@ NodeTreeDock::NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* par
 NodeTreeDock::~NodeTreeDock() {
 }
 
-void NodeTreeDock::set_context(std::shared_ptr<core::Context> context_) {
+void NodeTreeDock::set_context(std::shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
-    if (auto document = context_->get_document()) {
+    if (auto document = get_core_context()->get_document()) {
         model = std::make_unique<NodeModel>(document);
     } else {
         model = std::make_unique<NodeModel>(nullptr);

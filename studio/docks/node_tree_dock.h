@@ -39,11 +39,11 @@ class NodeTreeDock : public QDockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit NodeTreeDock(std::shared_ptr<core::Context> context_, QWidget* parent_);
+    explicit NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent_);
     virtual ~NodeTreeDock();
 
 public:
-    virtual void set_context(std::shared_ptr<core::Context> context_) override;
+    virtual void set_context(std::shared_ptr<EditorContext> context_) override;
 
 Q_SIGNALS:
     void activated(std::shared_ptr<core::AbstractValue> node);

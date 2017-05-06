@@ -21,7 +21,7 @@
 
 namespace studio {
 
-PlaybackDock::PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* parent) :
+PlaybackDock::PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     QDockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::PlaybackDock>()),
@@ -41,7 +41,7 @@ PlaybackDock::PlaybackDock(std::shared_ptr<core::Context> context_, QWidget* par
 PlaybackDock::~PlaybackDock() {
 }
 
-void PlaybackDock::set_context(std::shared_ptr<core::Context> context_) {
+void PlaybackDock::set_context(std::shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
     ui->timeline->set_context(context_);
 }
@@ -52,7 +52,7 @@ void PlaybackDock::closeEvent(QCloseEvent* event) {
 }
 
 void PlaybackDock::toggle_playback(bool play) {
-    if (auto context = get_context()) {
+    if (auto context = get_core_context()) {
         if (play)
             timer->start(1000/context->get_fps());
         else
@@ -61,20 +61,20 @@ void PlaybackDock::toggle_playback(bool play) {
 }
 
 void PlaybackDock::next_frame() {
-    if (auto context = get_context()) {
+    if (auto context = get_core_context()) {
         auto time = context->get_time();
         context->set_time(time + core::Time(0, context->get_fps(), 1));
     }
 }
 
 void PlaybackDock::move_start() {
-    if (auto context = get_context()) {
+    if (auto context = get_core_context()) {
         context->to_start();
     }
 }
 
 void PlaybackDock::move_end() {
-    if (auto context = get_context()) {
+    if (auto context = get_core_context()) {
         context->to_end();
     }
 }
