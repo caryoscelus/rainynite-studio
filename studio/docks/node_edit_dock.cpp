@@ -87,6 +87,9 @@ void NodeEditDock::setup_custom_widget(std::shared_ptr<core::AbstractValue> node
     if (auto node_editor = dynamic_cast<NodeEditor*>(widget)) {
         node_editor->set_node(node);
     }
+    if (auto listener = dynamic_cast<ContextListener*>(widget)) {
+        listener->set_context(get_context());
+    }
 }
 
 NodeEditDock::~NodeEditDock() {
