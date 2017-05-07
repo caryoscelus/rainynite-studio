@@ -61,6 +61,9 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_about, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
 
+    connect(ui->action_undo, SIGNAL(triggered()), this, SLOT(undo()));
+    connect(ui->action_redo, SIGNAL(triggered()), this, SLOT(redo()));
+
     connect(ui->action_tool_mouse, SIGNAL(triggered()), this, SLOT(tool_mouse()));
     connect(ui->action_tool_zoom, SIGNAL(triggered()), this, SLOT(tool_zoom()));
 
@@ -180,6 +183,16 @@ void MainWindow::redraw() {
 
 void MainWindow::toggle_extra_style(bool checked) {
     extra_style = checked;
+}
+
+void MainWindow::undo() {
+    qDebug() << "Undo my deeds!";
+    get_context()->action_stack().undo();
+}
+
+void MainWindow::redo() {
+    qDebug() << "Redo it again@";
+    get_context()->action_stack().redo();
 }
 
 void MainWindow::tool_mouse() {

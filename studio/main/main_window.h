@@ -59,6 +59,9 @@ private Q_SLOTS:
     void about();
     void quit();
 
+    void undo();
+    void redo();
+
     void tool_mouse();
     void tool_zoom();
 
