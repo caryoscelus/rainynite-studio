@@ -23,6 +23,8 @@
 
 #include <QWidget>
 
+#include <core/actions/change_value.h>
+
 #include "context_listener.h"
 
 namespace core {
@@ -57,7 +59,7 @@ public:
             &W::editingFinished,
             [this]() {
                 if (auto vnode = dynamic_cast<core::Value<ValueType>*>(value_node)) {
-                    vnode->set(W::value());
+                    get_context()->action_stack().template emplace<core::actions::ChangeValue>(get_node(), W::value());
                 }
             }
         );
