@@ -23,13 +23,19 @@
 #include <core/node.h>
 #include <core/color.h>
 
+#include <geom_helpers/knots.h>
+
 #include <generic/custom_widgets.h>
+#include <widgets/canvas.h>
 #include "color_button.h"
 #include "point_editor.h"
+#include "bezier_editor.h"
 
 namespace studio {
 
 REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, (NodeEditorWidget<ColorButton, core::colors::Color>));
 REGISTER_CUSTOM_WIDGET(PointEdit, Geom::Point, (NodeEditorWidget<PointEditor, Geom::Point>));
+
+REGISTER_CANVAS_EDITOR(BezierKnotsDisplay, Geom::BezierKnots, BezierKnotsDisplay);
 
 } // namespace studio

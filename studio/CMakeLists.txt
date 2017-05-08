@@ -24,6 +24,8 @@ target_sources(rainynite-studio
         widgets/color_button.h
         widgets/point_editor.cpp
         widgets/point_editor.h
+        widgets/bezier_editor.cpp
+        widgets/bezier_editor.h
 
         widgets/editor_factory.cpp
 
