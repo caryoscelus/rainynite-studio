@@ -26,6 +26,7 @@
 
 #include <core/node.h>
 
+#include <generic/canvas_editor.h>
 #include "canvas.h"
 
 using namespace fmt::literals;
@@ -34,11 +35,11 @@ namespace studio {
 
 Canvas::Canvas(QWidget* parent) :
     QGraphicsView(parent),
-    scene(std::make_unique<QGraphicsScene>()),
+    the_scene(std::make_unique<QGraphicsScene>()),
     image(std::make_unique<QGraphicsPixmapItem>())
 {
-    setScene(scene.get());
-    scene->addItem(image.get());
+    setScene(the_scene.get());
+    the_scene->addItem(image.get());
 }
 
 Canvas::~Canvas() {
@@ -49,40 +50,23 @@ void Canvas::set_main_image(QPixmap const& pixmap) {
 }
 
 void Canvas::time_changed(core::Time) {
-    redraw_selected_node();
 }
 
 void Canvas::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
-    active_node = node;
-    redraw_selected_node();
+    if (active_node != node) {
+        active_node = node;
+        remove_node_editor();
+        add_canvas_editor(*this, node);
+    }
 }
 
-void Canvas::redraw_selected_node() {
-    for (auto const& e : knot_items) {
-        scene->removeItem(e.get());
-    }
-    knot_items.clear();
-    if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(active_node.get())) {
-        Geom::BezierKnots path;
-        try {
-            path = bezier_node->get(get_core_context()->get_time());
-        } catch (std::exception const& ex) {
-            qDebug() << QString::fromStdString("Uncaught exception while getting path: {}"_format(ex.what()));
-            return;
-        }
-        for (auto const& knot : path.knots) {
-            auto x = knot.pos.x();
-            auto y = knot.pos.y();
-            auto e = scene->addEllipse(x-2, y-2, 4, 4);
-            knot_items.emplace_back(e);
-            if (!knot.uid.empty()) {
-                auto e = scene->addText(QString::fromStdString(knot.uid));
-                e->setX(knot.pos.x());
-                e->setY(knot.pos.y());
-                knot_items.emplace_back(e);
-            }
-        }
-    }
+void Canvas::add_node_editor(std::unique_ptr<CanvasEditor> editor_) {
+    editor = std::move(editor_);
+    editor->set_canvas(this);
+}
+
+void Canvas::remove_node_editor() {
+    editor.reset();
 }
 
 } // namespace studio

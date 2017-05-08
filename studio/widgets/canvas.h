@@ -35,6 +35,8 @@ class AbstractValue;
 
 namespace studio {
 
+class CanvasEditor;
+
 class Canvas : public QGraphicsView, public ContextListener {
 public:
     explicit Canvas(QWidget* parent = nullptr);
@@ -43,18 +45,19 @@ public:
 public:
     void set_main_image(QPixmap const& pixmap);
 
+public:
+    void add_node_editor(std::unique_ptr<CanvasEditor> editor_);
+    void remove_node_editor();
+
 protected:
     virtual void time_changed(core::Time) override;
     virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
 
 private:
-    void redraw_selected_node();
-
-private:
-    std::unique_ptr<QGraphicsScene> scene;
+    std::unique_ptr<QGraphicsScene> the_scene;
     std::unique_ptr<QGraphicsPixmapItem> image;
-    std::vector<std::unique_ptr<QGraphicsItem>> knot_items;
     std::shared_ptr<core::AbstractValue> active_node;
+    std::unique_ptr<CanvasEditor> editor;
 };
 
 }

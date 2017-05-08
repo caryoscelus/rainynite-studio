@@ -35,6 +35,8 @@ target_sources(rainynite-studio
         generic/context_listener.h
         generic/editor_context.cpp
         generic/editor_context.h
+        generic/canvas_editor.cpp
+        generic/canvas_editor.h
 
         models/node_model.cpp
         models/node_model.h
