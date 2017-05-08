@@ -50,7 +50,6 @@ public:
     void remove_node_editor();
 
 protected:
-    virtual void time_changed(core::Time) override;
     virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
 
 private:

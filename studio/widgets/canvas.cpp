@@ -49,9 +49,6 @@ void Canvas::set_main_image(QPixmap const& pixmap) {
     image->setPixmap(pixmap);
 }
 
-void Canvas::time_changed(core::Time) {
-}
-
 void Canvas::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
     if (active_node != node) {
         active_node = node;
