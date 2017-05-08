@@ -35,6 +35,8 @@ namespace studio {
 
 class NodeEditor {
 public:
+    virtual ~NodeEditor() = default;
+public:
     virtual void set_node(std::shared_ptr<core::AbstractValue> node_);
     inline std::shared_ptr<core::AbstractValue> get_node() {
         return node;

@@ -29,6 +29,7 @@ namespace studio {
 class ContextListener {
 public:
     ContextListener(std::shared_ptr<EditorContext> context_=nullptr);
+    virtual ~ContextListener() = default;
 
 public:
     std::shared_ptr<core::Context> get_core_context() const {
