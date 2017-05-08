@@ -59,6 +59,8 @@ public:
             &W::editingFinished,
             [this]() {
                 if (auto vnode = dynamic_cast<core::Value<ValueType>*>(value_node)) {
+                    if (vnode->mod() == W::value())
+                        return;
                     get_context()->action_stack().template emplace<core::actions::ChangeValue>(get_node(), W::value());
                 }
             }

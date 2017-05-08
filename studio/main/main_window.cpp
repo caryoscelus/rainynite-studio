@@ -186,12 +186,10 @@ void MainWindow::toggle_extra_style(bool checked) {
 }
 
 void MainWindow::undo() {
-    qDebug() << "Undo my deeds!";
     get_context()->action_stack().undo();
 }
 
 void MainWindow::redo() {
-    qDebug() << "Redo it again@";
     get_context()->action_stack().redo();
 }
 
