@@ -33,6 +33,8 @@ target_sources(rainynite-studio
         generic/custom_widgets.h
         generic/context_listener.cpp
         generic/context_listener.h
+        generic/editor_context.cpp
+        generic/editor_context.h
 
         models/node_model.cpp
         models/node_model.h

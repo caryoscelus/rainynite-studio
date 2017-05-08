@@ -33,12 +33,7 @@ public:
     inline std::shared_ptr<core::Context> get_context() const {
         return context;
     }
-    inline void set_active_node(std::shared_ptr<core::AbstractValue> node) {
-        if (node == active_node)
-            return;
-        active_node = node;
-        changed_active_node()(node);
-    }
+    void set_active_node(std::shared_ptr<core::AbstractValue> node);
     inline core::ActionStack& action_stack() {
         return action_stack_;
     }
@@ -46,7 +41,7 @@ public:
     inline boost::signals2::signal<void(core::Time)>& changed_time() {
         return context->changed_time;
     }
-    boost::signals2::signal<void(std::shared_ptr<core::AbstractValue>)>& changed_active_node() {
+    inline boost::signals2::signal<void(std::shared_ptr<core::AbstractValue>)>& changed_active_node() {
         return changed_active_node_;
     }
 private:
@@ -57,11 +52,7 @@ private:
     boost::signals2::signal<void(std::shared_ptr<core::AbstractValue>)> changed_active_node_;
 };
 
-inline std::shared_ptr<EditorContext> global_dummy_context() {
-    static auto context_instance = std::make_shared<core::Context>();
-    static auto instance = std::make_shared<EditorContext>(context_instance);
-    return instance;
-}
+std::shared_ptr<EditorContext> global_dummy_context();
 
 } // namespace studio
 
