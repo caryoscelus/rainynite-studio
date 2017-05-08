@@ -50,6 +50,11 @@ void BezierKnotsDisplay::set_node(std::shared_ptr<core::AbstractValue> node) {
     init();
 }
 
+void BezierKnotsDisplay::time_changed(core::Time) {
+    uninit();
+    init();
+}
+
 void BezierKnotsDisplay::init() {
     if (auto canvas = get_canvas()) {
         if (auto scene = canvas->scene()) {
