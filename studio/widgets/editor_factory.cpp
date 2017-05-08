@@ -26,7 +26,6 @@
 #include <geom_helpers/knots.h>
 
 #include <generic/custom_widgets.h>
-#include <widgets/canvas.h>
 #include "color_button.h"
 #include "point_editor.h"
 #include "bezier_editor.h"

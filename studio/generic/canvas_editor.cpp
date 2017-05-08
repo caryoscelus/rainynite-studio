@@ -19,6 +19,8 @@
 #include <core/class_init.h>
 #include <core/node.h>
 
+#include <widgets/canvas.h>
+#include "node_editor.h"
 #include "canvas_editor.h"
 
 namespace studio {
@@ -33,7 +35,10 @@ void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node
     if (node == nullptr)
         return;
     try {
-        class_init::type_meta<CanvasEditorFactory>(node->get_type())(canvas, node);
+        auto editor = class_init::type_info<CanvasEditorFactory,std::unique_ptr<CanvasEditor>>(node->get_type());
+        if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
+            node_editor->set_node(node);
+        canvas.add_node_editor(std::move(editor));
     } catch (class_init::RuntimeTypeError const&) {
         // do something about it? should we really catch it?
     }

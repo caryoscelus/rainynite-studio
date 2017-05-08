@@ -46,7 +46,7 @@ private:
 
 class CanvasEditorFactory {
 public:
-    virtual void operator()(Canvas& canvas, std::shared_ptr<core::AbstractValue> node) const = 0;
+    virtual std::unique_ptr<CanvasEditor> operator()() const = 0;
 };
 
 void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node);
@@ -59,10 +59,8 @@ class Name##Factory : \
     class_init::Registered<Name##Factory, Type, CanvasEditorFactory> \
 { \
 public: \
-    virtual void operator()(Canvas& canvas, std::shared_ptr<core::AbstractValue> node) const override { \
-        auto editor = std::make_unique<Editor>(); \
-        editor->set_node(node); \
-        canvas.add_node_editor(std::move(editor)); \
+    virtual std::unique_ptr<CanvasEditor> operator()() const override { \
+        return std::make_unique<Editor>(); \
     } \
 }
 
