@@ -12,6 +12,7 @@ Usage examples
 
 - couple of animations in [an ld38 entry][ld38] (namely sunrise around 10s of
   [intro][ld38_intro] and animated logo [here][ld38_logo])
+- see <https://notabug.org/caryoscelus/rainynite-examples> for sample files
 
 Screenshots
 ===========
