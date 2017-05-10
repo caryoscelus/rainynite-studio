@@ -1,5 +1,5 @@
 /*
- *  point_editor.cpp - 2d point editor widget
+ *  bezier_editor.cpp - edit beziers on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,50 +16,45 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QLayout>
+#include <fmt/format.h>
 
+#include <QGraphicsItem>
+
+#include <2geom/point.h>
+
+#include <widgets/canvas.h>
 #include "point_editor.h"
-
-#define MAX_POINT_COORD 10000
 
 namespace studio {
 
-PointEditor::PointEditor(QWidget* parent) :
-    QWidget(parent),
-    x_input(new QDoubleSpinBox()),
-    y_input(new QDoubleSpinBox())
-{
-    x_input->setRange(-MAX_POINT_COORD, +MAX_POINT_COORD);
-    y_input->setRange(-MAX_POINT_COORD, +MAX_POINT_COORD);
-
-    auto vlayout = new QVBoxLayout();
-    vlayout->addWidget(x_input);
-    vlayout->addWidget(y_input);
-    setLayout(vlayout);
-
-    connect(x_input, SIGNAL(editingFinished()), this, SLOT(write_x()));
-    connect(y_input, SIGNAL(editingFinished()), this, SLOT(write_y()));
+PointEditor::PointEditor() {
 }
 
-void PointEditor::setReadOnly(bool ro) {
-    x_input->setReadOnly(ro);
-    y_input->setReadOnly(ro);
+PointEditor::~PointEditor() {
 }
 
-void PointEditor::update_value(Geom::Point value_) {
-    _value = value_;
-    x_input->setValue(value_.x());
-    y_input->setValue(value_.y());
+void PointEditor::set_canvas(Canvas* canvas) {
+    CanvasEditor::set_canvas(canvas);
+    point_item.reset(canvas->scene()->addEllipse(0, 0, 4, 4));
+    update_position();
 }
 
-void PointEditor::write_x() {
-    _value.x() = x_input->value();
-    Q_EMIT editingFinished();
+void PointEditor::set_node(std::shared_ptr<core::AbstractValue> node) {
+    NodeEditor::set_node(node);
+    update_position();
 }
 
-void PointEditor::write_y() {
-    _value.y() = y_input->value();
-    Q_EMIT editingFinished();
+void PointEditor::time_changed(core::Time) {
+    update_position();
+}
+
+void PointEditor::update_position() {
+    if (point_item == nullptr)
+        return;
+    if (auto node = dynamic_cast<core::BaseValue<Geom::Point>*>(get_node().get())) {
+        auto point = node->get(get_time());
+        point_item->setPos({point.x()-2, point.y()-2});
+    }
 }
 
 } // namespace studio

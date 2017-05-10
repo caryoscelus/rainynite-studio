@@ -22,6 +22,8 @@ target_sources(rainynite-studio
         widgets/timeline_view.h
         widgets/color_button.cpp
         widgets/color_button.h
+        widgets/point_value_editor.cpp
+        widgets/point_value_editor.h
         widgets/point_editor.cpp
         widgets/point_editor.h
         widgets/bezier_editor.cpp

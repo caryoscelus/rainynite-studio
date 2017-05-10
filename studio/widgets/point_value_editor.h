@@ -1,5 +1,5 @@
 /*
- *  point_editor.h - edit points on canvas
+ *  point_value_editor.h - 2d point editor widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,31 +16,43 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
-#define __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
+#ifndef __STUDIO__WIDGETS__POINT_VALUE_EDITOR_H__2CF69954
+#define __STUDIO__WIDGETS__POINT_VALUE_EDITOR_H__2CF69954
 
 #include <memory>
 
-#include <generic/node_editor.h>
-#include <generic/canvas_editor.h>
-#include <generic/context_listener.h>
+#include <QDoubleSpinBox>
 
-class QGraphicsItem;
+#include <2geom/point.h>
 
 namespace studio {
 
-class PointEditor : public NodeEditor, public CanvasEditor, public ContextListener {
+class PointValueEditor : public QWidget {
+    Q_OBJECT
+
 public:
-    PointEditor();
-    virtual ~PointEditor();
+    PointValueEditor(QWidget* parent = nullptr);
+
 public:
-    virtual void set_canvas(Canvas* canvas) override;
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node) override;
-    virtual void time_changed(core::Time time) override;
+    inline Geom::Point value() const {
+        return _value;
+    }
+    void setReadOnly(bool ro);
+
+Q_SIGNALS:
+    void editingFinished();
+
+protected:
+    void update_value(Geom::Point value_);
+
+private Q_SLOTS:
+    void write_x();
+    void write_y();
+
 private:
-    void update_position();
-private:
-    std::unique_ptr<QGraphicsItem> point_item;
+    QDoubleSpinBox* x_input;
+    QDoubleSpinBox* y_input;
+    Geom::Point _value;
 };
 
 } // namespace studio
