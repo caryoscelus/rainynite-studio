@@ -63,4 +63,4 @@ Runtime renderer dependency:
 Build process
 -------------
 
-See [BUILD.md](BUILD.md) For the detailed build instructions.
+See [BUILDING.md](BUILDING.md) For the detailed build instructions.
