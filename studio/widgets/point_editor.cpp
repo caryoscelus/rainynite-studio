@@ -16,9 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <fmt/format.h>
-
 #include <QGraphicsItem>
+#include <QGraphicsEllipseItem>
 
 #include <2geom/point.h>
 
@@ -26,6 +25,30 @@
 #include "point_editor.h"
 
 namespace studio {
+
+class PointItem : public QGraphicsEllipseItem {
+public:
+    using Callback = std::function<void(double, double)>;
+public:
+    PointItem(Callback callback) :
+        QGraphicsEllipseItem(0, 0, 4, 4),
+        position_callback(callback)
+    {}
+public:
+    virtual QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
+        if (change == ItemPositionHasChanged) {
+            auto pos = value.toPointF();
+            position_callback(pos.x(), pos.y());
+        }
+        return QGraphicsItem::itemChange(change, value);
+    }
+    void set_readonly(bool ro) {
+        setFlag(QGraphicsItem::ItemIsMovable, !ro);
+        setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
+    }
+private:
+    Callback position_callback;
+};
 
 PointEditor::PointEditor() {
 }
@@ -35,7 +58,12 @@ PointEditor::~PointEditor() {
 
 void PointEditor::set_canvas(Canvas* canvas) {
     CanvasEditor::set_canvas(canvas);
-    point_item.reset(canvas->scene()->addEllipse(0, 0, 4, 4));
+    point_item = std::make_unique<PointItem>(
+        [this](double x, double y) {
+            save_position(x, y);
+        }
+    );
+    canvas->scene()->addItem(point_item.get());
     update_position();
 }
 
@@ -54,6 +82,14 @@ void PointEditor::update_position() {
     if (auto node = dynamic_cast<core::BaseValue<Geom::Point>*>(get_node().get())) {
         auto point = node->get(get_time());
         point_item->setPos({point.x()-2, point.y()-2});
+        point_item->set_readonly(!node->can_set());
+    }
+}
+
+void PointEditor::save_position(double x, double y) {
+    if (auto node = dynamic_cast<core::BaseValue<Geom::Point>*>(get_node().get())) {
+        if (node->can_set())
+            node->set({x, y});
     }
 }
 

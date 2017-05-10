@@ -25,9 +25,9 @@
 #include <generic/canvas_editor.h>
 #include <generic/context_listener.h>
 
-class QGraphicsItem;
-
 namespace studio {
+
+class PointItem;
 
 class PointEditor : public NodeEditor, public CanvasEditor, public ContextListener {
 public:
@@ -39,8 +39,9 @@ public:
     virtual void time_changed(core::Time time) override;
 private:
     void update_position();
+    void save_position(double x, double y);
 private:
-    std::unique_ptr<QGraphicsItem> point_item;
+    std::unique_ptr<PointItem> point_item;
 };
 
 } // namespace studio
