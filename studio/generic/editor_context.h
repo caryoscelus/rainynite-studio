@@ -22,6 +22,10 @@
 #include <core/context.h>
 #include <core/action.h>
 
+namespace core {
+class AbstractValue;
+}
+
 namespace studio {
 
 class EditorContext {
