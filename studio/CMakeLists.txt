@@ -66,3 +66,8 @@ target_include_directories(rainynite-studio
 )
 
 configure_file(version.h.cmake.in version.h)
+
+install(
+    TARGETS rainynite-studio
+    RUNTIME DESTINATION bin
+)
