@@ -63,7 +63,4 @@ Runtime renderer dependency:
 Build process
 -------------
 
-- rainy-morph (nothing special: just cmake build & install)
-- core library (`git submodule update --init`, then normal build & install)
-- tool (regular cmake build; can be used directly from build directory or installed)
-- studio (same as tool)
+See [BUILDING.md](BUILDING.md) For the detailed build instructions.
