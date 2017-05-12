@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_tool_zoom, SIGNAL(triggered()), this, SLOT(tool_zoom()));
 
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
+    connect(ui->action_render_frame, SIGNAL(triggered()), this, SLOT(render_frame()));
     connect(this, SIGNAL(redraw_signal()), this, SLOT(redraw()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
     connect(ui->action_extra_style, SIGNAL(toggled(bool)), this, SLOT(toggle_extra_style(bool)));
@@ -157,7 +158,7 @@ void MainWindow::save() {
     }
 }
 
-void MainWindow::render() {
+void MainWindow::render_period(core::TimePeriod const& period) {
     if (get_core_context()->get_document()) {
         auto rsettings = core::renderers::SvgRendererSettings();
         rsettings.render_pngs = true;
@@ -167,6 +168,7 @@ void MainWindow::render() {
         if (render_thread.joinable())
             render_thread.join();
         auto ctx = *get_core_context();
+        ctx.set_period(period);
         render_thread = std::thread([this, renderer, ctx]() {
             try {
                 renderer->render(ctx);
@@ -177,6 +179,17 @@ void MainWindow::render() {
             }
         });
     }
+}
+
+void MainWindow::render() {
+    render_period(get_core_context()->get_period());
+}
+
+void MainWindow::render_frame() {
+    auto time = get_core_context()->get_time();
+    auto time_end = time;
+    ++time_end;
+    render_period({time, time_end});
 }
 
 void MainWindow::redraw() {

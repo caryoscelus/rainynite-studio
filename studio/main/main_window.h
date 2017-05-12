@@ -69,6 +69,7 @@ private Q_SLOTS:
     void tool_zoom();
 
     void render();
+    void render_frame();
     void redraw();
     void toggle_extra_style(bool checked);
 
@@ -78,6 +79,9 @@ private Q_SLOTS:
     void add_playback_dock();
     void add_node_tree_dock();
     void add_node_edit_dock();
+
+private:
+    void render_period(core::TimePeriod const& period);
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;

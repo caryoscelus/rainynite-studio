@@ -76,6 +76,8 @@
      <string>&amp;Context</string>
     </property>
     <addaction name="action_render"/>
+    <addaction name="action_render_frame"/>
+    <addaction name="separator"/>
     <addaction name="action_extra_style"/>
    </widget>
    <widget class="QMenu" name="menu_view">
@@ -188,7 +190,7 @@
     <string>&amp;Redraw</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string>Alt+R</string>
    </property>
   </action>
   <action name="action_time_dock">
@@ -307,6 +309,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="action_render_frame">
+   <property name="text">
+    <string>Render this &amp;frame</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>
