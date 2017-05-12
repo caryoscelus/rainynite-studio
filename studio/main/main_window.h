@@ -49,6 +49,9 @@ public:
 private:
     void set_mainarea_image(std::string const& fname);
 
+Q_SIGNALS:
+    void redraw_signal();
+
 private Q_SLOTS:
     void new_document();
     void open();
