@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget* parent) :
     add_node_edit_dock();
 
     new_document();
+    setup_renderer();
 }
 
 MainWindow::~MainWindow() {
@@ -158,26 +159,42 @@ void MainWindow::save() {
     }
 }
 
+void MainWindow::setup_renderer() {
+    auto renderer = std::make_shared<core::renderers::SvgRenderer>();
+    render_thread = std::thread([this, renderer]() {
+        while (!renderer_quit) {
+            if (renderer_queue.size() > 0) {
+                renderer_mutex.lock();
+                auto ctx = std::move(renderer_queue.front());
+                renderer_queue.pop();
+                renderer_mutex.unlock();
+
+                try {
+                    renderer->render(ctx);
+                } catch (std::exception const& ex) {
+                    auto msg = QString::fromStdString("Uncaught exception while rendering:\n{}"_format(ex.what()));
+                    qDebug() << msg;
+                }
+                Q_EMIT redraw_signal();
+            } else {
+                std::this_thread::sleep_for(std::chrono::milliseconds(128));
+            }
+        }
+    });
+}
+
 void MainWindow::render_period(core::TimePeriod const& period) {
     if (get_core_context()->get_document()) {
         auto rsettings = core::renderers::SvgRendererSettings();
         rsettings.render_pngs = true;
+        rsettings.keep_alive = true;
         rsettings.extra_style = extra_style;
         get_core_context()->mod_render_settings() = rsettings;
-        auto renderer = std::make_shared<core::renderers::SvgRenderer>();
-        if (render_thread.joinable())
-            render_thread.join();
         auto ctx = *get_core_context();
         ctx.set_period(period);
-        render_thread = std::thread([this, renderer, ctx]() {
-            try {
-                renderer->render(ctx);
-                Q_EMIT redraw_signal();
-            } catch (std::exception const& ex) {
-                auto msg = QString::fromStdString("Uncaught exception while rendering:\n{}"_format(ex.what()));
-                qDebug() << msg;
-            }
-        });
+
+        std::lock_guard<std::mutex> lock(renderer_mutex);
+        renderer_queue.push(ctx);
     }
 }
 
@@ -222,8 +239,10 @@ void MainWindow::about() {
 }
 
 void MainWindow::quit() {
-    if (render_thread.joinable())
+    if (render_thread.joinable()) {
+        renderer_quit = true;
         render_thread.join();
+    }
     QApplication::quit();
 }
 

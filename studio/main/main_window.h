@@ -21,6 +21,8 @@
 
 #include <memory>
 #include <thread>
+#include <mutex>
+#include <queue>
 
 #include <QMainWindow>
 
@@ -81,6 +83,7 @@ private Q_SLOTS:
     void add_node_edit_dock();
 
 private:
+    void setup_renderer();
     void render_period(core::TimePeriod const& period);
 
 private:
@@ -88,9 +91,14 @@ private:
     std::unique_ptr<QErrorMessage> error_box;
     std::shared_ptr<core::Document> document;
     std::shared_ptr<core::AbstractValue> active_node;
-    std::thread render_thread;
+
     std::string fname;
     bool extra_style = true;
+
+    std::thread render_thread;
+    std::queue<core::Context> renderer_queue;
+    std::mutex renderer_mutex;
+    bool renderer_quit = false;
 };
 
 }
