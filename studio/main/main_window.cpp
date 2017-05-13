@@ -84,6 +84,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     new_document();
     setup_renderer();
+    render_frame();
 }
 
 MainWindow::~MainWindow() {
