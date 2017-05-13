@@ -16,13 +16,6 @@
   <widget class="QWidget" name="content">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="uid_label">
-      <property name="text">
-       <string>UID</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QLineEdit" name="text_edit"/>
     </item>
     <item>

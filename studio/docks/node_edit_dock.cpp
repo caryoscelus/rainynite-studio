@@ -20,8 +20,6 @@
 
 #include <fmt/format.h>
 
-#include <boost/uuid/uuid_io.hpp>
-
 #include <core/document.h>
 #include <core/types.h>
 #include <core/serialize/node_writer.h>
@@ -48,11 +46,8 @@ NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* par
 
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
     active_node = node;
-    if (!node) {
-        ui->uid_label->setText("<no node>");
+    if (!node)
         return;
-    }
-    ui->uid_label->setText(QString::fromStdString(to_string(node->get_id())));
     bool writeable = node->is_const();
     boost::any value;
     try {
