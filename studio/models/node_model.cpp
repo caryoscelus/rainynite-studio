@@ -143,7 +143,21 @@ void NodeModel::connect_nodes(QList<QModelIndex> const& selection, QModelIndex c
 void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference node) {
     if (auto parent = get_list_node(index.parent())) {
         parent->set_link(index.row(), node);
+        // TODO: insert/remove rows
     }
+}
+
+void NodeModel::swap_nodes(QModelIndex const& a, QModelIndex const& b) {
+    auto parent_a = get_list_node(a.parent());
+    auto parent_b = get_list_node(b.parent());
+    if (!parent_a || !parent_b)
+        return;
+    auto node_a = get_node(a);
+    auto node_b = get_node(b);
+    if (!node_a || !node_b)
+        return;
+    replace_node(a, node_b);
+    replace_node(b, node_a);
 }
 
 bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {

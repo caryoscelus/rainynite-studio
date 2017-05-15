@@ -54,6 +54,7 @@ public:
     void disconnect_node(QModelIndex const& index);
     void connect_nodes(QList<QModelIndex> const& selection, QModelIndex const& source);
     void replace_node(QModelIndex const& index, core::AbstractReference node);
+    void swap_nodes(QModelIndex const& a, QModelIndex const& b);
 
 public:
     template <typename T, typename F>

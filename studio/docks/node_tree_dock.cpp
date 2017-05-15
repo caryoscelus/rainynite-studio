@@ -73,6 +73,18 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
             );
         }
 
+        if (selection.size() == 2) {
+            auto a = selection[0];
+            auto b = selection[1];
+            menu.addAction(
+                QIcon::fromTheme("document-swap"), // better icon?
+                "Swap",
+                [this, a, b]() {
+                    model->swap_nodes(a, b);
+                }
+            );
+        }
+
         if (model->node_is_connected(index)) {
             menu.addAction(
                 QIcon::fromTheme("remove-link"),
