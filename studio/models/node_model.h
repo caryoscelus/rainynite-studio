@@ -55,6 +55,19 @@ public:
     void connect_nodes(QList<QModelIndex> const& selection, QModelIndex const& source);
     void replace_node(QModelIndex const& index, core::AbstractReference node);
     void swap_nodes(QModelIndex const& a, QModelIndex const& b);
+    /**
+     * Checks if node can be moved up.
+     *
+     * NOTE: this function doesn't check type compatibility! It should usually
+     * be used after parent is checked to be editable list.
+     */
+    bool can_move_up(size_t offset, QModelIndex const& parent);
+    /**
+     * Checks if node can be moved down, same as can_move_up.
+     */
+    bool can_move_down(size_t offset, QModelIndex const& parent);
+    void move_up(size_t offset, QModelIndex const& parent);
+    void move_down(size_t offset, QModelIndex const& parent);
 
 public:
     template <typename T, typename F>

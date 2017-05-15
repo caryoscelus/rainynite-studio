@@ -77,7 +77,7 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
             auto a = selection[0];
             auto b = selection[1];
             menu.addAction(
-                QIcon::fromTheme("document-swap"), // better icon?
+                QIcon::fromTheme("exchange-positions"),
                 "Swap",
                 [this, a, b]() {
                     model->swap_nodes(a, b);
@@ -114,6 +114,22 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
                     model->removeRow(node_index, parent_index);
                 }
             );
+            auto up_action = menu.addAction(
+                QIcon::fromTheme("go-up"),
+                "Move up",
+                [this, node_index, parent_index]() {
+                    model->move_up(node_index, parent_index);
+                }
+            );
+            auto down_action = menu.addAction(
+                QIcon::fromTheme("go-down"),
+                "Move down",
+                [this, node_index, parent_index]() {
+                    model->move_down(node_index, parent_index);
+                }
+            );
+            up_action->setEnabled(model->can_move_up(node_index, parent_index));
+            down_action->setEnabled(model->can_move_down(node_index, parent_index));
             menu.addSeparator();
         }
 

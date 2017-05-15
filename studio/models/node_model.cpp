@@ -160,6 +160,22 @@ void NodeModel::swap_nodes(QModelIndex const& a, QModelIndex const& b) {
     replace_node(b, node_a);
 }
 
+bool NodeModel::can_move_up(size_t offset, QModelIndex const& /*parent*/) {
+    return offset > 0;
+}
+
+bool NodeModel::can_move_down(size_t offset, QModelIndex const& parent) {
+    return offset < get_list_node(parent)->link_count()-1;
+}
+
+void NodeModel::move_up(size_t offset, QModelIndex const& parent) {
+    swap_nodes(index(offset, 0, parent), index(offset-1, 0, parent));
+}
+
+void NodeModel::move_down(size_t offset, QModelIndex const& parent) {
+    swap_nodes(index(offset, 0, parent), index(offset+1, 0, parent));
+}
+
 bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
     if (auto parent_node = get_list_node(parent)) {
         beginRemoveRows(parent, row, row+count-1);
