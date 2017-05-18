@@ -1,5 +1,5 @@
 /*
- *  bezier_editor.cpp - edit beziers on canvas
+ *  point_editor.cpp - edit points on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

@@ -23,9 +23,7 @@
 #include <memory>
 
 namespace core {
-
 class AbstractValue;
-
 }
 
 namespace studio {
@@ -51,7 +49,7 @@ public:
 
 void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node);
 
-}
+} // namespace studio
 
 #define REGISTER_CANVAS_EDITOR(Name, Type, Editor) \
 class Name##Factory : \
