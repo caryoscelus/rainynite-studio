@@ -31,6 +31,7 @@ PlaybackDock::PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* par
     connect(ui->move_start_button, SIGNAL(clicked()), this, SLOT(move_start()));
     connect(ui->move_end_button, SIGNAL(clicked()), this, SLOT(move_end()));
     connect(ui->play_button, SIGNAL(toggled(bool)), this, SLOT(toggle_playback(bool)));
+    connect(ui->stop_button, SIGNAL(clicked()), this, SLOT(stop()));
     connect(ui->timeline_zoom, SIGNAL(valueChanged(int)), ui->timeline, SLOT(set_zoom_level(int)));
 
     // TODO: move actual playing out of dock
@@ -58,6 +59,11 @@ void PlaybackDock::toggle_playback(bool play) {
         else
             timer->stop();
     }
+}
+
+void PlaybackDock::stop() {
+    ui->play_button->setChecked(false);
+    move_start();
 }
 
 void PlaybackDock::next_frame() {

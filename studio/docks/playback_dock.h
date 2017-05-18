@@ -52,6 +52,7 @@ protected:
 
 private Q_SLOTS:
     void toggle_playback(bool play);
+    void stop();
     void next_frame();
     void move_start();
     void move_end();
