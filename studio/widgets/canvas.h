@@ -48,6 +48,7 @@ public:
 public:
     void add_node_editor(std::unique_ptr<CanvasEditor> editor_);
     void remove_node_editor();
+    void clear_node_editors();
 
 protected:
     virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
@@ -56,7 +57,7 @@ private:
     std::unique_ptr<QGraphicsScene> the_scene;
     std::unique_ptr<QGraphicsPixmapItem> image;
     std::shared_ptr<core::AbstractValue> active_node;
-    std::unique_ptr<CanvasEditor> editor;
+    std::vector<std::unique_ptr<CanvasEditor>> editors;
 };
 
 }

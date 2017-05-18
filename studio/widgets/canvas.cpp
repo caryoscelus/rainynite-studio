@@ -52,18 +52,23 @@ void Canvas::set_main_image(QPixmap const& pixmap) {
 void Canvas::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
     if (active_node != node) {
         active_node = node;
-        remove_node_editor();
+        clear_node_editors();
         add_canvas_editor(*this, node);
     }
 }
 
-void Canvas::add_node_editor(std::unique_ptr<CanvasEditor> editor_) {
-    editor = std::move(editor_);
+void Canvas::add_node_editor(std::unique_ptr<CanvasEditor> editor) {
     editor->set_canvas(this);
+    editors.push_back(std::move(editor));
 }
 
 void Canvas::remove_node_editor() {
-    editor.reset();
+    // TODO
+    clear_node_editors();
+}
+
+void Canvas::clear_node_editors() {
+    editors.clear();
 }
 
 } // namespace studio
