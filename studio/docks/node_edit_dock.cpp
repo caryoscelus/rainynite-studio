@@ -102,9 +102,13 @@ void NodeEditDock::write_node() {
     }
     if (ui->text_edit->isReadOnly())
         return;
-    qDebug() << ui->text_edit->text();
     auto text = ui->text_edit->text().toStdString();
-    active_node->set_any(core::parse_primitive_type(active_node->get_type(), text));
+    try {
+        active_node->set_any(core::parse_primitive_type(active_node->get_type(), text));
+    } catch (std::exception const& ex) {
+        qDebug() << "Exception while parsing input:" << QString::fromStdString(ex.what());
+        active_node_changed(active_node);
+    }
 }
 
 } // namespace studio
