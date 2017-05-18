@@ -34,16 +34,20 @@ void CanvasEditor::set_canvas(Canvas* canvas_) {
 void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
         return;
+
+    std::unique_ptr<CanvasEditor> editor;
     try {
-        auto editor = class_init::type_info<CanvasEditorFactory,std::unique_ptr<CanvasEditor>>(node->get_type());
-        if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
-            node_editor->set_node(node);
-        if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
-            context_listener->set_context(canvas.get_context());
-        canvas.add_node_editor(std::move(editor));
+        editor = class_init::type_info<CanvasEditorFactory, decltype(editor)>(node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
         // do something about it? should we really catch it?
+        return;
     }
+
+    if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
+        node_editor->set_node(node);
+    if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
+        context_listener->set_context(canvas.get_context());
+    canvas.add_node_editor(std::move(editor));
 }
 
 } // namespace studio
