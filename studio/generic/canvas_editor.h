@@ -47,6 +47,11 @@ public:
     virtual std::unique_ptr<CanvasEditor> operator()() const = 0;
 };
 
+class CanvasEditorShowChildren {
+public:
+    virtual bool operator()() const = 0;
+};
+
 void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node);
 
 } // namespace studio
@@ -54,11 +59,26 @@ void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node
 #define REGISTER_CANVAS_EDITOR(Name, Type, Editor) \
 class Name##Factory : \
     public CanvasEditorFactory, \
-    class_init::Registered<Name##Factory, Type, CanvasEditorFactory> \
+    private class_init::Registered<Name##Factory, Type, CanvasEditorFactory> \
 { \
 public: \
     virtual std::unique_ptr<CanvasEditor> operator()() const override { \
         return std::make_unique<Editor>(); \
+    } \
+}
+
+#define REGISTER_CANVAS_SHOW_CHILDREN(Name, node_name, value) \
+class Name##ShowChildren : \
+    public CanvasEditorShowChildren, \
+    private class_init::StringRegistered<Name##ShowChildren, CanvasEditorShowChildren> \
+{ \
+public: \
+    static std::string name() { \
+        return node_name; \
+    } \
+public: \
+    virtual bool operator()() const override { \
+        return value; \
     } \
 }
 

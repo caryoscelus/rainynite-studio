@@ -18,6 +18,7 @@
 
 #include <core/class_init.h>
 #include <core/node.h>
+#include <core/node_info.h>
 
 #include <widgets/canvas.h>
 #include "node_editor.h"
@@ -35,19 +36,34 @@ void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node
     if (node == nullptr)
         return;
 
-    std::unique_ptr<CanvasEditor> editor;
+    std::unique_ptr<CanvasEditor> editor = nullptr;
     try {
         editor = class_init::type_info<CanvasEditorFactory, decltype(editor)>(node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
         // do something about it? should we really catch it?
-        return;
     }
 
-    if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
-        node_editor->set_node(node);
-    if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
-        context_listener->set_context(canvas.get_context());
-    canvas.add_node_editor(std::move(editor));
+    if (editor) {
+        if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
+            node_editor->set_node(node);
+        if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
+            context_listener->set_context(canvas.get_context());
+        canvas.add_node_editor(std::move(editor));
+    }
+
+    bool show_children = false;
+    try {
+        show_children = class_init::name_info<CanvasEditorShowChildren>(core::node_name(*node))();
+    } catch (class_init::TypeLookupError const&) {
+    }
+
+    if (show_children) {
+        // NOTE: this may lead to infinite recursion if node tree is looped
+        if (auto parent = dynamic_cast<core::AbstractListLinked*>(node.get())) {
+            for (auto child : parent->get_links())
+                add_canvas_editor(canvas, child);
+        }
+    }
 }
 
 } // namespace studio
