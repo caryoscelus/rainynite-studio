@@ -39,4 +39,6 @@ REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, (NodeEditorWidget<PointValue
 REGISTER_CANVAS_EDITOR(BezierKnotsDisplay, Geom::BezierKnots, BezierKnotsDisplay);
 REGISTER_CANVAS_EDITOR(PointEdit, Geom::Point, PointEditor);
 
+REGISTER_CANVAS_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
+
 } // namespace studio
