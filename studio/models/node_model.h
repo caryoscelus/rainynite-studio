@@ -22,6 +22,7 @@
 #include <QAbstractItemModel>
 
 #include <core/node_info.h>
+#include <core/node/traverse.h>
 
 namespace studio {
 
