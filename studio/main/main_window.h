@@ -26,7 +26,7 @@
 
 #include <QMainWindow>
 
-#include <core/node.h>
+#include <core/node/abstract_value.h>
 
 #include <generic/context_listener.h>
 

@@ -21,7 +21,6 @@
 
 #include <fmt/format.h>
 
-#include <core/node.h>
 #include <core/color.h>
 
 #include "color_button.h"

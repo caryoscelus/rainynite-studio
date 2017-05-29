@@ -24,6 +24,7 @@
 #include <QWidget>
 
 #include <core/actions/change_value.h>
+#include <core/node/value.h>
 
 #include "context_listener.h"
 

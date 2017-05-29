@@ -17,8 +17,8 @@
  */
 
 #include <core/class_init.h>
-#include <core/node.h>
 #include <core/node_info.h>
+#include <core/node/abstract_list.h>
 
 #include <widgets/canvas.h>
 #include "node_editor.h"

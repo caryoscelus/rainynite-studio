@@ -20,7 +20,6 @@
 #include <QPushButton>
 
 #include <core/class_init.h>
-#include <core/node.h>
 #include <core/color.h>
 
 #include <geom_helpers/knots.h>

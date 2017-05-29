@@ -24,7 +24,7 @@
 
 #include <geom_helpers/knots.h>
 
-#include <core/node.h>
+#include <core/node/abstract_value.h>
 
 #include <generic/canvas_editor.h>
 #include "canvas.h"
