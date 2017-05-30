@@ -16,9 +16,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <fmt/format.h>
+
 #include <core/node_info.h>
+#include <core/node/abstract_node.h>
 
 #include "node_model.h"
+
+using namespace fmt::literals;
 
 namespace studio {
 
@@ -35,13 +40,21 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole)
-        return QVariant();
-
-    if (auto node = get_node(index))
-        return QString::fromStdString(core::node_name(*node));
-
-    return "<Bad node!>";
+    switch (role) {
+        case Qt::DisplayRole: {
+            std::string role = "document";
+            if (auto parent_node = get_node_as<core::AbstractNode>(parent(index)))
+                role = parent_node->get_name_at(index.row());
+            else if (parent(index).isValid())
+                role = "{}"_format(index.row());
+            std::string type_name = "<Bad node!>";
+            if (auto node = get_node(index))
+                type_name = core::node_name(*node);
+            return QString::fromStdString("{}: {}"_format(role, type_name));
+        } break;
+        default:
+            return QVariant();
+    }
 }
 
 Qt::ItemFlags NodeModel::flags(QModelIndex const&) const {
