@@ -79,6 +79,16 @@ QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) con
     return QModelIndex();
 }
 
+bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
+    if (get_node_as<core::AbstractNode>(parent))
+        return true;
+    return false;
+}
+
+void NodeModel::add_empty_custom_property(QModelIndex const& parent, std::string const& name) {
+    get_node_as<core::AbstractNode>(parent)->set_property(name, nullptr);
+}
+
 bool NodeModel::can_add_element(QModelIndex const& parent) const {
     if (auto node = get_list_node(parent))
         return node->is_editable_list();

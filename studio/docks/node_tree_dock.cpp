@@ -18,6 +18,7 @@
 
 #include <QMenu>
 #include <QContextMenuEvent>
+#include <QInputDialog>
 
 #include <core/document.h>
 #include <core/node_info.h>
@@ -101,6 +102,23 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
                 "Add element",
                 [this, index]() {
                     model->add_empty_element(index);
+                }
+            );
+            menu.addSeparator();
+        }
+
+        if (model->can_add_custom_property(index)) {
+            menu.addAction(
+                QIcon::fromTheme("list-add"), // TODO
+                "Add custom property",
+                [this, index]() {
+                    auto text = QInputDialog::getText(
+                        this,
+                        "Add new custom property",
+                        "Property name:"
+                    );
+                    if (!text.isEmpty())
+                        model->add_empty_custom_property(index, text.toStdString());
                 }
             );
             menu.addSeparator();
