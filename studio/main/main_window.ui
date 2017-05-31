@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RainyNite [construction zone]</string>
+   <string>RainyNite {} &quot;{}&quot;</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -291,7 +291,8 @@
   </action>
   <action name="action_undo">
    <property name="icon">
-    <iconset theme="edit-undo"/>
+    <iconset theme="edit-undo">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Undo</string>
@@ -302,7 +303,8 @@
   </action>
   <action name="action_redo">
    <property name="icon">
-    <iconset theme="edit-redo"/>
+    <iconset theme="edit-redo">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Redo</string>

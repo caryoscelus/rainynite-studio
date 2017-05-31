@@ -31,6 +31,7 @@
 #include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
 
+#include <version.h>
 #include <docks/time_dock.h>
 #include <docks/playback_dock.h>
 #include <docks/node_tree_dock.h>
@@ -51,6 +52,11 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
+    setWindowTitle(QString::fromStdString(fmt::format(
+        windowTitle().toStdString(),
+        RAINYNITE_STUDIO_VERSION,
+        RAINYNITE_STUDIO_CODENAME
+    )));
 
     connect(ui->action_new, SIGNAL(triggered()), this, SLOT(new_document()));
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
