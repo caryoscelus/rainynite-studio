@@ -45,6 +45,7 @@ public:
 
 public:
     virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
+    virtual void time_changed(core::Time time) override;
 
 protected:
     virtual void closeEvent(QCloseEvent* event) override;
@@ -53,11 +54,14 @@ private Q_SLOTS:
     void write_node();
 
 private:
+    void update_value();
+    void update_generic();
+    void update_custom();
     void setup_custom_widget(std::shared_ptr<core::AbstractValue> node);
 
 private:
     std::unique_ptr<Ui::NodeEditDock> ui;
-    QWidget* custom_widget;
+    QWidget* custom_widget = nullptr;
 
     std::shared_ptr<core::AbstractValue> active_node;
 };

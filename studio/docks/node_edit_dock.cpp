@@ -44,17 +44,37 @@ NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* par
     connect(ui->text_edit, SIGNAL(editingFinished()), this, SLOT(write_node()));
 }
 
+NodeEditDock::~NodeEditDock() {
+}
+
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
     active_node = node;
     if (!node)
         return;
-    bool writeable = node->is_const();
+    update_generic();
+    setup_custom_widget(node);
+}
+
+void NodeEditDock::time_changed(core::Time time) {
+    ContextListener::time_changed(time);
+    update_value();
+}
+
+void NodeEditDock::update_value() {
+    update_generic();
+    update_custom();
+}
+
+void NodeEditDock::update_generic() {
+    if (!active_node)
+        return;
+    bool writeable = active_node->is_const();
     boost::any value;
     try {
         if (writeable) {
-            value = node->any();
+            value = active_node->any();
         } else {
-            value = node->get_any(get_core_context()->get_time());
+            value = active_node->get_any(get_core_context()->get_time());
         }
         auto s = core::serialize::value_to_string(value);
         ui->text_edit->setText(QString::fromStdString(s));
@@ -68,7 +88,6 @@ void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node
         writeable = false;
     }
     ui->text_edit->setReadOnly(!writeable);
-    setup_custom_widget(node);
 }
 
 void NodeEditDock::setup_custom_widget(std::shared_ptr<core::AbstractValue> node) {
@@ -79,15 +98,16 @@ void NodeEditDock::setup_custom_widget(std::shared_ptr<core::AbstractValue> node
     ui->content->layout()->replaceWidget(custom_widget, widget);
     delete custom_widget;
     custom_widget = widget;
-    if (auto node_editor = dynamic_cast<NodeEditor*>(widget)) {
-        node_editor->set_node(node);
-    }
-    if (auto listener = dynamic_cast<ContextListener*>(widget)) {
-        listener->set_context(get_context());
-    }
+    update_custom();
 }
 
-NodeEditDock::~NodeEditDock() {
+void NodeEditDock::update_custom() {
+    if (auto node_editor = dynamic_cast<NodeEditor*>(custom_widget)) {
+        node_editor->set_node(active_node);
+    }
+    if (auto listener = dynamic_cast<ContextListener*>(custom_widget)) {
+        listener->set_context(get_context());
+    }
 }
 
 void NodeEditDock::closeEvent(QCloseEvent* event) {
