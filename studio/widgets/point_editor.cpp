@@ -77,7 +77,8 @@ void PointEditor::set_node(std::shared_ptr<core::AbstractValue> node) {
     update_position();
 }
 
-void PointEditor::time_changed(core::Time) {
+void PointEditor::time_changed(core::Time time) {
+    ContextListener::time_changed(time);
     update_position();
 }
 

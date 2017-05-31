@@ -43,7 +43,8 @@ void RectangleEditor::set_node(std::shared_ptr<core::AbstractValue> node) {
     update_position();
 }
 
-void RectangleEditor::time_changed(core::Time) {
+void RectangleEditor::time_changed(core::Time time) {
+    ContextListener::time_changed(time);
     update_position();
 }
 
