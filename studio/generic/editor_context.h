@@ -20,10 +20,10 @@
 #define __STUDIO__GENERIC__EDITOR_CONTEXT_H__4E809780
 
 #include <core/context.h>
-#include <core/action.h>
 
 namespace core {
 class AbstractValue;
+class ActionStack;
 }
 
 namespace studio {
@@ -38,9 +38,7 @@ public:
         return context;
     }
     void set_active_node(std::shared_ptr<core::AbstractValue> node);
-    inline core::ActionStack& action_stack() {
-        return action_stack_;
-    }
+    std::shared_ptr<core::ActionStack> action_stack();
 public:
     inline boost::signals2::signal<void(core::Time)>& changed_time() {
         return context->changed_time;
@@ -51,7 +49,6 @@ public:
 private:
     std::shared_ptr<core::Context> context;
     std::shared_ptr<core::AbstractValue> active_node;
-    core::ActionStack action_stack_;
 private:
     boost::signals2::signal<void(std::shared_ptr<core::AbstractValue>)> changed_active_node_;
 };

@@ -225,11 +225,11 @@ void MainWindow::toggle_extra_style(bool checked) {
 }
 
 void MainWindow::undo() {
-    get_context()->action_stack().undo();
+    get_context()->action_stack()->undo();
 }
 
 void MainWindow::redo() {
-    get_context()->action_stack().redo();
+    get_context()->action_stack()->redo();
 }
 
 void MainWindow::tool_mouse() {

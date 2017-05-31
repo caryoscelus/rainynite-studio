@@ -16,6 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <core/document.h>
+
 #include "editor_context.h"
 
 namespace studio {
@@ -25,6 +27,11 @@ void EditorContext::set_active_node(std::shared_ptr<core::AbstractValue> node) {
         return;
     active_node = node;
     changed_active_node()(node);
+}
+
+std::shared_ptr<core::ActionStack> EditorContext::action_stack() {
+    if (auto document = get_context()->get_document())
+        return document->get_action_stack();
 }
 
 std::shared_ptr<EditorContext> global_dummy_context() {
