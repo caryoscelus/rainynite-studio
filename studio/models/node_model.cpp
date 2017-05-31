@@ -123,7 +123,7 @@ void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* nod
         else
             beginRemoveRows(index, new_rows, old_rows-1);
         // perform action
-        parent_node->set_link(index.row(), new_node);
+        replace_node(index, new_node);
         if (new_rows > old_rows)
             endInsertRows();
         else
