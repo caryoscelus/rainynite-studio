@@ -28,6 +28,8 @@ target_sources(rainynite-studio
         widgets/point_editor.h
         widgets/bezier_editor.cpp
         widgets/bezier_editor.h
+        widgets/rectangle_editor.cpp
+        widgets/rectangle_editor.h
 
         widgets/editor_factory.cpp
 

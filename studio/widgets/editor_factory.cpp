@@ -23,11 +23,13 @@
 #include <core/color.h>
 
 #include <geom_helpers/knots.h>
+#include <geom_helpers/rectangle.h>
 
 #include <generic/custom_widgets.h>
 #include "color_button.h"
 #include "point_value_editor.h"
 #include "point_editor.h"
+#include "rectangle_editor.h"
 #include "bezier_editor.h"
 
 namespace studio {
@@ -37,6 +39,7 @@ REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, (NodeEditorWidget<PointValue
 
 REGISTER_CANVAS_EDITOR(BezierKnotsDisplay, Geom::BezierKnots, BezierKnotsDisplay);
 REGISTER_CANVAS_EDITOR(PointEdit, Geom::Point, PointEditor);
+REGISTER_CANVAS_EDITOR(RectangleEdit, Geom::Rectangle, RectangleEditor);
 
 REGISTER_CANVAS_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
 
