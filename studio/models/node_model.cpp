@@ -228,7 +228,8 @@ core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
         return root;
     if (auto pnode = get_node(index.parent())) {
         if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(pnode))
-            return parent_node->get_links()[index.row()];
+            if (index.row() < parent_node->link_count())
+                return parent_node->get_link(index.row());
     }
     return nullptr;
 }
