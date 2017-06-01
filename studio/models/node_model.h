@@ -24,6 +24,10 @@
 #include <core/node_info.h>
 #include <core/node/traverse.h>
 
+namespace core {
+class ActionStack;
+}
+
 namespace studio {
 
 class NodeModel : public QAbstractItemModel
@@ -31,7 +35,7 @@ class NodeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    explicit NodeModel(core::AbstractReference root, QObject* parent = 0);
+    explicit NodeModel(core::AbstractReference root, std::shared_ptr<core::ActionStack> action_stack, QObject* parent = 0);
     virtual ~NodeModel();
 
     QVariant data(QModelIndex const& index, int role) const override;
@@ -104,6 +108,7 @@ private:
 
 private:
     core::AbstractReference root;
+    std::shared_ptr<core::ActionStack> action_stack;
 private:
     mutable std::map<std::pair<QModelIndex, size_t>, quintptr> indexes;
     mutable std::map<quintptr, QModelIndex> parents;

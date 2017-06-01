@@ -46,9 +46,9 @@ NodeTreeDock::~NodeTreeDock() {
 void NodeTreeDock::set_context(std::shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
     if (auto document = get_core_context()->get_document()) {
-        model = std::make_unique<NodeModel>(document);
+        model = std::make_unique<NodeModel>(document, document->get_action_stack());
     } else {
-        model = std::make_unique<NodeModel>(nullptr);
+        model = std::make_unique<NodeModel>(nullptr, nullptr);
     }
     ui->tree_view->setModel(model.get());
 }

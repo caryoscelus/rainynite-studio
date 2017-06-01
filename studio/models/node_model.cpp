@@ -20,6 +20,8 @@
 
 #include <core/node_info.h>
 #include <core/node/abstract_node.h>
+#include <core/action.h>
+#include <core/actions/change_link.h>
 
 #include "node_model.h"
 
@@ -27,9 +29,10 @@ using namespace fmt::literals;
 
 namespace studio {
 
-NodeModel::NodeModel(core::AbstractReference root_, QObject* parent) :
+NodeModel::NodeModel(core::AbstractReference root_, std::shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
     QAbstractItemModel(parent),
-    root(root_)
+    root(root_),
+    action_stack(action_stack_)
 {
 }
 
@@ -164,8 +167,10 @@ void NodeModel::connect_nodes(QList<QModelIndex> const& selection, QModelIndex c
 }
 
 void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference node) {
+    if (!action_stack)
+        return;
     if (auto parent = get_list_node(index.parent())) {
-        parent->set_link(index.row(), node);
+        action_stack->emplace<core::actions::ChangeLink>(parent, index.row(), node);
         // TODO: insert/remove rows
     }
 }
