@@ -109,10 +109,8 @@ void NodeModel::add_empty_element(QModelIndex const& parent) {
 
 void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time) {
     if (auto parent_node = get_list_node(index.parent())) {
-        boost::any value;
-        if (auto node = get_node(index))
-            value = node->get_any(time);
-        auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), value);
+        auto node = get_node(index);
+        auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), node, time);
 
         // now tell Qt about our intentions
         size_t old_rows = 0;
