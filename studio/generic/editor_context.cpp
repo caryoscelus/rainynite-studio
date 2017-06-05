@@ -32,6 +32,7 @@ void EditorContext::set_active_node(std::shared_ptr<core::AbstractValue> node) {
 std::shared_ptr<core::ActionStack> EditorContext::action_stack() {
     if (auto document = get_context()->get_document())
         return document->get_action_stack();
+    return nullptr;
 }
 
 std::shared_ptr<EditorContext> global_dummy_context() {
