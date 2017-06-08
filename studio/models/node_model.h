@@ -62,6 +62,11 @@ public:
     void connect_nodes(QList<QModelIndex> const& selection, QModelIndex const& source);
     void replace_node(QModelIndex const& index, core::AbstractReference node);
     void swap_nodes(QModelIndex const& a, QModelIndex const& b);
+    bool can_remove_node(QModelIndex const& index) const;
+    /**
+     * Remove "filter" node (replacing it with its child)
+     */
+    void remove_node(QModelIndex const& index);
     /**
      * Checks if node can be moved up.
      *

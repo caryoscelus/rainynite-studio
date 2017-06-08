@@ -96,6 +96,16 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
             );
         }
 
+        if (model->can_remove_node(index)) {
+            menu.addAction(
+                QIcon::fromTheme("list-remove"), // TODO
+                "Remove",
+                [this, index]() {
+                    model->remove_node(index);
+                }
+            );
+        }
+
         if (model->can_add_element(index)) {
             menu.addAction(
                 QIcon::fromTheme("list-add"),

@@ -164,6 +164,19 @@ void NodeModel::connect_nodes(QList<QModelIndex> const& selection, QModelIndex c
     }
 }
 
+bool NodeModel::can_remove_node(QModelIndex const& index) const {
+    if (auto node = get_node_as<core::AbstractNode>(index))
+        return !node->get_source_name().empty();
+    return false;
+}
+
+void NodeModel::remove_node(QModelIndex const& index) {
+    if (auto node = get_node_as<core::AbstractNode>(index)) {
+        auto child = node->get_property(node->get_source_name());
+        replace_node(index, child);
+    }
+}
+
 void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference node) {
     if (!action_stack)
         return;
