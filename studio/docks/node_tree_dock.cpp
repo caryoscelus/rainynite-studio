@@ -127,7 +127,7 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         if (parent_node->is_editable_list()) {
             menu.addAction(
                 QIcon::fromTheme("list-remove"),
-                "Remove",
+                "Remove list item",
                 [this, node_index, parent_index]() {
                     model->removeRow(node_index, parent_index);
                 }
