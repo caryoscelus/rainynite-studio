@@ -52,11 +52,8 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
-    setWindowTitle(QString::fromStdString(fmt::format(
-        windowTitle().toStdString(),
-        RAINYNITE_STUDIO_VERSION,
-        RAINYNITE_STUDIO_CODENAME
-    )));
+    window_title_template = windowTitle().toStdString();
+    update_title();
 
     connect(ui->action_new, SIGNAL(triggered()), this, SLOT(new_document()));
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
@@ -103,7 +100,7 @@ void MainWindow::new_document() {
 
 void MainWindow::open() {
     auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "RainyNite file (*.rnite)(*.rnite);;Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
-    fname = fname_qt.toStdString();
+    set_fname(fname_qt.toStdString());
     reload();
 }
 
@@ -143,7 +140,7 @@ void MainWindow::reload() {
 
 void MainWindow::save_as() {
     auto fname_qt = QFileDialog::getSaveFileName(this, "Save", "", "RainyNite file (*.rnite)(*.rnite);;All files(*)");
-    fname = fname_qt.toStdString();
+    set_fname(fname_qt.toStdString());
     if (!fname.empty())
         save();
 }
@@ -164,6 +161,20 @@ void MainWindow::save() {
     } catch (...) {
         qDebug() << "Unknown error while saving document";
     }
+}
+
+void MainWindow::set_fname(std::string const& fname_) {
+    fname = fname_;
+    update_title();
+}
+
+void MainWindow::update_title() {
+    setWindowTitle(QString::fromStdString(fmt::format(
+        window_title_template,
+        "file"_a=fname,
+        "version"_a=RAINYNITE_STUDIO_VERSION,
+        "codename"_a=RAINYNITE_STUDIO_CODENAME
+    )));
 }
 
 void MainWindow::setup_renderer() {

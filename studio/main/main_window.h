@@ -61,6 +61,7 @@ private Q_SLOTS:
     void save();
     void save_as();
 
+    void update_title();
     void about();
     void quit();
 
@@ -85,6 +86,7 @@ private Q_SLOTS:
 private:
     void setup_renderer();
     void render_period(core::TimePeriod const& period);
+    void set_fname(std::string const& fname_);
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;
@@ -93,6 +95,7 @@ private:
     std::shared_ptr<core::AbstractValue> active_node;
 
     std::string fname;
+    std::string window_title_template;
     bool extra_style = true;
 
     std::thread render_thread;

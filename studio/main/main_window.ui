@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RainyNite {} &quot;{}&quot;</string>
+   <string>{file} - RainyNite {version} &quot;{codename}&quot;</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
