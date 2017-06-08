@@ -69,7 +69,10 @@ void PlaybackDock::stop() {
 void PlaybackDock::next_frame() {
     if (auto context = get_core_context()) {
         auto time = context->get_time();
-        context->set_time(time + core::Time(0, context->get_fps(), 1));
+        if (time >= context->get_period().get_last())
+            toggle_playback(false);
+        else
+            context->set_time(time + core::Time(0, context->get_fps(), 1));
     }
 }
 
