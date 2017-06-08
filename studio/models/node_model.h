@@ -97,6 +97,7 @@ public:
     }
 
 public:
+    boost::optional<std::type_index> get_link_type(QModelIndex const& index) const;
     std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
     template <class T>
     std::shared_ptr<T> get_node_as(QModelIndex const& index) const {

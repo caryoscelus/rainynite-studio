@@ -165,14 +165,19 @@ void NodeModel::connect_nodes(QList<QModelIndex> const& selection, QModelIndex c
 }
 
 bool NodeModel::can_remove_node(QModelIndex const& index) const {
-    if (auto node = get_node_as<core::AbstractNode>(index))
-        return !node->get_source_name().empty();
+    if (auto node = get_node_as<core::AbstractListLinked>(index)) {
+        if (node->link_count() == 0)
+            return false;
+        if (auto req_type = get_link_type(index))
+            return node->get_link_type(0) == *req_type;
+        return index.parent().isValid();
+    }
     return false;
 }
 
 void NodeModel::remove_node(QModelIndex const& index) {
     if (auto node = get_node_as<core::AbstractNode>(index)) {
-        auto child = node->get_property(node->get_source_name());
+        auto child = node->get_link(0);
         replace_node(index, child);
     }
 }
@@ -235,6 +240,12 @@ quintptr NodeModel::get_id(QModelIndex const& parent, size_t i) const {
     indexes.emplace(pair, interal_id);
     parents.emplace(interal_id, parent);
     return interal_id;
+}
+
+boost::optional<std::type_index> NodeModel::get_link_type(QModelIndex const& index) const {
+    if (auto parent = get_node_as<core::AbstractListLinked>(index.parent()))
+        return parent->get_link_type(get_node_index(index));
+    return boost::none;
 }
 
 core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
