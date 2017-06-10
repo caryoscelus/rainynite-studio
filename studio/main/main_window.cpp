@@ -139,7 +139,12 @@ void MainWindow::reload() {
 }
 
 void MainWindow::save_as() {
-    auto fname_qt = QFileDialog::getSaveFileName(this, "Save", "", "RainyNite file (*.rnite)(*.rnite);;All files(*)");
+    auto fname_qt = QFileDialog::getSaveFileName(
+        this,
+        "Save",
+        QString::fromStdString(fname),
+        "RainyNite file (*.rnite)(*.rnite);;All files(*)"
+    );
     set_fname(fname_qt.toStdString());
     if (!fname.empty())
         save();
