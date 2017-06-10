@@ -145,9 +145,10 @@ void MainWindow::save_as() {
         QString::fromStdString(fname),
         "RainyNite file (*.rnite)(*.rnite);;All files(*)"
     );
-    set_fname(fname_qt.toStdString());
-    if (!fname.empty())
+    if (!fname_qt.isEmpty()) {
+        set_fname(fname_qt.toStdString());
         save();
+    }
 }
 
 void MainWindow::save() {
