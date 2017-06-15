@@ -75,7 +75,7 @@ QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) con
         return QModelIndex();
     }
     if (auto parent_node = get_list_node(parent)) {
-        if (row >= parent_node->link_count())
+        if ((size_t) row >= parent_node->link_count())
             return QModelIndex();
         return createIndex(row, column, get_id(parent, row));
     }
@@ -255,7 +255,7 @@ core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
         return root;
     if (auto pnode = get_node(index.parent())) {
         if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(pnode))
-            if (index.row() < parent_node->link_count())
+            if ((size_t) index.row() < parent_node->link_count())
                 return parent_node->get_link(index.row());
     }
     return nullptr;
