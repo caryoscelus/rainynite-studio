@@ -26,7 +26,6 @@
 #include <QDebug>
 
 #include <core/document.h>
-#include <core/filters/svg_path_reader.h>
 #include <core/filters/json_reader.h>
 #include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
@@ -120,21 +119,9 @@ void MainWindow::reload() {
     } catch (std::exception const& ex) {
         auto msg = QString::fromStdString("Uncaught exception in JSON filter:\n{}"_format(ex.what()));
         qDebug() << msg;
-    } catch (...) {
-        qDebug() << "Unknown error while trying to open document via JSON filter";
-    }
-    try {
-        auto reader = core::filters::SvgPathReader();
-        std::ifstream in(fname);
-        document = reader.read_document(in);
-        set_core_context(document->get_default_context());
-        in.close();
-    } catch (std::exception const& ex) {
-        auto msg = QString::fromStdString("Uncaught exception while opening document:\n{}"_format(ex.what()));
-        qDebug() << msg;
         error_box->showMessage(msg);
     } catch (...) {
-        qDebug() << "Unknown error while opening document";
+        qDebug() << "Unknown error while trying to open document via JSON filter";
     }
 }
 
