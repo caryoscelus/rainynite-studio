@@ -54,6 +54,7 @@ target_link_libraries(rainynite-studio geom_helpers)
 
 target_link_libraries(rainynite-studio
     Qt5::Widgets
+    time
     document
     filters
     renderers
