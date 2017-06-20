@@ -123,19 +123,6 @@
    <addaction name="menu_help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QToolBar" name="tools_bar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="action_tool_mouse"/>
-   <addaction name="action_tool_zoom"/>
-  </widget>
   <widget class="QToolBar" name="file_toolbar">
    <property name="windowTitle">
     <string>toolBar</string>
