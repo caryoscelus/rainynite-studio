@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>650</width>
+    <width>652</width>
     <height>650</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources.qrc">:/images/sunrise.png</pixmap>
+      <pixmap resource="../resources.qrc">:/images/rectangles.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -195,7 +195,8 @@ p, li { white-space: pre-wrap; }
         <string>Close</string>
        </property>
        <property name="icon">
-        <iconset theme="dialog-close"/>
+        <iconset theme="dialog-close">
+         <normaloff>.</normaloff>.</iconset>
        </property>
        <property name="default">
         <bool>true</bool>

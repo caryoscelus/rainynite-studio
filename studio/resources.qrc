@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="images">
+    <file>rectangles.png</file>
     <file>sunrise.png</file>
     <file>transparency.png</file>
   </qresource>
