@@ -26,6 +26,7 @@
 #include <core/context.h>
 
 #include <generic/context_listener.h>
+#include <generic/dock_registry.h>
 
 namespace Ui {
 class NodeEditDock;
@@ -66,6 +67,8 @@ private:
 
     std::shared_ptr<core::AbstractValue> active_node;
 };
+
+REGISTER_DOCK("Node editor", NodeEditDock, Qt::LeftDockWidgetArea);
 
 }
 

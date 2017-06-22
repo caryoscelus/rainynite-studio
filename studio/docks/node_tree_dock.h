@@ -22,6 +22,7 @@
 #include <QDockWidget>
 
 #include <generic/context_listener.h>
+#include <generic/dock_registry.h>
 
 namespace core {
 class AbstractValue;
@@ -45,7 +46,7 @@ class NodeTreeDock : public QDockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent_);
+    explicit NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent_ = nullptr);
     virtual ~NodeTreeDock();
 
 public:
@@ -64,6 +65,8 @@ private:
     std::unique_ptr<Ui::NodeTreeDock> ui;
     std::unique_ptr<NodeModel> model;
 };
+
+REGISTER_DOCK("Node tree", NodeTreeDock, Qt::LeftDockWidgetArea);
 
 } // namespace studio
 

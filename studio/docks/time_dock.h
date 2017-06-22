@@ -26,6 +26,7 @@
 #include <core/context.h>
 
 #include <generic/context_listener.h>
+#include <generic/dock_registry.h>
 
 namespace Ui {
 class TimeDock;
@@ -66,6 +67,8 @@ private:
     struct Null {};
     std::shared_ptr<Null> destroy_detector;
 };
+
+REGISTER_DOCK("Time", TimeDock, Qt::BottomDockWidgetArea);
 
 }
 

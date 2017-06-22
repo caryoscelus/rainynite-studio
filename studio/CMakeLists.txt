@@ -30,6 +30,8 @@ target_sources(rainynite-studio
         widgets/bezier_editor.h
         widgets/rectangle_editor.cpp
         widgets/rectangle_editor.h
+        widgets/timeline_area.cpp
+        widgets/timeline_area.h
 
         widgets/editor_factory.cpp
 
@@ -43,6 +45,7 @@ target_sources(rainynite-studio
         generic/editor_context.h
         generic/canvas_editor.cpp
         generic/canvas_editor.h
+        generic/dock_registry.h
 
         models/node_model.cpp
         models/node_model.h

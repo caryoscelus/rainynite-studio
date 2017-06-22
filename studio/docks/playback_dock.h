@@ -27,6 +27,7 @@
 #include <core/context.h>
 
 #include <generic/context_listener.h>
+#include <generic/dock_registry.h>
 
 namespace Ui {
 class PlaybackDock;
@@ -61,6 +62,8 @@ private:
     std::unique_ptr<Ui::PlaybackDock> ui;
     QTimer* timer;
 };
+
+REGISTER_DOCK("Playback", PlaybackDock, Qt::BottomDockWidgetArea);
 
 }
 
