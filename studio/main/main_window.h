@@ -78,12 +78,12 @@ private Q_SLOTS:
 
     void activate(std::shared_ptr<core::AbstractValue> node);
 
-    void add_time_dock();
-    void add_playback_dock();
-    void add_node_tree_dock();
-    void add_node_edit_dock();
+    void add_all_docks();
+    void add_dock(std::string const& name);
 
 private:
+    void setup_dock_menu();
+
     void setup_renderer();
     void render_period(core::TimePeriod const& period);
     void set_fname(std::string const& fname_);
@@ -97,6 +97,8 @@ private:
     std::string fname;
     std::string window_title_template;
     bool extra_style = true;
+
+    std::vector<std::unique_ptr<QDockWidget>> docks;
 
     std::thread render_thread;
     std::queue<core::Context> renderer_queue;

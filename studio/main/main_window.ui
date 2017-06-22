@@ -90,9 +90,6 @@
     <property name="title">
      <string>Add &amp;dock</string>
     </property>
-    <addaction name="action_time_dock"/>
-    <addaction name="action_playback_dock"/>
-    <addaction name="action_node_tree_dock"/>
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
@@ -100,7 +97,7 @@
     </property>
     <addaction name="action_about"/>
    </widget>
-   <widget class="QMenu" name="menuTools">
+   <widget class="QMenu" name="menu_tools">
     <property name="title">
      <string>&amp;Tools</string>
     </property>
@@ -118,7 +115,7 @@
    <addaction name="menu_context"/>
    <addaction name="menu_edit"/>
    <addaction name="menu_view"/>
-   <addaction name="menuTools"/>
+   <addaction name="menu_tools"/>
    <addaction name="menu_dock"/>
    <addaction name="menu_help"/>
   </widget>
@@ -206,21 +203,6 @@
    </property>
    <property name="shortcut">
     <string>Alt+R</string>
-   </property>
-  </action>
-  <action name="action_time_dock">
-   <property name="text">
-    <string>&amp;Time</string>
-   </property>
-  </action>
-  <action name="action_playback_dock">
-   <property name="text">
-    <string>&amp;Playback</string>
-   </property>
-  </action>
-  <action name="action_node_tree_dock">
-   <property name="text">
-    <string>&amp;Node tree</string>
    </property>
   </action>
   <action name="action_save">

@@ -23,6 +23,7 @@
 #include <QFileDialog>
 #include <QErrorMessage>
 #include <QMessageBox>
+#include <QDockWidget>
 #include <QDebug>
 
 #include <core/document.h>
@@ -31,10 +32,7 @@
 #include <core/renderers/svg_renderer.h>
 
 #include <version.h>
-#include <docks/time_dock.h>
-#include <docks/playback_dock.h>
-#include <docks/node_tree_dock.h>
-#include <docks/node_edit_dock.h>
+#include <generic/dock_registry.h>
 #include "about.h"
 #include "main_window.h"
 #include "ui_main_window.h"
@@ -75,14 +73,8 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
     connect(ui->action_extra_style, SIGNAL(toggled(bool)), this, SLOT(toggle_extra_style(bool)));
 
-    connect(ui->action_time_dock, SIGNAL(triggered()), this, SLOT(add_time_dock()));
-    connect(ui->action_playback_dock, SIGNAL(triggered()), this, SLOT(add_playback_dock()));
-    connect(ui->action_node_tree_dock, SIGNAL(triggered()), this, SLOT(add_node_tree_dock()));
-
-    add_playback_dock();
-    add_time_dock();
-    add_node_tree_dock();
-    add_node_edit_dock();
+    setup_dock_menu();
+    add_all_docks();
 
     new_document();
     setup_renderer();
@@ -263,24 +255,26 @@ void MainWindow::set_mainarea_image(std::string const& fname) {
     ui->canvas->set_main_image(pixmap);
 }
 
-void MainWindow::add_time_dock() {
-    auto dock = new TimeDock(get_context(), this);
-    addDockWidget(Qt::BottomDockWidgetArea, dock);
+void MainWindow::add_all_docks() {
+    for (auto const& e : get_all_docks()) {
+        add_dock(e.first);
+    }
 }
 
-void MainWindow::add_playback_dock() {
-    auto dock = new PlaybackDock(get_context(), this);
-    addDockWidget(Qt::BottomDockWidgetArea, dock);
+void MainWindow::add_dock(std::string const& name) {
+    auto dock = spawn_dock(name, get_context());
+    auto position = dock_preferred_area(name);
+    addDockWidget(position, dock.get());
+    docks.push_back(std::move(dock));
 }
 
-void MainWindow::add_node_tree_dock() {
-    auto dock = new NodeTreeDock(get_context(), this);
-    addDockWidget(Qt::LeftDockWidgetArea, dock);
-}
-
-void MainWindow::add_node_edit_dock() {
-    auto dock = new NodeEditDock(get_context(), this);
-    addDockWidget(Qt::LeftDockWidgetArea, dock);
+void MainWindow::setup_dock_menu() {
+    for (auto const& e : get_all_docks()) {
+        auto name = e.first;
+        ui->menu_dock->addAction(QString::fromStdString(name), [this, name]() {
+            add_dock(name);
+        });
+    }
 }
 
 void MainWindow::set_context(std::shared_ptr<EditorContext> context_) {
