@@ -34,7 +34,8 @@ class NodeEditDock;
 namespace studio {
 
 /**
- * Dock for simple text node editing
+ * Node editing dock, supporting basic text editor and custom editors based on
+ * node type.
  */
 class NodeEditDock : public QDockWidget, public ContextListener {
     Q_OBJECT

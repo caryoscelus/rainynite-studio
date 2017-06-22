@@ -38,7 +38,6 @@ namespace studio {
  *
  * TODO:
  *  - separate time editing widget
- *  - time line
  */
 class TimeDock : public QDockWidget, public ContextListener {
     Q_OBJECT

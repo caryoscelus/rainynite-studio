@@ -35,6 +35,12 @@ namespace studio {
 
 class NodeModel;
 
+/**
+ * Node graph tree representation dock.
+ *
+ * Until visual node editor is done, this is the main place for node
+ * manipulation.
+ */
 class NodeTreeDock : public QDockWidget, public ContextListener {
     Q_OBJECT
 
