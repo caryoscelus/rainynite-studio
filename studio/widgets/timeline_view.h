@@ -65,8 +65,6 @@ private:
 
 private:
     int zoom_level;
-    struct Null {};
-    std::shared_ptr<Null> destroy_detector;
 };
 
 }

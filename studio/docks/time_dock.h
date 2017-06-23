@@ -59,9 +59,6 @@ protected:
 
 private:
     std::unique_ptr<Ui::TimeDock> ui;
-
-    struct Null {};
-    std::shared_ptr<Null> destroy_detector;
 };
 
 REGISTER_DOCK("Time", TimeDock, Qt::BottomDockWidgetArea);

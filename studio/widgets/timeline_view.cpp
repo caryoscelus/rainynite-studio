@@ -26,8 +26,7 @@ namespace studio {
 
 TimelineView::TimelineView(QWidget* parent) :
     QWidget(parent),
-    time_cursor_pen {{{0xff, 0xff, 0xff}}, 3.0},
-    destroy_detector(std::make_shared<Null>())
+    time_cursor_pen {{{0xff, 0xff, 0xff}}, 3.0}
 {
 }
 

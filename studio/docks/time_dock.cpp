@@ -24,8 +24,7 @@ namespace studio {
 TimeDock::TimeDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::TimeDock>()),
-    destroy_detector(std::make_shared<Null>())
+    ui(std::make_unique<Ui::TimeDock>())
 {
     ui->setupUi(this);
     connect(ui->time_box, SIGNAL(editingFinished()), this, SLOT(change_time()));
