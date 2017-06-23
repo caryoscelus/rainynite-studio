@@ -22,7 +22,7 @@
 namespace studio {
 
 TimeDock::TimeDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
-    QDockWidget(parent),
+    DockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::TimeDock>()),
     destroy_detector(std::make_shared<Null>())
@@ -42,11 +42,6 @@ void TimeDock::time_changed(core::Time time) {
 
 void TimeDock::fps_changed(core::Time::fps_type fps) {
     ui->fps_box->setValue(fps);
-}
-
-void TimeDock::closeEvent(QCloseEvent* event) {
-    QDockWidget::closeEvent(event);
-    deleteLater();
 }
 
 void TimeDock::change_time() {

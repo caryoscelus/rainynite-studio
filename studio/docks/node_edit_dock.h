@@ -21,12 +21,11 @@
 
 #include <memory>
 
-#include <QDockWidget>
-
 #include <core/context.h>
 
 #include <generic/context_listener.h>
 #include <generic/dock_registry.h>
+#include "close_destroy_dock.h"
 
 namespace Ui {
 class NodeEditDock;
@@ -38,7 +37,7 @@ namespace studio {
  * Node editing dock, supporting basic text editor and custom editors based on
  * node type.
  */
-class NodeEditDock : public QDockWidget, public ContextListener {
+class NodeEditDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:
@@ -48,9 +47,6 @@ public:
 public:
     virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
     virtual void time_changed(core::Time time) override;
-
-protected:
-    virtual void closeEvent(QCloseEvent* event) override;
 
 private Q_SLOTS:
     void write_node();

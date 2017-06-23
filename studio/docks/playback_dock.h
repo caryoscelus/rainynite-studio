@@ -21,13 +21,13 @@
 
 #include <memory>
 
-#include <QDockWidget>
 #include <QTimer>
 
 #include <core/context.h>
 
 #include <generic/context_listener.h>
 #include <generic/dock_registry.h>
+#include "close_destroy_dock.h"
 
 namespace Ui {
 class PlaybackDock;
@@ -38,7 +38,7 @@ namespace studio {
 /**
  * Dock with playback controls
  */
-class PlaybackDock : public QDockWidget, public ContextListener {
+class PlaybackDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:
@@ -47,9 +47,6 @@ public:
 
 public:
     virtual void set_context(std::shared_ptr<EditorContext> context_) override;
-
-protected:
-    virtual void closeEvent(QCloseEvent* event) override;
 
 private Q_SLOTS:
     void toggle_playback(bool play);

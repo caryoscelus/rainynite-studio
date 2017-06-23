@@ -15,6 +15,7 @@ target_sources(rainynite-studio
         docks/node_tree_dock.h
         docks/node_edit_dock.cpp
         docks/node_edit_dock.h
+        docks/close_destroy_dock.h
 
         widgets/canvas.cpp
         widgets/canvas.h

@@ -34,7 +34,7 @@ using namespace fmt::literals;
 namespace studio {
 
 NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
-    QDockWidget(parent),
+    DockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::NodeEditDock>())
 {
@@ -108,11 +108,6 @@ void NodeEditDock::update_custom() {
     if (auto listener = dynamic_cast<ContextListener*>(custom_widget)) {
         listener->set_context(get_context());
     }
-}
-
-void NodeEditDock::closeEvent(QCloseEvent* event) {
-    QDockWidget::closeEvent(event);
-    deleteLater();
 }
 
 void NodeEditDock::write_node() {

@@ -19,10 +19,9 @@
 #ifndef __STUDIO__NODE_TREE_DOCK_H__8AC1EE40
 #define __STUDIO__NODE_TREE_DOCK_H__8AC1EE40
 
-#include <QDockWidget>
-
 #include <generic/context_listener.h>
 #include <generic/dock_registry.h>
+#include "close_destroy_dock.h"
 
 namespace core {
 class AbstractValue;
@@ -42,7 +41,7 @@ class NodeModel;
  * Until visual node editor is done, this is the main place for node
  * manipulation.
  */
-class NodeTreeDock : public QDockWidget, public ContextListener {
+class NodeTreeDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:

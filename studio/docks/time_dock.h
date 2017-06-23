@@ -21,12 +21,11 @@
 
 #include <memory>
 
-#include <QDockWidget>
-
 #include <core/context.h>
 
 #include <generic/context_listener.h>
 #include <generic/dock_registry.h>
+#include "close_destroy_dock.h"
 
 namespace Ui {
 class TimeDock;
@@ -40,7 +39,7 @@ namespace studio {
  * TODO:
  *  - separate time editing widget
  */
-class TimeDock : public QDockWidget, public ContextListener {
+class TimeDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:
@@ -50,9 +49,6 @@ public:
 protected:
     virtual void time_changed(core::Time time) override;
     virtual void fps_changed(core::Time::fps_type fps) override;
-
-protected:
-    virtual void closeEvent(QCloseEvent* event) override;
 
 protected Q_SLOTS:
     virtual void change_time();

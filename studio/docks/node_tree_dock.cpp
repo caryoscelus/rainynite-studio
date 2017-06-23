@@ -30,7 +30,7 @@
 namespace studio {
 
 NodeTreeDock::NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
-    QDockWidget(parent),
+    DockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::NodeTreeDock>())
 {

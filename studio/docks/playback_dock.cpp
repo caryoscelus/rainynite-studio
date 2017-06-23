@@ -22,7 +22,7 @@
 namespace studio {
 
 PlaybackDock::PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
-    QDockWidget(parent),
+    DockWidget(parent),
     ContextListener(context_),
     ui(std::make_unique<Ui::PlaybackDock>()),
     timer(new QTimer(this))
@@ -45,11 +45,6 @@ PlaybackDock::~PlaybackDock() {
 void PlaybackDock::set_context(std::shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
     ui->timeline->set_context(context_);
-}
-
-void PlaybackDock::closeEvent(QCloseEvent* event) {
-    QDockWidget::closeEvent(event);
-    deleteLater();
 }
 
 void PlaybackDock::toggle_playback(bool play) {
