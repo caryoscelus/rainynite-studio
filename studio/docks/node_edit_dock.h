@@ -41,7 +41,7 @@ class NodeEditDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent = 0);
+    explicit NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     ~NodeEditDock();
 
 public:

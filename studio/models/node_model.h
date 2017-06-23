@@ -35,7 +35,7 @@ class NodeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    explicit NodeModel(core::AbstractReference root, std::shared_ptr<core::ActionStack> action_stack, QObject* parent = 0);
+    explicit NodeModel(core::AbstractReference root, std::shared_ptr<core::ActionStack> action_stack, QObject* parent = nullptr);
     virtual ~NodeModel();
 
     QVariant data(QModelIndex const& index, int role) const override;

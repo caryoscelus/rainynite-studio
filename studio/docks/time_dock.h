@@ -43,7 +43,7 @@ class TimeDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit TimeDock(std::shared_ptr<EditorContext> context_, QWidget* parent = 0);
+    explicit TimeDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     ~TimeDock();
 
 protected:
