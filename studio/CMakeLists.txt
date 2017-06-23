@@ -30,8 +30,6 @@ target_sources(rainynite-studio
         widgets/bezier_editor.h
         widgets/rectangle_editor.cpp
         widgets/rectangle_editor.h
-        widgets/timeline_area.cpp
-        widgets/timeline_area.h
 
         widgets/editor_factory.cpp
 
