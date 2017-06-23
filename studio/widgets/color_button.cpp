@@ -42,7 +42,12 @@ void ColorButton::setReadOnly(bool ro) {
 void ColorButton::choose_color() {
     auto qcolor = QColor(color.r, color.g, color.b, color.a);
     auto selected = QColorDialog::getColor(qcolor, nullptr, "", QColorDialog::ShowAlphaChannel);
-    update_value({selected.red(), selected.green(), selected.blue(), selected.alpha()});
+    update_value({
+        (uint8_t) selected.red(),
+        (uint8_t) selected.green(),
+        (uint8_t) selected.blue(),
+        (uint8_t) selected.alpha()
+    });
     update_button_color();
     Q_EMIT editingFinished();
 }
