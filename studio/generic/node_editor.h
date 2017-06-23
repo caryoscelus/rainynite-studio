@@ -77,7 +77,7 @@ public:
             this->setReadOnly(!dynamic_cast<core::Value<ValueType>*>(value_node));
         }
     }
-    virtual void time_changed(core::Time time_) {
+    virtual void time_changed(core::Time time_) override {
         ContextListener::time_changed(time_);
         if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(this->get_node().get()))
             this->update_value(value_node->get(get_time()));
