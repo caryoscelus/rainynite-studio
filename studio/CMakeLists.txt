@@ -17,6 +17,8 @@ target_sources(rainynite-studio
         docks/node_edit_dock.h
         docks/close_destroy_dock.h
 
+        widgets/editor_factory.cpp
+
         widgets/canvas.cpp
         widgets/canvas.h
         widgets/timeline_view.cpp
@@ -25,14 +27,13 @@ target_sources(rainynite-studio
         widgets/color_button.h
         widgets/point_value_editor.cpp
         widgets/point_value_editor.h
-        widgets/point_editor.cpp
-        widgets/point_editor.h
-        widgets/bezier_editor.cpp
-        widgets/bezier_editor.h
-        widgets/rectangle_editor.cpp
-        widgets/rectangle_editor.h
 
-        widgets/editor_factory.cpp
+        canvas/point_editor.cpp
+        canvas/point_editor.h
+        canvas/bezier_editor.cpp
+        canvas/bezier_editor.h
+        canvas/rectangle_editor.cpp
+        canvas/rectangle_editor.h
 
         generic/node_editor.cpp
         generic/node_editor.h

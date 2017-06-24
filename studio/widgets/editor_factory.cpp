@@ -28,9 +28,9 @@
 #include <generic/custom_widgets.h>
 #include "color_button.h"
 #include "point_value_editor.h"
-#include "point_editor.h"
-#include "rectangle_editor.h"
-#include "bezier_editor.h"
+#include <canvas/point_editor.h>
+#include <canvas/rectangle_editor.h>
+#include <canvas/bezier_editor.h>
 
 namespace studio {
 
