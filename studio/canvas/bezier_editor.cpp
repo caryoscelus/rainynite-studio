@@ -118,6 +118,8 @@ void BezierKnotsDisplay::init() {
     if (auto canvas = get_canvas()) {
         if (auto scene = canvas->scene()) {
             if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(get_node().get())) {
+                bool readonly = !bezier_node->can_set();
+
                 Geom::BezierKnots path;
                 try {
                     path = bezier_node->get(get_core_context()->get_time());
@@ -129,23 +131,37 @@ void BezierKnotsDisplay::init() {
                 auto e = scene->addPath(path_to_qt(path));
                 knot_items.emplace_back(e);
 
+                auto add_point_editor = [
+                    this,
+                    scene,
+                    readonly
+                ](auto const& point, PointItem::Callback callback) {
+                    auto e = std::make_unique<PointItem>(callback);
+                    e->set_pos(point.x(), point.y());
+                    e->set_readonly(readonly);
+                    scene->addItem(e.get());
+                    knot_items.push_back(std::move(e));
+                };
+
                 size_t i = 0;
                 for (auto const& knot : path.knots) {
-                    auto e = std::make_unique<PointItem>(
+                    add_point_editor(
+                        knot.pos,
                         [this, i](double x, double y) {
                             move_knot_to(i, x, y);
                         }
                     );
-                    e->set_pos(knot.pos.x(), knot.pos.y());
-                    e->set_readonly(!bezier_node->can_set());
-                    scene->addItem(e.get());
-                    knot_items.push_back(std::move(e));
+
+                    add_point_editor(knot.tg1, [](double, double){});
+                    add_point_editor(knot.tg2, [](double, double){});
+
                     if (!knot.uid.empty()) {
                         auto e = scene->addText(QString::fromStdString(knot.uid));
                         e->setX(knot.pos.x());
                         e->setY(knot.pos.y());
                         knot_items.emplace_back(e);
                     }
+
                     ++i;
                 }
             }
