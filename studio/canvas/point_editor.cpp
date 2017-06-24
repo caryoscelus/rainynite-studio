@@ -22,38 +22,10 @@
 #include <2geom/point.h>
 
 #include <widgets/canvas.h>
+#include "point_item.h"
 #include "point_editor.h"
 
 namespace studio {
-
-class PointItem : public QGraphicsEllipseItem {
-public:
-    using Callback = std::function<void(double, double)>;
-public:
-    static const int radius = 2;
-public:
-    PointItem(Callback callback) :
-        QGraphicsEllipseItem(0, 0, radius*2, radius*2),
-        position_callback(callback)
-    {}
-public:
-    virtual QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
-        if (change == ItemPositionHasChanged) {
-            auto pos = value.toPointF();
-            position_callback(pos.x()+radius, pos.y()+radius);
-        }
-        return QGraphicsItem::itemChange(change, value);
-    }
-    void set_readonly(bool ro) {
-        setFlag(QGraphicsItem::ItemIsMovable, !ro);
-        setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
-    }
-    void set_pos(double x, double y) {
-        setPos({x-radius, y-radius});
-    }
-private:
-    Callback position_callback;
-};
 
 PointEditor::PointEditor() {
 }

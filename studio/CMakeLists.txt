@@ -28,6 +28,7 @@ target_sources(rainynite-studio
         widgets/point_value_editor.cpp
         widgets/point_value_editor.h
 
+        canvas/point_item.h
         canvas/point_editor.cpp
         canvas/point_editor.h
         canvas/bezier_editor.cpp
