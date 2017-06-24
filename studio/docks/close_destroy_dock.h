@@ -28,6 +28,8 @@ public:
     DockWidget(QWidget* parent = nullptr) :
         QDockWidget(parent)
     {}
+    virtual ~DockWidget()
+    {}
 protected:
     virtual void closeEvent(QCloseEvent* event) override {
         QDockWidget::closeEvent(event);

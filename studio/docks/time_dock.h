@@ -44,7 +44,7 @@ class TimeDock : public DockWidget, public ContextListener {
 
 public:
     explicit TimeDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
-    ~TimeDock();
+    virtual ~TimeDock();
 
 protected:
     virtual void time_changed(core::Time time) override;
