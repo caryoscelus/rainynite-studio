@@ -52,8 +52,18 @@ void BezierKnotsDisplay::set_node(std::shared_ptr<core::AbstractValue> node) {
 }
 
 void BezierKnotsDisplay::time_changed(core::Time) {
+    // TODO
     uninit();
     init();
+}
+
+void BezierKnotsDisplay::move_knot_to(size_t index, double x, double y) {
+    if (auto bezier_node = dynamic_cast<core::BaseValue<Geom::BezierKnots>*>(get_node().get())) {
+        auto& path = bezier_node->mod();
+        path.knots[index].pos.x() = x;
+        path.knots[index].pos.y() = y;
+        bezier_node->changed();
+    }
 }
 
 void BezierKnotsDisplay::init() {
@@ -67,11 +77,15 @@ void BezierKnotsDisplay::init() {
                     qDebug() << QString::fromStdString("Uncaught exception while getting path: {}"_format(ex.what()));
                     return;
                 }
+                size_t i = 0;
                 for (auto const& knot : path.knots) {
-                    auto x = knot.pos.x();
-                    auto y = knot.pos.y();
-                    auto e = std::make_unique<PointItem>([](double,double){});
-                    e->set_pos(x, y);
+                    auto e = std::make_unique<PointItem>(
+                        [this, i](double x, double y) {
+                            move_knot_to(i, x, y);
+                        }
+                    );
+                    e->set_pos(knot.pos.x(), knot.pos.y());
+                    e->set_readonly(!bezier_node->can_set());
                     scene->addItem(e.get());
                     knot_items.push_back(std::move(e));
                     if (!knot.uid.empty()) {
@@ -80,6 +94,7 @@ void BezierKnotsDisplay::init() {
                         e->setY(knot.pos.y());
                         knot_items.emplace_back(e);
                     }
+                    ++i;
                 }
             }
         }
