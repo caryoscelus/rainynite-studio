@@ -132,7 +132,7 @@ void BezierKnotsDisplay::init() {
                     readonly,
                     bezier_node,
                     &path
-                ](size_t i, Geom::Point Geom::Knot::* pref) {
+                ](size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent = nullptr) {
                     auto e = new PointItem(
                         [this, i, bezier_node, pref](double x, double y) {
                             auto& path = bezier_node->mod();
@@ -143,6 +143,10 @@ void BezierKnotsDisplay::init() {
                             init();
                         }
                     );
+                    if (parent)
+                        e->setParentItem(parent);
+                    else
+                        scene->addItem(e);
                     auto point = path.knots[i].*pref;
                     e->set_pos(point.x(), point.y());
                     e->set_readonly(readonly);
@@ -152,11 +156,8 @@ void BezierKnotsDisplay::init() {
                 size_t i = 0;
                 for (auto const& knot : path.knots) {
                     auto pos = add_point_editor(i, &Geom::Knot::pos);
-                    scene->addItem(pos);
-                    auto tg1 = add_point_editor(i, &Geom::Knot::tg1);
-                    tg1->setParentItem(pos);
-                    auto tg2 = add_point_editor(i, &Geom::Knot::tg2);
-                    tg2->setParentItem(pos);
+                    add_point_editor(i, &Geom::Knot::tg1, pos);
+                    add_point_editor(i, &Geom::Knot::tg2, pos);
                     knot_items.emplace_back(pos);
 
                     if (!knot.uid.empty()) {
