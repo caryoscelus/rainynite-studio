@@ -54,6 +54,10 @@ void BezierKnotsDisplay::set_node(std::shared_ptr<core::AbstractValue> node) {
 }
 
 void BezierKnotsDisplay::time_changed(core::Time) {
+    redraw();
+}
+
+void BezierKnotsDisplay::redraw() {
     // TODO
     uninit();
     init();
@@ -136,6 +140,7 @@ void BezierKnotsDisplay::init() {
                             point.x() = x;
                             point.y() = y;
                             bezier_node->changed();
+                            init();
                         }
                     );
                     auto point = path.knots[i].*pref;
