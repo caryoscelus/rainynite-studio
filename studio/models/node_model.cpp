@@ -23,6 +23,7 @@
 #include <core/action.h>
 #include <core/actions/change_link.h>
 
+#include <util/strings.h>
 #include "node_model.h"
 
 using namespace fmt::literals;
@@ -53,7 +54,7 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
             std::string type_name = "<Bad node!>";
             if (auto node = get_node(index))
                 type_name = core::node_name(*node);
-            return QString::fromStdString("{}: {}"_format(role, type_name));
+            return util::str("{}: {}"_format(role, type_name));
         } break;
         default:
             return QVariant();

@@ -21,6 +21,7 @@
 #include <QFile>
 
 #include <version.h>
+#include <util/strings.h>
 #include "about.h"
 #include "ui_about.h"
 
@@ -33,11 +34,11 @@ AboutDialog::AboutDialog(QWidget* parent) :
     ui->setupUi(this);
 
     auto about_formatted = fmt::format(
-        ui->about_label->text().toStdString(),
+        util::str(ui->about_label->text()),
         RAINYNITE_STUDIO_VERSION,
         RAINYNITE_STUDIO_CODENAME
     );
-    ui->about_label->setText(QString::fromStdString(about_formatted));
+    ui->about_label->setText(util::str(about_formatted));
 
     QFile license(":/text/COPYING.gpl3");
     if (license.open(QIODevice::ReadOnly)) {

@@ -32,6 +32,7 @@
 #include <core/renderers/svg_renderer.h>
 
 #include <version.h>
+#include <util/strings.h>
 #include <generic/dock_registry.h>
 #include "about.h"
 #include "main_window.h"
@@ -49,7 +50,7 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
-    window_title_template = windowTitle().toStdString();
+    window_title_template = util::str(windowTitle());
     update_title();
 
     connect(ui->action_new, SIGNAL(triggered()), this, SLOT(new_document()));
@@ -91,7 +92,7 @@ void MainWindow::new_document() {
 
 void MainWindow::open() {
     auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "RainyNite file (*.rnite)(*.rnite);;Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
-    set_fname(fname_qt.toStdString());
+    set_fname(util::str(fname_qt));
     reload();
 }
 
@@ -109,7 +110,7 @@ void MainWindow::reload() {
         in.close();
         return;
     } catch (std::exception const& ex) {
-        auto msg = QString::fromStdString("Uncaught exception in JSON filter:\n{}"_format(ex.what()));
+        auto msg = util::str("Uncaught exception in JSON filter:\n{}"_format(ex.what()));
         qDebug() << msg;
         error_box->showMessage(msg);
     } catch (...) {
@@ -121,11 +122,11 @@ void MainWindow::save_as() {
     auto fname_qt = QFileDialog::getSaveFileName(
         this,
         "Save",
-        QString::fromStdString(fname),
+        util::str(fname),
         "RainyNite file (*.rnite)(*.rnite);;All files(*)"
     );
     if (!fname_qt.isEmpty()) {
-        set_fname(fname_qt.toStdString());
+        set_fname(util::str(fname_qt));
         save();
     }
 }
@@ -140,7 +141,7 @@ void MainWindow::save() {
         std::ofstream out(fname);
         writer.write_document(out, document);
     } catch (std::exception const& ex) {
-        auto msg = QString::fromStdString("Uncaught exception while saving document:\n{}"_format(ex.what()));
+        auto msg = util::str("Uncaught exception while saving document:\n{}"_format(ex.what()));
         qDebug() << msg;
         error_box->showMessage(msg);
     } catch (...) {
@@ -154,7 +155,7 @@ void MainWindow::set_fname(std::string const& fname_) {
 }
 
 void MainWindow::update_title() {
-    setWindowTitle(QString::fromStdString(fmt::format(
+    setWindowTitle(util::str(fmt::format(
         window_title_template,
         "file"_a=fname,
         "version"_a=RAINYNITE_STUDIO_VERSION,
@@ -175,7 +176,7 @@ void MainWindow::setup_renderer() {
                 try {
                     renderer->render(ctx);
                 } catch (std::exception const& ex) {
-                    auto msg = QString::fromStdString("Uncaught exception while rendering:\n{}"_format(ex.what()));
+                    auto msg = util::str("Uncaught exception while rendering:\n{}"_format(ex.what()));
                     qDebug() << msg;
                 }
                 Q_EMIT redraw_signal();
@@ -251,7 +252,7 @@ void MainWindow::quit() {
 
 void MainWindow::set_mainarea_image(std::string const& fname) {
     QPixmap pixmap;
-    pixmap.load(QString::fromStdString(fname));
+    pixmap.load(util::str(fname));
     ui->canvas->set_main_image(pixmap);
 }
 
@@ -271,7 +272,7 @@ void MainWindow::add_dock(std::string const& name) {
 void MainWindow::setup_dock_menu() {
     for (auto const& e : get_all_docks()) {
         auto name = e.first;
-        ui->menu_dock->addAction(QString::fromStdString(name), [this, name]() {
+        ui->menu_dock->addAction(util::str(name), [this, name]() {
             add_dock(name);
         });
     }

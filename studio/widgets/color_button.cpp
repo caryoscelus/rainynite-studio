@@ -23,6 +23,7 @@
 
 #include <core/color.h>
 
+#include <util/strings.h>
 #include "color_button.h"
 
 using namespace fmt::literals;
@@ -55,8 +56,7 @@ void ColorButton::choose_color() {
 void ColorButton::update_button_color() {
     auto c = core::colors::to_hex24(color);
     // TODO: keep colour when focused (perhaps use icon instead of style?)
-    auto style = QString::fromStdString("background-color: {}"_format(c));
-    setStyleSheet(style);
+    setStyleSheet(util::str("background-color: {}"_format(c)));
 }
 
 void ColorButton::update_value(core::colors::Color color_) {

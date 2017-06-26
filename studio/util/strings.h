@@ -21,6 +21,8 @@
 
 #include <type_traits>
 
+#include <QString>
+
 namespace util {
 
 template <typename S, typename T>

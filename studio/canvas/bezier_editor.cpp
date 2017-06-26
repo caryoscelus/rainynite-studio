@@ -25,6 +25,7 @@
 
 #include <2geom/path-sink.h>
 
+#include <util/strings.h>
 #include <widgets/canvas.h>
 #include "point_item.h"
 #include "bezier_editor.h"
@@ -119,7 +120,7 @@ void BezierKnotsDisplay::init() {
                 try {
                     path = bezier_node->get(get_core_context()->get_time());
                 } catch (std::exception const& ex) {
-                    qDebug() << QString::fromStdString("Uncaught exception while getting path: {}"_format(ex.what()));
+                    qDebug() << util::str("Uncaught exception while getting path: {}"_format(ex.what()));
                     return;
                 }
 
@@ -161,7 +162,7 @@ void BezierKnotsDisplay::init() {
                     knot_items.emplace_back(pos);
 
                     if (!knot.uid.empty()) {
-                        auto e = scene->addText(QString::fromStdString(knot.uid));
+                        auto e = scene->addText(util::str(knot.uid));
                         e->setX(knot.pos.x());
                         e->setY(knot.pos.y());
                         knot_items.emplace_back(e);

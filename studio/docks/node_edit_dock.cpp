@@ -24,6 +24,7 @@
 #include <core/types.h>
 #include <core/serialize/node_writer.h>
 
+#include <util/strings.h>
 #include <generic/custom_widgets.h>
 #include <generic/node_editor.h>
 #include "node_edit_dock.h"
@@ -77,14 +78,14 @@ void NodeEditDock::update_generic() {
             value = active_node->get_any(get_core_context()->get_time());
         }
         auto s = core::serialize::value_to_string(value);
-        ui->text_edit->setText(QString::fromStdString(s));
+        ui->text_edit->setText(util::str(s));
     } catch (class_init::RuntimeTypeError const& ex) {
         auto s = "<Type Exception: {}>"_format(ex.what());
-        ui->text_edit->setText(QString::fromStdString(s));
+        ui->text_edit->setText(util::str(s));
         writeable = false;
     } catch (std::exception const& ex) {
         auto s = "<Uncaught Exception: {}>"_format(ex.what());
-        ui->text_edit->setText(QString::fromStdString(s));
+        ui->text_edit->setText(util::str(s));
         writeable = false;
     }
     ui->text_edit->setReadOnly(!writeable);
@@ -121,7 +122,7 @@ void NodeEditDock::write_node() {
     try {
         active_node->set_any(core::parse_primitive_type(active_node->get_type(), text));
     } catch (std::exception const& ex) {
-        qDebug() << "Exception while parsing input:" << QString::fromStdString(ex.what());
+        qDebug() << "Exception while parsing input:" << ex.what();
         active_node_changed(active_node);
     }
 }

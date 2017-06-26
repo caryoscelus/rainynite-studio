@@ -23,6 +23,7 @@
 #include <core/document.h>
 #include <core/node_info.h>
 
+#include <util/strings.h>
 #include <models/node_model.h>
 #include "node_tree_dock.h"
 #include "ui_node_tree_dock.h"
@@ -128,7 +129,7 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
                         "Property name:"
                     );
                     if (!text.isEmpty())
-                        model->add_empty_custom_property(index, text.toStdString());
+                        model->add_empty_custom_property(index, util::str(text));
                 }
             );
             menu.addSeparator();
@@ -164,7 +165,7 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         if (node_infos.size() == 0)
             menu.addAction("No node types available!");
         else for (auto node_info : node_infos) {
-            auto name = QString::fromStdString(node_info->name());
+            auto name = util::str(node_info->name());
             menu.addAction(name, [this, index, node_info]() {
                 model->convert_node(index, node_info, get_time());
             });
