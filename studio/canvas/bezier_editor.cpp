@@ -59,13 +59,6 @@ void BezierKnotsDisplay::time_changed(core::Time) {
     init();
 }
 
-void move_point_to(std::shared_ptr<core::BaseValue<Geom::BezierKnots>> bezier_node, Geom::Point Geom::Knot::* point, size_t index, double x, double y) {
-    auto& path = bezier_node->mod();
-    (path.knots[index].*point).x() = x;
-    (path.knots[index].*point).y() = y;
-    bezier_node->changed();
-}
-
 // TODO: move elsewhere
 class QtPathSink : public Geom::PathSink {
 public:
@@ -132,40 +125,34 @@ void BezierKnotsDisplay::init() {
                 auto add_point_editor = [
                     this,
                     scene,
-                    readonly
-                ](auto const& point, PointItem::Callback callback) {
-                    auto e = new PointItem(callback);
+                    readonly,
+                    bezier_node,
+                    &path
+                ](size_t i, Geom::Point Geom::Knot::* pref) {
+                    auto e = new PointItem(
+                        [this, i, bezier_node, pref](double x, double y) {
+                            auto& path = bezier_node->mod();
+                            auto& point = path.knots[i].*pref;
+                            point.x() = x;
+                            point.y() = y;
+                            bezier_node->changed();
+                        }
+                    );
+                    auto point = path.knots[i].*pref;
                     e->set_pos(point.x(), point.y());
                     e->set_readonly(readonly);
-//                     scene->addItem(e);
                     return e;
                 };
 
                 size_t i = 0;
                 for (auto const& knot : path.knots) {
-                    auto pos = add_point_editor(
-                        knot.pos,
-                        [this, i, bezier_node](double x, double y) {
-                            move_point_to(bezier_node, &Geom::Knot::pos, i, x, y);
-                        }
-                    );
+                    auto pos = add_point_editor(i, &Geom::Knot::pos);
                     scene->addItem(pos);
-                    auto tg1 = add_point_editor(
-                        knot.tg1,
-                        [this, i, bezier_node](double x, double y) {
-                            move_point_to(bezier_node, &Geom::Knot::tg1, i, x, y);
-                        }
-                    );
+                    auto tg1 = add_point_editor(i, &Geom::Knot::tg1);
                     tg1->setParentItem(pos);
-                    auto tg2 = add_point_editor(
-                        knot.tg2,
-                        [this, i, bezier_node](double x, double y) {
-                            move_point_to(bezier_node, &Geom::Knot::tg2, i, x, y);
-                        }
-                    );
+                    auto tg2 = add_point_editor(i, &Geom::Knot::tg2);
                     tg2->setParentItem(pos);
                     knot_items.emplace_back(pos);
-//                     qDebug() << (size_t)pos.get() << (size_t)tg1.get() << (size_t)tg2.get();
 
                     if (!knot.uid.empty()) {
                         auto e = scene->addText(QString::fromStdString(knot.uid));
