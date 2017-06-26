@@ -108,7 +108,6 @@ void MainWindow::reload() {
             throw std::runtime_error("Unknown parse failure");
         set_core_context(document->get_default_context());
         in.close();
-        return;
     } catch (std::exception const& ex) {
         auto msg = util::str("Uncaught exception in JSON filter:\n{}"_format(ex.what()));
         qDebug() << msg;
@@ -116,6 +115,7 @@ void MainWindow::reload() {
     } catch (...) {
         qDebug() << "Unknown error while trying to open document via JSON filter";
     }
+    render_frame();
 }
 
 void MainWindow::save_as() {
