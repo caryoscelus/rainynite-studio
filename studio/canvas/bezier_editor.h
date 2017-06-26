@@ -38,7 +38,6 @@ public:
     virtual void set_node(std::shared_ptr<core::AbstractValue> node) override;
     virtual void time_changed(core::Time time_) override;
 private:
-    void move_knot_to(size_t index, double x, double y);
     void init();
     void uninit();
 private:
