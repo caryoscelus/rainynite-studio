@@ -91,7 +91,7 @@ void MainWindow::new_document() {
 }
 
 void MainWindow::open() {
-    auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "RainyNite file (*.rnite)(*.rnite);;Svg paths (*.svgpaths)(*.svgpaths);;All files(*)");
+    auto fname_qt = QFileDialog::getOpenFileName(this, "Open", "", "RainyNite file (*.rnite)(*.rnite);;All files(*)");
     set_fname(util::str(fname_qt));
     reload();
 }
