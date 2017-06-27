@@ -42,5 +42,6 @@ REGISTER_CANVAS_EDITOR(PointEdit, Geom::Point, PointEditor);
 REGISTER_CANVAS_EDITOR(RectangleEdit, Geom::Rectangle, RectangleEditor);
 
 REGISTER_CANVAS_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
+REGISTER_CANVAS_SHOW_CHILDREN(RenderShape, "RenderShape", true);
 
 } // namespace studio
