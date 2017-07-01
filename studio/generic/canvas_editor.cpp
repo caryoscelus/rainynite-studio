@@ -32,6 +32,12 @@ void CanvasEditor::set_canvas(Canvas* canvas_) {
     }
 }
 
+QGraphicsScene* CanvasEditor::get_scene() const {
+    if (canvas)
+        return canvas->scene();
+    return nullptr;
+}
+
 void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
         return;

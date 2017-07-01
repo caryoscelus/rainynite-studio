@@ -22,6 +22,8 @@
 #include <typeindex>
 #include <memory>
 
+class QGraphicsScene;
+
 namespace core {
 class AbstractValue;
 }
@@ -38,6 +40,7 @@ public:
     inline Canvas* get_canvas() const {
         return canvas;
     }
+    QGraphicsScene* get_scene() const;
 private:
     Canvas* canvas = nullptr;
 };
