@@ -38,8 +38,7 @@ void RectangleEditor::set_canvas(Canvas* canvas) {
     update_position();
 }
 
-void RectangleEditor::set_node(std::shared_ptr<core::AbstractValue> node) {
-    NodeEditor::set_node(node);
+void RectangleEditor::node_update() {
     update_position();
 }
 

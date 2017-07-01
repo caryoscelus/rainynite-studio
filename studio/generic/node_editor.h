@@ -36,14 +36,20 @@ namespace studio {
 
 class NodeEditor {
 public:
-    virtual ~NodeEditor() = default;
+    virtual ~NodeEditor() {
+        node_connection.disconnect();
+    }
 public:
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node_);
+    virtual void node_update() {
+    }
+public:
+    void set_node(std::shared_ptr<core::AbstractValue> node_);
     inline std::shared_ptr<core::AbstractValue> get_node() {
         return node;
     }
 private:
     std::shared_ptr<core::AbstractValue> node = nullptr;
+    boost::signals2::connection node_connection;
 };
 
 template <class W, typename T>
@@ -70,14 +76,13 @@ public:
         );
     }
 public:
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node_) override {
-        if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(node_.get())) {
-            NodeEditor::set_node(node_);
+    void node_update() override {
+        if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(get_node().get())) {
             this->update_value(value_node->get(get_time()));
             this->setReadOnly(!dynamic_cast<core::Value<ValueType>*>(value_node));
         }
     }
-    virtual void time_changed(core::Time time_) override {
+    void time_changed(core::Time time_) override {
         ContextListener::time_changed(time_);
         if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(this->get_node().get()))
             this->update_value(value_node->get(get_time()));

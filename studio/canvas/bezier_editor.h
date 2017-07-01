@@ -34,9 +34,9 @@ public:
     BezierKnotsDisplay();
     virtual ~BezierKnotsDisplay();
 public:
-    virtual void set_canvas(Canvas* canvas) override;
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node) override;
-    virtual void time_changed(core::Time time_) override;
+    void set_canvas(Canvas* canvas) override;
+    void node_update() override;
+    void time_changed(core::Time time_) override;
 private:
     void redraw();
     void init();

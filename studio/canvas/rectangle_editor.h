@@ -34,9 +34,9 @@ public:
     RectangleEditor();
     virtual ~RectangleEditor();
 public:
-    virtual void set_canvas(Canvas* canvas) override;
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node) override;
-    virtual void time_changed(core::Time time) override;
+    void set_canvas(Canvas* canvas) override;
+    void node_update() override;
+    void time_changed(core::Time time) override;
 private:
     void update_position();
     std::unique_ptr<QGraphicsRectItem> rectangle_item;

@@ -48,10 +48,8 @@ void BezierKnotsDisplay::set_canvas(Canvas* canvas) {
     init();
 }
 
-void BezierKnotsDisplay::set_node(std::shared_ptr<core::AbstractValue> node) {
-    uninit();
-    NodeEditor::set_node(node);
-    init();
+void BezierKnotsDisplay::node_update() {
+    redraw();
 }
 
 void BezierKnotsDisplay::time_changed(core::Time) {
@@ -141,7 +139,6 @@ void BezierKnotsDisplay::init() {
                             point.x() = x;
                             point.y() = y;
                             bezier_node->changed();
-                            init();
                         }
                     );
                     if (parent)

@@ -21,7 +21,12 @@
 namespace studio {
 
 void NodeEditor::set_node(std::shared_ptr<core::AbstractValue> node_) {
+    if (node_connection.connected())
+        node_connection.disconnect();
     node = node_;
+    node_connection = node->subscribe([this]() {
+        node_update();
+    });
 }
 
 } // namespace studio

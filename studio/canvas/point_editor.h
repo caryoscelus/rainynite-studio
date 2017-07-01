@@ -34,9 +34,9 @@ public:
     PointEditor();
     virtual ~PointEditor();
 public:
-    virtual void set_canvas(Canvas* canvas) override;
-    virtual void set_node(std::shared_ptr<core::AbstractValue> node) override;
-    virtual void time_changed(core::Time time) override;
+    void set_canvas(Canvas* canvas) override;
+    void node_update() override;
+    void time_changed(core::Time time) override;
 private:
     void update_position();
     void save_position(double x, double y);

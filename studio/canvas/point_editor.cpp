@@ -44,8 +44,7 @@ void PointEditor::set_canvas(Canvas* canvas) {
     update_position();
 }
 
-void PointEditor::set_node(std::shared_ptr<core::AbstractValue> node) {
-    NodeEditor::set_node(node);
+void PointEditor::node_update() {
     update_position();
 }
 
