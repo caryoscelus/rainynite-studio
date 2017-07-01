@@ -33,16 +33,29 @@ class BezierKnotsDisplay : public NodeEditor, public CanvasEditor, public Contex
 public:
     BezierKnotsDisplay();
     virtual ~BezierKnotsDisplay();
+
 public:
     void set_canvas(Canvas* canvas) override;
     void node_update() override;
     void time_changed(core::Time time_) override;
+
 private:
     void redraw();
     void init();
     void uninit();
+
+private:
+    inline std::shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node() {
+        return std::dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node());
+    }
+    inline Geom::BezierKnots get_path() {
+        return get_bezier_node()->get(get_core_context()->get_time());
+    }
+
 private:
     std::vector<std::unique_ptr<QGraphicsItem>> knot_items;
+    std::unique_ptr<QGraphicsItem> curve_item;
+    size_t old_size;
 };
 
 } // namespace studio

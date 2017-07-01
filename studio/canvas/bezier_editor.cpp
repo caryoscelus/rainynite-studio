@@ -56,70 +56,76 @@ void BezierKnotsDisplay::time_changed(core::Time) {
 }
 
 void BezierKnotsDisplay::redraw() {
-    // TODO
-    uninit();
-    init();
+    if (auto scene = get_scene()) {
+        auto path = get_path();
+        // TODO
+        if (path.size() == old_size) {
+            curve_item.reset(scene->addPath(path_to_qt(path)));
+        } else {
+            uninit();
+            init();
+        }
+    }
 }
 
 void BezierKnotsDisplay::init() {
-    if (auto canvas = get_canvas()) {
-        if (auto scene = canvas->scene()) {
-            if (auto bezier_node = std::dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node())) {
-                bool readonly = !bezier_node->can_set();
+    if (auto scene = get_scene()) {
+        if (auto bezier_node = get_bezier_node()) {
+            bool readonly = !bezier_node->can_set();
 
-                Geom::BezierKnots path;
-                try {
-                    path = bezier_node->get(get_core_context()->get_time());
-                } catch (std::exception const& ex) {
-                    qDebug() << util::str("Uncaught exception while getting path: {}"_format(ex.what()));
-                    return;
-                }
+            Geom::BezierKnots path;
+            try {
+                path = bezier_node->get(get_core_context()->get_time());
+            } catch (std::exception const& ex) {
+                qDebug() << util::str("Uncaught exception while getting path: {}"_format(ex.what()));
+                return;
+            }
 
-                auto e = scene->addPath(path_to_qt(path));
-                knot_items.emplace_back(e);
+            old_size = path.size();
 
-                auto add_point_editor = [
-                    this,
-                    scene,
-                    readonly,
-                    bezier_node,
-                    &path
-                ](size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent = nullptr) {
-                    auto e = new PointItem(
-                        [this, i, bezier_node, pref](double x, double y) {
-                            auto& path = bezier_node->mod();
-                            auto& point = path.knots[i].*pref;
-                            point.x() = x;
-                            point.y() = y;
-                            bezier_node->changed();
-                        }
-                    );
-                    if (parent)
-                        e->setParentItem(parent);
-                    else
-                        scene->addItem(e);
-                    auto point = path.knots[i].*pref;
-                    e->set_pos(point.x(), point.y());
-                    e->set_readonly(readonly);
-                    return e;
-                };
+            curve_item.reset(scene->addPath(path_to_qt(path)));
 
-                size_t i = 0;
-                for (auto const& knot : path.knots) {
-                    auto pos = add_point_editor(i, &Geom::Knot::pos);
-                    add_point_editor(i, &Geom::Knot::tg1, pos);
-                    add_point_editor(i, &Geom::Knot::tg2, pos);
-                    knot_items.emplace_back(pos);
-
-                    if (!knot.uid.empty()) {
-                        auto e = scene->addText(util::str(knot.uid));
-                        e->setX(knot.pos.x());
-                        e->setY(knot.pos.y());
-                        knot_items.emplace_back(e);
+            auto add_point_editor = [
+                this,
+                scene,
+                readonly,
+                bezier_node,
+                &path
+            ](size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent = nullptr) {
+                auto e = new PointItem(
+                    [this, i, bezier_node, pref](double x, double y) {
+                        auto& path = bezier_node->mod();
+                        auto& point = path.knots[i].*pref;
+                        point.x() = x;
+                        point.y() = y;
+                        bezier_node->changed();
                     }
+                );
+                if (parent)
+                    e->setParentItem(parent);
+                else
+                    scene->addItem(e);
+                auto point = path.knots[i].*pref;
+                e->set_pos(point.x(), point.y());
+                e->set_readonly(readonly);
+                return e;
+            };
 
-                    ++i;
+            size_t i = 0;
+            for (auto const& knot : path.knots) {
+                auto pos = add_point_editor(i, &Geom::Knot::pos);
+                add_point_editor(i, &Geom::Knot::tg1, pos);
+                add_point_editor(i, &Geom::Knot::tg2, pos);
+                knot_items.emplace_back(pos);
+
+                if (!knot.uid.empty()) {
+                    auto e = scene->addText(util::str(knot.uid));
+                    e->setX(knot.pos.x());
+                    e->setY(knot.pos.y());
+                    knot_items.emplace_back(e);
                 }
+
+                ++i;
             }
         }
     }
@@ -132,6 +138,7 @@ void BezierKnotsDisplay::uninit() {
         }
         knot_items.clear();
     }
+    curve_item.reset();
 }
 
 }
