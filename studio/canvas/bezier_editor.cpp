@@ -23,10 +23,9 @@
 
 #include <geom_helpers/knots.h>
 
-#include <2geom/path-sink.h>
-
 #include <util/strings.h>
 #include <widgets/canvas.h>
+#include "qt_path.h"
 #include "point_item.h"
 #include "bezier_editor.h"
 
@@ -60,52 +59,6 @@ void BezierKnotsDisplay::redraw() {
     // TODO
     uninit();
     init();
-}
-
-// TODO: move elsewhere
-class QtPathSink : public Geom::PathSink {
-public:
-    virtual void moveTo(Geom::Point const &p) override {
-        // TODO: Geom::Point <-> QGeom::PointF convertors
-        target.moveTo(p.x(), p.y());
-    }
-    virtual void lineTo(Geom::Point const &p) override {
-        target.lineTo(p.x(), p.y());
-    }
-    virtual void curveTo(Geom::Point const &c0, Geom::Point const &c1, Geom::Point const &p) override {
-        target.cubicTo(
-            c0.x(), c0.y(),
-            c1.x(), c1.y(),
-            p.x(), p.y()
-        );
-    }
-    virtual void quadTo(Geom::Point const &c, Geom::Point const &p) override {
-        target.quadTo(
-            c.x(), c.y(),
-            p.x(), p.y()
-        );
-    }
-    virtual void arcTo(Geom::Coord /*rx*/, Geom::Coord /*ry*/, Geom::Coord /*angle*/, bool /*large_arc*/, bool /*sweep*/, Geom::Point const &/*p*/) override {
-        throw std::runtime_error("QtPathSink: arcs not supported");
-    }
-
-    virtual void closePath() override {
-        target.closeSubpath();
-    }
-    virtual void flush() override {
-    }
-public:
-    inline QPainterPath get() {
-        return target;
-    }
-private:
-    QPainterPath target;
-};
-
-QPainterPath path_to_qt(Geom::BezierKnots const& path) {
-    QtPathSink sink;
-    sink.feed(Geom::knots_to_path(path));
-    return sink.get();
 }
 
 void BezierKnotsDisplay::init() {
