@@ -29,10 +29,10 @@ class QGraphicsItem;
 
 namespace studio {
 
-class BezierKnotsDisplay : public NodeEditor, public CanvasEditor, public ContextListener {
+class BezierEditor : public NodeEditor, public CanvasEditor, public ContextListener {
 public:
-    BezierKnotsDisplay();
-    virtual ~BezierKnotsDisplay();
+    BezierEditor();
+    virtual ~BezierEditor();
 
 public:
     void set_canvas(Canvas* canvas) override;

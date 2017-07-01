@@ -33,29 +33,29 @@ using namespace fmt::literals;
 
 namespace studio {
 
-BezierKnotsDisplay::BezierKnotsDisplay() {
+BezierEditor::BezierEditor() {
     init();
 }
 
-BezierKnotsDisplay::~BezierKnotsDisplay() {
+BezierEditor::~BezierEditor() {
     uninit();
 }
 
-void BezierKnotsDisplay::set_canvas(Canvas* canvas) {
+void BezierEditor::set_canvas(Canvas* canvas) {
     uninit();
     CanvasEditor::set_canvas(canvas);
     init();
 }
 
-void BezierKnotsDisplay::node_update() {
+void BezierEditor::node_update() {
     redraw();
 }
 
-void BezierKnotsDisplay::time_changed(core::Time) {
+void BezierEditor::time_changed(core::Time) {
     redraw();
 }
 
-void BezierKnotsDisplay::redraw() {
+void BezierEditor::redraw() {
     if (auto scene = get_scene()) {
         auto path = get_path();
         // TODO
@@ -68,7 +68,7 @@ void BezierKnotsDisplay::redraw() {
     }
 }
 
-void BezierKnotsDisplay::init() {
+void BezierEditor::init() {
     if (auto scene = get_scene()) {
         if (auto bezier_node = get_bezier_node()) {
             bool readonly = !bezier_node->can_set();
@@ -131,7 +131,7 @@ void BezierKnotsDisplay::init() {
     }
 }
 
-void BezierKnotsDisplay::uninit() {
+void BezierEditor::uninit() {
     if (auto canvas = get_canvas()) {
         for (auto const& e : knot_items) {
             canvas->scene()->removeItem(e.get());
