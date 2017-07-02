@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(studio)
 
-set(RAINYNITE_STUDIO_VERSION "0.2" CACHE STRING "RainyNite studio version number string" FORCE)
-set(RAINYNITE_STUDIO_CODENAME "Rectangle Power" CACHE STRING "RainyNite studio version codename" FORCE)
+set(RAINYNITE_STUDIO_VERSION "0.3a" CACHE STRING "RainyNite studio version number string" FORCE)
+set(RAINYNITE_STUDIO_CODENAME "Reactive Shapes" CACHE STRING "RainyNite studio version codename" FORCE)
 
 set(CMAKE_CXX_STANDARD 14) # 17 is not supported by cmake 3.7
 
