@@ -28,6 +28,7 @@
 class QGraphicsScene;
 class QGraphicsItem;
 class QGraphicsPixmapItem;
+class QGraphicsRectItem;
 
 namespace core {
 class AbstractValue;
@@ -51,11 +52,16 @@ public:
     void clear_node_editors();
 
 protected:
-    virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
+    void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
+    void set_context(std::shared_ptr<EditorContext> context) override;
+
+private:
+    void update_border();
 
 private:
     std::unique_ptr<QGraphicsScene> the_scene;
     std::unique_ptr<QGraphicsPixmapItem> image;
+    std::unique_ptr<QGraphicsRectItem> image_border;
     std::shared_ptr<core::AbstractValue> active_node;
     std::vector<std::unique_ptr<CanvasEditor>> editors;
 };

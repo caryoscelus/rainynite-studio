@@ -25,6 +25,7 @@
 #include <geom_helpers/knots.h>
 
 #include <core/node/abstract_value.h>
+#include <core/document.h>
 
 #include <generic/canvas_editor.h>
 #include "canvas.h"
@@ -40,6 +41,7 @@ Canvas::Canvas(QWidget* parent) :
 {
     setScene(the_scene.get());
     the_scene->addItem(image.get());
+    image_border.reset(the_scene->addRect(0, 0, 0, 0));
 }
 
 Canvas::~Canvas() {
@@ -69,6 +71,24 @@ void Canvas::remove_node_editor() {
 
 void Canvas::clear_node_editors() {
     editors.clear();
+}
+
+void Canvas::set_context(std::shared_ptr<EditorContext> context) {
+    ContextListener::set_context(context);
+    // TODO: listen to document change
+    // TODO: listen to size node change
+    // TODO: possible *nullptr
+    connect_boost(
+        get_core_context()->get_document()->get_size()->changed_signal,
+        [this]() {
+            update_border();
+        }
+    );
+}
+
+void Canvas::update_border() {
+    auto size = get_core_context()->get_document()->get_size()->get(get_time());
+    image_border->setRect(0, 0, size.x(), size.y());
 }
 
 } // namespace studio
