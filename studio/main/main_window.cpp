@@ -88,6 +88,7 @@ MainWindow::~MainWindow() {
 void MainWindow::new_document() {
     document = std::make_shared<core::Document>();
     set_core_context(document->get_default_context());
+    set_fname("");
 }
 
 void MainWindow::open() {
