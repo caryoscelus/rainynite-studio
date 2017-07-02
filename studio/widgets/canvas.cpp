@@ -84,6 +84,7 @@ void Canvas::set_context(std::shared_ptr<EditorContext> context) {
             update_border();
         }
     );
+    update_border();
 }
 
 void Canvas::update_border() {
