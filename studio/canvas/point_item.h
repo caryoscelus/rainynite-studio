@@ -48,6 +48,7 @@ public:
     }
     void set_readonly(bool ro) {
         setFlag(QGraphicsItem::ItemIsMovable, !ro);
+        setFlag(QGraphicsItem::ItemIsSelectable, !ro);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
     }
     void set_pos(double x, double y) {

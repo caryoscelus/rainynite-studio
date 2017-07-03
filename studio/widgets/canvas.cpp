@@ -41,6 +41,7 @@ Canvas::Canvas(QWidget* parent) :
 {
     setScene(the_scene.get());
     the_scene->addItem(image.get());
+    setDragMode(QGraphicsView::RubberBandDrag);
     image_border.reset(the_scene->addRect(0, 0, 0, 0));
 }
 
