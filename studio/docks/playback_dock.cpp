@@ -64,7 +64,9 @@ void PlaybackDock::stop() {
 void PlaybackDock::next_frame() {
     if (auto context = get_core_context()) {
         auto time = context->get_time();
-        if (time == context->get_period().get_last())
+        auto t = time;
+        ++t;
+        if (t == context->get_period().get_last())
             ui->play_button->setChecked(false);
         else
             context->set_time(time + core::Time(0, context->get_fps(), 1));
