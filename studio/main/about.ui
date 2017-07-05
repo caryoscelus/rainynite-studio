@@ -23,7 +23,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources.qrc">:/images/rectangles.png</pixmap>
+      <pixmap resource="../resources.qrc">:/images/ball_bounce.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

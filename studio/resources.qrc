@@ -1,7 +1,6 @@
 <RCC>
   <qresource prefix="images">
-    <file>rectangles.png</file>
-    <file>sunrise.png</file>
+    <file>ball_bounce.png</file>
     <file>transparency.png</file>
   </qresource>
   <qresource prefix="text">
