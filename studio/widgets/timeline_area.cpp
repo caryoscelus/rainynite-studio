@@ -42,7 +42,11 @@ TimelineEditor* TimelineArea::add_editor(std::unique_ptr<TimelineEditor> editor)
     return editor_p;
 }
 
-void TimelineArea::time_changed(core::Time /*time*/) {
+void TimelineArea::set_context(std::shared_ptr<EditorContext> context) {
+    for (auto const& editor : editors) {
+        if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
+            context_listener->set_context(context);
+    }
 }
 
 } // namespace studio

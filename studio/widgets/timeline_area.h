@@ -41,8 +41,8 @@ public:
 public:
     TimelineEditor* add_editor(std::unique_ptr<TimelineEditor> editor);
 
-protected:
-    virtual void time_changed(core::Time) override;
+public:
+    void set_context(std::shared_ptr<EditorContext> context) override;
 
 private:
     std::unique_ptr<QGraphicsScene> the_scene;
