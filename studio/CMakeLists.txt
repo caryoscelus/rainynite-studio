@@ -11,6 +11,8 @@ target_sources(rainynite-studio
         docks/playback_dock.h
         docks/time_dock.cpp
         docks/time_dock.h
+        docks/timearea_dock.cpp
+        docks/timearea_dock.h
         docks/node_tree_dock.cpp
         docks/node_tree_dock.h
         docks/node_edit_dock.cpp
@@ -23,6 +25,8 @@ target_sources(rainynite-studio
         widgets/canvas.h
         widgets/timeline_view.cpp
         widgets/timeline_view.h
+        widgets/timeline_area.cpp
+        widgets/timeline_area.h
         widgets/color_button.cpp
         widgets/color_button.h
         widgets/point_value_editor.cpp
