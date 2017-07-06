@@ -50,6 +50,8 @@ target_sources(rainynite-studio
         generic/editor_context.h
         generic/canvas_editor.cpp
         generic/canvas_editor.h
+        generic/timeline_editor.cpp
+        generic/timeline_editor.h
         generic/dock_registry.h
 
         models/node_model.cpp

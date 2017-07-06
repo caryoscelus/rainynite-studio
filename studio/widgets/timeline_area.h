@@ -29,18 +29,24 @@ class QGraphicsScene;
 
 namespace studio {
 
+class TimelineEditor;
+
 class TimelineArea : public QGraphicsView, public ContextListener {
     Q_OBJECT
 
 public:
     explicit TimelineArea(QWidget* parent = nullptr);
+    virtual ~TimelineArea();
+
+public:
+    TimelineEditor* add_editor(std::unique_ptr<TimelineEditor> editor);
 
 protected:
     virtual void time_changed(core::Time) override;
 
 private:
     std::unique_ptr<QGraphicsScene> the_scene;
-//     std::vector<std::unique_ptr<TimelineEditor>> editors;
+    std::vector<std::unique_ptr<TimelineEditor>> editors;
 };
 
 }

@@ -18,6 +18,8 @@
 
 #include <QGraphicsScene>
 
+#include <generic/timeline_editor.h>
+
 #include "timeline_area.h"
 
 namespace studio {
@@ -26,6 +28,18 @@ TimelineArea::TimelineArea(QWidget* parent) :
     QGraphicsView(parent),
     the_scene(std::make_unique<QGraphicsScene>())
 {
+    setScene(the_scene.get());
+    setDragMode(QGraphicsView::RubberBandDrag);
+}
+
+TimelineArea::~TimelineArea() {
+}
+
+TimelineEditor* TimelineArea::add_editor(std::unique_ptr<TimelineEditor> editor) {
+    auto editor_p = editor.get();
+    editor->set_canvas(this);
+    editors.push_back(std::move(editor));
+    return editor_p;
 }
 
 void TimelineArea::time_changed(core::Time /*time*/) {
