@@ -40,6 +40,8 @@ target_sources(rainynite-studio
         canvas/rectangle_editor.cpp
         canvas/rectangle_editor.h
 
+        canvas/timeline_cursor.cpp
+
         generic/node_editor.cpp
         generic/node_editor.h
         generic/custom_widgets.cpp

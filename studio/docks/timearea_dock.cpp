@@ -18,6 +18,7 @@
 
 #include <widgets/timeline_area.h>
 
+#include <generic/timeline_editor.h>
 #include "timearea_dock.h"
 #include "ui_timearea_dock.h"
 
@@ -30,6 +31,7 @@ TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* par
 {
     ui->setupUi(this);
     ui->timeline->set_context(context_);
+    add_timeline_named_editor(*ui->timeline, "TimelineCursor");
 }
 
 TimeareaDock::~TimeareaDock() {
