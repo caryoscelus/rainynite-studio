@@ -32,7 +32,9 @@ PlaybackDock::PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* par
     connect(ui->move_end_button, SIGNAL(clicked()), this, SLOT(move_end()));
     connect(ui->play_button, SIGNAL(toggled(bool)), this, SLOT(toggle_playback(bool)));
     connect(ui->stop_button, SIGNAL(clicked()), this, SLOT(stop()));
-    connect(ui->timeline_zoom, SIGNAL(valueChanged(int)), ui->timeline, SLOT(set_zoom_level(int)));
+
+    connect(ui->time_box, SIGNAL(editingFinished()), this, SLOT(change_time()));
+    connect(ui->fps_box, SIGNAL(editingFinished()), this, SLOT(change_fps()));
 
     // TODO: move actual playing out of dock
     connect(timer, SIGNAL(timeout()), this, SLOT(next_frame()));
@@ -42,9 +44,22 @@ PlaybackDock::PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* par
 PlaybackDock::~PlaybackDock() {
 }
 
-void PlaybackDock::set_context(std::shared_ptr<EditorContext> context_) {
-    ContextListener::set_context(context_);
-    ui->timeline->set_context(context_);
+void PlaybackDock::time_changed(core::Time time) {
+    ui->time_box->setValue(time.get_frames());
+}
+
+void PlaybackDock::fps_changed(core::Time::fps_type fps) {
+    ui->fps_box->setValue(fps);
+}
+
+void PlaybackDock::change_time() {
+    if (auto context = get_core_context())
+        context->set_time(core::Time(0, context->get_fps(), ui->time_box->value()));
+}
+
+void PlaybackDock::change_fps() {
+    if (auto context = get_core_context())
+        context->set_fps(ui->fps_box->value());
 }
 
 void PlaybackDock::toggle_playback(bool play) {

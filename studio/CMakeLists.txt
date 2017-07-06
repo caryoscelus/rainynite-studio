@@ -9,8 +9,6 @@ target_sources(rainynite-studio
 
         docks/playback_dock.cpp
         docks/playback_dock.h
-        docks/time_dock.cpp
-        docks/time_dock.h
         docks/timearea_dock.cpp
         docks/timearea_dock.h
         docks/node_tree_dock.cpp

@@ -45,8 +45,9 @@ public:
     explicit PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     ~PlaybackDock();
 
-public:
-    virtual void set_context(std::shared_ptr<EditorContext> context_) override;
+protected:
+    void time_changed(core::Time time) override;
+    void fps_changed(core::Time::fps_type fps) override;
 
 private Q_SLOTS:
     void toggle_playback(bool play);
@@ -55,12 +56,15 @@ private Q_SLOTS:
     void move_start();
     void move_end();
 
+    void change_time();
+    void change_fps();
+
 private:
     std::unique_ptr<Ui::PlaybackDock> ui;
     QTimer* timer;
 };
 
-REGISTER_DOCK("Playback", PlaybackDock, Qt::BottomDockWidgetArea);
+REGISTER_DOCK("Playback", PlaybackDock, Qt::LeftDockWidgetArea);
 
 }
 
