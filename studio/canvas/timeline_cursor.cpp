@@ -24,31 +24,68 @@
 
 namespace studio {
 
+class TimelineCursor;
+
+class CursorItem : public QGraphicsRectItem {
+public:
+    CursorItem(TimelineCursor* parent_) :
+        QGraphicsRectItem {0, 0, 4, 80},
+        parent(parent_)
+    {
+    }
+public:
+    QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
+        if (change == ItemPositionChange) {
+            auto pos = value.toPointF();
+            auto new_x = change_pos(pos.x());
+            return QGraphicsItem::itemChange(change, QPointF{ new_x, 0 });
+        }
+        return QGraphicsItem::itemChange(change, value);
+    }
+public:
+    void move_to(core::Time time) {
+        auto s = time.get_seconds();
+        setPos(s*x_zoom_factor, 0);
+    }
+    double change_pos(double x);
+private:
+    TimelineCursor* parent;
+    const double x_zoom_factor = 16;
+};
+
 class TimelineCursor : public TimelineEditor, public ContextListener {
 public:
     void set_canvas(TimelineArea* canvas) override {
         TimelineEditor::set_canvas(canvas);
-        cursor_item.reset(canvas->scene()->addRect({0, 0, 4, 80}));
+        cursor_item = std::make_unique<CursorItem>(this);
+        canvas->scene()->addItem(cursor_item.get());
         cursor_item->setFlag(QGraphicsItem::ItemIsMovable, true);
         cursor_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
         cursor_item->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     }
 public:
+    double set_time(double seconds) {
+        auto fps = get_core_context()->get_fps();
+        int frames = seconds*fps;
+        ignore_time_change = true;
+        get_core_context()->set_frames(frames);
+        ignore_time_change = false;
+        return (double)frames / fps;
+    }
+public:
     void time_changed(core::Time time) override {
         ContextListener::time_changed(time);
-        move_cursor(time);
+        if (cursor_item && !ignore_time_change)
+            cursor_item->move_to(time);
     }
 private:
-    void move_cursor(core::Time time) {
-        if (!cursor_item)
-            return;
-        auto s = time.get_seconds();
-        cursor_item->setPos(s*x_zoom_factor, 0);
-    }
-private:
-    std::unique_ptr<QGraphicsRectItem> cursor_item;
-    const double x_zoom_factor = 16;
+    std::unique_ptr<CursorItem> cursor_item;
+    bool ignore_time_change = false;
 };
+
+double CursorItem::change_pos(double x) {
+    return parent->set_time(x/x_zoom_factor) * x_zoom_factor;
+}
 
 REGISTER_TIMELINE_EDITOR(TimelineCursor, TimelineCursor);
 
