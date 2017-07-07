@@ -43,6 +43,9 @@ public:
     inline boost::signals2::signal<void(core::Time)>& changed_time() {
         return context->changed_time;
     }
+    inline boost::signals2::signal<void(core::Time::fps_type)>& changed_fps() {
+        return context->changed_fps;
+    }
     inline boost::signals2::signal<void(std::shared_ptr<core::AbstractValue>)>& changed_active_node() {
         return changed_active_node_;
     }

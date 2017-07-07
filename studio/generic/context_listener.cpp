@@ -40,6 +40,12 @@ void ContextListener::set_context(std::shared_ptr<EditorContext> context_) {
         }
     );
     connect_boost(
+        context->changed_fps(),
+        [this](core::Time::fps_type fps) {
+            fps_changed(fps);
+        }
+    );
+    connect_boost(
         context->changed_active_node(),
         [this](std::shared_ptr<core::AbstractValue> node) {
             active_node_changed(node);
