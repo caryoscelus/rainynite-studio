@@ -55,9 +55,10 @@ public:
     virtual std::unique_ptr<TimelineEditor> operator()() const = 0;
 };
 
+// TODO: fix this mess
 TimelineEditor* add_timeline_editor(TimelineArea& canvas, TimelineEditorFactory const& factory);
 TimelineEditor* add_timeline_named_editor(TimelineArea& canvas, std::string const& name);
-TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node);
+void add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node);
 
 } // namespace studio
 

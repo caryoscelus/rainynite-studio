@@ -26,6 +26,11 @@
 
 namespace studio {
 
+/*
+ * TODO: refactor these functions!
+ * Maybe move some functionality into generic place and some into TimelineArea?
+ */
+
 TimelineEditor* add_timeline_editor(TimelineArea& canvas, TimelineEditorFactory const& factory) {
     auto editor = factory();
     if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
@@ -44,22 +49,23 @@ TimelineEditor* add_timeline_named_editor(TimelineArea& canvas, std::string cons
     return add_timeline_editor(canvas, *factory);
 }
 
-TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node) {
+void add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
-        return nullptr;
+        return;
 
-    TimelineEditorFactory* factory;
+    std::unique_ptr<TimelineEditor> editor;
     try {
-        factory = &class_init::type_meta<TimelineEditorFactory>(node->get_type());
+        editor = class_init::type_info<TimelineEditorFactory, std::unique_ptr<TimelineEditor>>(node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
         // do something about it? should we really catch it?
-        return nullptr;
+        return;
     }
 
-    auto editor = add_timeline_editor(canvas, *factory);
-    if (auto node_editor = dynamic_cast<NodeEditor*>(editor))
+    if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
         node_editor->set_node(node);
-    return editor;
+    if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
+        context_listener->set_context(canvas.get_context());
+    canvas.add_node_editor(node, std::move(editor));
 }
 
 } // namespace studio

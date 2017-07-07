@@ -38,15 +38,30 @@ TimelineArea::~TimelineArea() {
 TimelineEditor* TimelineArea::add_editor(std::unique_ptr<TimelineEditor> editor) {
     auto editor_p = editor.get();
     editor->set_canvas(this);
-    editors.push_back(std::move(editor));
+    misc_editors.push_back(std::move(editor));
     return editor_p;
 }
 
+void TimelineArea::add_node_editor(std::shared_ptr<core::AbstractValue> node, std::unique_ptr<TimelineEditor> editor) {
+    editor->set_canvas(this);
+    node_editors[node] = std::move(editor);
+}
+
 void TimelineArea::set_context(std::shared_ptr<EditorContext> context) {
-    for (auto const& editor : editors) {
+    ContextListener::set_context(context);
+    auto f = [&context](auto const& editor) {
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
             context_listener->set_context(context);
-    }
+    };
+    for (auto const& editor : misc_editors)
+        f(editor);
+    for (auto const& p : node_editors)
+        f(p.second);
+}
+
+void TimelineArea::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+    node_editors.clear();
+    add_timeline_node_editor(*this, node);
 }
 
 } // namespace studio
