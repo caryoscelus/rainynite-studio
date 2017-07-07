@@ -266,8 +266,7 @@ void MainWindow::add_all_docks() {
 void MainWindow::add_dock(std::string const& name) {
     auto dock = spawn_dock(name, get_context());
     auto position = dock_preferred_area(name);
-    addDockWidget(position, dock.get());
-    docks.push_back(std::move(dock));
+    addDockWidget(position, dock.release());
 }
 
 void MainWindow::setup_dock_menu() {

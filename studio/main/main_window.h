@@ -98,8 +98,6 @@ private:
     std::string window_title_template;
     bool extra_style = true;
 
-    std::vector<std::unique_ptr<QDockWidget>> docks;
-
     std::thread render_thread;
     std::queue<core::Context> renderer_queue;
     std::mutex renderer_mutex;
