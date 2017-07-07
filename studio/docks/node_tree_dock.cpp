@@ -16,6 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
+
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QInputDialog>
@@ -56,8 +58,8 @@ void NodeTreeDock::set_context(std::shared_ptr<EditorContext> context_) {
 }
 
 void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
-    auto coord = ui->tree_view->mapFromGlobal(event->globalPos());
-    auto index = ui->tree_view->indexAt(coord);
+    auto selection_model = ui->tree_view->selectionModel();
+    auto index = selection_model->currentIndex();
     auto parent_index = index.parent();
     if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index))) {
         QMenu menu(this);
@@ -65,7 +67,15 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
         auto type = parent_node->get_link_type(node_index);
         auto node_infos = type ? core::node_types()[*type] : core::all_node_infos();
 
-        auto selection = ui->tree_view->selectionModel()->selectedIndexes();
+        auto selection = selection_model->selectedIndexes();
+        // selection may contain other columns, which should be ignored
+        selection.erase(std::remove_if(
+            std::begin(selection),
+            std::end(selection),
+            [](auto const& index) {
+                return index.column() != 0;
+            }
+        ));
         if (selection.size() > 1) {
             menu.addAction(
                 QIcon::fromTheme("insert-link"),
