@@ -44,7 +44,7 @@ public:
     virtual void set_context(std::shared_ptr<EditorContext> context_);
 
 protected:
-    virtual core::Time get_time() {
+    core::Time get_time() const {
         return time;
     }
     virtual void time_changed(core::Time time_) {
