@@ -21,56 +21,24 @@
 #include <generic/context_listener.h>
 #include <generic/timeline_editor.h>
 #include <widgets/timeline_area.h>
+#include "time_item.h"
 
 namespace studio {
 
-class TimelineCursor;
-
-class CursorItem : public QGraphicsRectItem {
-public:
-    CursorItem(TimelineCursor* parent_) :
-        QGraphicsRectItem {0, 0, 4, 80},
-        parent(parent_)
-    {
-    }
-public:
-    QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
-        if (change == ItemPositionChange) {
-            auto pos = value.toPointF();
-            auto new_x = change_pos(pos.x());
-            return QGraphicsItem::itemChange(change, QPointF{ new_x, 0 });
-        }
-        return QGraphicsItem::itemChange(change, value);
-    }
-public:
-    void move_to(core::Time time) {
-        auto s = time.get_seconds();
-        setPos(s*x_zoom_factor, 0);
-    }
-    double change_pos(double x);
-private:
-    TimelineCursor* parent;
-    const double x_zoom_factor = 16;
-};
-
-class TimelineCursor : public TimelineEditor, public ContextListener {
+class TimelineCursor : public TimelineEditor, public ContextListener, public AbstractTimeEditor {
 public:
     void set_canvas(TimelineArea* canvas) override {
         TimelineEditor::set_canvas(canvas);
-        cursor_item = std::make_unique<CursorItem>(this);
+        cursor_item = std::make_unique<TimeItem>(this);
         canvas->scene()->addItem(cursor_item.get());
-        cursor_item->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cursor_item->set_readonly(false);
         cursor_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        cursor_item->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     }
 public:
-    double set_time(double seconds) {
-        auto fps = get_core_context()->get_fps();
-        int frames = seconds*fps;
+    void set_time(core::Time time) override {
         ignore_time_change = true;
-        get_core_context()->set_frames(frames);
+        get_core_context()->set_time(time);
         ignore_time_change = false;
-        return (double)frames / fps;
     }
 public:
     void time_changed(core::Time time) override {
@@ -78,14 +46,15 @@ public:
         if (cursor_item && !ignore_time_change)
             cursor_item->move_to(time);
     }
+    void fps_changed(core::Time::fps_type fps) override {
+        ContextListener::fps_changed(fps);
+        if (cursor_item)
+            cursor_item->set_fps(fps);
+    }
 private:
-    std::unique_ptr<CursorItem> cursor_item;
+    std::unique_ptr<TimeItem> cursor_item;
     bool ignore_time_change = false;
 };
-
-double CursorItem::change_pos(double x) {
-    return parent->set_time(x/x_zoom_factor) * x_zoom_factor;
-}
 
 REGISTER_TIMELINE_EDITOR(TimelineCursor, TimelineCursor);
 
