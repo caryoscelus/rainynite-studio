@@ -25,14 +25,24 @@
 
 namespace studio {
 
-class TimelineCursor : public TimelineEditor, public ContextListener, public AbstractTimeEditor {
+/**
+ * Cursor for timeline area.
+ *
+ * Uses TimeItem for real work.
+ * TODO: merge generic parts with TimeEditor
+ */
+class TimelineCursor :
+    public TimelineEditor,
+    public ContextListener,
+    public AbstractTimeEditor
+{
 public:
     void set_canvas(TimelineArea* canvas) override {
         TimelineEditor::set_canvas(canvas);
-        cursor_item = std::make_unique<TimeItem>(this);
-        canvas->scene()->addItem(cursor_item.get());
-        cursor_item->set_readonly(false);
-        cursor_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        time_item = std::make_unique<TimeItem>(this);
+        canvas->scene()->addItem(time_item.get());
+        time_item->set_readonly(false);
+        time_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
     }
 public:
     void set_time(core::Time time) override {
@@ -43,16 +53,16 @@ public:
 public:
     void time_changed(core::Time time) override {
         ContextListener::time_changed(time);
-        if (cursor_item && !ignore_time_change)
-            cursor_item->move_to(time);
+        if (time_item && !ignore_time_change)
+            time_item->move_to(time);
     }
     void fps_changed(core::Time::fps_type fps) override {
         ContextListener::fps_changed(fps);
-        if (cursor_item)
-            cursor_item->set_fps(fps);
+        if (time_item)
+            time_item->set_fps(fps);
     }
 private:
-    std::unique_ptr<TimeItem> cursor_item;
+    std::unique_ptr<TimeItem> time_item;
     bool ignore_time_change = false;
 };
 
