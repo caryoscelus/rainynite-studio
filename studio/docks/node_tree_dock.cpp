@@ -51,6 +51,7 @@ void NodeTreeDock::set_context(std::shared_ptr<EditorContext> context_) {
     } else {
         model = std::make_unique<NodeModel>(nullptr, nullptr);
     }
+    model->set_context(context_);
     ui->tree_view->setModel(model.get());
 }
 

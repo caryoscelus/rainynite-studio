@@ -22,6 +22,7 @@
 #include <core/node/abstract_node.h>
 #include <core/action.h>
 #include <core/actions/change_link.h>
+#include <core/serialize/node_writer.h>
 
 #include <util/strings.h>
 #include "node_model.h"
@@ -40,24 +41,48 @@ NodeModel::NodeModel(core::AbstractReference root_, std::shared_ptr<core::Action
 NodeModel::~NodeModel() {
 }
 
+void NodeModel::time_changed(core::Time time) {
+    ContextListener::time_changed(time);
+    Q_EMIT dataChanged(index(0, 1), index(2, 1));
+}
+
 QVariant NodeModel::data(QModelIndex const& index, int role) const {
     if (!index.isValid())
-        return QVariant();
+        return {};
 
-    switch (role) {
-        case Qt::DisplayRole: {
-            std::string role = "document";
-            if (auto parent_node = get_node_as<core::AbstractNode>(parent(index)))
-                role = parent_node->get_name_at(index.row());
-            else if (parent(index).isValid())
-                role = "{}"_format(index.row());
-            std::string type_name = "<Bad node!>";
-            if (auto node = get_node(index))
-                type_name = core::node_name(*node);
-            return util::str("{}: {}"_format(role, type_name));
-        } break;
-        default:
-            return QVariant();
+    if (index.column() == 0) {
+        switch (role) {
+            case Qt::DisplayRole: {
+                std::string node_role = "document";
+                if (auto parent_node = get_node_as<core::AbstractNode>(parent(index)))
+                    node_role = parent_node->get_name_at(index.row());
+                else if (parent(index).isValid())
+                    node_role = "{}"_format(index.row());
+                std::string type_name = "<Bad node!>";
+                if (auto node = get_node(index))
+                    type_name = core::node_name(*node);
+                return util::str("{}: {}"_format(node_role, type_name));
+            } break;
+            default:
+                return {};
+        }
+    } else {
+        switch (role) {
+            case Qt::DisplayRole: {
+                if (auto node = get_node(index)) {
+                    auto value = node->get_any(get_time());
+                    try {
+                        auto s = core::serialize::value_to_string(value);
+                        return QString::fromStdString(s);
+                    } catch (class_init::RuntimeTypeError const& ex) {
+                        return {};
+                    }
+                }
+                return {};
+            } break;
+            default:
+                return {};
+        }
     }
 }
 
@@ -65,8 +90,19 @@ Qt::ItemFlags NodeModel::flags(QModelIndex const&) const {
     return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
-QVariant NodeModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const {
-    return "header";
+QVariant NodeModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    if (orientation == Qt::Vertical)
+        return {};
+    switch (role) {
+        case Qt::DisplayRole: {
+            if (section == 0)
+                return "node";
+            else
+                return "value";
+        } break;
+        default:
+            return {};
+    }
 }
 
 QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) const {
@@ -285,7 +321,7 @@ int NodeModel::rowCount(QModelIndex const& parent) const {
 }
 
 int NodeModel::columnCount(QModelIndex const& /*parent*/) const {
-    return 1;
+    return 2;
 }
 
 } // namespace studio

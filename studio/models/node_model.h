@@ -24,13 +24,15 @@
 #include <core/node_info.h>
 #include <core/node/traverse.h>
 
+#include <generic/context_listener.h>
+
 namespace core {
 class ActionStack;
 }
 
 namespace studio {
 
-class NodeModel : public QAbstractItemModel
+class NodeModel : public QAbstractItemModel, public ContextListener
 {
     Q_OBJECT
 
@@ -49,7 +51,10 @@ public:
     int columnCount(QModelIndex const& parent = QModelIndex()) const override;
 
 public:
-    virtual bool removeRows(int row, int count, QModelIndex const& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, QModelIndex const& parent = QModelIndex()) override;
+
+public:
+    void time_changed(core::Time time) override;
 
 public:
     bool can_add_custom_property(QModelIndex const& parent) const;
