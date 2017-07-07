@@ -56,15 +56,15 @@ void PointEditor::time_changed(core::Time time) {
 void PointEditor::update_position() {
     if (point_item == nullptr)
         return;
-    if (auto node = dynamic_cast<core::BaseValue<Geom::Point>*>(get_node().get())) {
-        auto point = node->get(get_time());
+    if (auto maybe_point = get_value<Geom::Point>()) {
+        auto point = *maybe_point;
         point_item->set_pos(point.x(), point.y());
-        point_item->set_readonly(!node->can_set());
+        point_item->set_readonly(!get_node()->is_const());
     }
 }
 
 void PointEditor::save_position(double x, double y) {
-    if (auto node = dynamic_cast<core::BaseValue<Geom::Point>*>(get_node().get())) {
+    if (auto node = get_node_as<Geom::Point>()) {
         if (node->can_set())
             node->set({x, y});
     }
