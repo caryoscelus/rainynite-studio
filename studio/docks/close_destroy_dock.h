@@ -31,7 +31,7 @@ public:
     virtual ~DockWidget()
     {}
 protected:
-    virtual void closeEvent(QCloseEvent* event) override {
+    void closeEvent(QCloseEvent* event) override {
         QDockWidget::closeEvent(event);
         deleteLater();
     }

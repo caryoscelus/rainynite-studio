@@ -34,7 +34,7 @@ class AbstractValue;
 
 namespace studio {
 
-class NodeEditor {
+class NodeEditor : public ContextListener {
 public:
     virtual ~NodeEditor() {
         node_connection.disconnect();
@@ -47,20 +47,31 @@ public:
     inline std::shared_ptr<core::AbstractValue> get_node() {
         return node;
     }
+public:
+    template <typename T>
+    boost::optional<T> get_value() {
+        if (auto node = get_node_as<T>()) {
+            return node->get(get_time());
+        }
+        return boost::none;
+    }
+    template <typename T>
+    std::shared_ptr<core::BaseValue<T>> get_node_as() {
+        return std::dynamic_pointer_cast<core::BaseValue<T>>(std::move(get_node()));
+    }
 private:
     std::shared_ptr<core::AbstractValue> node = nullptr;
     boost::signals2::connection node_connection;
 };
 
 template <class W, typename T>
-class NodeEditorWidget : public NodeEditor, public ContextListener, public W {
+class NodeEditorWidget : public NodeEditor, public W {
 public:
     using Widget = W;
     using ValueType = T;
 public:
     NodeEditorWidget(QWidget* parent = nullptr) :
         NodeEditor(),
-        ContextListener(),
         W(parent)
     {
         QObject::connect(

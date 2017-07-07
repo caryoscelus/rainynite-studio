@@ -29,7 +29,7 @@ class QGraphicsRectItem;
 
 namespace studio {
 
-class RectangleEditor : public NodeEditor, public CanvasEditor, public ContextListener {
+class RectangleEditor : public NodeEditor, public CanvasEditor {
 public:
     RectangleEditor();
     virtual ~RectangleEditor();

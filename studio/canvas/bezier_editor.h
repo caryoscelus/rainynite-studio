@@ -29,7 +29,7 @@ class QGraphicsItem;
 
 namespace studio {
 
-class BezierEditor : public NodeEditor, public CanvasEditor, public ContextListener {
+class BezierEditor : public NodeEditor, public CanvasEditor {
 public:
     BezierEditor();
     virtual ~BezierEditor();

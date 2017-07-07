@@ -29,7 +29,7 @@ namespace studio {
 
 class PointItem;
 
-class PointEditor : public NodeEditor, public CanvasEditor, public ContextListener {
+class PointEditor : public NodeEditor, public CanvasEditor {
 public:
     PointEditor();
     virtual ~PointEditor();
