@@ -36,19 +36,20 @@ namespace studio {
 
 NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
-    ContextListener(context_),
     ui(std::make_unique<Ui::NodeEditDock>())
 {
     ui->setupUi(this);
     custom_widget = ui->custom_placeholder;
     ui->text_edit->setReadOnly(true);
     connect(ui->text_edit, SIGNAL(editingFinished()), this, SLOT(write_node()));
+    set_context(context_);
 }
 
 NodeEditDock::~NodeEditDock() {
 }
 
 void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+    set_node(node);
     active_node = node;
     if (!node)
         return;
@@ -59,6 +60,11 @@ void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node
 void NodeEditDock::time_changed(core::Time time) {
     ContextListener::time_changed(time);
     update_value();
+}
+
+void NodeEditDock::node_update() {
+    // custom should be capable of updating itself..
+    update_generic();
 }
 
 void NodeEditDock::update_value() {

@@ -23,7 +23,7 @@
 
 #include <core/context.h>
 
-#include <generic/context_listener.h>
+#include <generic/node_editor.h>
 #include <generic/dock_registry.h>
 #include "close_destroy_dock.h"
 
@@ -37,7 +37,7 @@ namespace studio {
  * Node editing dock, supporting basic text editor and custom editors based on
  * node type.
  */
-class NodeEditDock : public DockWidget, public ContextListener {
+class NodeEditDock : public DockWidget, public NodeEditor {
     Q_OBJECT
 
 public:
@@ -47,6 +47,7 @@ public:
 public:
     virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
     virtual void time_changed(core::Time time) override;
+    virtual void node_update() override;
 
 private Q_SLOTS:
     void write_node();
