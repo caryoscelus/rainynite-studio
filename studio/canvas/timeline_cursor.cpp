@@ -33,22 +33,21 @@ namespace studio {
  */
 class TimelineCursor :
     public TimelineEditor,
-    public ContextListener,
-    public AbstractTimeEditor
+    public ContextListener
 {
 public:
     void set_canvas(TimelineArea* canvas) override {
         TimelineEditor::set_canvas(canvas);
-        time_item = std::make_unique<TimeItem>(this);
+        time_item = std::make_unique<TimeItem>(
+            [this](core::Time time) {
+                ignore_time_change = true;
+                get_core_context()->set_time(time);
+                ignore_time_change = false;
+            }
+        );
         canvas->scene()->addItem(time_item.get());
         time_item->set_readonly(false);
         time_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-    }
-public:
-    void set_time(core::Time time) override {
-        ignore_time_change = true;
-        get_core_context()->set_time(time);
-        ignore_time_change = false;
     }
 public:
     void time_changed(core::Time time) override {

@@ -27,24 +27,23 @@ namespace studio {
 
 class TimeEditor :
     public TimelineEditor,
-    public AbstractTimeEditor,
     public NodeEditor
 {
 public:
     void set_canvas(TimelineArea* canvas) override {
         TimelineEditor::set_canvas(canvas);
-        time_item = std::make_unique<TimeItem>(this);
+        time_item = std::make_unique<TimeItem>(
+            [this](core::Time time) {
+                if (auto node = get_node_as<core::Time>()) {
+                    ignore_time_change = true;
+                    if (node->can_set())
+                        node->set(time);
+                    ignore_time_change = false;
+                }
+            }
+        );
         canvas->scene()->addItem(time_item.get());
         node_update();
-    }
-public:
-    void set_time(core::Time time) override {
-        if (auto node = get_node_as<core::Time>()) {
-            ignore_time_change = true;
-            if (node->can_set())
-                node->set(time);
-            ignore_time_change = false;
-        }
     }
 public:
     void node_update() override {

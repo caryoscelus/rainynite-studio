@@ -23,16 +23,13 @@
 
 namespace studio {
 
-class AbstractTimeEditor {
-public:
-    virtual void set_time(core::Time time) = 0;
-};
-
 class TimeItem : public QGraphicsRectItem {
 public:
-    TimeItem(AbstractTimeEditor* parent_) :
+    using Callback = std::function<void(core::Time)>;
+public:
+    TimeItem(Callback callback_) :
         QGraphicsRectItem {0, 0, 4, 80},
-        parent(parent_)
+        callback(callback_)
     {
     }
 public:
@@ -59,11 +56,11 @@ public:
 private:
     double change_pos(double x) {
         int frames = x * fps / x_zoom_factor;
-        parent->set_time(core::Time(0, fps, frames));
+        callback(core::Time(0, fps, frames));
         return (double)frames * x_zoom_factor / fps;
     }
 private:
-    AbstractTimeEditor* parent;
+    Callback callback;
     core::Time::fps_type fps = 1;
     const double x_zoom_factor = 16;
 };
