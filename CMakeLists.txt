@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(studio)
+project(rainynite-studio)
 
 set(RAINYNITE_STUDIO_VERSION "0.4a" CACHE STRING "RainyNite studio version number string" FORCE)
 set(RAINYNITE_STUDIO_CODENAME "Time Flies" CACHE STRING "RainyNite studio version codename" FORCE)
