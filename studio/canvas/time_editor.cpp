@@ -58,16 +58,14 @@ public:
         ContextListener::time_changed(time);
         update_position();
     }
-    void fps_changed(core::Time::fps_type fps) override {
-        ContextListener::fps_changed(fps);
-        if (time_item)
-            time_item->set_fps(fps);
-    }
 private:
     void update_position() {
         if (time_item && !ignore_time_change) {
-            if (auto maybe_time = get_value<core::Time>())
-                time_item->move_to(*maybe_time);
+            if (auto maybe_time = get_value<core::Time>()) {
+                auto time = *maybe_time;
+                time_item->set_fps(time.get_fps());
+                time_item->move_to(time);
+            }
         }
     }
 private:
