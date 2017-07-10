@@ -59,7 +59,7 @@ void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node
 
     bool show_children = false;
     try {
-        show_children = class_init::name_info<CanvasEditorShowChildren>(core::node_name(*node))();
+        show_children = class_init::name_info<NodeEditorShowChildren>(core::node_name(*node))();
     } catch (class_init::TypeLookupError const&) {
     }
 

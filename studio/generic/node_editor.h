@@ -102,6 +102,26 @@ protected:
     core::BaseValue<ValueType>* value_node = nullptr;
 };
 
+class NodeEditorShowChildren {
+public:
+    virtual bool operator()() const = 0;
+};
+
+#define REGISTER_NODE_EDITOR_SHOW_CHILDREN(Name, node_name, value) \
+class Name##ShowChildren : \
+    public NodeEditorShowChildren, \
+    private class_init::StringRegistered<Name##ShowChildren, NodeEditorShowChildren> \
+{ \
+public: \
+    static std::string name() { \
+        return node_name; \
+    } \
+public: \
+    virtual bool operator()() const override { \
+        return value; \
+    } \
+}
+
 } // namespace studio
 
 #endif

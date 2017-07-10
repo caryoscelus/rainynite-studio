@@ -66,6 +66,20 @@ void add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::Abstra
     if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
         context_listener->set_context(canvas.get_context());
     canvas.add_node_editor(node, std::move(editor));
+
+    bool show_children = false;
+    try {
+        show_children = class_init::name_info<NodeEditorShowChildren>(core::node_name(*node))();
+    } catch (class_init::TypeLookupError const&) {
+    }
+
+    if (show_children) {
+        // NOTE: this may lead to infinite recursion if node tree is looped
+        if (auto parent = dynamic_cast<core::AbstractListLinked*>(node.get())) {
+            for (auto child : parent->get_links())
+                add_timeline_node_editor(canvas, child);
+        }
+    }
 }
 
 } // namespace studio

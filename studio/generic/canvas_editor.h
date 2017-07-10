@@ -70,19 +70,4 @@ public: \
     } \
 }
 
-#define REGISTER_CANVAS_SHOW_CHILDREN(Name, node_name, value) \
-class Name##ShowChildren : \
-    public CanvasEditorShowChildren, \
-    private class_init::StringRegistered<Name##ShowChildren, CanvasEditorShowChildren> \
-{ \
-public: \
-    static std::string name() { \
-        return node_name; \
-    } \
-public: \
-    virtual bool operator()() const override { \
-        return value; \
-    } \
-}
-
 #endif
