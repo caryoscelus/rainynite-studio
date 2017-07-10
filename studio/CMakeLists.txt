@@ -58,6 +58,8 @@ target_sources(rainynite-studio
 
         models/node_model.cpp
         models/node_model.h
+        models/node_list.cpp
+        models/node_list.h
 
         resources.qrc
 )
