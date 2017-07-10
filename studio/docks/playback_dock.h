@@ -64,7 +64,7 @@ private:
     QTimer* timer;
 };
 
-REGISTER_DOCK("Playback", PlaybackDock, Qt::LeftDockWidgetArea);
+REGISTER_DOCK("Playback", PlaybackDock, Qt::BottomDockWidgetArea);
 
 }
 
