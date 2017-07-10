@@ -94,5 +94,6 @@ private:
 };
 
 REGISTER_TIMELINE_NODE_EDITOR(TimePeriodEditor, core::TimePeriod, TimePeriodEditor);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(CompositeTimePeriod, "CompositeTimePeriod", true);
 
 }
