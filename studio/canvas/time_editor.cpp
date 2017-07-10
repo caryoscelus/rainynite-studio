@@ -35,8 +35,6 @@ public:
         TimelineEditor::set_canvas(canvas);
         time_item = std::make_unique<TimeItem>(this);
         canvas->scene()->addItem(time_item.get());
-        time_item->set_readonly(false);
-        time_item->setFlag(QGraphicsItem::ItemIsSelectable, true);
         node_update();
     }
 public:
@@ -51,6 +49,10 @@ public:
 public:
     void node_update() override {
         update_position();
+        auto node = get_node_as<core::Time>();
+        bool editable = node && node->can_set();
+        time_item->set_readonly(!editable);
+        time_item->setFlag(QGraphicsItem::ItemIsSelectable, editable);
     }
     void time_changed(core::Time time) override {
         ContextListener::time_changed(time);
