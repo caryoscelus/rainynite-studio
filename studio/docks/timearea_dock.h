@@ -33,18 +33,22 @@ class TimeareaDock;
 
 namespace studio {
 
+class NodeListModel;
+
 /**
  * Time area dock
  */
 class TimeareaDock : public DockWidget, public ContextListener {
-    Q_OBJECT
-
 public:
     explicit TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     virtual ~TimeareaDock();
 
+public:
+    void set_context(std::shared_ptr<EditorContext> context) override;
+
 private:
     std::unique_ptr<Ui::TimeareaDock> ui;
+    std::unique_ptr<NodeListModel> node_list_model;
 };
 
 REGISTER_DOCK("Timeline", TimeareaDock, Qt::BottomDockWidgetArea);

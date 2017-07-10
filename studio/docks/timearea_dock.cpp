@@ -16,9 +16,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <widgets/timeline_area.h>
+#include <core/node/abstract_value.h>
 
+#include <widgets/timeline_area.h>
 #include <generic/timeline_editor.h>
+#include <models/node_list.h>
 #include "timearea_dock.h"
 #include "ui_timearea_dock.h"
 
@@ -27,14 +29,27 @@ namespace studio {
 TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::TimeareaDock>())
+    ui(std::make_unique<Ui::TimeareaDock>()),
+    node_list_model(std::make_unique<NodeListModel>())
 {
     ui->setupUi(this);
-    ui->timeline->set_context(context_);
     add_timeline_named_editor(*ui->timeline, "TimelineCursor");
+    ui->node_list->setModel(node_list_model.get());
+    set_context(get_context());
 }
 
 TimeareaDock::~TimeareaDock() {
+}
+
+void TimeareaDock::set_context(std::shared_ptr<EditorContext> context) {
+    ContextListener::set_context(context);
+    ui->timeline->set_context(context);
+    connect_boost(
+        context->changed_active_node(),
+        [this](core::AbstractReference node) {
+            node_list_model->insert_node(node);
+        }
+    );
 }
 
 } // namespace studio
