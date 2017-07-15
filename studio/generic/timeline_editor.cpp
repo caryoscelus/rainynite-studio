@@ -58,14 +58,15 @@ void add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::Abstra
         editor = class_init::type_info<TimelineEditorFactory, std::unique_ptr<TimelineEditor>>(node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
         // do something about it? should we really catch it?
-        return;
     }
 
-    if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
-        node_editor->set_node(node);
-    if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
-        context_listener->set_context(canvas.get_context());
-    canvas.add_node_editor(node, std::move(editor));
+    if (editor) {
+        if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
+            node_editor->set_node(node);
+        if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
+            context_listener->set_context(canvas.get_context());
+        canvas.add_node_editor(node, std::move(editor));
+    }
 
     bool show_children = false;
     try {
