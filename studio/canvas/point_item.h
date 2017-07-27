@@ -19,12 +19,7 @@
 #ifndef __STUDIO__CANVAS__POINT_ITEM_H__C2FC4E6E
 #define __STUDIO__CANVAS__POINT_ITEM_H__C2FC4E6E
 
-#include <QGraphicsItem>
 #include <QGraphicsEllipseItem>
-
-#include <2geom/point.h>
-
-#include <widgets/canvas.h>
 
 namespace studio {
 
@@ -34,34 +29,12 @@ public:
 public:
     static const int radius = 2;
 public:
-    PointItem(Callback callback) :
-        QGraphicsEllipseItem(0, 0, radius*2, radius*2),
-        position_callback(callback)
-    {}
+    PointItem(Callback callback);
 public:
-    void paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) override {
-        auto transform = painter->transform();
-        auto offset = transform.map(QPointF());
-        painter->resetTransform();
-        painter->translate(offset.x()-radius, offset.y()-radius);
-        QGraphicsEllipseItem::paint(painter, option, widget);
-        painter->setTransform(transform);
-    }
-    virtual QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
-        if (change == ItemPositionHasChanged) {
-            auto pos = value.toPointF();
-            position_callback(pos.x(), pos.y());
-        }
-        return QGraphicsItem::itemChange(change, value);
-    }
-    void set_readonly(bool ro) {
-        setFlag(QGraphicsItem::ItemIsMovable, !ro);
-        setFlag(QGraphicsItem::ItemIsSelectable, !ro);
-        setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
-    }
-    void set_pos(double x, double y) {
-        setPos({x, y});
-    }
+    void paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) override;
+    QVariant itemChange(GraphicsItemChange change, QVariant const& value) override;
+    void set_readonly(bool ro);
+    void set_pos(double x, double y);
 private:
     Callback position_callback;
 };
