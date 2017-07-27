@@ -16,10 +16,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cmath>
+
 #include <fmt/format.h>
 
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QWheelEvent>
 #include <QDebug>
 
 #include <geom_helpers/knots.h>
@@ -43,9 +46,20 @@ Canvas::Canvas(QWidget* parent) :
     the_scene->addItem(image.get());
     setDragMode(QGraphicsView::RubberBandDrag);
     image_border.reset(the_scene->addRect(0, 0, 0, 0));
+    setResizeAnchor(QGraphicsView::NoAnchor);
+    setTransformationAnchor(QGraphicsView::NoAnchor);
 }
 
 Canvas::~Canvas() {
+}
+
+void Canvas::wheelEvent(QWheelEvent* event) {
+    auto old_pos = mapToScene(event->pos());
+    auto scale_factor = std::pow(2, event->angleDelta().y() / 256.0);
+    scale(scale_factor, scale_factor);
+    auto new_pos = mapToScene(event->pos());
+    auto delta = new_pos-old_pos;
+    translate(delta.x(), delta.y());
 }
 
 void Canvas::set_main_image(QPixmap const& pixmap) {

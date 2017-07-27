@@ -44,6 +44,9 @@ public:
     virtual ~Canvas();
 
 public:
+    void wheelEvent(QWheelEvent* event) override;
+
+public:
     void set_main_image(QPixmap const& pixmap);
 
 public:
