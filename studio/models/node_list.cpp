@@ -87,6 +87,11 @@ void NodeListModel::insert_node(std::shared_ptr<core::AbstractValue> node, int p
     endInsertRows();
 }
 
+void NodeListModel::insert_unique_node(std::shared_ptr<core::AbstractValue> node, int position) {
+    if (std::find(nodes.begin(), nodes.end(), node) == nodes.end())
+        insert_node(node, position);
+}
+
 std::shared_ptr<core::AbstractValue> NodeListModel::get_node(QModelIndex const& index) const {
     return nodes[index.row()];
 }

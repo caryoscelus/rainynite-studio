@@ -53,7 +53,7 @@ void TimeareaDock::set_context(std::shared_ptr<EditorContext> context) {
     connect_boost(
         context->changed_active_node(),
         [this](core::AbstractReference node) {
-            node_list_model->insert_node(node);
+            node_list_model->insert_unique_node(node);
         }
     );
 }
