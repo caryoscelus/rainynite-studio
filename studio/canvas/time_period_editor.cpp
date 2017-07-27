@@ -61,6 +61,10 @@ public:
         canvas->scene()->addItem(last_item.get());
         node_update();
     }
+    void set_position_hint(int y, int height) override {
+        first_item->set_pos_height(y, height);
+        last_item->set_pos_height(y, height);
+    }
 public:
     void node_update() override {
         update_position();
