@@ -30,5 +30,11 @@ QPen cosmetic_dash() {
     return pen;
 }
 
+QPen cosmetic_solid() {
+    QPen pen(QGuiApplication::palette().dark(), 1, Qt::SolidLine);
+    pen.setCosmetic(true);
+    return pen;
+}
+
 } // namespace pens
 } // namespace studio

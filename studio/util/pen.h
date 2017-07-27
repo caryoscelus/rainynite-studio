@@ -27,6 +27,7 @@ namespace studio {
 namespace pens {
 
 QPen cosmetic_dash();
+QPen cosmetic_solid();
 
 } // namespace pens
 } // namespace studio
