@@ -37,6 +37,7 @@ TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* par
 {
     ui->setupUi(this);
     add_timeline_named_editor(*ui->timeline, "TimelineCursor");
+    ui->timeline->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     ui->node_list->setModel(node_list_model.get());
 
     connect(node_list_model.get(), &QAbstractItemModel::layoutChanged, this, &TimeareaDock::update_editors);
