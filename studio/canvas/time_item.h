@@ -20,6 +20,7 @@
 #define __STUDIO__CANVAS__TIME_ITEM_H__DD92BED4
 
 #include <QGraphicsRectItem>
+#include <QGuiApplication>
 
 namespace studio {
 
@@ -28,9 +29,11 @@ public:
     using Callback = std::function<void(core::Time)>;
 public:
     TimeItem(Callback callback_) :
-        QGraphicsRectItem {0, 0, 4, 80},
+        QGraphicsRectItem {0, 0, 2, 80},
         callback(callback_)
     {
+        setBrush(QGuiApplication::palette().text());
+        setPen({Qt::NoPen});
     }
 public:
     QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
