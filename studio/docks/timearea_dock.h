@@ -44,6 +44,9 @@ public:
     virtual ~TimeareaDock();
 
 public:
+    void contextMenuEvent(QContextMenuEvent* event) override;
+
+public:
     void set_context(std::shared_ptr<EditorContext> context) override;
 
 protected:

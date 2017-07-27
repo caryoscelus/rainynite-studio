@@ -16,6 +16,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMenu>
+#include <QContextMenuEvent>
+
 #include <core/node/abstract_value.h>
 
 #include <widgets/timeline_area.h>
@@ -45,6 +48,21 @@ TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* par
 }
 
 TimeareaDock::~TimeareaDock() {
+}
+
+void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
+    auto index = ui->node_list->selectionModel()->currentIndex();
+    if (index.isValid()) {
+        QMenu menu(this);
+        menu.addAction(
+            QIcon::fromTheme("list-remove"),
+            "Remove from timeline area",
+            [this, index]() {
+                node_list_model->removeRow(index.row());
+            }
+        );
+        menu.exec(event->globalPos());
+    }
 }
 
 void TimeareaDock::set_context(std::shared_ptr<EditorContext> context) {
