@@ -49,9 +49,9 @@ TimelineEditor* add_timeline_named_editor(TimelineArea& canvas, std::string cons
     return add_timeline_editor(canvas, *factory);
 }
 
-void add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node) {
+TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
-        return;
+        return nullptr;
 
     std::unique_ptr<TimelineEditor> editor;
     try {
@@ -60,6 +60,7 @@ void add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::Abstra
         // do something about it? should we really catch it?
     }
 
+    auto editor_p = editor.get();
     if (editor) {
         if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
             node_editor->set_node(node);
@@ -81,6 +82,8 @@ void add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::Abstra
                 add_timeline_node_editor(canvas, child);
         }
     }
+
+    return editor_p;
 }
 
 } // namespace studio

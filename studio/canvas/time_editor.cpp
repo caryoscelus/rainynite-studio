@@ -46,8 +46,7 @@ public:
         node_update();
     }
     void set_position_hint(int y, int height) override {
-        time_item->set_height(height);
-        time_item->setY(y);
+        time_item->set_pos_height(y, height);
     }
 public:
     void node_update() override {

@@ -37,7 +37,7 @@ public:
         if (change == ItemPositionChange) {
             auto pos = value.toPointF();
             auto new_x = change_pos(pos.x());
-            return QGraphicsItem::itemChange(change, QPointF{ new_x, 0 });
+            return QGraphicsItem::itemChange(change, QPointF{ new_x, y() });
         }
         return QGraphicsItem::itemChange(change, value);
     }
@@ -53,8 +53,9 @@ public:
         setFlag(QGraphicsItem::ItemIsMovable, !ro);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
     }
-    void set_height(int height) {
+    void set_pos_height(int y, int height) {
         auto r = rect();
+        r.setY(y);
         r.setHeight(height);
         setRect(r);
     }

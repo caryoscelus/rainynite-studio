@@ -78,8 +78,13 @@ void TimeareaDock::set_context(std::shared_ptr<EditorContext> context) {
 
 void TimeareaDock::update_editors() {
     ui->timeline->clear_node_editors();
-    for (auto node : node_list_model->get_all_nodes()) {
-        add_timeline_node_editor(*ui->timeline, node);
+    for (int i = 0; i < node_list_model->rowCount(); ++i) {
+        auto index = node_list_model->index(i, 0);
+        auto node = node_list_model->get_node(index);
+        if (auto editor = add_timeline_node_editor(*ui->timeline, node)) {
+            auto rect = ui->node_list->visualRect(index);
+            editor->set_position_hint(rect.y(), rect.height());
+        }
     }
 }
 
