@@ -75,7 +75,9 @@ int NodeListModel::columnCount(QModelIndex const& /*parent*/) const {
 bool NodeListModel::removeRows(int row, int count, QModelIndex const& parent) {
     if (parent.isValid())
         return false;
+    beginRemoveRows(parent, row, row+count-1);
     nodes.erase(nodes.begin()+row, nodes.begin()+row+count);
+    endRemoveRows();
     return true;
 }
 
