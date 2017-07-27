@@ -19,8 +19,11 @@
 #ifndef __STUDIO__CANVAS__TIME_ITEM_H__DD92BED4
 #define __STUDIO__CANVAS__TIME_ITEM_H__DD92BED4
 
+#include <functional>
+
 #include <QGraphicsRectItem>
-#include <QGuiApplication>
+
+#include <core/time/time.h>
 
 namespace studio {
 
@@ -28,46 +31,18 @@ class TimeItem : public QGraphicsRectItem {
 public:
     using Callback = std::function<void(core::Time)>;
 public:
-    TimeItem(Callback callback_) :
-        QGraphicsRectItem {0, 0, 2, 80},
-        callback(callback_)
-    {
-        setBrush(QGuiApplication::palette().text());
-        setPen({Qt::NoPen});
-    }
+    TimeItem(Callback callback_);
 public:
-    QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
-        if (change == ItemPositionChange) {
-            auto pos = value.toPointF();
-            auto new_x = change_pos(pos.x());
-            return QGraphicsItem::itemChange(change, QPointF{ new_x, y() });
-        }
-        return QGraphicsItem::itemChange(change, value);
-    }
+    QVariant itemChange(GraphicsItemChange change, QVariant const& value) override;
 public:
-    void move_to(core::Time time) {
-        auto s = time.get_seconds();
-        setPos(s*x_zoom_factor, 0);
-    }
+    void move_to(core::Time time);
     void set_fps(core::Time::fps_type fps_) {
         fps = fps_;
     }
-    void set_readonly(bool ro) {
-        setFlag(QGraphicsItem::ItemIsMovable, !ro);
-        setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
-    }
-    void set_pos_height(int y, int height) {
-        auto r = rect();
-        r.setY(y);
-        r.setHeight(height);
-        setRect(r);
-    }
+    void set_readonly(bool ro);
+    void set_pos_height(int y, int height);
 private:
-    double change_pos(double x) {
-        int frames = x * fps / x_zoom_factor;
-        callback(core::Time(0, fps, frames));
-        return (double)frames * x_zoom_factor / fps;
-    }
+    double change_pos(double x);
 private:
     Callback callback;
     core::Time::fps_type fps = 1;

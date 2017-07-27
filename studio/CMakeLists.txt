@@ -36,6 +36,8 @@ target_sources(rainynite-studio
         canvas/rectangle_editor.cpp
         canvas/rectangle_editor.h
 
+        canvas/time_item.h
+        canvas/time_item.cpp
         canvas/timeline_cursor.cpp
         canvas/time_editor.cpp
         canvas/time_period_editor.cpp
