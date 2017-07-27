@@ -46,6 +46,10 @@ public:
     inline TimelineArea* get_canvas() const {
         return canvas;
     }
+public:
+    /// Set editor preferred vertical position and size
+    virtual void set_position_hint(int /*y*/, int /*height*/) {
+    }
 private:
     TimelineArea* canvas = nullptr;
 };

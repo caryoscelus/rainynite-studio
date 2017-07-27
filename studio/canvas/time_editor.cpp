@@ -45,6 +45,10 @@ public:
         canvas->scene()->addItem(time_item.get());
         node_update();
     }
+    void set_position_hint(int y, int height) override {
+        time_item->set_height(height);
+        time_item->setY(y);
+    }
 public:
     void node_update() override {
         update_position();

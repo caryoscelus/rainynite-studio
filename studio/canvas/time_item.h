@@ -53,6 +53,11 @@ public:
         setFlag(QGraphicsItem::ItemIsMovable, !ro);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
     }
+    void set_height(int height) {
+        auto r = rect();
+        r.setHeight(height);
+        setRect(r);
+    }
 private:
     double change_pos(double x) {
         int frames = x * fps / x_zoom_factor;
