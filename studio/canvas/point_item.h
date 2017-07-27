@@ -39,10 +39,18 @@ public:
         position_callback(callback)
     {}
 public:
+    void paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) override {
+        auto transform = painter->transform();
+        auto offset = transform.map(QPointF());
+        painter->resetTransform();
+        painter->translate(offset.x()-radius, offset.y()-radius);
+        QGraphicsEllipseItem::paint(painter, option, widget);
+        painter->setTransform(transform);
+    }
     virtual QVariant itemChange(GraphicsItemChange change, QVariant const& value) override {
         if (change == ItemPositionHasChanged) {
             auto pos = value.toPointF();
-            position_callback(pos.x()+radius, pos.y()+radius);
+            position_callback(pos.x(), pos.y());
         }
         return QGraphicsItem::itemChange(change, value);
     }
@@ -52,7 +60,7 @@ public:
         setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
     }
     void set_pos(double x, double y) {
-        setPos({x-radius, y-radius});
+        setPos({x, y});
     }
 private:
     Callback position_callback;
