@@ -61,6 +61,10 @@ target_sources(rainynite-studio
         models/node_list.cpp
         models/node_list.h
 
+        util/strings.h
+        util/pen.h
+        util/pen.cpp
+
         resources.qrc
 )
 
