@@ -97,16 +97,9 @@
     </property>
     <addaction name="action_about"/>
    </widget>
-   <widget class="QMenu" name="menu_tools">
-    <property name="title">
-     <string>&amp;Tools</string>
-    </property>
-    <addaction name="action_tool_mouse"/>
-    <addaction name="action_tool_zoom"/>
-   </widget>
    <widget class="QMenu" name="menu_edit">
     <property name="title">
-     <string>Edit</string>
+     <string>&amp;Edit</string>
     </property>
     <addaction name="action_undo"/>
     <addaction name="action_redo"/>
@@ -115,27 +108,13 @@
    <addaction name="menu_context"/>
    <addaction name="menu_edit"/>
    <addaction name="menu_view"/>
-   <addaction name="menu_tools"/>
    <addaction name="menu_dock"/>
    <addaction name="menu_help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QToolBar" name="tools_bar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="action_tool_mouse"/>
-   <addaction name="action_tool_zoom"/>
-  </widget>
   <widget class="QToolBar" name="file_toolbar">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>File</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -150,7 +129,7 @@
   </widget>
   <widget class="QToolBar" name="edit_toolbar">
    <property name="windowTitle">
-    <string>toolBar_2</string>
+    <string>Edit</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -160,6 +139,17 @@
    </attribute>
    <addaction name="action_undo"/>
    <addaction name="action_redo"/>
+  </widget>
+  <widget class="QToolBar" name="tools_bar">
+   <property name="windowTitle">
+    <string>Tools</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
   </widget>
   <action name="action_quit">
    <property name="icon">
@@ -240,24 +230,6 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
-   </property>
-  </action>
-  <action name="action_tool_mouse">
-   <property name="icon">
-    <iconset theme="input-mouse">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Mouse</string>
-   </property>
-  </action>
-  <action name="action_tool_zoom">
-   <property name="icon">
-    <iconset theme="zoom">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Zoom</string>
    </property>
   </action>
   <action name="action_extra_style">

@@ -65,14 +65,13 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_undo, SIGNAL(triggered()), this, SLOT(undo()));
     connect(ui->action_redo, SIGNAL(triggered()), this, SLOT(redo()));
 
-    connect(ui->action_tool_mouse, SIGNAL(triggered()), this, SLOT(tool_mouse()));
-    connect(ui->action_tool_zoom, SIGNAL(triggered()), this, SLOT(tool_zoom()));
-
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_render_frame, SIGNAL(triggered()), this, SLOT(render_frame()));
     connect(this, SIGNAL(redraw_signal()), this, SLOT(redraw()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
     connect(ui->action_extra_style, SIGNAL(toggled(bool)), this, SLOT(toggle_extra_style(bool)));
+
+    setup_tools();
 
     setup_dock_menu();
     add_all_docks();
@@ -230,14 +229,6 @@ void MainWindow::redo() {
     get_context()->action_stack()->redo();
 }
 
-void MainWindow::tool_mouse() {
-    qDebug() << "mouse selected";
-}
-
-void MainWindow::tool_zoom() {
-    qDebug() << "zoom selected";
-}
-
 void MainWindow::about() {
     AboutDialog dialog;
     dialog.exec();
@@ -276,6 +267,10 @@ void MainWindow::setup_dock_menu() {
             add_dock(name);
         });
     }
+}
+
+void MainWindow::setup_tools() {
+    // TODO
 }
 
 void MainWindow::set_context(std::shared_ptr<EditorContext> context_) {

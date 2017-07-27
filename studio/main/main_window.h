@@ -68,9 +68,6 @@ private Q_SLOTS:
     void undo();
     void redo();
 
-    void tool_mouse();
-    void tool_zoom();
-
     void render();
     void render_frame();
     void redraw();
@@ -83,6 +80,7 @@ private Q_SLOTS:
 
 private:
     void setup_dock_menu();
+    void setup_tools();
 
     void setup_renderer();
     void render_period(core::TimePeriod const& period);
