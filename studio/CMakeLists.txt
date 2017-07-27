@@ -21,8 +21,6 @@ target_sources(rainynite-studio
 
         widgets/canvas.cpp
         widgets/canvas.h
-        widgets/timeline_view.cpp
-        widgets/timeline_view.h
         widgets/timeline_area.cpp
         widgets/timeline_area.h
         widgets/color_button.cpp
