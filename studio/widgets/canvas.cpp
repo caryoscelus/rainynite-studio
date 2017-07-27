@@ -31,6 +31,7 @@
 #include <core/document.h>
 
 #include <generic/canvas_editor.h>
+#include <util/pen.h>
 #include "canvas.h"
 
 using namespace fmt::literals;
@@ -46,6 +47,7 @@ Canvas::Canvas(QWidget* parent) :
     the_scene->addItem(image.get());
     setDragMode(QGraphicsView::RubberBandDrag);
     image_border.reset(the_scene->addRect(0, 0, 0, 0));
+    image_border->setPen(pens::cosmetic_dash());
     setResizeAnchor(QGraphicsView::NoAnchor);
     setTransformationAnchor(QGraphicsView::NoAnchor);
 }

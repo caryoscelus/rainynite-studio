@@ -24,6 +24,7 @@
 #include <geom_helpers/knots.h>
 
 #include <util/strings.h>
+#include <util/pen.h>
 #include <widgets/canvas.h>
 #include "qt_path.h"
 #include "point_item.h"
@@ -56,11 +57,11 @@ void BezierEditor::time_changed(core::Time) {
 }
 
 void BezierEditor::redraw() {
-    if (auto scene = get_scene()) {
+    if (get_scene()) {
         auto path = get_path();
         // TODO
         if (path.size() == old_size) {
-            curve_item.reset(scene->addPath(path_to_qt(path)));
+            curve_item->setPath(path_to_qt(path));
         } else {
             uninit();
             init();
@@ -84,6 +85,7 @@ void BezierEditor::init() {
             old_size = path.size();
 
             curve_item.reset(scene->addPath(path_to_qt(path)));
+            curve_item->setPen(pens::cosmetic_dash());
 
             auto add_point_editor = [
                 this,

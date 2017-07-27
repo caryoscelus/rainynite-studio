@@ -26,6 +26,7 @@
 #include <generic/context_listener.h>
 
 class QGraphicsItem;
+class QGraphicsPathItem;
 
 namespace studio {
 
@@ -54,7 +55,7 @@ private:
 
 private:
     std::vector<std::unique_ptr<QGraphicsItem>> knot_items;
-    std::unique_ptr<QGraphicsItem> curve_item;
+    std::unique_ptr<QGraphicsPathItem> curve_item;
     size_t old_size;
 };
 

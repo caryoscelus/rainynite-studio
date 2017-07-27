@@ -22,6 +22,7 @@
 #include <geom_helpers/rectangle.h>
 
 #include <widgets/canvas.h>
+#include <util/pen.h>
 #include "rectangle_editor.h"
 
 namespace studio {
@@ -35,6 +36,7 @@ RectangleEditor::~RectangleEditor() {
 void RectangleEditor::set_canvas(Canvas* canvas) {
     CanvasEditor::set_canvas(canvas);
     rectangle_item.reset(canvas->scene()->addRect({}));
+    rectangle_item->setPen(pens::cosmetic_dash());
     update_position();
 }
 
