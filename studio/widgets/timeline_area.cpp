@@ -59,9 +59,8 @@ void TimelineArea::set_context(std::shared_ptr<EditorContext> context) {
         f(p.second);
 }
 
-void TimelineArea::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+void TimelineArea::clear_node_editors() {
     node_editors.clear();
-    add_timeline_node_editor(*this, node);
 }
 
 } // namespace studio

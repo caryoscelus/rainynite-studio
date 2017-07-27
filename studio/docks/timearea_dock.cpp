@@ -35,6 +35,12 @@ TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* par
     ui->setupUi(this);
     add_timeline_named_editor(*ui->timeline, "TimelineCursor");
     ui->node_list->setModel(node_list_model.get());
+
+    connect(node_list_model.get(), &QAbstractItemModel::layoutChanged, this, &TimeareaDock::update_editors);
+    connect(node_list_model.get(), &QAbstractItemModel::rowsInserted, this, &TimeareaDock::update_editors);
+    connect(node_list_model.get(), &QAbstractItemModel::rowsMoved, this, &TimeareaDock::update_editors);
+    connect(node_list_model.get(), &QAbstractItemModel::rowsRemoved, this, &TimeareaDock::update_editors);
+
     set_context(get_context());
 }
 
@@ -50,6 +56,13 @@ void TimeareaDock::set_context(std::shared_ptr<EditorContext> context) {
             node_list_model->insert_node(node);
         }
     );
+}
+
+void TimeareaDock::update_editors() {
+    ui->timeline->clear_node_editors();
+    for (auto node : node_list_model->get_all_nodes()) {
+        add_timeline_node_editor(*ui->timeline, node);
+    }
 }
 
 } // namespace studio

@@ -45,6 +45,9 @@ public:
 public:
     bool removeRows(int row, int count, QModelIndex const& parent={}) override;
     void insert_node(std::shared_ptr<core::AbstractValue> node, int position=-1);
+    std::vector<std::shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
+        return nodes;
+    }
 
 protected:
     std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;

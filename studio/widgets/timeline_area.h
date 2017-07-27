@@ -41,12 +41,10 @@ public:
 public:
     TimelineEditor* add_editor(std::unique_ptr<TimelineEditor> editor);
     void add_node_editor(std::shared_ptr<core::AbstractValue> node, std::unique_ptr<TimelineEditor> editor);
+    void clear_node_editors();
 
 public:
     void set_context(std::shared_ptr<EditorContext> context) override;
-
-protected:
-    void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
 
 private:
     std::unique_ptr<QGraphicsScene> the_scene;

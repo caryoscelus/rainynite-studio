@@ -46,6 +46,9 @@ public:
 public:
     void set_context(std::shared_ptr<EditorContext> context) override;
 
+protected:
+    void update_editors();
+
 private:
     std::unique_ptr<Ui::TimeareaDock> ui;
     std::unique_ptr<NodeListModel> node_list_model;
