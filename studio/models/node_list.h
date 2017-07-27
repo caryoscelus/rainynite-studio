@@ -49,8 +49,6 @@ public:
     std::vector<std::shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
         return nodes;
     }
-
-protected:
     std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
 
 private:
