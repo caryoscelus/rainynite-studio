@@ -18,6 +18,7 @@
 
 #include <QMenu>
 #include <QContextMenuEvent>
+#include <QScrollBar>
 
 #include <core/node/abstract_value.h>
 
@@ -44,6 +45,10 @@ TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* par
     connect(node_list_model.get(), &QAbstractItemModel::rowsInserted, this, &TimeareaDock::update_editors);
     connect(node_list_model.get(), &QAbstractItemModel::rowsMoved, this, &TimeareaDock::update_editors);
     connect(node_list_model.get(), &QAbstractItemModel::rowsRemoved, this, &TimeareaDock::update_editors);
+
+    ui->node_list->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    connect(ui->timeline->verticalScrollBar(), &QScrollBar::valueChanged, ui->node_list->verticalScrollBar(), &QScrollBar::setValue);
+    connect(ui->node_list->verticalScrollBar(), &QScrollBar::valueChanged, ui->timeline->verticalScrollBar(), &QScrollBar::setValue);
 
     set_context(get_context());
 }
