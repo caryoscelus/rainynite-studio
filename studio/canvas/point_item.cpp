@@ -16,31 +16,36 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QGuiApplication>
+
 #include <2geom/point.h>
 
 #include <widgets/canvas.h>
+#include <util/pen.h>
 #include "point_item.h"
 
 namespace studio {
 
 PointItem::PointItem(Callback callback) :
-    QGraphicsEllipseItem(0, 0, radius*2, radius*2),
+    QGraphicsEllipseItem(-radius, -radius, radius*2, radius*2),
     position_callback(callback)
-{}
+{
+    setPen(pens::cosmetic_solid());
+    setBrush(QGuiApplication::palette().text());
+}
 
 void PointItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) {
+    // Set correct size if view was zooomed..
+    // NOTE: this dirty hack relies on the scene being used only by one view
     auto transform = painter->transform();
-    auto offset = transform.map(QPointF());
-    painter->resetTransform();
-    painter->translate(offset.x()-radius, offset.y()-radius);
+    auto r = radius/transform.m11();
+    setRect(-r, -r, r*2, r*2);
     QGraphicsEllipseItem::paint(painter, option, widget);
-    painter->setTransform(transform);
 }
 
 QVariant PointItem::itemChange(GraphicsItemChange change, QVariant const& value) {
     if (change == ItemPositionHasChanged) {
-        auto pos = value.toPointF();
-        position_callback(pos.x(), pos.y());
+        position_callback(pos().x(), pos().y());
     }
     return QGraphicsItem::itemChange(change, value);
 }
@@ -52,7 +57,7 @@ void PointItem::set_readonly(bool ro) {
 }
 
 void PointItem::set_pos(double x, double y) {
-    setPos({x, y});
+    setPos(x, y);
 }
 
 } // namespace studio

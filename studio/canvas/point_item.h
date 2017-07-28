@@ -33,6 +33,7 @@ public:
 public:
     void paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) override;
     QVariant itemChange(GraphicsItemChange change, QVariant const& value) override;
+public:
     void set_readonly(bool ro);
     void set_pos(double x, double y);
 private:
