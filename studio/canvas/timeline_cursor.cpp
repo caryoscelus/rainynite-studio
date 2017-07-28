@@ -48,6 +48,7 @@ public:
         canvas->scene()->addItem(time_item.get());
         time_item->set_readonly(false);
         time_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        time_item->set_pos_height(0, 1024); // "infinitely" big
     }
 public:
     void time_changed(core::Time time) override {
