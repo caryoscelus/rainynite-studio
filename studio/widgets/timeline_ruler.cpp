@@ -16,12 +16,20 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cmath>
+
+#include <fmt/format.h>
+
 #include <QDebug>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QGuiApplication>
 
+#include <util/strings.h>
 #include "timeline_ruler.h"
+
+using util::str;
+using namespace fmt::literals;
 
 namespace studio {
 
@@ -40,12 +48,14 @@ void TimelineRuler::paintEvent(QPaintEvent* /*event*/) {
     QPainter painter(this);
     auto start_pos = zero_pos % step;
     int sec = -(zero_pos / step);
+    painter.setPen(pen);
+    painter.setFont({"sans", 8});
     for (int x = start_pos; x < width(); x += step) {
         if (sec % 5 == 0)
             painter.setPen(bold_pen);
-        else
-            painter.setPen(pen);
         painter.drawLine(x, 0, x, height());
+        painter.setPen(pen);
+        painter.drawText(x + 2, 12, str("{}"_format(std::abs(sec))));
         ++sec;
     }
 }
