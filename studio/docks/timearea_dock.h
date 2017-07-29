@@ -51,6 +51,7 @@ public:
 
 protected:
     void update_editors();
+    void update_ruler();
 
 private:
     std::unique_ptr<Ui::TimeareaDock> ui;

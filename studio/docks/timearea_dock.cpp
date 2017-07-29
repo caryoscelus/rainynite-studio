@@ -51,6 +51,9 @@ TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* par
     connect(ui->timeline->verticalScrollBar(), &QScrollBar::valueChanged, ui->node_list->verticalScrollBar(), &QScrollBar::setValue);
     connect(ui->node_list->verticalScrollBar(), &QScrollBar::valueChanged, ui->timeline->verticalScrollBar(), &QScrollBar::setValue);
 
+    connect(ui->timeline->horizontalScrollBar(), &QScrollBar::valueChanged, this, &TimeareaDock::update_ruler);
+    update_ruler();
+
     set_context(get_context());
 }
 
@@ -93,6 +96,15 @@ void TimeareaDock::update_editors() {
             editor->set_position_hint(rect.y(), rect.height());
         }
     }
+}
+
+void TimeareaDock::update_ruler() {
+    if (ui == nullptr)
+        return;
+    auto timeline_x = ui->timeline->mapFromScene(0, 0);
+    auto global_x = ui->timeline->mapToGlobal(timeline_x);
+    ui->ruler->set_scroll(ui->ruler->mapFromGlobal(global_x).x());
+    ui->ruler->set_zoom(ui->timeline->transform().m11());
 }
 
 } // namespace studio

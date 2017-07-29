@@ -23,6 +23,8 @@ target_sources(rainynite-studio
         widgets/canvas.h
         widgets/timeline_area.cpp
         widgets/timeline_area.h
+        widgets/timeline_ruler.cpp
+        widgets/timeline_ruler.h
         widgets/color_button.cpp
         widgets/color_button.h
         widgets/point_value_editor.cpp

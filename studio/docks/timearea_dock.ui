@@ -26,7 +26,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -42,6 +42,22 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
+    <item>
+     <widget class="studio::TimelineRuler" name="ruler" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="lineWidth">
@@ -79,6 +95,12 @@
    <class>studio::TimelineArea</class>
    <extends>QGraphicsView</extends>
    <header location="global">widgets/timeline_area.h</header>
+  </customwidget>
+  <customwidget>
+   <class>studio::TimelineRuler</class>
+   <extends>QWidget</extends>
+   <header location="global">widgets/timeline_ruler.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
