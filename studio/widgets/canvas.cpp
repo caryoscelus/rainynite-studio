@@ -64,6 +64,32 @@ void Canvas::wheelEvent(QWheelEvent* event) {
     translate(delta.x(), delta.y());
 }
 
+void Canvas::mouseMoveEvent(QMouseEvent* event) {
+    if (is_scrolling) {
+        auto delta = event->pos() - scroll_pos;
+        scroll_pos = event->pos();
+        translate(delta.x(), delta.y());
+    }
+    QGraphicsView::mouseMoveEvent(event);
+}
+
+void Canvas::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::MidButton) {
+        scroll_pos = event->pos();
+        is_scrolling = true;
+    } else {
+        QGraphicsView::mousePressEvent(event);
+    }
+}
+
+void Canvas::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::MidButton) {
+        is_scrolling = false;
+    } else {
+        QGraphicsView::mouseReleaseEvent(event);
+    }
+}
+
 void Canvas::set_main_image(QPixmap const& pixmap) {
     image->setPixmap(pixmap);
 }

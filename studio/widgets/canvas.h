@@ -43,8 +43,11 @@ public:
     explicit Canvas(QWidget* parent = nullptr);
     virtual ~Canvas();
 
-public:
+protected:
     void wheelEvent(QWheelEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
 public:
     void set_main_image(QPixmap const& pixmap);
@@ -67,6 +70,10 @@ private:
     std::unique_ptr<QGraphicsRectItem> image_border;
     std::shared_ptr<core::AbstractValue> active_node;
     std::vector<std::unique_ptr<CanvasEditor>> editors;
+
+private:
+    QPoint scroll_pos;
+    bool is_scrolling;
 };
 
 }
