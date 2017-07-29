@@ -18,6 +18,7 @@ Screenshots
 ===========
 
 ![sunrise editing screenshot](https://caryoscelus.github.io/images/screenshots/2017.04.30-sunrise.png)
+![bouncing ball editing screenshot](https://caryoscelus.github.io/images/screenshots/2017.07.29-ball.png)
 
 [ld38]: https://ldjam.com/events/ludum-dare/38/power-department
 [ld38_intro]: https://media.githubusercontent.com/media/spirulence/power-department-ld38/e4e0915cd6fe2f2f2bc9510c637ffaba8c55ee4d/assets/video/intro-720p.webm
