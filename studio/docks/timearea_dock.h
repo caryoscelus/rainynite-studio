@@ -44,6 +44,7 @@ public:
     virtual ~TimeareaDock();
 
 public:
+    bool eventFilter(QObject* object, QEvent* event) override;
     void contextMenuEvent(QContextMenuEvent* event) override;
 
 public:

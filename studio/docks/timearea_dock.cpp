@@ -52,12 +52,19 @@ TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* par
     connect(ui->node_list->verticalScrollBar(), &QScrollBar::valueChanged, ui->timeline->verticalScrollBar(), &QScrollBar::setValue);
 
     connect(ui->timeline->horizontalScrollBar(), &QScrollBar::valueChanged, this, &TimeareaDock::update_ruler);
+    ui->timeline->installEventFilter(this);
     update_ruler();
 
     set_context(get_context());
 }
 
 TimeareaDock::~TimeareaDock() {
+}
+
+bool TimeareaDock::eventFilter(QObject* object, QEvent* event) {
+    if (object == ui->timeline && event->type() == QEvent::Resize)
+        update_ruler();
+    return false;
 }
 
 void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
