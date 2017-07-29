@@ -102,7 +102,8 @@ void TimeareaDock::update_ruler() {
     if (ui == nullptr)
         return;
     auto timeline_x = ui->timeline->mapFromScene(0, 0);
-    auto global_x = ui->timeline->mapToGlobal(timeline_x);
+    auto splitter_x = ui->timeline->mapToGlobal(timeline_x);
+    auto global_x = ui->splitter->mapToGlobal(splitter_x);
     ui->ruler->set_scroll(ui->ruler->mapFromGlobal(global_x).x());
     ui->ruler->set_zoom(ui->timeline->transform().m11());
 }
