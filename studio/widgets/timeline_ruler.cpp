@@ -48,14 +48,14 @@ void TimelineRuler::paintEvent(QPaintEvent* /*event*/) {
     QPainter painter(this);
     auto start_pos = zero_pos % step;
     int sec = -(zero_pos / step);
-    painter.setPen(pen);
     painter.setFont({"sans", 8});
     for (int x = start_pos; x < width(); x += step) {
-        if (sec % 5 == 0)
-            painter.setPen(bold_pen);
-        painter.drawLine(x, 0, x, height());
         painter.setPen(pen);
-        painter.drawText(x + 2, 12, str("{}"_format(std::abs(sec))));
+        if (sec % 5 == 0) {
+            painter.drawText(x + 2, 12, str("{}"_format(std::abs(sec))));
+            painter.setPen(bold_pen);
+        }
+        painter.drawLine(x, 0, x, height());
         ++sec;
     }
 }
