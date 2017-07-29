@@ -111,7 +111,6 @@
    <addaction name="menu_dock"/>
    <addaction name="menu_help"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="file_toolbar">
    <property name="windowTitle">
     <string>File</string>
