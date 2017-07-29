@@ -41,6 +41,7 @@ public:
     void set_zoom(unsigned step_);
 
 private:
+    QBrush brush;
     QPen pen;
     QPen bold_pen;
 

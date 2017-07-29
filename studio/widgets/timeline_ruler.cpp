@@ -35,8 +35,9 @@ namespace studio {
 
 TimelineRuler::TimelineRuler(QWidget* parent) :
     QWidget(parent),
-    pen {QGuiApplication::palette().text(), 1, Qt::SolidLine},
-    bold_pen {QGuiApplication::palette().text(), 2, Qt::SolidLine}
+    brush(QGuiApplication::palette().brush(QPalette::Disabled, QPalette::Text)),
+    pen {brush, 1, Qt::SolidLine},
+    bold_pen {brush, 2, Qt::SolidLine}
 {
 }
 
