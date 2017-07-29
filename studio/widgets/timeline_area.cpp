@@ -30,6 +30,7 @@ TimelineArea::TimelineArea(QWidget* parent) :
 {
     setScene(the_scene.get());
     setDragMode(QGraphicsView::RubberBandDrag);
+    scale(16, 1);
 }
 
 TimelineArea::~TimelineArea() {

@@ -46,7 +46,6 @@ private:
 private:
     Callback callback;
     core::Time::fps_type fps = 1;
-    const double x_zoom_factor = 16;
 };
 
 } // namespace studio

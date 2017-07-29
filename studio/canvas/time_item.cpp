@@ -25,7 +25,7 @@
 namespace studio {
 
 TimeItem::TimeItem(Callback callback_) :
-    QGraphicsRectItem {0, 0, 2, 80},
+    QGraphicsRectItem {0, 0, 0.25, 80},
     callback(callback_)
 {
     setBrush(QGuiApplication::palette().text());
@@ -43,7 +43,7 @@ QVariant TimeItem::itemChange(GraphicsItemChange change, QVariant const& value) 
 
 void TimeItem::move_to(core::Time time) {
     auto s = time.get_seconds();
-    setPos(s*x_zoom_factor, 0);
+    setPos(s, 0);
 }
 
 void TimeItem::set_readonly(bool ro) {
@@ -59,9 +59,9 @@ void TimeItem::set_pos_height(int y, int height) {
 }
 
 double TimeItem::change_pos(double x) {
-    int frames = x * fps / x_zoom_factor;
+    int frames = x * fps;
     callback(core::Time(0, fps, frames));
-    return (double)frames * x_zoom_factor / fps;
+    return (double)frames / fps;
 }
 
 } // namespace studio
