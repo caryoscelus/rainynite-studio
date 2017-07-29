@@ -42,6 +42,7 @@ public:
 
 private:
     QPen pen;
+    QPen bold_pen;
 
 private:
     unsigned step = 1;

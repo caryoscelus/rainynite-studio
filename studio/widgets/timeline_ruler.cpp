@@ -27,7 +27,8 @@ namespace studio {
 
 TimelineRuler::TimelineRuler(QWidget* parent) :
     QWidget(parent),
-    pen {QGuiApplication::palette().text(), 1, Qt::SolidLine}
+    pen {QGuiApplication::palette().text(), 1, Qt::SolidLine},
+    bold_pen {QGuiApplication::palette().text(), 2, Qt::SolidLine}
 {
 }
 
@@ -37,10 +38,15 @@ QSize TimelineRuler::sizeHint() const {
 
 void TimelineRuler::paintEvent(QPaintEvent* /*event*/) {
     QPainter painter(this);
-    painter.setPen(pen);
-    auto start_pos = zero_pos%step;
+    auto start_pos = zero_pos % step;
+    int sec = -(zero_pos / step);
     for (int x = start_pos; x < width(); x += step) {
+        if (sec % 5 == 0)
+            painter.setPen(bold_pen);
+        else
+            painter.setPen(pen);
         painter.drawLine(x, 0, x, height());
+        ++sec;
     }
 }
 
