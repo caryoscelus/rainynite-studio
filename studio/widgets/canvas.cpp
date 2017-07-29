@@ -66,9 +66,10 @@ void Canvas::wheelEvent(QWheelEvent* event) {
 
 void Canvas::mouseMoveEvent(QMouseEvent* event) {
     if (is_scrolling) {
-        auto delta = event->pos() - scroll_pos;
-        scroll_pos = event->pos();
+        QPointF delta = event->pos() - scroll_pos;
+        delta /= transform().m11();
         translate(delta.x(), delta.y());
+        scroll_pos = event->pos();
     }
     QGraphicsView::mouseMoveEvent(event);
 }
