@@ -31,6 +31,8 @@ namespace Ui {
 class NodeTreeDock;
 }
 
+class QMenu;
+
 namespace studio {
 
 class NodeModel;
@@ -63,6 +65,7 @@ private Q_SLOTS:
 private:
     std::unique_ptr<Ui::NodeTreeDock> ui;
     std::unique_ptr<NodeModel> model;
+    std::unique_ptr<QMenu> menu;
 };
 
 REGISTER_DOCK("Node tree", NodeTreeDock, Qt::LeftDockWidgetArea);

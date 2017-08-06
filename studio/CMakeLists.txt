@@ -45,6 +45,8 @@ target_sources(rainynite-studio
         canvas/time_editor.cpp
         canvas/time_period_editor.cpp
 
+        generic/node_menu.cpp
+        generic/node_menu.h
         generic/node_editor.cpp
         generic/node_editor.h
         generic/custom_widgets.cpp
