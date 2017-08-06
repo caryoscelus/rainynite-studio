@@ -122,8 +122,7 @@ void Canvas::set_context(std::shared_ptr<EditorContext> context) {
     // TODO: listen to document change
     // TODO: listen to size node change
     // TODO: possible *nullptr
-    connect_boost(
-        get_core_context()->get_document()->get_size()->changed_signal,
+    get_core_context()->get_document()->get_size()->subscribe(
         [this]() {
             update_border();
         }
