@@ -26,11 +26,10 @@
 
 namespace studio {
 
-std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
+NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
     auto index = selection_model->currentIndex();
     auto parent_index = index.parent();
     if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index))) {
-        auto menu = std::make_unique<QMenu>();
         size_t node_index = model->get_node_index(index);
         auto type = parent_node->get_link_type(node_index);
         auto node_infos = type ? core::node_types()[*type] : core::all_node_infos();
@@ -45,7 +44,7 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
             }
         ));
         if (selection.size() > 1) {
-            menu->addAction(
+            addAction(
                 QIcon::fromTheme("insert-link"),
                 "Connect",
                 [model, index, selection]() {
@@ -57,7 +56,7 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
         if (selection.size() == 2) {
             auto a = selection[0];
             auto b = selection[1];
-            menu->addAction(
+            addAction(
                 QIcon::fromTheme("exchange-positions"),
                 "Swap",
                 [model, a, b]() {
@@ -67,7 +66,7 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
         }
 
         if (model->node_is_connected(index)) {
-            menu->addAction(
+            addAction(
                 QIcon::fromTheme("remove-link"),
                 "Disconnect",
                 [model, index]() {
@@ -77,7 +76,7 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
         }
 
         if (model->can_remove_node(index)) {
-            menu->addAction(
+            addAction(
                 QIcon::fromTheme("list-remove"), // TODO
                 "Remove",
                 [model, index]() {
@@ -87,18 +86,18 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
         }
 
         if (model->can_add_element(index)) {
-            menu->addAction(
+            addAction(
                 QIcon::fromTheme("list-add"),
                 "Add element",
                 [model, index]() {
                     model->add_empty_element(index);
                 }
             );
-            menu->addSeparator();
+            addSeparator();
         }
 
         if (model->can_add_custom_property(index)) {
-            menu->addAction(
+            addAction(
                 QIcon::fromTheme("list-add"), // TODO
                 "Add custom property",
                 [model, index]() {
@@ -111,25 +110,25 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
                         model->add_empty_custom_property(index, util::str(text));
                 }
             );
-            menu->addSeparator();
+            addSeparator();
         }
 
         if (parent_node->is_editable_list()) {
-            menu->addAction(
+            addAction(
                 QIcon::fromTheme("list-remove"),
                 "Remove list item",
                 [model, node_index, parent_index]() {
                     model->removeRow(node_index, parent_index);
                 }
             );
-            auto up_action = menu->addAction(
+            auto up_action = addAction(
                 QIcon::fromTheme("go-up"),
                 "Move up",
                 [model, node_index, parent_index]() {
                     model->move_up(node_index, parent_index);
                 }
             );
-            auto down_action = menu->addAction(
+            auto down_action = addAction(
                 QIcon::fromTheme("go-down"),
                 "Move down",
                 [model, node_index, parent_index]() {
@@ -138,27 +137,27 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
             );
             up_action->setEnabled(model->can_move_up(node_index, parent_index));
             down_action->setEnabled(model->can_move_down(node_index, parent_index));
-            menu->addSeparator();
+            addSeparator();
         }
 
         if (node_infos.size() == 0)
-            menu->addAction("No node types available!");
+            addAction("No node types available!");
         else {
-            auto search_action = new QWidgetAction(menu.get());
+            auto search_action = new QWidgetAction(this);
             auto search_widget = new QLineEdit();
-            QObject::connect(menu.get(), SIGNAL(aboutToShow()), search_widget, SLOT(setFocus()));
+            QObject::connect(this, SIGNAL(aboutToShow()), search_widget, SLOT(setFocus()));
             search_action->setDefaultWidget(search_widget);
-            menu->addAction(search_action);
+            addAction(search_action);
             for (auto node_info : node_infos) {
                 auto name = util::str(node_info->name());
-                menu->addAction(name, [model, index, node_info, time]() {
+                addAction(name, [model, index, node_info, time]() {
                     model->convert_node(index, node_info, time);
                 });
             }
         }
-        return menu;
+    } else {
+        addAction("No actions for root node!");
     }
-    return nullptr;
 }
 
 } // namespace studio

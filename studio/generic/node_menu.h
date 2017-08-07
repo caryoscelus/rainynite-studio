@@ -27,7 +27,14 @@ class QItemSelectionModel;
 
 namespace studio {
 
-std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time);
+class NodeContextMenu : public QMenu {
+public:
+    NodeContextMenu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time);
+};
+
+inline std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
+    return std::make_unique<NodeContextMenu>(model, selection_model, time);
+}
 
 } // namespace studio
 
