@@ -18,6 +18,7 @@
 
 #include <QItemSelectionModel>
 #include <QInputDialog>
+#include <QWidgetAction>
 
 #include <util/strings.h>
 #include <models/node_model.h>
@@ -142,11 +143,18 @@ std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* 
 
         if (node_infos.size() == 0)
             menu->addAction("No node types available!");
-        else for (auto node_info : node_infos) {
-            auto name = util::str(node_info->name());
-            menu->addAction(name, [model, index, node_info, time]() {
-                model->convert_node(index, node_info, time);
-            });
+        else {
+            auto search_action = new QWidgetAction(menu.get());
+            auto search_widget = new QLineEdit();
+            QObject::connect(menu.get(), SIGNAL(aboutToShow()), search_widget, SLOT(setFocus()));
+            search_action->setDefaultWidget(search_widget);
+            menu->addAction(search_action);
+            for (auto node_info : node_infos) {
+                auto name = util::str(node_info->name());
+                menu->addAction(name, [model, index, node_info, time]() {
+                    model->convert_node(index, node_info, time);
+                });
+            }
         }
         return menu;
     }
