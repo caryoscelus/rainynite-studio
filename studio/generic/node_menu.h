@@ -24,12 +24,27 @@
 #include <QMenu>
 
 class QItemSelectionModel;
+class QLineEdit;
+
+namespace core {
+class NodeInfo;
+}
 
 namespace studio {
 
 class NodeContextMenu : public QMenu {
 public:
     NodeContextMenu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time);
+private:
+    void update_node_list();
+private:
+    std::vector<QAction*> convert_actions;
+    NodeModel* model;
+    QModelIndex index;
+    QList<QModelIndex> selection;
+    std::set<core::NodeInfo const*> node_infos;
+    core::Time time;
+    QLineEdit* search_widget = nullptr;
 };
 
 inline std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {

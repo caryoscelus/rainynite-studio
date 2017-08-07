@@ -26,15 +26,18 @@
 
 namespace studio {
 
-NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
-    auto index = selection_model->currentIndex();
+NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selection_model, core::Time time_) :
+    model(model_),
+    time(time_)
+{
+    index = selection_model->currentIndex();
     auto parent_index = index.parent();
     if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index))) {
         size_t node_index = model->get_node_index(index);
         auto type = parent_node->get_link_type(node_index);
-        auto node_infos = type ? core::node_types()[*type] : core::all_node_infos();
+        node_infos = type ? core::node_types()[*type] : core::all_node_infos();
 
-        auto selection = selection_model->selectedIndexes();
+        selection = selection_model->selectedIndexes();
         // selection may contain other columns, which should be ignored
         selection.erase(std::remove_if(
             std::begin(selection),
@@ -47,7 +50,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction(
                 QIcon::fromTheme("insert-link"),
                 "Connect",
-                [model, index, selection]() {
+                [this]() {
                     model->connect_nodes(selection, index);
                 }
             );
@@ -59,7 +62,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction(
                 QIcon::fromTheme("exchange-positions"),
                 "Swap",
-                [model, a, b]() {
+                [this, a, b]() {
                     model->swap_nodes(a, b);
                 }
             );
@@ -69,7 +72,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction(
                 QIcon::fromTheme("remove-link"),
                 "Disconnect",
-                [model, index]() {
+                [this]() {
                     model->disconnect_node(index);
                 }
             );
@@ -79,7 +82,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction(
                 QIcon::fromTheme("list-remove"), // TODO
                 "Remove",
-                [model, index]() {
+                [this]() {
                     model->remove_node(index);
                 }
             );
@@ -89,7 +92,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction(
                 QIcon::fromTheme("list-add"),
                 "Add element",
-                [model, index]() {
+                [this]() {
                     model->add_empty_element(index);
                 }
             );
@@ -100,7 +103,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction(
                 QIcon::fromTheme("list-add"), // TODO
                 "Add custom property",
-                [model, index]() {
+                [this]() {
                     auto text = QInputDialog::getText(
                         nullptr,
                         "Add new custom property",
@@ -117,21 +120,21 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction(
                 QIcon::fromTheme("list-remove"),
                 "Remove list item",
-                [model, node_index, parent_index]() {
+                [this, node_index, parent_index]() {
                     model->removeRow(node_index, parent_index);
                 }
             );
             auto up_action = addAction(
                 QIcon::fromTheme("go-up"),
                 "Move up",
-                [model, node_index, parent_index]() {
+                [this, node_index, parent_index]() {
                     model->move_up(node_index, parent_index);
                 }
             );
             auto down_action = addAction(
                 QIcon::fromTheme("go-down"),
                 "Move down",
-                [model, node_index, parent_index]() {
+                [this, node_index, parent_index]() {
                     model->move_down(node_index, parent_index);
                 }
             );
@@ -144,19 +147,37 @@ NodeContextMenu::NodeContextMenu(NodeModel* model, QItemSelectionModel* selectio
             addAction("No node types available!");
         else {
             auto search_action = new QWidgetAction(this);
-            auto search_widget = new QLineEdit();
-            QObject::connect(this, SIGNAL(aboutToShow()), search_widget, SLOT(setFocus()));
+            search_widget = new QLineEdit();
+            connect(this, SIGNAL(aboutToShow()), search_widget, SLOT(setFocus()));
+            connect(search_widget, &QLineEdit::textEdited, this, &NodeContextMenu::update_node_list);
             search_action->setDefaultWidget(search_widget);
             addAction(search_action);
-            for (auto node_info : node_infos) {
-                auto name = util::str(node_info->name());
-                addAction(name, [model, index, node_info, time]() {
-                    model->convert_node(index, node_info, time);
-                });
-            }
+            update_node_list();
         }
     } else {
         addAction("No actions for root node!");
+    }
+}
+
+void NodeContextMenu::update_node_list() {
+    for (auto action : convert_actions) {
+        removeAction(action);
+    }
+    convert_actions.clear();
+    auto search_string = search_widget->text();
+    bool first_action = true;
+    for (auto node_info : node_infos) {
+        auto name = util::str(node_info->name());
+        if (name.indexOf(search_string) != -1) {
+            auto action = addAction(name, [this, node_info]() {
+                model->convert_node(index, node_info, time);
+            });
+            convert_actions.push_back(action);
+            if (first_action) {
+                setActiveAction(action);
+                first_action = false;
+            }
+        }
     }
 }
 
