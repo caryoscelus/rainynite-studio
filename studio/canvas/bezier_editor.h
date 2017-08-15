@@ -50,7 +50,7 @@ private:
         return std::dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node());
     }
     inline Geom::BezierKnots get_path() {
-        return get_bezier_node()->get(get_core_context()->get_time());
+        return get_bezier_node()->get(get_core_context());
     }
 
 private:

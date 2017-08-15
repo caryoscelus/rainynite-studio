@@ -170,7 +170,7 @@ void NodeContextMenu::update_node_list() {
         auto name = util::str(node_info->name());
         if (name.indexOf(search_string) != -1) {
             auto action = addAction(name, [this, node_info]() {
-                model->convert_node(index, node_info, time);
+                model->convert_node(index, node_info);
             });
             convert_actions.push_back(action);
             if (first_action) {

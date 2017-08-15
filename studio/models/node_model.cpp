@@ -70,7 +70,7 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
         switch (role) {
             case Qt::DisplayRole: {
                 if (auto node = get_node(index)) {
-                    auto value = node->get_any(get_time());
+                    auto value = node->get_any(get_core_context());
                     try {
                         auto s = core::serialize::value_to_string(value);
                         return QString::fromStdString(s);
@@ -144,10 +144,10 @@ void NodeModel::add_empty_element(QModelIndex const& parent) {
     }
 }
 
-void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time) {
+void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info) {
     if (auto parent_node = get_list_node(index.parent())) {
         auto node = get_node(index);
-        auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), node, time);
+        auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), node, get_core_context());
 
         // now tell Qt about our intentions
         size_t old_rows = 0;
