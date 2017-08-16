@@ -46,7 +46,7 @@ public:
     ~MainWindow();
 
 public:
-    virtual void set_context(std::shared_ptr<EditorContext> context_) override;
+    void set_context(std::shared_ptr<EditorContext> context_) override;
 
 private:
     void set_mainarea_image(std::string const& fname);

@@ -65,7 +65,7 @@ class Name##Factory : \
     private class_init::Registered<Name##Factory, Type, CanvasEditorFactory> \
 { \
 public: \
-    virtual std::unique_ptr<CanvasEditor> operator()() const override { \
+    std::unique_ptr<CanvasEditor> operator()() const override { \
         return std::make_unique<Editor>(); \
     } \
 }

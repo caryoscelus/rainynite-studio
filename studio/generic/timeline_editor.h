@@ -72,7 +72,7 @@ class Name##Factory : \
     private class_init::StringRegistered<Name##Factory, TimelineEditorFactory> \
 { \
 public: \
-    virtual std::unique_ptr<TimelineEditor> operator()() const override { \
+    std::unique_ptr<TimelineEditor> operator()() const override { \
         return std::make_unique<Editor>(); \
     } \
 public: \
@@ -88,7 +88,7 @@ class Name##Factory : \
     private class_init::StringRegistered<Name##Factory, TimelineEditorFactory> \
 { \
 public: \
-    virtual std::unique_ptr<TimelineEditor> operator()() const override { \
+    std::unique_ptr<TimelineEditor> operator()() const override { \
         return std::make_unique<Editor>(); \
     } \
 public: \

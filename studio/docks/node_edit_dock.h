@@ -45,9 +45,9 @@ public:
     ~NodeEditDock();
 
 public:
-    virtual void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
-    virtual void time_changed(core::Time time) override;
-    virtual void node_update() override;
+    void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
+    void time_changed(core::Time time) override;
+    void node_update() override;
 
 private Q_SLOTS:
     void write_node();

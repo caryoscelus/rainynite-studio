@@ -40,7 +40,7 @@ class Name##Factory : \
     class_init::Registered<Name##Factory, Type, CustomWidgetFactory> \
 { \
 public: \
-    virtual QWidget* operator()() const override { \
+    QWidget* operator()() const override { \
         return new Widget(); \
     } \
 }

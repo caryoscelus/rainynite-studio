@@ -117,7 +117,7 @@ public: \
         return node_name; \
     } \
 public: \
-    virtual bool operator()() const override { \
+    bool operator()() const override { \
         return value; \
     } \
 }

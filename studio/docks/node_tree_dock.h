@@ -51,7 +51,7 @@ public:
     virtual ~NodeTreeDock();
 
 public:
-    virtual void set_context(std::shared_ptr<EditorContext> context_) override;
+    void set_context(std::shared_ptr<EditorContext> context_) override;
 
 Q_SIGNALS:
     void activated(std::shared_ptr<core::AbstractValue> node);

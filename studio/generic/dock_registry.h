@@ -61,10 +61,10 @@ public: \
         return Name; \
     } \
 public: \
-    virtual std::unique_ptr<QDockWidget> operator()(std::shared_ptr<EditorContext> context) const override { \
+    std::unique_ptr<QDockWidget> operator()(std::shared_ptr<EditorContext> context) const override { \
         return std::unique_ptr<QDockWidget>(static_cast<QDockWidget*>(new Dock(std::move(context)))); \
     } \
-    virtual Qt::DockWidgetArea preferred_area() const override { \
+    Qt::DockWidgetArea preferred_area() const override { \
         return position; \
     } \
 }
