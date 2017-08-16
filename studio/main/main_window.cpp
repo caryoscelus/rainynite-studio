@@ -174,7 +174,7 @@ void MainWindow::setup_renderer() {
                 renderer_mutex.unlock();
 
                 try {
-                    renderer->render(ctx);
+                    renderer->render(std::move(ctx));
                 } catch (std::exception const& ex) {
                     auto msg = util::str("Uncaught exception while rendering:\n{}"_format(ex.what()));
                     qDebug() << msg;

@@ -81,7 +81,7 @@ void NodeEditDock::update_generic() {
         if (writeable) {
             value = active_node->any();
         } else {
-            value = active_node->get_any(get_core_context()->get_time());
+            value = active_node->get_any(get_core_context());
         }
         auto s = core::serialize::value_to_string(value);
         ui->text_edit->setText(util::str(s));

@@ -53,7 +53,7 @@ void RectangleEditor::update_position() {
     if (rectangle_item == nullptr)
         return;
     if (auto node = dynamic_cast<core::BaseValue<Geom::Rectangle>*>(get_node().get())) {
-        auto rectangle = node->get(get_time());
+        auto rectangle = node->get(get_core_context());
         rectangle_item->setRect(
             rectangle.pos.x(),
             rectangle.pos.y(),

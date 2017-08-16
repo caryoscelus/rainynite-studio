@@ -61,7 +61,7 @@ public:
     void add_empty_custom_property(QModelIndex const& parent, std::string const& name);
     bool can_add_element(QModelIndex const& parent) const;
     void add_empty_element(QModelIndex const& parent);
-    void convert_node(QModelIndex const& index, core::NodeInfo const* node_info, core::Time time);
+    void convert_node(QModelIndex const& index, core::NodeInfo const* node_info);
     bool node_is_connected(QModelIndex const& index) const;
     void disconnect_node(QModelIndex const& index);
     void connect_nodes(QList<QModelIndex> const& selection, QModelIndex const& source);
