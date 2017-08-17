@@ -20,6 +20,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(geom_helpers REQUIRED)
 find_package(document REQUIRED)
 find_package(filters REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 find_package(Threads)
 

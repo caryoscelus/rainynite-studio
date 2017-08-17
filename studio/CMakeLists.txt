@@ -73,15 +73,16 @@ target_sources(rainynite-studio
         resources.qrc
 )
 
-target_link_libraries(rainynite-studio geom_helpers)
-
 target_link_libraries(rainynite-studio
     Qt5::Widgets
+    geom_helpers
     time
     document
     filters
     renderers
     fmt
+    boost_system
+    boost_filesystem
     Threads::Threads
     ${SIGCPP_LIBRARIES}
 )
