@@ -18,6 +18,8 @@
 
 #include <fstream>
 
+#include <boost/filesystem/path.hpp>
+
 #include <fmt/format.h>
 
 #include <QFileDialog>
@@ -193,6 +195,7 @@ void MainWindow::render_period(core::TimePeriod const& period) {
         rsettings.render_pngs = true;
         rsettings.keep_alive = true;
         rsettings.extra_style = extra_style;
+        rsettings.path = fname;
         get_core_context()->mod_render_settings() = rsettings;
         auto ctx = *get_core_context();
         ctx.set_period(period);
@@ -214,7 +217,11 @@ void MainWindow::render_frame() {
 }
 
 void MainWindow::redraw() {
-    set_mainarea_image("renders/{:.3f}.png"_format(get_core_context()->get_time().get_seconds()));
+    // TODO: fix this mess
+    boost::filesystem::path base_path = fname;
+    base_path.remove_filename();
+    auto path = base_path/"renders"/"{:.3f}.png"_format(get_core_context()->get_time().get_seconds());
+    set_mainarea_image(path.string());
 }
 
 void MainWindow::toggle_extra_style(bool checked) {
