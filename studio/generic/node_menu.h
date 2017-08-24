@@ -37,6 +37,7 @@ public:
     NodeContextMenu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time);
 private:
     void update_node_list();
+    void add_custom_property();
 private:
     std::vector<QAction*> convert_actions;
     NodeModel* model;

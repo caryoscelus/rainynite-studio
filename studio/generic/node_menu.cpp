@@ -100,20 +100,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
         }
 
         if (model->can_add_custom_property(index)) {
-            addAction(
-                QIcon::fromTheme("list-add"), // TODO
-                "Add custom property",
-                [this]() {
-                    auto text = QInputDialog::getText(
-                        nullptr,
-                        "Add new custom property",
-                        "Property name:"
-                    );
-                    if (!text.isEmpty())
-                        model->add_empty_custom_property(index, util::str(text));
-                }
-            );
-            addSeparator();
+            add_custom_property();
         }
 
         if (parent_node->is_editable_list()) {
@@ -155,7 +142,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
             update_node_list();
         }
     } else {
-        addAction("No actions for root node!");
+        add_custom_property();
     }
 }
 
@@ -179,6 +166,23 @@ void NodeContextMenu::update_node_list() {
             }
         }
     }
+}
+
+void NodeContextMenu::add_custom_property() {
+    addAction(
+        QIcon::fromTheme("list-add"), // TODO
+        "Add custom property",
+        [this]() {
+            auto text = QInputDialog::getText(
+                nullptr,
+                "Add new custom property",
+                "Property name:"
+            );
+            if (!text.isEmpty())
+                model->add_empty_custom_property(index, util::str(text));
+        }
+    );
+    addSeparator();
 }
 
 } // namespace studio
