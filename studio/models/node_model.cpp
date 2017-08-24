@@ -19,7 +19,9 @@
 #include <fmt/format.h>
 
 #include <core/node_info.h>
+#include <core/node/make.h>
 #include <core/node/abstract_node.h>
+#include <core/nothing.h>
 #include <core/action.h>
 #include <core/actions/change_link.h>
 #include <core/serialize/node_writer.h>
@@ -126,7 +128,7 @@ bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
 }
 
 void NodeModel::add_empty_custom_property(QModelIndex const& parent, std::string const& name) {
-    get_node_as<core::AbstractNode>(parent)->set_property(name, nullptr);
+    get_node_as<core::AbstractNode>(parent)->set_property(name, core::make_value<core::Nothing>());
 }
 
 bool NodeModel::can_add_element(QModelIndex const& parent) const {
