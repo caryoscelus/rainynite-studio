@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
     connect(ui->action_render_frame, SIGNAL(triggered()), this, SLOT(render_frame()));
+    connect(ui->action_stop_render, SIGNAL(triggered()), this, SLOT(stop_render()));
     connect(this, SIGNAL(redraw_signal()), this, SLOT(redraw()));
     connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
     connect(ui->action_extra_style, SIGNAL(toggled(bool)), this, SLOT(toggle_extra_style(bool)));
@@ -166,8 +167,8 @@ void MainWindow::update_title() {
 }
 
 void MainWindow::setup_renderer() {
-    auto renderer = std::make_shared<core::renderers::SvgRenderer>();
-    render_thread = std::thread([this, renderer]() {
+    renderer = std::make_shared<core::renderers::SvgRenderer>();
+    render_thread = std::thread([this]() {
         while (!renderer_quit) {
             if (renderer_queue.size() > 0) {
                 renderer_mutex.lock();
@@ -216,6 +217,10 @@ void MainWindow::render_frame() {
     render_period({time, time_end});
 }
 
+void MainWindow::stop_render() {
+    renderer->stop();
+}
+
 void MainWindow::redraw() {
     // TODO: fix this mess
     boost::filesystem::path base_path = fname;
@@ -242,6 +247,7 @@ void MainWindow::about() {
 }
 
 void MainWindow::quit() {
+    stop_render();
     if (render_thread.joinable()) {
         renderer_quit = true;
         render_thread.join();

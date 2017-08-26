@@ -36,6 +36,12 @@ class MainWindow;
 
 class QErrorMessage;
 
+namespace core {
+namespace renderers {
+class SvgRenderer;
+}
+}
+
 namespace studio {
 
 class MainWindow : public QMainWindow, public ContextListener {
@@ -70,6 +76,7 @@ private Q_SLOTS:
 
     void render();
     void render_frame();
+    void stop_render();
     void redraw();
     void toggle_extra_style(bool checked);
 
@@ -97,6 +104,7 @@ private:
     bool extra_style = true;
 
     std::thread render_thread;
+    std::shared_ptr<core::renderers::SvgRenderer> renderer;
     std::queue<core::Context> renderer_queue;
     std::mutex renderer_mutex;
     bool renderer_quit = false;
