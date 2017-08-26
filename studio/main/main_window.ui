@@ -71,9 +71,9 @@
     <addaction name="separator"/>
     <addaction name="action_quit"/>
    </widget>
-   <widget class="QMenu" name="menu_context">
+   <widget class="QMenu" name="menu_render">
     <property name="title">
-     <string>&amp;Context</string>
+     <string>&amp;Render</string>
     </property>
     <addaction name="action_render"/>
     <addaction name="action_render_frame"/>
@@ -105,9 +105,9 @@
     <addaction name="action_redo"/>
    </widget>
    <addaction name="menu_file"/>
-   <addaction name="menu_context"/>
    <addaction name="menu_edit"/>
    <addaction name="menu_view"/>
+   <addaction name="menu_render"/>
    <addaction name="menu_dock"/>
    <addaction name="menu_help"/>
   </widget>
