@@ -59,6 +59,8 @@ public:
 public:
     bool can_add_custom_property(QModelIndex const& parent) const;
     void add_empty_custom_property(QModelIndex const& parent, std::string const& name);
+    bool is_custom_property(QModelIndex const& index) const;
+    void remove_custom_property(QModelIndex const& index);
     bool can_add_element(QModelIndex const& parent) const;
     void add_empty_element(QModelIndex const& parent);
     void convert_node(QModelIndex const& index, core::NodeInfo const* node_info);

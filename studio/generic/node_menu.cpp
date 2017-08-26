@@ -103,6 +103,17 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
             add_custom_property();
         }
 
+        if (model->is_custom_property(index)) {
+            addAction(
+                QIcon::fromTheme("list-remove"), // TODO
+                "Remove custom property",
+                [this]() {
+                    model->remove_custom_property(index);
+                }
+            );
+            addSeparator();
+        }
+
         if (parent_node->is_editable_list()) {
             addAction(
                 QIcon::fromTheme("list-remove"),

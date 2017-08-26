@@ -131,6 +131,21 @@ void NodeModel::add_empty_custom_property(QModelIndex const& parent, std::string
     get_node_as<core::AbstractNode>(parent)->set_property(name, core::make_value<core::Nothing>());
 }
 
+bool NodeModel::is_custom_property(QModelIndex const& index) const {
+    if (auto parent = get_node_as<core::AbstractNode>(index.parent())) {
+        auto i = index.row();
+        return parent->get_name_at(i)[0] == '_';
+    }
+    return false;
+}
+
+void NodeModel::remove_custom_property(QModelIndex const& index) {
+    if (auto parent = get_node_as<core::AbstractNode>(index.parent())) {
+        auto i = index.row();
+        parent->remove_property(parent->get_name_at(i));
+    }
+}
+
 bool NodeModel::can_add_element(QModelIndex const& parent) const {
     if (auto node = get_list_node(parent))
         return node->is_editable_list();
