@@ -31,7 +31,11 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QTreeView" name="tree_view"/>
+     <widget class="QTreeView" name="tree_view">
+      <property name="autoScroll">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
