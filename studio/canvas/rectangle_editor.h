@@ -27,7 +27,7 @@
 
 class QGraphicsRectItem;
 
-namespace studio {
+namespace rainynite::studio {
 
 class RectangleEditor : public NodeEditor, public CanvasEditor {
 public:
@@ -42,6 +42,6 @@ private:
     std::unique_ptr<QGraphicsRectItem> rectangle_item;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

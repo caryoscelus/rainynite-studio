@@ -32,7 +32,7 @@
 
 using namespace fmt::literals;
 
-namespace studio {
+namespace rainynite::studio {
 
 BezierEditor::BezierEditor() {
     init();

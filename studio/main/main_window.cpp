@@ -42,7 +42,7 @@
 
 using namespace fmt::literals;
 
-namespace studio {
+namespace rainynite::studio {
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),

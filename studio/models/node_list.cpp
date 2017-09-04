@@ -21,7 +21,7 @@
 #include <util/strings.h>
 #include "node_list.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 NodeListModel::NodeListModel(QObject* parent) :
     QAbstractItemModel(parent)
@@ -98,4 +98,4 @@ std::shared_ptr<core::AbstractValue> NodeListModel::get_node(QModelIndex const& 
     return nodes[index.row()];
 }
 
-} // namespace studio
+} // namespace rainynite::studio

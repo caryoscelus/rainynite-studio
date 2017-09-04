@@ -28,7 +28,7 @@
 
 using namespace fmt::literals;
 
-namespace studio {
+namespace rainynite::studio {
 
 ColorButton::ColorButton(QWidget* parent) :
     QPushButton(parent)
@@ -64,4 +64,4 @@ void ColorButton::update_value(core::colors::Color color_) {
     update_button_color();
 }
 
-} // namespace studio
+} // namespace rainynite::studio

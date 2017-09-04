@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-namespace studio {
+namespace rainynite::studio {
 
 class CustomWidgetFactory {
 public:

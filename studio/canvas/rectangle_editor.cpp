@@ -25,7 +25,7 @@
 #include <util/pen.h>
 #include "rectangle_editor.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 RectangleEditor::RectangleEditor() {
 }
@@ -63,4 +63,4 @@ void RectangleEditor::update_position() {
     }
 }
 
-} // namespace studio
+} // namespace rainynite::studio

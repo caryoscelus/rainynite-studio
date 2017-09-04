@@ -36,7 +36,7 @@
 
 using namespace fmt::literals;
 
-namespace studio {
+namespace rainynite::studio {
 
 Canvas::Canvas(QWidget* parent) :
     QGraphicsView(parent),
@@ -135,4 +135,4 @@ void Canvas::update_border() {
     image_border->setRect(0, 0, size.x(), size.y());
 }
 
-} // namespace studio
+} // namespace rainynite::studio

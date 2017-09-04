@@ -31,7 +31,7 @@
 using util::str;
 using namespace fmt::literals;
 
-namespace studio {
+namespace rainynite::studio {
 
 TimelineRuler::TimelineRuler(QWidget* parent) :
     QWidget(parent),

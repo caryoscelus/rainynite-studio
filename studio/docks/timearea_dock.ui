@@ -43,7 +43,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="studio::TimelineRuler" name="ruler" native="true">
+     <widget class="rainynite::studio::TimelineRuler" name="ruler" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
         <horstretch>0</horstretch>
@@ -74,7 +74,7 @@
         </sizepolicy>
        </property>
       </widget>
-      <widget class="studio::TimelineArea" name="timeline">
+      <widget class="rainynite::studio::TimelineArea" name="timeline">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>1</horstretch>
@@ -92,12 +92,12 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>studio::TimelineArea</class>
+   <class>rainynite::studio::TimelineArea</class>
    <extends>QGraphicsView</extends>
    <header location="global">widgets/timeline_area.h</header>
   </customwidget>
   <customwidget>
-   <class>studio::TimelineRuler</class>
+   <class>rainynite::studio::TimelineRuler</class>
    <extends>QWidget</extends>
    <header location="global">widgets/timeline_ruler.h</header>
    <container>1</container>

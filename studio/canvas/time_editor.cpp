@@ -23,7 +23,7 @@
 #include <widgets/timeline_area.h>
 #include "time_item.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 class TimeEditor :
     public TimelineEditor,

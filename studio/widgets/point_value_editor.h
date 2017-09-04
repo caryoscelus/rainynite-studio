@@ -25,7 +25,7 @@
 
 #include <2geom/point.h>
 
-namespace studio {
+namespace rainynite::studio {
 
 class PointValueEditor : public QWidget {
     Q_OBJECT
@@ -55,6 +55,6 @@ private:
     Geom::Point _value;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

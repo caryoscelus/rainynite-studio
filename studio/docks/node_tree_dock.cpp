@@ -31,7 +31,7 @@
 #include "node_tree_dock.h"
 #include "ui_node_tree_dock.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 NodeTreeDock::NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
@@ -70,4 +70,4 @@ void NodeTreeDock::activate(QModelIndex const& index) {
     Q_EMIT activated(node);
 }
 
-} // namespace studio
+} // namespace rainynite::studio

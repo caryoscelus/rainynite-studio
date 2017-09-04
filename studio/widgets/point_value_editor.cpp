@@ -22,7 +22,7 @@
 
 #define MAX_POINT_COORD 10000
 
-namespace studio {
+namespace rainynite::studio {
 
 PointValueEditor::PointValueEditor(QWidget* parent) :
     QWidget(parent),
@@ -62,4 +62,4 @@ void PointValueEditor::write_y() {
     Q_EMIT editingFinished();
 }
 
-} // namespace studio
+} // namespace rainynite::studio

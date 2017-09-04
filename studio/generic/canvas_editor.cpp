@@ -24,7 +24,7 @@
 #include "node_editor.h"
 #include "canvas_editor.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 void CanvasEditor::set_canvas(Canvas* canvas_) {
     if (canvas != canvas_) {
@@ -72,4 +72,4 @@ void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node
     }
 }
 
-} // namespace studio
+} // namespace rainynite::studio

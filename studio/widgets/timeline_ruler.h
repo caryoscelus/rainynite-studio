@@ -24,7 +24,7 @@
 
 #include <generic/context_listener.h>
 
-namespace studio {
+namespace rainynite::studio {
 
 class TimelineRuler : public QWidget {
 public:

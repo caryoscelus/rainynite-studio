@@ -24,7 +24,7 @@
 
 #include "editor_context.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 class ContextListener {
 public:

@@ -19,7 +19,7 @@
 #include "playback_dock.h"
 #include "ui_playback_dock.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 PlaybackDock::PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),

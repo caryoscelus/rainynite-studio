@@ -25,7 +25,7 @@ namespace core {
 class AbstractValue;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class NodeListModel : public QAbstractItemModel
 {
@@ -55,6 +55,6 @@ private:
     std::vector<std::shared_ptr<core::AbstractValue>> nodes;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

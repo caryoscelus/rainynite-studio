@@ -33,7 +33,7 @@ namespace Ui {
 class PlaybackDock;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 /**
  * Dock with playback controls

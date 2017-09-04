@@ -27,7 +27,7 @@ namespace Ui {
 class AboutDialog;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class AboutDialog : public QDialog {
 public:
@@ -37,6 +37,6 @@ private:
     std::unique_ptr<Ui::AboutDialog> ui;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

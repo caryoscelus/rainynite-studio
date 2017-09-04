@@ -31,7 +31,7 @@ namespace Ui {
 class TimeareaDock;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class NodeListModel;
 

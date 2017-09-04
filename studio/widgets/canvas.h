@@ -34,7 +34,7 @@ namespace core {
 class AbstractValue;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class CanvasEditor;
 

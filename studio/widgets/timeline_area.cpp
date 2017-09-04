@@ -22,7 +22,7 @@
 
 #include "timeline_area.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 TimelineArea::TimelineArea(QWidget* parent) :
     QGraphicsView(parent),
@@ -64,4 +64,4 @@ void TimelineArea::clear_node_editors() {
     node_editors.clear();
 }
 
-} // namespace studio
+} // namespace rainynite::studio

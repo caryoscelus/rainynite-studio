@@ -23,13 +23,13 @@
 #include <QGuiApplication>
 #include <QPalette>
 
-namespace studio {
+namespace rainynite::studio {
 namespace pens {
 
 QPen cosmetic_dash();
 QPen cosmetic_solid();
 
 } // namespace pens
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

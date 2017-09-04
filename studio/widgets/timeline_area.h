@@ -27,7 +27,7 @@
 
 class QGraphicsScene;
 
-namespace studio {
+namespace rainynite::studio {
 
 class TimelineEditor;
 

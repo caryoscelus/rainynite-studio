@@ -32,7 +32,7 @@
 
 using namespace fmt::literals;
 
-namespace studio {
+namespace rainynite::studio {
 
 NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
@@ -133,4 +133,4 @@ void NodeEditDock::write_node() {
     }
 }
 
-} // namespace studio
+} // namespace rainynite::studio

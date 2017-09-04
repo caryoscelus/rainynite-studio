@@ -28,11 +28,11 @@
 
 #include "context_listener.h"
 
-namespace core {
+namespace rainynite::core {
 class AbstractValue;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class NodeEditor : public ContextListener {
 public:
@@ -122,6 +122,6 @@ public: \
     } \
 }
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

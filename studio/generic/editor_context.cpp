@@ -20,7 +20,7 @@
 
 #include "editor_context.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 void EditorContext::set_active_node(std::shared_ptr<core::AbstractValue> node) {
     if (node == active_node)
@@ -41,4 +41,4 @@ std::shared_ptr<EditorContext> global_dummy_context() {
     return instance;
 }
 
-} // namespace studio
+} // namespace rainynite::studio

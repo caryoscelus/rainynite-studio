@@ -20,7 +20,7 @@
 
 #include "custom_widgets.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 QWidget* new_custom_widget(std::type_index type) {
     try {
@@ -30,4 +30,4 @@ QWidget* new_custom_widget(std::type_index type) {
     }
 }
 
-} // namespace studio
+} // namespace rainynite::studio

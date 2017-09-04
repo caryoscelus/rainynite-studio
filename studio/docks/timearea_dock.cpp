@@ -28,7 +28,7 @@
 #include "timearea_dock.h"
 #include "ui_timearea_dock.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
@@ -115,4 +115,4 @@ void TimeareaDock::update_ruler() {
     ui->ruler->set_zoom(ui->timeline->transform().m11());
 }
 
-} // namespace studio
+} // namespace rainynite::studio

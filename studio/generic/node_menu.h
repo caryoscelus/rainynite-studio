@@ -26,11 +26,11 @@
 class QItemSelectionModel;
 class QLineEdit;
 
-namespace core {
+namespace rainynite::core {
 class NodeInfo;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class NodeContextMenu : public QMenu {
 public:
@@ -52,6 +52,6 @@ inline std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelection
     return std::make_unique<NodeContextMenu>(model, selection_model, time);
 }
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

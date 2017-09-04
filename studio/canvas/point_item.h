@@ -21,7 +21,7 @@
 
 #include <QGraphicsEllipseItem>
 
-namespace studio {
+namespace rainynite::studio {
 
 class PointItem : public QGraphicsEllipseItem {
 public:
@@ -40,6 +40,6 @@ private:
     Callback position_callback;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

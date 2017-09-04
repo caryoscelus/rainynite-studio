@@ -21,7 +21,7 @@
 
 #include <QDockWidget>
 
-namespace studio {
+namespace rainynite::studio {
 
 class DockWidget : public QDockWidget {
 public:
@@ -37,6 +37,6 @@ protected:
     }
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

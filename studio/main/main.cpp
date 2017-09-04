@@ -22,7 +22,7 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    studio::MainWindow window;
+    rainynite::studio::MainWindow window;
     window.show();
 
     return app.exec();

@@ -31,7 +31,7 @@ template <class T>
 class Value;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class ColorButton : public QPushButton {
     Q_OBJECT
@@ -54,6 +54,6 @@ private:
     core::colors::Color color;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

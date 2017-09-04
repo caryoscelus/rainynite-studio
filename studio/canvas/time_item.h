@@ -25,7 +25,7 @@
 
 #include <core/time/time.h>
 
-namespace studio {
+namespace rainynite::studio {
 
 class TimeItem : public QGraphicsRectItem {
 public:
@@ -48,6 +48,6 @@ private:
     core::Time::fps_type fps = 1;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

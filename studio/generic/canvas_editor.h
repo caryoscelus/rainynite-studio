@@ -24,11 +24,11 @@
 
 class QGraphicsScene;
 
-namespace core {
+namespace rainynite::core {
 class AbstractValue;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class Canvas;
 
@@ -57,7 +57,7 @@ public:
 
 void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node);
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #define REGISTER_CANVAS_EDITOR(Name, Type, Editor) \
 class Name##Factory : \

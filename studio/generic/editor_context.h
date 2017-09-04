@@ -21,12 +21,12 @@
 
 #include <core/context.h>
 
-namespace core {
+namespace rainynite::core {
 class AbstractValue;
 class ActionStack;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class EditorContext {
 public:
@@ -58,6 +58,6 @@ private:
 
 std::shared_ptr<EditorContext> global_dummy_context();
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

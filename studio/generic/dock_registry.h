@@ -27,7 +27,7 @@
 
 class QDockWidget;
 
-namespace studio {
+namespace rainynite::studio {
 
 class EditorContext;
 
@@ -49,7 +49,7 @@ inline std::map<std::string, DockFactory*> const& get_all_docks() {
     return class_init::string_registry<DockFactory>();
 }
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #define REGISTER_DOCK(Name, Dock, position) \
 class Dock##Factory : \

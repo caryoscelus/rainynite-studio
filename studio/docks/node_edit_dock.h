@@ -31,7 +31,7 @@ namespace Ui {
 class NodeEditDock;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 /**
  * Node editing dock, supporting basic text editor and custom editors based on

@@ -24,7 +24,7 @@
 #include <util/pen.h>
 #include "point_item.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 PointItem::PointItem(Callback callback) :
     QGraphicsEllipseItem(-radius, -radius, radius*2, radius*2),
@@ -60,4 +60,4 @@ void PointItem::set_pos(double x, double y) {
     setPos(x, y);
 }
 
-} // namespace studio
+} // namespace rainynite::studio

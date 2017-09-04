@@ -22,7 +22,7 @@
 
 #include "time_item.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 TimeItem::TimeItem(Callback callback_) :
     QGraphicsRectItem {0, 0, 0.25, 80},
@@ -64,4 +64,4 @@ double TimeItem::change_pos(double x) {
     return (double)frames / fps;
 }
 
-} // namespace studio
+} // namespace rainynite::studio

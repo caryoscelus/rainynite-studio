@@ -25,7 +25,7 @@
 #include <generic/canvas_editor.h>
 #include <generic/context_listener.h>
 
-namespace studio {
+namespace rainynite::studio {
 
 class PointItem;
 
@@ -44,6 +44,6 @@ private:
     std::unique_ptr<PointItem> point_item;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

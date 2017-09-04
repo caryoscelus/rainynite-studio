@@ -25,7 +25,7 @@
 #include "about.h"
 #include "ui_about.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent),
@@ -58,4 +58,4 @@ AboutDialog::AboutDialog(QWidget* parent) :
 AboutDialog::~AboutDialog() {
 }
 
-} // namespace studio
+} // namespace rainynite::studio

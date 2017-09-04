@@ -31,7 +31,7 @@
 
 using namespace fmt::literals;
 
-namespace studio {
+namespace rainynite::studio {
 
 NodeModel::NodeModel(core::AbstractReference root_, std::shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
     QAbstractItemModel(parent),
@@ -341,4 +341,4 @@ int NodeModel::columnCount(QModelIndex const& /*parent*/) const {
     return 2;
 }
 
-} // namespace studio
+} // namespace rainynite::studio

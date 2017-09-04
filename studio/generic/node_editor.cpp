@@ -18,7 +18,7 @@
 
 #include "node_editor.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 void NodeEditor::set_node(std::shared_ptr<core::AbstractValue> node_) {
     if (node_connection.connected())
@@ -29,4 +29,4 @@ void NodeEditor::set_node(std::shared_ptr<core::AbstractValue> node_) {
     });
 }
 
-} // namespace studio
+} // namespace rainynite::studio

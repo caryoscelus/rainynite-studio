@@ -28,7 +28,7 @@
 class QGraphicsItem;
 class QGraphicsPathItem;
 
-namespace studio {
+namespace rainynite::studio {
 
 class BezierEditor : public NodeEditor, public CanvasEditor {
 public:
@@ -59,6 +59,6 @@ private:
     size_t old_size;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

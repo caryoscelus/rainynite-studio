@@ -30,7 +30,7 @@ namespace core {
 class ActionStack;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class NodeModel : public QAbstractItemModel, public ContextListener
 {
@@ -128,6 +128,6 @@ private:
     mutable quintptr index_count = 0;
 };
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif

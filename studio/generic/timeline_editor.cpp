@@ -24,7 +24,7 @@
 #include "node_editor.h"
 #include "timeline_editor.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 /*
  * TODO: refactor these functions!
@@ -86,4 +86,4 @@ TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<c
     return editor_p;
 }
 
-} // namespace studio
+} // namespace rainynite::studio

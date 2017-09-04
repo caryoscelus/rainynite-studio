@@ -20,7 +20,7 @@
 
 #include "context_listener.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 ContextListener::ContextListener(std::shared_ptr<EditorContext> context_) :
     destroy_detector(std::make_shared<Null>())

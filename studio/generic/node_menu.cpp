@@ -24,7 +24,7 @@
 #include <models/node_model.h>
 #include "node_menu.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selection_model, core::Time time_) :
     model(model_),
@@ -196,4 +196,4 @@ void NodeContextMenu::add_custom_property() {
     addSeparator();
 }
 
-} // namespace studio
+} // namespace rainynite::studio

@@ -36,13 +36,13 @@ class MainWindow;
 
 class QErrorMessage;
 
-namespace core {
+namespace rainynite::core {
 namespace renderers {
 class SvgRenderer;
 }
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class MainWindow : public QMainWindow, public ContextListener {
     Q_OBJECT

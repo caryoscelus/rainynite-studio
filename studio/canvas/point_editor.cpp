@@ -25,7 +25,7 @@
 #include "point_item.h"
 #include "point_editor.h"
 
-namespace studio {
+namespace rainynite::studio {
 
 PointEditor::PointEditor() {
 }
@@ -70,4 +70,4 @@ void PointEditor::save_position(double x, double y) {
     }
 }
 
-} // namespace studio
+} // namespace rainynite::studio

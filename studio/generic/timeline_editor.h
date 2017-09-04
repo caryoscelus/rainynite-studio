@@ -28,11 +28,11 @@
  * TODO: merge generic code with CanvasEditor
  */
 
-namespace core {
+namespace rainynite::core {
 class AbstractValue;
 }
 
-namespace studio {
+namespace rainynite::studio {
 
 class TimelineArea;
 
@@ -64,7 +64,7 @@ TimelineEditor* add_timeline_editor(TimelineArea& canvas, TimelineEditorFactory 
 TimelineEditor* add_timeline_named_editor(TimelineArea& canvas, std::string const& name);
 TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node);
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #define REGISTER_TIMELINE_EDITOR(Name, Editor) \
 class Name##Factory : \

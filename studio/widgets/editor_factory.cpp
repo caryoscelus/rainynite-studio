@@ -32,7 +32,7 @@
 #include <canvas/rectangle_editor.h>
 #include <canvas/bezier_editor.h>
 
-namespace studio {
+namespace rainynite::studio {
 
 REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, (NodeEditorWidget<ColorButton, core::colors::Color>));
 REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, (NodeEditorWidget<PointValueEditor, Geom::Point>));
@@ -44,4 +44,4 @@ REGISTER_CANVAS_EDITOR(RectangleEdit, Geom::Rectangle, RectangleEditor);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RenderShape, "RenderShape", true);
 
-} // namespace studio
+} // namespace rainynite::studio

@@ -33,7 +33,7 @@ class NodeTreeDock;
 
 class QMenu;
 
-namespace studio {
+namespace rainynite::studio {
 
 class NodeModel;
 
@@ -70,6 +70,6 @@ private:
 
 REGISTER_DOCK("Node tree", NodeTreeDock, Qt::LeftDockWidgetArea);
 
-} // namespace studio
+} // namespace rainynite::studio
 
 #endif
