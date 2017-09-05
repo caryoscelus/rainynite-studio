@@ -191,11 +191,11 @@ bool NodeModel::node_is_connected(QModelIndex const& index) const {
         size_t count = 0;
         return find_nodes<bool>(
             node,
-            [&count]() -> boost::optional<bool> {
+            [&count]() -> optional<bool> {
                 if (count > 0)
-                    return boost::make_optional(true);
+                    return make_optional(true);
                 ++count;
-                return boost::none;
+                return {};
             }
         );
     }
@@ -296,10 +296,10 @@ quintptr NodeModel::get_id(QModelIndex const& parent, size_t i) const {
     return interal_id;
 }
 
-boost::optional<std::type_index> NodeModel::get_link_type(QModelIndex const& index) const {
+optional<std::type_index> NodeModel::get_link_type(QModelIndex const& index) const {
     if (auto parent = get_node_as<core::AbstractListLinked>(index.parent()))
         return parent->get_link_type(get_node_index(index));
-    return boost::none;
+    return {};
 }
 
 core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {

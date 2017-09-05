@@ -49,11 +49,11 @@ public:
     }
 public:
     template <typename T>
-    boost::optional<T> get_value() {
+    optional<T> get_value() {
         if (auto node = get_node_as<T>()) {
             return node->get(get_core_context());
         }
-        return boost::none;
+        return {};
     }
     template <typename T>
     std::shared_ptr<core::BaseValue<T>> get_node_as() {

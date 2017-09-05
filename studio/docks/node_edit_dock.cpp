@@ -79,7 +79,7 @@ void NodeEditDock::update_generic() {
     boost::any value;
     try {
         if (writeable) {
-            value = active_node->any();
+            value = active_node->static_any();
         } else {
             value = active_node->get_any(get_core_context());
         }
