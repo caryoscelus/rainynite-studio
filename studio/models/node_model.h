@@ -26,10 +26,6 @@
 
 #include <generic/context_listener.h>
 
-namespace core {
-class ActionStack;
-}
-
 namespace rainynite::studio {
 
 class NodeModel : public QAbstractItemModel, public ContextListener

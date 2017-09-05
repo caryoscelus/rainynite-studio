@@ -23,10 +23,6 @@
 #include <generic/dock_registry.h>
 #include "close_destroy_dock.h"
 
-namespace core {
-class AbstractValue;
-}
-
 namespace Ui {
 class NodeTreeDock;
 }

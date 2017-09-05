@@ -30,10 +30,6 @@ class QGraphicsItem;
 class QGraphicsPixmapItem;
 class QGraphicsRectItem;
 
-namespace core {
-class AbstractValue;
-}
-
 namespace rainynite::studio {
 
 class CanvasEditor;

@@ -26,11 +26,6 @@
 
 #include <generic/node_editor.h>
 
-namespace core {
-template <class T>
-class Value;
-}
-
 namespace rainynite::studio {
 
 class ColorButton : public QPushButton {

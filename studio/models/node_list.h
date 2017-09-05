@@ -21,10 +21,6 @@
 
 #include <QAbstractItemModel>
 
-namespace core {
-class AbstractValue;
-}
-
 namespace rainynite::studio {
 
 class NodeListModel : public QAbstractItemModel
