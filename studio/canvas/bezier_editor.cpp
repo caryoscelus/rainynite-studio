@@ -76,7 +76,7 @@ void BezierEditor::init() {
 
             Geom::BezierKnots path;
             try {
-                path = bezier_node->get(get_core_context());
+                path = bezier_node->value(get_core_context());
             } catch (std::exception const& ex) {
                 qDebug() << util::str("Uncaught exception while getting path: {}"_format(ex.what()));
                 return;

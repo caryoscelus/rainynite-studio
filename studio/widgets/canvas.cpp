@@ -131,7 +131,7 @@ void Canvas::set_context(std::shared_ptr<EditorContext> context) {
 }
 
 void Canvas::update_border() {
-    auto size = get_core_context()->get_document()->get_size()->get(get_core_context());
+    auto size = get_core_context()->get_document()->get_size()->value(get_core_context());
     image_border->setRect(0, 0, size.x(), size.y());
 }
 

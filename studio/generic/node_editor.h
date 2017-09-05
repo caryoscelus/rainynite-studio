@@ -51,7 +51,7 @@ public:
     template <typename T>
     optional<T> get_value() {
         if (auto node = get_node_as<T>()) {
-            return node->get(get_core_context());
+            return node->value(get_core_context());
         }
         return {};
     }
@@ -89,14 +89,14 @@ public:
 public:
     void node_update() override {
         if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(get_node().get())) {
-            this->update_value(value_node->get(get_core_context()));
+            this->update_value(value_node->value(get_core_context()));
             this->setReadOnly(!dynamic_cast<core::Value<ValueType>*>(value_node));
         }
     }
     void time_changed(core::Time time_) override {
         ContextListener::time_changed(time_);
         if (value_node = dynamic_cast<core::BaseValue<ValueType>*>(this->get_node().get()))
-            this->update_value(value_node->get(get_core_context()));
+            this->update_value(value_node->value(get_core_context()));
     }
 protected:
     core::BaseValue<ValueType>* value_node = nullptr;
