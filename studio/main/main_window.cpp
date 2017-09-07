@@ -303,4 +303,4 @@ void MainWindow::activate(std::shared_ptr<core::AbstractValue> node) {
     get_context()->set_active_node(node);
 }
 
-}
+} // namespace rainynite::studio

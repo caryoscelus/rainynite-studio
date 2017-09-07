@@ -36,10 +36,8 @@ class MainWindow;
 
 class QErrorMessage;
 
-namespace rainynite::core {
-namespace renderers {
+namespace rainynite::core::renderers {
 class SvgRenderer;
-}
 }
 
 namespace rainynite::studio {
@@ -110,7 +108,6 @@ private:
     bool renderer_quit = false;
 };
 
-}
+} // namespace rainynite::studio
 
 #endif
-
