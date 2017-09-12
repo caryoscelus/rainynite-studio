@@ -30,6 +30,7 @@
 
 #include <core/document.h>
 #include <core/filters/json_reader.h>
+#include <core/filters/yaml_reader.h>
 #include <core/filters/json_writer.h>
 #include <core/renderers/svg_renderer.h>
 
@@ -103,20 +104,28 @@ void MainWindow::reload() {
     if (fname.empty())
         return;
     // TODO: proper filter modularization
-    try {
-        auto reader = core::filters::JsonReader();
-        std::ifstream in(fname);
-        document = reader.read_document(in);
-        if (!document)
-            throw std::runtime_error("Unknown parse failure");
-        set_core_context(document->get_default_context());
-        in.close();
-    } catch (std::exception const& ex) {
-        auto msg = util::str("Uncaught exception in JSON filter:\n{}"_format(ex.what()));
+    unique_ptr<core::DocumentReader> json_reader = make_unique<core::filters::JsonReader>();
+    unique_ptr<core::DocumentReader> yaml_reader = make_unique<core::filters::YamlReader>();
+    vector<string> errors;
+    for (auto&& reader : { std::move(yaml_reader), std::move(json_reader )}) {
+        try {
+            std::ifstream in(fname);
+            document = reader->read_document(in);
+            if (!document)
+                throw std::runtime_error("Unknown parse failure");
+            set_core_context(document->get_default_context());
+            in.close();
+            break;
+        } catch (std::exception const& ex) {
+            errors.push_back("Uncaught exception in filter:\n{}"_format(ex.what()));
+        } catch (...) {
+            errors.push_back("Unknown error while trying to open document via filter");
+        }
+    }
+    if (!document) {
+        auto msg = util::str(std::accumulate(errors.begin(), errors.end(), string("\n\n")));
         qDebug() << msg;
         error_box->showMessage(msg);
-    } catch (...) {
-        qDebug() << "Unknown error while trying to open document via JSON filter";
     }
     render_frame();
 }
