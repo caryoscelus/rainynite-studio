@@ -40,8 +40,17 @@ public:
 
 public:
     bool removeRows(int row, int count, QModelIndex const& parent={}) override;
+
+    /// Insert node at position
     void insert_node(shared_ptr<core::AbstractValue> node, int position=-1);
-    void insert_unique_node(shared_ptr<core::AbstractValue> node, int position=-1);
+
+    /**
+     * Insert node only if it isn't already in model
+     * @return true if node was added
+     */
+    bool insert_unique_node(shared_ptr<core::AbstractValue> node, int position=-1);
+
+    /// Get list of all nodes
     vector<shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
         return nodes;
     }

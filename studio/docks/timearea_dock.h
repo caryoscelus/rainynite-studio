@@ -57,6 +57,7 @@ protected:
 private:
     unique_ptr<Ui::TimeareaDock> ui;
     unique_ptr<NodeListModel> node_list_model;
+    bool pinned = false;
 };
 
 REGISTER_DOCK("Timeline", TimeareaDock, Qt::BottomDockWidgetArea);

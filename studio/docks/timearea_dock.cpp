@@ -71,13 +71,23 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
     auto index = ui->node_list->selectionModel()->currentIndex();
     if (index.isValid()) {
         QMenu menu(this);
-        menu.addAction(
-            QIcon::fromTheme("list-remove"),
-            "Remove from timeline area",
-            [this, index]() {
-                node_list_model->removeRow(index.row());
-            }
-        );
+        if (index.row() == node_list_model->rowCount()-1 && !pinned) {
+            menu.addAction(
+                QIcon::fromTheme("list-add"),
+                "Pin to timeline area",
+                [this]() {
+                    pinned = true;
+                }
+            );
+        } else {
+            menu.addAction(
+                QIcon::fromTheme("list-remove"),
+                "Remove from timeline area",
+                [this, index]() {
+                    node_list_model->removeRow(index.row());
+                }
+            );
+        }
         menu.exec(event->globalPos());
     }
 }
@@ -88,7 +98,9 @@ void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     connect_boost(
         context->changed_active_node(),
         [this](core::AbstractReference node) {
-            node_list_model->insert_unique_node(node);
+            if (!pinned && node_list_model->rowCount() > 0)
+                node_list_model->removeRow(node_list_model->rowCount()-1);
+            pinned = !node_list_model->insert_unique_node(node);
         }
     );
 }
