@@ -50,10 +50,10 @@ public:
     ~MainWindow();
 
 public:
-    void set_context(std::shared_ptr<EditorContext> context_) override;
+    void set_context(shared_ptr<EditorContext> context_) override;
 
 private:
-    void set_mainarea_image(std::string const& fname);
+    void set_mainarea_image(string const& fname);
 
 Q_SIGNALS:
     void redraw_signal();
@@ -78,10 +78,10 @@ private Q_SLOTS:
     void redraw();
     void toggle_extra_style(bool checked);
 
-    void activate(std::shared_ptr<core::AbstractValue> node);
+    void activate(shared_ptr<core::AbstractValue> node);
 
     void add_all_docks();
-    void add_dock(std::string const& name);
+    void add_dock(string const& name);
 
 private:
     void setup_dock_menu();
@@ -89,20 +89,20 @@ private:
 
     void setup_renderer();
     void render_period(core::TimePeriod const& period);
-    void set_fname(std::string const& fname_);
+    void set_fname(string const& fname_);
 
 private:
-    std::unique_ptr<Ui::MainWindow> ui;
-    std::unique_ptr<QErrorMessage> error_box;
-    std::shared_ptr<core::Document> document;
-    std::shared_ptr<core::AbstractValue> active_node;
+    unique_ptr<Ui::MainWindow> ui;
+    unique_ptr<QErrorMessage> error_box;
+    shared_ptr<core::Document> document;
+    shared_ptr<core::AbstractValue> active_node;
 
-    std::string fname;
-    std::string window_title_template;
+    string fname;
+    string window_title_template;
     bool extra_style = true;
 
     std::thread render_thread;
-    std::shared_ptr<core::renderers::SvgRenderer> renderer;
+    shared_ptr<core::renderers::SvgRenderer> renderer;
     std::queue<core::Context> renderer_queue;
     std::mutex renderer_mutex;
     bool renderer_quit = false;

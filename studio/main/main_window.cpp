@@ -47,8 +47,8 @@ namespace rainynite::studio {
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ContextListener(),
-    ui(std::make_unique<Ui::MainWindow>()),
-    error_box(std::make_unique<QErrorMessage>())
+    ui(make_unique<Ui::MainWindow>()),
+    error_box(make_unique<QErrorMessage>())
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
@@ -88,7 +88,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::new_document() {
-    document = std::make_shared<core::Document>();
+    document = make_shared<core::Document>();
     set_core_context(document->get_default_context());
     set_fname("");
 }
@@ -152,7 +152,7 @@ void MainWindow::save() {
     }
 }
 
-void MainWindow::set_fname(std::string const& fname_) {
+void MainWindow::set_fname(string const& fname_) {
     fname = fname_;
     update_title();
 }
@@ -167,7 +167,7 @@ void MainWindow::update_title() {
 }
 
 void MainWindow::setup_renderer() {
-    renderer = std::make_shared<core::renderers::SvgRenderer>();
+    renderer = make_shared<core::renderers::SvgRenderer>();
     render_thread = std::thread([this]() {
         while (!renderer_quit) {
             if (renderer_queue.size() > 0) {
@@ -255,7 +255,7 @@ void MainWindow::quit() {
     QApplication::quit();
 }
 
-void MainWindow::set_mainarea_image(std::string const& fname) {
+void MainWindow::set_mainarea_image(string const& fname) {
     QPixmap pixmap;
     pixmap.load(util::str(fname));
     ui->canvas->set_main_image(pixmap);
@@ -267,7 +267,7 @@ void MainWindow::add_all_docks() {
     }
 }
 
-void MainWindow::add_dock(std::string const& name) {
+void MainWindow::add_dock(string const& name) {
     auto dock = spawn_dock(name, get_context());
     auto position = dock_preferred_area(name);
     addDockWidget(position, dock.release());
@@ -286,7 +286,7 @@ void MainWindow::setup_tools() {
     // TODO
 }
 
-void MainWindow::set_context(std::shared_ptr<EditorContext> context_) {
+void MainWindow::set_context(shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
     get_context()->changed_time().connect([this](core::Time){
         redraw();
@@ -294,12 +294,12 @@ void MainWindow::set_context(std::shared_ptr<EditorContext> context_) {
     for (auto dock : findChildren<QWidget*>()) {
         if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
-        if (dock->metaObject()->indexOfSignal("activated(std::shared_ptr<core::AbstractValue>)") != -1)
-            connect(dock, SIGNAL(activated(std::shared_ptr<core::AbstractValue>)), this, SLOT(activate(std::shared_ptr<core::AbstractValue>)));
+        if (dock->metaObject()->indexOfSignal("activated(shared_ptr<core::AbstractValue>)") != -1)
+            connect(dock, SIGNAL(activated(shared_ptr<core::AbstractValue>)), this, SLOT(activate(shared_ptr<core::AbstractValue>)));
     }
 }
 
-void MainWindow::activate(std::shared_ptr<core::AbstractValue> node) {
+void MainWindow::activate(shared_ptr<core::AbstractValue> node) {
     get_context()->set_active_node(node);
 }
 

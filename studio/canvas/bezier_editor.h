@@ -16,10 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__BEZIER_EDITOR_H__773FF04C
-#define __STUDIO__WIDGETS__BEZIER_EDITOR_H__773FF04C
-
-#include <core/std/memory.h>
+#ifndef STUDIO_CANVAS_BEZIER_EDITOR_H_301B627E_5F98_521F_93AD_92571F72CAAC
+#define STUDIO_CANVAS_BEZIER_EDITOR_H_301B627E_5F98_521F_93AD_92571F72CAAC
 
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>
