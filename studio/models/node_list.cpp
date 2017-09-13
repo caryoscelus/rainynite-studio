@@ -81,7 +81,7 @@ bool NodeListModel::removeRows(int row, int count, QModelIndex const& parent) {
     return true;
 }
 
-void NodeListModel::insert_node(std::shared_ptr<core::AbstractValue> node, int position) {
+void NodeListModel::insert_node(shared_ptr<core::AbstractValue> node, int position) {
     if (position < 0)
         position = nodes.size();
     beginInsertRows({}, position, position+1);
@@ -89,12 +89,12 @@ void NodeListModel::insert_node(std::shared_ptr<core::AbstractValue> node, int p
     endInsertRows();
 }
 
-void NodeListModel::insert_unique_node(std::shared_ptr<core::AbstractValue> node, int position) {
+void NodeListModel::insert_unique_node(shared_ptr<core::AbstractValue> node, int position) {
     if (std::find(nodes.begin(), nodes.end(), node) == nodes.end())
         insert_node(node, position);
 }
 
-std::shared_ptr<core::AbstractValue> NodeListModel::get_node(QModelIndex const& index) const {
+shared_ptr<core::AbstractValue> NodeListModel::get_node(QModelIndex const& index) const {
     return nodes[index.row()];
 }
 

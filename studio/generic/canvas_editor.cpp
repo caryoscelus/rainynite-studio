@@ -38,11 +38,11 @@ QGraphicsScene* CanvasEditor::get_scene() const {
     return nullptr;
 }
 
-void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node) {
+void add_canvas_editor(Canvas& canvas, shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
         return;
 
-    std::unique_ptr<CanvasEditor> editor = nullptr;
+    unique_ptr<CanvasEditor> editor = nullptr;
     try {
         editor = class_init::type_info<CanvasEditorFactory, decltype(editor)>(node->get_type());
     } catch (class_init::RuntimeTypeError const&) {

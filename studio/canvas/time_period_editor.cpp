@@ -47,12 +47,12 @@ public:
                 }
             };
         };
-        first_item = std::make_unique<TimeItem>(
+        first_item = make_unique<TimeItem>(
             item_lambda([](auto node, auto time) {
                 node->mod().set_first(time);
             })
         );
-        last_item = std::make_unique<TimeItem>(
+        last_item = make_unique<TimeItem>(
             item_lambda([](auto node, auto time) {
                 node->mod().set_last(time);
             })
@@ -92,8 +92,8 @@ private:
         }
     }
 private:
-    std::unique_ptr<TimeItem> first_item;
-    std::unique_ptr<TimeItem> last_item;
+    unique_ptr<TimeItem> first_item;
+    unique_ptr<TimeItem> last_item;
     bool ignore_time_change = false;
 };
 

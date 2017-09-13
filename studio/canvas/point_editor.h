@@ -19,7 +19,7 @@
 #ifndef __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
 #define __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>
@@ -41,7 +41,7 @@ private:
     void update_position();
     void save_position(double x, double y);
 private:
-    std::unique_ptr<PointItem> point_item;
+    unique_ptr<PointItem> point_item;
 };
 
 } // namespace rainynite::studio

@@ -19,7 +19,7 @@
 #ifndef __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
 #define __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <QTimer>
 
@@ -42,7 +42,7 @@ class PlaybackDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
+    explicit PlaybackDock(shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     ~PlaybackDock();
 
 protected:
@@ -60,7 +60,7 @@ private Q_SLOTS:
     void change_fps();
 
 private:
-    std::unique_ptr<Ui::PlaybackDock> ui;
+    unique_ptr<Ui::PlaybackDock> ui;
     QTimer* timer;
 };
 

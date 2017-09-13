@@ -19,9 +19,11 @@
 #ifndef __STUDIO__WIDGETS__TIMELINE_AREA_H__9A8A8D52
 #define __STUDIO__WIDGETS__TIMELINE_AREA_H__9A8A8D52
 
-#include <memory>
-
 #include <QGraphicsView>
+
+#include <core/std/memory.h>
+#include <core/std/map.h>
+#include <core/std/vector.h>
 
 #include <generic/context_listener.h>
 
@@ -39,17 +41,17 @@ public:
     virtual ~TimelineArea();
 
 public:
-    TimelineEditor* add_editor(std::unique_ptr<TimelineEditor> editor);
-    void add_node_editor(std::shared_ptr<core::AbstractValue> node, std::unique_ptr<TimelineEditor> editor);
+    TimelineEditor* add_editor(unique_ptr<TimelineEditor> editor);
+    void add_node_editor(shared_ptr<core::AbstractValue> node, unique_ptr<TimelineEditor> editor);
     void clear_node_editors();
 
 public:
-    void set_context(std::shared_ptr<EditorContext> context) override;
+    void set_context(shared_ptr<EditorContext> context) override;
 
 private:
-    std::unique_ptr<QGraphicsScene> the_scene;
-    std::vector<std::unique_ptr<TimelineEditor>> misc_editors;
-    std::map<std::shared_ptr<core::AbstractValue>, std::unique_ptr<TimelineEditor>> node_editors;
+    unique_ptr<QGraphicsScene> the_scene;
+    vector<unique_ptr<TimelineEditor>> misc_editors;
+    map<shared_ptr<core::AbstractValue>, unique_ptr<TimelineEditor>> node_editors;
 };
 
 }

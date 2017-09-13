@@ -20,7 +20,7 @@
 #define __STUDIO__GENERIC__TIMELINE_EDITOR_H__043F26E4
 
 #include <typeindex>
-#include <memory>
+#include <core/std/memory.h>
 
 #include <core/class_init.h>
 
@@ -56,13 +56,13 @@ private:
 
 class TimelineEditorFactory {
 public:
-    virtual std::unique_ptr<TimelineEditor> operator()() const = 0;
+    virtual unique_ptr<TimelineEditor> operator()() const = 0;
 };
 
 // TODO: fix this mess
 TimelineEditor* add_timeline_editor(TimelineArea& canvas, TimelineEditorFactory const& factory);
 TimelineEditor* add_timeline_named_editor(TimelineArea& canvas, std::string const& name);
-TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node);
+TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, shared_ptr<core::AbstractValue> node);
 
 } // namespace rainynite::studio
 
@@ -72,8 +72,8 @@ class Name##Factory : \
     private class_init::StringRegistered<Name##Factory, TimelineEditorFactory> \
 { \
 public: \
-    std::unique_ptr<TimelineEditor> operator()() const override { \
-        return std::make_unique<Editor>(); \
+    unique_ptr<TimelineEditor> operator()() const override { \
+        return make_unique<Editor>(); \
     } \
 public: \
     static std::string name() { \
@@ -88,8 +88,8 @@ class Name##Factory : \
     private class_init::StringRegistered<Name##Factory, TimelineEditorFactory> \
 { \
 public: \
-    std::unique_ptr<TimelineEditor> operator()() const override { \
-        return std::make_unique<Editor>(); \
+    unique_ptr<TimelineEditor> operator()() const override { \
+        return make_unique<Editor>(); \
     } \
 public: \
     static std::string name() { \

@@ -19,7 +19,7 @@
 #ifndef __STUDIO__TIMEAREA_DOCK_H__13AFC148
 #define __STUDIO__TIMEAREA_DOCK_H__13AFC148
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <core/context.h>
 
@@ -40,7 +40,7 @@ class NodeListModel;
  */
 class TimeareaDock : public DockWidget, public ContextListener {
 public:
-    explicit TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
+    explicit TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     virtual ~TimeareaDock();
 
 public:
@@ -48,15 +48,15 @@ public:
     void contextMenuEvent(QContextMenuEvent* event) override;
 
 public:
-    void set_context(std::shared_ptr<EditorContext> context) override;
+    void set_context(shared_ptr<EditorContext> context) override;
 
 protected:
     void update_editors();
     void update_ruler();
 
 private:
-    std::unique_ptr<Ui::TimeareaDock> ui;
-    std::unique_ptr<NodeListModel> node_list_model;
+    unique_ptr<Ui::TimeareaDock> ui;
+    unique_ptr<NodeListModel> node_list_model;
 };
 
 REGISTER_DOCK("Timeline", TimeareaDock, Qt::BottomDockWidgetArea);

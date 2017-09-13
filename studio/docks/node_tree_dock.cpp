@@ -33,10 +33,10 @@
 
 namespace rainynite::studio {
 
-NodeTreeDock::NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
+NodeTreeDock::NodeTreeDock(shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::NodeTreeDock>())
+    ui(make_unique<Ui::NodeTreeDock>())
 {
     ui->setupUi(this);
     ui->tree_view->setSelectionMode(QAbstractItemView::SelectionMode::ExtendedSelection);
@@ -47,12 +47,12 @@ NodeTreeDock::NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* par
 NodeTreeDock::~NodeTreeDock() {
 }
 
-void NodeTreeDock::set_context(std::shared_ptr<EditorContext> context_) {
+void NodeTreeDock::set_context(shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
     if (auto document = get_core_context()->get_document()) {
-        model = std::make_unique<NodeModel>(document, document->get_action_stack());
+        model = make_unique<NodeModel>(document, document->get_action_stack());
     } else {
-        model = std::make_unique<NodeModel>(nullptr, nullptr);
+        model = make_unique<NodeModel>(nullptr, nullptr);
     }
     model->set_context(context_);
     ui->tree_view->setModel(model.get());

@@ -19,7 +19,7 @@
 #ifndef __STUDIO__WIDGETS__BEZIER_EDITOR_H__773FF04C
 #define __STUDIO__WIDGETS__BEZIER_EDITOR_H__773FF04C
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>
@@ -46,16 +46,16 @@ private:
     void uninit();
 
 private:
-    inline std::shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node() {
-        return std::dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node());
+    inline shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node() {
+        return dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node());
     }
     inline Geom::BezierKnots get_path() {
         return get_bezier_node()->value(get_core_context());
     }
 
 private:
-    std::vector<std::unique_ptr<QGraphicsItem>> knot_items;
-    std::unique_ptr<QGraphicsPathItem> curve_item;
+    vector<unique_ptr<QGraphicsItem>> knot_items;
+    unique_ptr<QGraphicsPathItem> curve_item;
     size_t old_size;
 };
 

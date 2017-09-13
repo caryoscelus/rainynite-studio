@@ -21,10 +21,10 @@
 
 namespace rainynite::studio {
 
-PlaybackDock::PlaybackDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
+PlaybackDock::PlaybackDock(shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::PlaybackDock>()),
+    ui(make_unique<Ui::PlaybackDock>()),
     timer(new QTimer(this))
 {
     ui->setupUi(this);

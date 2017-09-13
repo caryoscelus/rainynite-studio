@@ -34,9 +34,9 @@ using namespace fmt::literals;
 
 namespace rainynite::studio {
 
-NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
+NodeEditDock::NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
-    ui(std::make_unique<Ui::NodeEditDock>())
+    ui(make_unique<Ui::NodeEditDock>())
 {
     ui->setupUi(this);
     custom_widget = ui->custom_placeholder;
@@ -48,7 +48,7 @@ NodeEditDock::NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* par
 NodeEditDock::~NodeEditDock() {
 }
 
-void NodeEditDock::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+void NodeEditDock::active_node_changed(shared_ptr<core::AbstractValue> node) {
     set_node(node);
     active_node = node;
     if (!node)
@@ -97,7 +97,7 @@ void NodeEditDock::update_generic() {
     ui->text_edit->setReadOnly(!writeable);
 }
 
-void NodeEditDock::setup_custom_widget(std::shared_ptr<core::AbstractValue> node) {
+void NodeEditDock::setup_custom_widget(shared_ptr<core::AbstractValue> node) {
     QWidget* widget = new_custom_widget(node->get_type());
     if (!widget) {
         widget = new QWidget();

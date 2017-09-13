@@ -35,7 +35,7 @@ PointEditor::~PointEditor() {
 
 void PointEditor::set_canvas(Canvas* canvas) {
     CanvasEditor::set_canvas(canvas);
-    point_item = std::make_unique<PointItem>(
+    point_item = make_unique<PointItem>(
         [this](double x, double y) {
             save_position(x, y);
         }

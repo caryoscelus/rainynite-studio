@@ -19,7 +19,7 @@
 #ifndef __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
 #define __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>
@@ -39,7 +39,7 @@ public:
     void time_changed(core::Time time) override;
 private:
     void update_position();
-    std::unique_ptr<QGraphicsRectItem> rectangle_item;
+    unique_ptr<QGraphicsRectItem> rectangle_item;
 };
 
 } // namespace rainynite::studio

@@ -49,13 +49,13 @@ TimelineEditor* add_timeline_named_editor(TimelineArea& canvas, std::string cons
     return add_timeline_editor(canvas, *factory);
 }
 
-TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node) {
+TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
         return nullptr;
 
-    std::unique_ptr<TimelineEditor> editor;
+    unique_ptr<TimelineEditor> editor;
     try {
-        editor = class_init::type_info<TimelineEditorFactory, std::unique_ptr<TimelineEditor>>(node->get_type());
+        editor = class_init::type_info<TimelineEditorFactory, unique_ptr<TimelineEditor>>(node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
         // do something about it? should we really catch it?
     }

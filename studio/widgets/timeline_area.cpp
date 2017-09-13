@@ -26,7 +26,7 @@ namespace rainynite::studio {
 
 TimelineArea::TimelineArea(QWidget* parent) :
     QGraphicsView(parent),
-    the_scene(std::make_unique<QGraphicsScene>())
+    the_scene(make_unique<QGraphicsScene>())
 {
     setScene(the_scene.get());
     setDragMode(QGraphicsView::RubberBandDrag);
@@ -36,19 +36,19 @@ TimelineArea::TimelineArea(QWidget* parent) :
 TimelineArea::~TimelineArea() {
 }
 
-TimelineEditor* TimelineArea::add_editor(std::unique_ptr<TimelineEditor> editor) {
+TimelineEditor* TimelineArea::add_editor(unique_ptr<TimelineEditor> editor) {
     auto editor_p = editor.get();
     editor->set_canvas(this);
     misc_editors.push_back(std::move(editor));
     return editor_p;
 }
 
-void TimelineArea::add_node_editor(std::shared_ptr<core::AbstractValue> node, std::unique_ptr<TimelineEditor> editor) {
+void TimelineArea::add_node_editor(shared_ptr<core::AbstractValue> node, unique_ptr<TimelineEditor> editor) {
     editor->set_canvas(this);
     node_editors[node] = std::move(editor);
 }
 
-void TimelineArea::set_context(std::shared_ptr<EditorContext> context) {
+void TimelineArea::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     auto f = [&context](auto const& editor) {
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))

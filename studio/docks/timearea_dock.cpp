@@ -30,11 +30,11 @@
 
 namespace rainynite::studio {
 
-TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
+TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::TimeareaDock>()),
-    node_list_model(std::make_unique<NodeListModel>())
+    ui(make_unique<Ui::TimeareaDock>()),
+    node_list_model(make_unique<NodeListModel>())
 {
     ui->setupUi(this);
     add_timeline_named_editor(*ui->timeline, "TimelineCursor");
@@ -82,7 +82,7 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
     }
 }
 
-void TimeareaDock::set_context(std::shared_ptr<EditorContext> context) {
+void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     ui->timeline->set_context(context);
     connect_boost(

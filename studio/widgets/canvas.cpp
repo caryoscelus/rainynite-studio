@@ -40,8 +40,8 @@ namespace rainynite::studio {
 
 Canvas::Canvas(QWidget* parent) :
     QGraphicsView(parent),
-    the_scene(std::make_unique<QGraphicsScene>()),
-    image(std::make_unique<QGraphicsPixmapItem>())
+    the_scene(make_unique<QGraphicsScene>()),
+    image(make_unique<QGraphicsPixmapItem>())
 {
     setScene(the_scene.get());
     the_scene->addItem(image.get());
@@ -95,7 +95,7 @@ void Canvas::set_main_image(QPixmap const& pixmap) {
     image->setPixmap(pixmap);
 }
 
-void Canvas::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
+void Canvas::active_node_changed(shared_ptr<core::AbstractValue> node) {
     if (active_node != node) {
         active_node = node;
         clear_node_editors();
@@ -103,7 +103,7 @@ void Canvas::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
     }
 }
 
-void Canvas::add_node_editor(std::unique_ptr<CanvasEditor> editor) {
+void Canvas::add_node_editor(unique_ptr<CanvasEditor> editor) {
     editor->set_canvas(this);
     editors.push_back(std::move(editor));
 }
@@ -117,7 +117,7 @@ void Canvas::clear_node_editors() {
     editors.clear();
 }
 
-void Canvas::set_context(std::shared_ptr<EditorContext> context) {
+void Canvas::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     // TODO: listen to document change
     // TODO: listen to size node change

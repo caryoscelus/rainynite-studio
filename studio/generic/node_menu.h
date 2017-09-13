@@ -19,7 +19,7 @@
 #ifndef __STUDIO__GENERIC__NODE_MENU_H__A418F828
 #define __STUDIO__GENERIC__NODE_MENU_H__A418F828
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <QMenu>
 
@@ -39,17 +39,17 @@ private:
     void update_node_list();
     void add_custom_property();
 private:
-    std::vector<QAction*> convert_actions;
+    vector<QAction*> convert_actions;
     NodeModel* model;
     QModelIndex index;
     QList<QModelIndex> selection;
-    std::set<core::NodeInfo const*> node_infos;
+    set<core::NodeInfo const*> node_infos;
     core::Time time;
     QLineEdit* search_widget = nullptr;
 };
 
-inline std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
-    return std::make_unique<NodeContextMenu>(model, selection_model, time);
+inline unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
+    return make_unique<NodeContextMenu>(model, selection_model, time);
 }
 
 } // namespace rainynite::studio

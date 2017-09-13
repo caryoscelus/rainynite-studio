@@ -32,7 +32,7 @@ class TimeEditor :
 public:
     void set_canvas(TimelineArea* canvas) override {
         TimelineEditor::set_canvas(canvas);
-        time_item = std::make_unique<TimeItem>(
+        time_item = make_unique<TimeItem>(
             [this](core::Time time) {
                 if (auto node = get_node_as<core::Time>()) {
                     ignore_time_change = true;
@@ -71,7 +71,7 @@ private:
         }
     }
 private:
-    std::unique_ptr<TimeItem> time_item;
+    unique_ptr<TimeItem> time_item;
     bool ignore_time_change = false;
 };
 

@@ -22,22 +22,22 @@
 
 namespace rainynite::studio {
 
-void EditorContext::set_active_node(std::shared_ptr<core::AbstractValue> node) {
+void EditorContext::set_active_node(shared_ptr<core::AbstractValue> node) {
     if (node == active_node)
         return;
     active_node = node;
     changed_active_node()(node);
 }
 
-std::shared_ptr<core::ActionStack> EditorContext::action_stack() {
+shared_ptr<core::ActionStack> EditorContext::action_stack() {
     if (auto document = get_context()->get_document())
         return document->get_action_stack();
     return nullptr;
 }
 
-std::shared_ptr<EditorContext> global_dummy_context() {
-    static auto context_instance = std::make_shared<core::Context>();
-    static auto instance = std::make_shared<EditorContext>(context_instance);
+shared_ptr<EditorContext> global_dummy_context() {
+    static auto context_instance = make_shared<core::Context>();
+    static auto instance = make_shared<EditorContext>(context_instance);
     return instance;
 }
 

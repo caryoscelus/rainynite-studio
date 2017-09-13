@@ -19,7 +19,8 @@
 #ifndef __STUDIO__CANVAS_H__4539A958
 #define __STUDIO__CANVAS_H__4539A958
 
-#include <memory>
+#include <core/std/memory.h>
+#include <core/std/vector.h>
 
 #include <QGraphicsView>
 
@@ -49,23 +50,23 @@ public:
     void set_main_image(QPixmap const& pixmap);
 
 public:
-    void add_node_editor(std::unique_ptr<CanvasEditor> editor_);
+    void add_node_editor(unique_ptr<CanvasEditor> editor_);
     void remove_node_editor();
     void clear_node_editors();
 
 protected:
-    void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
-    void set_context(std::shared_ptr<EditorContext> context) override;
+    void active_node_changed(shared_ptr<core::AbstractValue> node) override;
+    void set_context(shared_ptr<EditorContext> context) override;
 
 private:
     void update_border();
 
 private:
-    std::unique_ptr<QGraphicsScene> the_scene;
-    std::unique_ptr<QGraphicsPixmapItem> image;
-    std::unique_ptr<QGraphicsRectItem> image_border;
-    std::shared_ptr<core::AbstractValue> active_node;
-    std::vector<std::unique_ptr<CanvasEditor>> editors;
+    unique_ptr<QGraphicsScene> the_scene;
+    unique_ptr<QGraphicsPixmapItem> image;
+    unique_ptr<QGraphicsRectItem> image_border;
+    shared_ptr<core::AbstractValue> active_node;
+    vector<unique_ptr<CanvasEditor>> editors;
 
 private:
     QPoint scroll_pos;

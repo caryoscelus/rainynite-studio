@@ -38,7 +38,7 @@ class TimelineCursor :
 public:
     void set_canvas(TimelineArea* canvas) override {
         TimelineEditor::set_canvas(canvas);
-        time_item = std::make_unique<TimeItem>(
+        time_item = make_unique<TimeItem>(
             [this](core::Time time) {
                 ignore_time_change = true;
                 get_core_context()->set_time(time);
@@ -62,7 +62,7 @@ public:
             time_item->set_fps(fps);
     }
 private:
-    std::unique_ptr<TimeItem> time_item;
+    unique_ptr<TimeItem> time_item;
     bool ignore_time_change = false;
 };
 

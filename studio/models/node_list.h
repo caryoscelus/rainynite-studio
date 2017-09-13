@@ -40,15 +40,15 @@ public:
 
 public:
     bool removeRows(int row, int count, QModelIndex const& parent={}) override;
-    void insert_node(std::shared_ptr<core::AbstractValue> node, int position=-1);
-    void insert_unique_node(std::shared_ptr<core::AbstractValue> node, int position=-1);
-    std::vector<std::shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
+    void insert_node(shared_ptr<core::AbstractValue> node, int position=-1);
+    void insert_unique_node(shared_ptr<core::AbstractValue> node, int position=-1);
+    vector<shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
         return nodes;
     }
-    std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
+    shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
 
 private:
-    std::vector<std::shared_ptr<core::AbstractValue>> nodes;
+    vector<shared_ptr<core::AbstractValue>> nodes;
 };
 
 } // namespace rainynite::studio

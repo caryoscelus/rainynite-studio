@@ -20,7 +20,7 @@
 #define __STUDIO__CANVAS_EDITOR_H__F294C054
 
 #include <typeindex>
-#include <memory>
+#include <core/std/memory.h>
 
 class QGraphicsScene;
 
@@ -47,7 +47,7 @@ private:
 
 class CanvasEditorFactory {
 public:
-    virtual std::unique_ptr<CanvasEditor> operator()() const = 0;
+    virtual unique_ptr<CanvasEditor> operator()() const = 0;
 };
 
 class CanvasEditorShowChildren {
@@ -55,7 +55,7 @@ public:
     virtual bool operator()() const = 0;
 };
 
-void add_canvas_editor(Canvas& canvas, std::shared_ptr<core::AbstractValue> node);
+void add_canvas_editor(Canvas& canvas, shared_ptr<core::AbstractValue> node);
 
 } // namespace rainynite::studio
 
@@ -65,8 +65,8 @@ class Name##Factory : \
     private class_init::Registered<Name##Factory, Type, CanvasEditorFactory> \
 { \
 public: \
-    std::unique_ptr<CanvasEditor> operator()() const override { \
-        return std::make_unique<Editor>(); \
+    unique_ptr<CanvasEditor> operator()() const override { \
+        return make_unique<Editor>(); \
     } \
 }
 
