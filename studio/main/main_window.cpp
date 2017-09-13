@@ -23,6 +23,7 @@
 #include <fmt/format.h>
 
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <QDockWidget>
@@ -32,6 +33,7 @@
 #include <core/filters/json_reader.h>
 #include <core/filters/yaml_reader.h>
 #include <core/filters/json_writer.h>
+#include <core/filters/yaml_writer.h>
 #include <core/renderers/svg_renderer.h>
 
 #include <version.h>
@@ -131,27 +133,54 @@ void MainWindow::reload() {
 }
 
 void MainWindow::save_as() {
+    QString filter;
     auto fname_qt = QFileDialog::getSaveFileName(
         this,
         "Save",
         util::str(fname),
-        "RainyNite file (*.rnite)(*.rnite);;All files(*)"
+        "RainyNite file (*.rnite)(*.rnite);;"
+        "All files(*)",
+        &filter
     );
     if (!fname_qt.isEmpty()) {
+        QString format;
+        if (filter.contains("*.rnite")) {
+            format = QInputDialog::getItem(this, "Choose .rnite format", "Choose save format", {"yaml", "json"});
+        } else {
+            error_box->showMessage("Unknown save format");
+            return;
+        }
         set_fname(util::str(fname_qt));
-        save();
+        save(format);
     }
 }
 
-void MainWindow::save() {
+void MainWindow::save(QString format) {
     if (fname.empty()) {
         save_as();
         return;
     }
+
+    if (format.isEmpty())
+        format = util::str(saved_format);
+    if (format.isEmpty())
+        format = "yaml";
+
+    // TODO: proper filter modularization
+    unique_ptr<core::DocumentWriter> writer;
+    if (format == "yaml") {
+        writer.reset(new core::filters::YamlWriter());
+    } else if (format == "json") {
+        writer.reset(new core::filters::JsonWriter());
+    } else {
+        error_box->showMessage("Unknown save format");
+        return;
+    }
+
     try {
-        auto writer = core::filters::JsonWriter();
         std::ofstream out(fname);
-        writer.write_document(out, document);
+        writer->write_document(out, document);
+        saved_format = util::str(format);
     } catch (std::exception const& ex) {
         auto msg = util::str("Uncaught exception while saving document:\n{}"_format(ex.what()));
         qDebug() << msg;

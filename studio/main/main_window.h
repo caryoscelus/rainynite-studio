@@ -62,7 +62,7 @@ private Q_SLOTS:
     void new_document();
     void open();
     void reload();
-    void save();
+    void save(QString format="");
     void save_as();
 
     void update_title();
@@ -98,6 +98,7 @@ private:
     std::shared_ptr<core::AbstractValue> active_node;
 
     std::string fname;
+    std::string saved_format;
     std::string window_title_template;
     bool extra_style = true;
 
