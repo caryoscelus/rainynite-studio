@@ -30,20 +30,21 @@ target_sources(rainynite-studio
         widgets/point_value_editor.cpp
         widgets/point_value_editor.h
 
-        canvas/point_item.h
-        canvas/point_item.cpp
-        canvas/point_editor.cpp
-        canvas/point_editor.h
-        canvas/bezier_editor.cpp
-        canvas/bezier_editor.h
-        canvas/rectangle_editor.cpp
-        canvas/rectangle_editor.h
+        canvas/editors/point_item.h
+        canvas/editors/point_item.cpp
+        canvas/editors/point_editor.cpp
+        canvas/editors/point_editor.h
+        canvas/editors/bezier_editor.cpp
+        canvas/editors/bezier_editor.h
+        canvas/editors/qt_path.h
+        canvas/editors/rectangle_editor.cpp
+        canvas/editors/rectangle_editor.h
 
-        canvas/time_item.h
-        canvas/time_item.cpp
-        canvas/timeline_cursor.cpp
-        canvas/time_editor.cpp
-        canvas/time_period_editor.cpp
+        canvas/editors/time_item.h
+        canvas/editors/time_item.cpp
+        canvas/editors/timeline_cursor.cpp
+        canvas/editors/time_editor.cpp
+        canvas/editors/time_period_editor.cpp
 
         generic/node_menu.cpp
         generic/node_menu.h

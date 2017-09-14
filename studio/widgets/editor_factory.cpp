@@ -28,9 +28,9 @@
 #include <generic/custom_widgets.h>
 #include "color_button.h"
 #include "point_value_editor.h"
-#include <canvas/point_editor.h>
-#include <canvas/rectangle_editor.h>
-#include <canvas/bezier_editor.h>
+#include <canvas/editors/point_editor.h>
+#include <canvas/editors/rectangle_editor.h>
+#include <canvas/editors/bezier_editor.h>
 
 namespace rainynite::studio {
 
