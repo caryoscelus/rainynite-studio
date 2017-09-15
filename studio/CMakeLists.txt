@@ -6,6 +6,8 @@ target_sources(rainynite-studio
         main/main_window.h
         main/about.cpp
         main/about.h
+        main/renderer.cpp
+        main/renderer.h
 
         docks/playback_dock.cpp
         docks/playback_dock.h
