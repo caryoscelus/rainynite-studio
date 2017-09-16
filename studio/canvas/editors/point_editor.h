@@ -22,7 +22,7 @@
 #include <core/std/memory.h>
 
 #include <generic/node_editor.h>
-#include <generic/canvas_editor.h>
+#include <canvas/editor.h>
 #include <generic/context_listener.h>
 
 namespace rainynite::studio {
@@ -34,7 +34,7 @@ public:
     PointEditor();
     virtual ~PointEditor();
 public:
-    void set_canvas(Canvas* canvas) override;
+    void setup_canvas() override;
     void node_update() override;
     void time_changed(core::Time time) override;
 private:

@@ -20,7 +20,7 @@
 #define STUDIO_CANVAS_BEZIER_EDITOR_H_301B627E_5F98_521F_93AD_92571F72CAAC
 
 #include <generic/node_editor.h>
-#include <generic/canvas_editor.h>
+#include <canvas/editor.h>
 #include <generic/context_listener.h>
 
 class QGraphicsItem;
@@ -34,7 +34,7 @@ public:
     virtual ~BezierEditor();
 
 public:
-    void set_canvas(Canvas* canvas) override;
+    void setup_canvas() override;
     void node_update() override;
     void time_changed(core::Time time_) override;
 

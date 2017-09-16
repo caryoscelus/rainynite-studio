@@ -32,6 +32,14 @@ target_sources(rainynite-studio
         widgets/point_value_editor.cpp
         widgets/point_value_editor.h
 
+        canvas/abstract_canvas.h
+        canvas/abstract_canvas.cpp
+        canvas/editor.h
+        canvas/editor.cpp
+        canvas/tool.h
+        canvas/attachable.h
+        canvas/attachable.cpp
+
         canvas/editors/point_item.h
         canvas/editors/point_item.cpp
         canvas/editors/point_editor.cpp
@@ -58,8 +66,6 @@ target_sources(rainynite-studio
         generic/context_listener.h
         generic/editor_context.cpp
         generic/editor_context.h
-        generic/canvas_editor.cpp
-        generic/canvas_editor.h
         generic/timeline_editor.cpp
         generic/timeline_editor.h
         generic/dock_registry.h

@@ -1,5 +1,4 @@
-/*
- *  rectangle_editor.h - edit rectangles on canvas
+/*  attachable.cpp - attachable to canvas interface
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,32 +15,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
-#define __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
-
-#include <core/std/memory.h>
-
-#include <generic/node_editor.h>
-#include <canvas/editor.h>
-#include <generic/context_listener.h>
-
-class QGraphicsRectItem;
+#include "attachable.h"
+#include "abstract_canvas.h"
 
 namespace rainynite::studio {
 
-class RectangleEditor : public NodeEditor, public CanvasEditor {
-public:
-    RectangleEditor();
-    virtual ~RectangleEditor();
-public:
-    void setup_canvas() override;
-    void node_update() override;
-    void time_changed(core::Time time) override;
-private:
-    void update_position();
-    unique_ptr<QGraphicsRectItem> rectangle_item;
-};
+void CanvasAttachable::set_canvas(AbstractCanvas* canvas_) {
+    if (canvas != nullptr)
+        detach_canvas();
+    canvas = canvas_;
+    if (canvas != nullptr)
+        setup_canvas();
+}
+
+QGraphicsScene* CanvasAttachable::get_scene() const {
+    if (canvas)
+        return canvas->scene();
+    return nullptr;
+}
 
 } // namespace rainynite::studio
-
-#endif

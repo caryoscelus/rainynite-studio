@@ -1,5 +1,5 @@
 /*
- *  rectangle_editor.h - edit rectangles on canvas
+ *  attachable.h - attachable to canvas interface
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,30 +16,33 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
-#define __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
+#ifndef STUDIO_CANVAS_ATTACHABLE_H_3B57A84F_8276_545C_8A78_11812A0ECA88
+#define STUDIO_CANVAS_ATTACHABLE_H_3B57A84F_8276_545C_8A78_11812A0ECA88
 
-#include <core/std/memory.h>
-
-#include <generic/node_editor.h>
-#include <canvas/editor.h>
-#include <generic/context_listener.h>
-
-class QGraphicsRectItem;
+class QGraphicsScene;
 
 namespace rainynite::studio {
 
-class RectangleEditor : public NodeEditor, public CanvasEditor {
+class AbstractCanvas;
+
+class CanvasAttachable {
 public:
-    RectangleEditor();
-    virtual ~RectangleEditor();
-public:
-    void setup_canvas() override;
-    void node_update() override;
-    void time_changed(core::Time time) override;
+    virtual ~CanvasAttachable() {}
+
+    void set_canvas(AbstractCanvas* canvas_);
+
+protected:
+    virtual void detach_canvas() {}
+    virtual void setup_canvas() {}
+
+    AbstractCanvas* get_canvas() const {
+        return canvas;
+    }
+
+    QGraphicsScene* get_scene() const;
+
 private:
-    void update_position();
-    unique_ptr<QGraphicsRectItem> rectangle_item;
+    AbstractCanvas* canvas;
 };
 
 } // namespace rainynite::studio
