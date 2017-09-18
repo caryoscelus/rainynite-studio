@@ -72,9 +72,10 @@ public:
     /// Switch to tool
     void use_tool(string name);
 
+    void set_context(shared_ptr<EditorContext> context) override;
+
 protected:
     void active_node_changed(shared_ptr<core::AbstractValue> node) override;
-    void set_context(shared_ptr<EditorContext> context) override;
 
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
