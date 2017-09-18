@@ -1,5 +1,4 @@
-/*
- *  editor.h - abstract canvas editor
+/*  editor.h - abstract canvas editor
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -33,34 +32,58 @@ namespace rainynite::studio {
 class CanvasEditor : public CanvasAttachable {
 };
 
-template <class CanvasT>
-struct CanvasEditorFactory : public AbstractFactory<CanvasEditor> {
+struct AbstractCanvasEditorFactory : public AbstractFactory<CanvasEditor> {
 };
 
-template <class CanvasT, class EditorT, class Type>
-struct CanvasEditorFactoryInstance :
-    public CanvasEditorFactory<CanvasT>,
-    private class_init::Registered<
-        CanvasEditorFactoryInstance<CanvasT, EditorT, Type>,
-        Type,
-        CanvasEditorFactory<CanvasT>
-    >
+template <class CanvasT>
+struct CanvasEditorFactory : public AbstractCanvasEditorFactory {
+};
+
+template <class CanvasT, class EditorT>
+struct CanvasEditorFactoryI : public CanvasEditorFactory<CanvasT>
 {
     unique_ptr<CanvasEditor> operator()() const override {
         return make_unique<EditorT>();
     }
 };
 
+template <class CanvasT, class EditorT, class Type>
+struct CanvasEditorFactoryInstance :
+    public CanvasEditorFactoryI<CanvasT, EditorT>,
+    private class_init::Registered<
+        CanvasEditorFactoryInstance<CanvasT, EditorT, Type>,
+        Type,
+        CanvasEditorFactory<CanvasT>
+    >
+{
+};
+
 #define REGISTER_CANVAS_EDITOR(CanvasT, EditorT, Type) \
-template struct CanvasEditorFactoryInstance<CanvasT, EditorT, Type>;
+template struct CanvasEditorFactoryInstance<CanvasT, EditorT, Type>
+
+#define REGISTER_CANVAS_EDITOR_NAME(CanvasT, EditorT, Name) \
+struct Name##CanvasEditorNameInfoInstance : \
+    public CanvasEditorFactoryI<CanvasT, EditorT>, \
+    private class_init::StringRegistered< \
+        Name##CanvasEditorNameInfoInstance, \
+        AbstractCanvasEditorFactory \
+    > \
+{ \
+    static string name() { \
+        return #Name; \
+    } \
+}
 
 template <class CanvasT>
 unique_ptr<CanvasEditor> make_canvas_editor(Type type) {
     return class_init::type_info<CanvasEditorFactory<CanvasT>,unique_ptr<CanvasEditor>>(type);
 }
 
+/// Create & add canvas editor by name
+CanvasEditor* add_canvas_named_editor(AbstractCanvas& canvas, string const& name);
+
 /// Create & add canvas node editor to canvas
-void add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node);
+CanvasEditor* add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node);
 
 } // namespace rainynite::studio
 

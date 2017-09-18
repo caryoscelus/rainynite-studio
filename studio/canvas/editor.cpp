@@ -1,5 +1,4 @@
-/*
- *  editor.cpp - abstract canvas editor
+/*  editor.cpp - abstract canvas editor
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -24,14 +23,30 @@
 
 namespace rainynite::studio {
 
-void add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node) {
+CanvasEditor* add_canvas_named_editor(AbstractCanvas& canvas, string const& name) {
+    try {
+        auto editor = class_init::name_info<AbstractCanvasEditorFactory>(name)();
+        if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
+            context_listener->set_context(canvas.get_context());
+        auto editor_p = editor.get();
+        canvas.add_editor(std::move(editor));
+        return editor_p;
+    } catch (class_init::RuntimeTypeError const&) {
+        return nullptr;
+    }
+}
+
+CanvasEditor* add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
-        return;
+        return nullptr;
+
     unique_ptr<CanvasEditor> editor = nullptr;
     try {
         editor = make_canvas_editor_for(canvas, node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
     }
+
+    auto editor_p = editor.get();
 
     if (editor) {
         if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
@@ -54,6 +69,8 @@ void add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractVal
                 add_canvas_node_editor(canvas, child);
         }
     }
+
+    return editor_p;
 }
 
 } // namespace rainynite::studio
