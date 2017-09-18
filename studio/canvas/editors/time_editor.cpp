@@ -30,8 +30,7 @@ class TimeEditor :
     public NodeEditor
 {
 public:
-    void set_canvas(TimelineArea* canvas) override {
-        TimelineEditor::set_canvas(canvas);
+    void setup_canvas() override {
         time_item = make_unique<TimeItem>(
             [this](core::Time time) {
                 if (auto node = get_node_as<core::Time>()) {
@@ -42,7 +41,7 @@ public:
                 }
             }
         );
-        canvas->scene()->addItem(time_item.get());
+        get_scene()->addItem(time_item.get());
         node_update();
     }
     void set_position_hint(int y, int height) override {
@@ -75,6 +74,6 @@ private:
     bool ignore_time_change = false;
 };
 
-REGISTER_TIMELINE_NODE_EDITOR(TimeEditor, core::Time, TimeEditor);
+REGISTER_CANVAS_EDITOR(TimelineArea, TimeEditor, core::Time);
 
 }

@@ -36,8 +36,7 @@ class TimelineCursor :
     public ContextListener
 {
 public:
-    void set_canvas(TimelineArea* canvas) override {
-        TimelineEditor::set_canvas(canvas);
+    void setup_canvas() override {
         time_item = make_unique<TimeItem>(
             [this](core::Time time) {
                 ignore_time_change = true;
@@ -45,7 +44,7 @@ public:
                 ignore_time_change = false;
             }
         );
-        canvas->scene()->addItem(time_item.get());
+        get_scene()->addItem(time_item.get());
         time_item->set_readonly(false);
         time_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
         time_item->set_pos_height(0, 1024); // "infinitely" big
@@ -66,6 +65,6 @@ private:
     bool ignore_time_change = false;
 };
 
-REGISTER_TIMELINE_EDITOR(TimelineCursor, TimelineCursor);
+REGISTER_CANVAS_EDITOR_NAME(TimelineArea, TimelineCursor, TimelineCursor);
 
 }

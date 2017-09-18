@@ -66,7 +66,6 @@ target_sources(rainynite-studio
         generic/context_listener.h
         generic/editor_context.cpp
         generic/editor_context.h
-        generic/timeline_editor.cpp
         generic/timeline_editor.h
         generic/dock_registry.h
 
