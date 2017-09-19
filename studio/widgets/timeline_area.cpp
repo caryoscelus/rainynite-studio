@@ -34,4 +34,8 @@ TimelineArea::TimelineArea(QWidget* parent) :
 TimelineArea::~TimelineArea() {
 }
 
+void TimelineArea::add_misc_editor(shared_ptr<CanvasEditor> editor) {
+    misc_editors.push_back(editor);
+}
+
 } // namespace rainynite::studio

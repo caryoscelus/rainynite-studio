@@ -1,5 +1,4 @@
-/*
- *  abstract_canvas.cpp - generic canvas which can be edited with tools
+/*  abstract_canvas.cpp - generic canvas which can be edited with tools
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -15,6 +14,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include <algorithm>
 
 #include "abstract_canvas.h"
 #include "registry.h"
@@ -41,19 +42,13 @@ void AbstractCanvas::add_tool(unique_ptr<CanvasTool> tool) {
 AbstractCanvas::~AbstractCanvas() {
 }
 
-int AbstractCanvas::add_editor(unique_ptr<CanvasEditor> editor) {
-    auto id = next_editor_id;
-    ++next_editor_id;
-    auto e = editor.get();
-    editors.emplace(id, std::move(editor));
-    e->set_canvas(this);
-    return id;
+void AbstractCanvas::add_editor(shared_ptr<CanvasEditor> editor) {
+    editors.push_back(editor);
+    editor->set_canvas(this);
 }
 
-void AbstractCanvas::remove_editor(int id) {
-    auto it = editors.find(id);
-    if (it != editors.end())
-        editors.erase(it);
+void AbstractCanvas::remove_editor(shared_ptr<CanvasEditor> editor) {
+    editors.erase(std::remove(editors.begin(), editors.end(), editor), editors.end());
 }
 
 void AbstractCanvas::clear_editors() {

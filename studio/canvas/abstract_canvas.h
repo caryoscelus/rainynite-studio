@@ -53,15 +53,11 @@ public:
     /// Load registered tools for this canvas
     void load_registered_tools();
 
-    /**
-     * Add editor
-     *
-     * @returns id of newly added editor or -1 if adding failed
-     */
-    int add_editor(unique_ptr<CanvasEditor> editor);
+    /// Add new editor
+    void add_editor(shared_ptr<CanvasEditor> editor);
 
-    /// Remove editor by id
-    void remove_editor(int id);
+    /// Remove editor
+    void remove_editor(shared_ptr<CanvasEditor> editor);
 
     /// Remove all editors
     void clear_editors();
@@ -83,8 +79,7 @@ private:
 
 private:
     unique_ptr<QGraphicsScene> the_scene;
-    map<int,unique_ptr<CanvasEditor>> editors;
-    int next_editor_id;
+    vector<shared_ptr<CanvasEditor>> editors;
     vector<unique_ptr<CanvasTool>> tools;
     map<string, CanvasTool*> named_tools;
     CanvasTool* current_tool;

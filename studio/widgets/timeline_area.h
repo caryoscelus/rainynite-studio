@@ -39,9 +39,10 @@ public:
     explicit TimelineArea(QWidget* parent = nullptr);
     virtual ~TimelineArea();
 
+    void add_misc_editor(shared_ptr<CanvasEditor> editor);
+
 private:
-    vector<unique_ptr<TimelineEditor>> misc_editors;
-    map<shared_ptr<core::AbstractValue>, unique_ptr<TimelineEditor>> node_editors;
+    vector<shared_ptr<CanvasEditor>> misc_editors;
 };
 
 REGISTER_CANVAS(TimelineArea);

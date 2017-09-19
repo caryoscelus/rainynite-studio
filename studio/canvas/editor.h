@@ -80,10 +80,10 @@ unique_ptr<CanvasEditor> make_canvas_editor(Type type) {
 }
 
 /// Create & add canvas editor by name
-CanvasEditor* add_canvas_named_editor(AbstractCanvas& canvas, string const& name);
+shared_ptr<CanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name);
 
 /// Create & add canvas node editor to canvas
-CanvasEditor* add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node);
+shared_ptr<CanvasEditor> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node);
 
 } // namespace rainynite::studio
 

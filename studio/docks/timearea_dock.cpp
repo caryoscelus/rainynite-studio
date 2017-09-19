@@ -37,7 +37,8 @@ TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     node_list_model(make_unique<NodeListModel>())
 {
     ui->setupUi(this);
-    add_canvas_named_editor(*ui->timeline, "TimelineCursor");
+    auto cursor = add_canvas_named_editor(*ui->timeline, "TimelineCursor");
+    ui->timeline->add_misc_editor(cursor);
     ui->timeline->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     ui->node_list->setModel(node_list_model.get());
 
@@ -112,7 +113,7 @@ void TimeareaDock::update_editors() {
         auto node = node_list_model->get_node(index);
         if (auto editor = add_canvas_node_editor(*ui->timeline, node)) {
             auto rect = ui->node_list->visualRect(index);
-            if (auto timeline_editor = dynamic_cast<TimelineEditor*>(editor))
+            if (auto timeline_editor = dynamic_cast<TimelineEditor*>(editor.get()))
                 timeline_editor->set_position_hint(rect.y(), rect.height());
         }
     }

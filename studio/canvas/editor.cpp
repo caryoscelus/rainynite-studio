@@ -23,37 +23,34 @@
 
 namespace rainynite::studio {
 
-CanvasEditor* add_canvas_named_editor(AbstractCanvas& canvas, string const& name) {
+shared_ptr<CanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name) {
     try {
-        auto editor = class_init::name_info<AbstractCanvasEditorFactory>(name)();
+        shared_ptr<CanvasEditor> editor = class_init::name_info<AbstractCanvasEditorFactory>(name)();
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
             context_listener->set_context(canvas.get_context());
-        auto editor_p = editor.get();
-        canvas.add_editor(std::move(editor));
-        return editor_p;
+        canvas.add_editor(editor);
+        return editor;
     } catch (class_init::RuntimeTypeError const&) {
         return nullptr;
     }
 }
 
-CanvasEditor* add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node) {
+shared_ptr<CanvasEditor> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
         return nullptr;
 
-    unique_ptr<CanvasEditor> editor = nullptr;
+    shared_ptr<CanvasEditor> editor = nullptr;
     try {
         editor = make_canvas_editor_for(canvas, node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
     }
-
-    auto editor_p = editor.get();
 
     if (editor) {
         if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
             node_editor->set_node(node);
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
             context_listener->set_context(canvas.get_context());
-        canvas.add_editor(std::move(editor));
+        canvas.add_editor(editor);
     }
 
     bool show_children = false;
@@ -70,7 +67,7 @@ CanvasEditor* add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::Ab
         }
     }
 
-    return editor_p;
+    return editor;
 }
 
 } // namespace rainynite::studio
