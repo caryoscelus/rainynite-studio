@@ -90,6 +90,11 @@ void AbstractCanvas::active_node_changed(shared_ptr<core::AbstractValue> node) {
 }
 
 void AbstractCanvas::set_context(shared_ptr<EditorContext> context) {
+    for (auto const& editor : editors) {
+        if (auto cl = dynamic_cast<ContextListener*>(editor.get())) {
+            cl->set_context(context);
+        }
+    }
 }
 
 } // namespace rainynite::studio
