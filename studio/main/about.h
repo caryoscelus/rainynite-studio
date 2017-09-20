@@ -19,7 +19,7 @@
 #ifndef __STUDIO__MAIN__ABOUT_H__3F6FBEBC
 #define __STUDIO__MAIN__ABOUT_H__3F6FBEBC
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <QDialog>
 
@@ -34,7 +34,7 @@ public:
     explicit AboutDialog(QWidget* parent = nullptr);
     ~AboutDialog();
 private:
-    std::unique_ptr<Ui::AboutDialog> ui;
+    unique_ptr<Ui::AboutDialog> ui;
 };
 
 } // namespace rainynite::studio

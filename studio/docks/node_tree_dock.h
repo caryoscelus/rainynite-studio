@@ -43,14 +43,14 @@ class NodeTreeDock : public DockWidget, public ContextListener {
     Q_OBJECT
 
 public:
-    explicit NodeTreeDock(std::shared_ptr<EditorContext> context_, QWidget* parent_ = nullptr);
+    explicit NodeTreeDock(shared_ptr<EditorContext> context_, QWidget* parent_ = nullptr);
     virtual ~NodeTreeDock();
 
 public:
-    void set_context(std::shared_ptr<EditorContext> context_) override;
+    void set_context(shared_ptr<EditorContext> context_) override;
 
 Q_SIGNALS:
-    void activated(std::shared_ptr<core::AbstractValue> node);
+    void activated(shared_ptr<core::AbstractValue> node);
 
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
@@ -59,9 +59,9 @@ private Q_SLOTS:
     void activate(QModelIndex const& index);
 
 private:
-    std::unique_ptr<Ui::NodeTreeDock> ui;
-    std::unique_ptr<NodeModel> model;
-    std::unique_ptr<QMenu> menu;
+    unique_ptr<Ui::NodeTreeDock> ui;
+    unique_ptr<NodeModel> model;
+    unique_ptr<QMenu> menu;
 };
 
 REGISTER_DOCK("Node tree", NodeTreeDock, Qt::LeftDockWidgetArea);

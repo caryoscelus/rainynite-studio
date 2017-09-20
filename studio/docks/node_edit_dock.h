@@ -19,7 +19,7 @@
 #ifndef __STUDIO__NODE_EDIT_DOCK_H__49AA85D4
 #define __STUDIO__NODE_EDIT_DOCK_H__49AA85D4
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <core/context.h>
 
@@ -41,11 +41,11 @@ class NodeEditDock : public DockWidget, public NodeEditor {
     Q_OBJECT
 
 public:
-    explicit NodeEditDock(std::shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
+    explicit NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     ~NodeEditDock();
 
 public:
-    void active_node_changed(std::shared_ptr<core::AbstractValue> node) override;
+    void active_node_changed(shared_ptr<core::AbstractValue> node) override;
     void time_changed(core::Time time) override;
     void node_update() override;
 
@@ -56,13 +56,13 @@ private:
     void update_value();
     void update_generic();
     void update_custom();
-    void setup_custom_widget(std::shared_ptr<core::AbstractValue> node);
+    void setup_custom_widget(shared_ptr<core::AbstractValue> node);
 
 private:
-    std::unique_ptr<Ui::NodeEditDock> ui;
+    unique_ptr<Ui::NodeEditDock> ui;
     QWidget* custom_widget = nullptr;
 
-    std::shared_ptr<core::AbstractValue> active_node;
+    shared_ptr<core::AbstractValue> active_node;
 };
 
 REGISTER_DOCK("Node editor", NodeEditDock, Qt::LeftDockWidgetArea);

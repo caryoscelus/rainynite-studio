@@ -30,15 +30,15 @@ namespace rainynite::studio {
 
 class EditorContext {
 public:
-    EditorContext(std::shared_ptr<core::Context> context_) :
+    EditorContext(shared_ptr<core::Context> context_) :
         context(context_)
     {}
 public:
-    inline std::shared_ptr<core::Context> get_context() const {
+    inline shared_ptr<core::Context> get_context() const {
         return context;
     }
-    void set_active_node(std::shared_ptr<core::AbstractValue> node);
-    std::shared_ptr<core::ActionStack> action_stack();
+    void set_active_node(shared_ptr<core::AbstractValue> node);
+    shared_ptr<core::ActionStack> action_stack();
 public:
     inline boost::signals2::signal<void(core::Time)>& changed_time() {
         return context->changed_time;
@@ -46,17 +46,17 @@ public:
     inline boost::signals2::signal<void(core::Time::fps_type)>& changed_fps() {
         return context->changed_fps;
     }
-    inline boost::signals2::signal<void(std::shared_ptr<core::AbstractValue>)>& changed_active_node() {
+    inline boost::signals2::signal<void(shared_ptr<core::AbstractValue>)>& changed_active_node() {
         return changed_active_node_;
     }
 private:
-    std::shared_ptr<core::Context> context;
-    std::shared_ptr<core::AbstractValue> active_node;
+    shared_ptr<core::Context> context;
+    shared_ptr<core::AbstractValue> active_node;
 private:
-    boost::signals2::signal<void(std::shared_ptr<core::AbstractValue>)> changed_active_node_;
+    boost::signals2::signal<void(shared_ptr<core::AbstractValue>)> changed_active_node_;
 };
 
-std::shared_ptr<EditorContext> global_dummy_context();
+shared_ptr<EditorContext> global_dummy_context();
 
 } // namespace rainynite::studio
 

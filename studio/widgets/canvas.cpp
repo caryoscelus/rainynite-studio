@@ -30,7 +30,7 @@
 #include <core/node/abstract_value.h>
 #include <core/document.h>
 
-#include <generic/canvas_editor.h>
+#include <canvas/editor.h>
 #include <util/pen.h>
 #include "canvas.h"
 
@@ -39,14 +39,12 @@ using namespace fmt::literals;
 namespace rainynite::studio {
 
 Canvas::Canvas(QWidget* parent) :
-    QGraphicsView(parent),
-    the_scene(std::make_unique<QGraphicsScene>()),
-    image(std::make_unique<QGraphicsPixmapItem>())
+    AbstractCanvas(parent),
+    image(make_unique<QGraphicsPixmapItem>())
 {
-    setScene(the_scene.get());
-    the_scene->addItem(image.get());
+    scene()->addItem(image.get());
     setDragMode(QGraphicsView::RubberBandDrag);
-    image_border.reset(the_scene->addRect(0, 0, 0, 0));
+    image_border.reset(scene()->addRect(0, 0, 0, 0));
     image_border->setPen(pens::cosmetic_dash());
     setResizeAnchor(QGraphicsView::NoAnchor);
     setTransformationAnchor(QGraphicsView::NoAnchor);
@@ -55,69 +53,11 @@ Canvas::Canvas(QWidget* parent) :
 Canvas::~Canvas() {
 }
 
-void Canvas::wheelEvent(QWheelEvent* event) {
-    auto old_pos = mapToScene(event->pos());
-    auto scale_factor = std::pow(2, event->angleDelta().y() / 256.0);
-    scale(scale_factor, scale_factor);
-    auto new_pos = mapToScene(event->pos());
-    auto delta = new_pos-old_pos;
-    translate(delta.x(), delta.y());
-}
-
-void Canvas::mouseMoveEvent(QMouseEvent* event) {
-    if (is_scrolling) {
-        QPointF delta = event->pos() - scroll_pos;
-        delta /= transform().m11();
-        translate(delta.x(), delta.y());
-        scroll_pos = event->pos();
-    }
-    QGraphicsView::mouseMoveEvent(event);
-}
-
-void Canvas::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::MidButton) {
-        scroll_pos = event->pos();
-        is_scrolling = true;
-    } else {
-        QGraphicsView::mousePressEvent(event);
-    }
-}
-
-void Canvas::mouseReleaseEvent(QMouseEvent* event) {
-    if (event->button() == Qt::MidButton) {
-        is_scrolling = false;
-    } else {
-        QGraphicsView::mouseReleaseEvent(event);
-    }
-}
-
 void Canvas::set_main_image(QPixmap const& pixmap) {
     image->setPixmap(pixmap);
 }
 
-void Canvas::active_node_changed(std::shared_ptr<core::AbstractValue> node) {
-    if (active_node != node) {
-        active_node = node;
-        clear_node_editors();
-        add_canvas_editor(*this, node);
-    }
-}
-
-void Canvas::add_node_editor(std::unique_ptr<CanvasEditor> editor) {
-    editor->set_canvas(this);
-    editors.push_back(std::move(editor));
-}
-
-void Canvas::remove_node_editor() {
-    // TODO
-    clear_node_editors();
-}
-
-void Canvas::clear_node_editors() {
-    editors.clear();
-}
-
-void Canvas::set_context(std::shared_ptr<EditorContext> context) {
+void Canvas::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     // TODO: listen to document change
     // TODO: listen to size node change

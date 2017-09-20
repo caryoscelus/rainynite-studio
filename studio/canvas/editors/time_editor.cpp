@@ -30,9 +30,8 @@ class TimeEditor :
     public NodeEditor
 {
 public:
-    void set_canvas(TimelineArea* canvas) override {
-        TimelineEditor::set_canvas(canvas);
-        time_item = std::make_unique<TimeItem>(
+    void setup_canvas() override {
+        time_item = make_unique<TimeItem>(
             [this](core::Time time) {
                 if (auto node = get_node_as<core::Time>()) {
                     ignore_time_change = true;
@@ -42,7 +41,7 @@ public:
                 }
             }
         );
-        canvas->scene()->addItem(time_item.get());
+        get_scene()->addItem(time_item.get());
         node_update();
     }
     void set_position_hint(int y, int height) override {
@@ -71,10 +70,10 @@ private:
         }
     }
 private:
-    std::unique_ptr<TimeItem> time_item;
+    unique_ptr<TimeItem> time_item;
     bool ignore_time_change = false;
 };
 
-REGISTER_TIMELINE_NODE_EDITOR(TimeEditor, core::Time, TimeEditor);
+REGISTER_CANVAS_EDITOR(TimelineArea, TimeEditor, core::Time);
 
 }

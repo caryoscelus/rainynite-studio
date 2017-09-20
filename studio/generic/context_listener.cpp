@@ -22,13 +22,13 @@
 
 namespace rainynite::studio {
 
-ContextListener::ContextListener(std::shared_ptr<EditorContext> context_) :
-    destroy_detector(std::make_shared<Null>())
+ContextListener::ContextListener(shared_ptr<EditorContext> context_) :
+    destroy_detector(make_shared<Null>())
 {
     set_context(context_);
 }
 
-void ContextListener::set_context(std::shared_ptr<EditorContext> context_) {
+void ContextListener::set_context(shared_ptr<EditorContext> context_) {
     // TODO: disconnect from previous context!
     context = context_;
     if (context == nullptr)
@@ -47,7 +47,7 @@ void ContextListener::set_context(std::shared_ptr<EditorContext> context_) {
     );
     connect_boost(
         context->changed_active_node(),
-        [this](std::shared_ptr<core::AbstractValue> node) {
+        [this](shared_ptr<core::AbstractValue> node) {
             active_node_changed(node);
         }
     );

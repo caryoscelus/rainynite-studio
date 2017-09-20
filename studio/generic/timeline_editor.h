@@ -19,82 +19,20 @@
 #ifndef __STUDIO__GENERIC__TIMELINE_EDITOR_H__043F26E4
 #define __STUDIO__GENERIC__TIMELINE_EDITOR_H__043F26E4
 
-#include <typeindex>
-#include <memory>
-
+#include <core/std/memory.h>
 #include <core/class_init.h>
 
-/**
- * TODO: merge generic code with CanvasEditor
- */
-
-namespace rainynite::core {
-class AbstractValue;
-}
+#include <canvas/editor.h>
 
 namespace rainynite::studio {
 
-class TimelineArea;
-
-class TimelineEditor {
-public:
-    virtual ~TimelineEditor() = default;
-public:
-    virtual void set_canvas(TimelineArea* canvas_) {
-        canvas = canvas_;
-    }
-    inline TimelineArea* get_canvas() const {
-        return canvas;
-    }
+class TimelineEditor : public CanvasEditor {
 public:
     /// Set editor preferred vertical position and size
     virtual void set_position_hint(int /*y*/, int /*height*/) {
     }
-private:
-    TimelineArea* canvas = nullptr;
 };
-
-class TimelineEditorFactory {
-public:
-    virtual std::unique_ptr<TimelineEditor> operator()() const = 0;
-};
-
-// TODO: fix this mess
-TimelineEditor* add_timeline_editor(TimelineArea& canvas, TimelineEditorFactory const& factory);
-TimelineEditor* add_timeline_named_editor(TimelineArea& canvas, std::string const& name);
-TimelineEditor* add_timeline_node_editor(TimelineArea& canvas, std::shared_ptr<core::AbstractValue> node);
 
 } // namespace rainynite::studio
-
-#define REGISTER_TIMELINE_EDITOR(Name, Editor) \
-class Name##Factory : \
-    public TimelineEditorFactory, \
-    private class_init::StringRegistered<Name##Factory, TimelineEditorFactory> \
-{ \
-public: \
-    std::unique_ptr<TimelineEditor> operator()() const override { \
-        return std::make_unique<Editor>(); \
-    } \
-public: \
-    static std::string name() { \
-        return #Name; \
-    } \
-}
-
-#define REGISTER_TIMELINE_NODE_EDITOR(Name, Type, Editor) \
-class Name##Factory : \
-    public TimelineEditorFactory, \
-    private class_init::Registered<Name##Factory, Type, TimelineEditorFactory>, \
-    private class_init::StringRegistered<Name##Factory, TimelineEditorFactory> \
-{ \
-public: \
-    std::unique_ptr<TimelineEditor> operator()() const override { \
-        return std::make_unique<Editor>(); \
-    } \
-public: \
-    static std::string name() { \
-        return #Name; \
-    } \
-}
 
 #endif

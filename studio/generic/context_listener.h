@@ -19,7 +19,7 @@
 #ifndef __STUDIO__CONTEXT_LISTENER_H__9E128DC4
 #define __STUDIO__CONTEXT_LISTENER_H__9E128DC4
 
-#include <memory>
+#include <core/std/memory.h>
 #include <type_traits>
 
 #include "editor_context.h"
@@ -28,20 +28,20 @@ namespace rainynite::studio {
 
 class ContextListener {
 public:
-    ContextListener(std::shared_ptr<EditorContext> context_=nullptr);
+    ContextListener(shared_ptr<EditorContext> context_=nullptr);
     virtual ~ContextListener() = default;
 
 public:
-    std::shared_ptr<core::Context> get_core_context() const {
+    shared_ptr<core::Context> get_core_context() const {
         return context->get_context();
     }
-    std::shared_ptr<EditorContext> get_context() const {
+    shared_ptr<EditorContext> get_context() const {
         return context;
     }
-    void set_core_context(std::shared_ptr<core::Context> core_context) {
-        set_context(std::make_shared<EditorContext>(core_context));
+    void set_core_context(shared_ptr<core::Context> core_context) {
+        set_context(make_shared<EditorContext>(core_context));
     }
-    virtual void set_context(std::shared_ptr<EditorContext> context_);
+    virtual void set_context(shared_ptr<EditorContext> context_);
 
 protected:
     core::Time get_time() const {
@@ -51,7 +51,7 @@ protected:
         time = time_;
     }
     virtual void fps_changed(core::Time::fps_type) {}
-    virtual void active_node_changed(std::shared_ptr<core::AbstractValue>) {}
+    virtual void active_node_changed(shared_ptr<core::AbstractValue>) {}
 
     template <class S, class F>
     void connect_boost(S& signal, F lambda) {
@@ -61,10 +61,10 @@ protected:
     }
 
 private:
-    std::shared_ptr<EditorContext> context;
+    shared_ptr<EditorContext> context;
     core::Time time;
     struct Null {};
-    std::shared_ptr<Null> destroy_detector;
+    shared_ptr<Null> destroy_detector;
 };
 
 }

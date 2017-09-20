@@ -19,7 +19,7 @@
 #ifndef __STUDIO__WIDGETS__POINT_VALUE_EDITOR_H__2CF69954
 #define __STUDIO__WIDGETS__POINT_VALUE_EDITOR_H__2CF69954
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <QDoubleSpinBox>
 

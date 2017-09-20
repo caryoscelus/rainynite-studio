@@ -1,5 +1,4 @@
-/*
- *  timeline_area.cpp - advanced timeline
+/*  attachable.cpp - attachable to canvas interface
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,26 +15,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGraphicsScene>
-
-#include <generic/timeline_editor.h>
-
-#include "timeline_area.h"
+#include "attachable.h"
+#include "abstract_canvas.h"
 
 namespace rainynite::studio {
 
-TimelineArea::TimelineArea(QWidget* parent) :
-    AbstractCanvas(parent)
-{
-    setDragMode(QGraphicsView::RubberBandDrag);
-    scale(16, 1);
+void CanvasAttachable::set_canvas(AbstractCanvas* canvas_) {
+    if (canvas != nullptr)
+        detach_canvas();
+    canvas = canvas_;
+    if (canvas != nullptr)
+        setup_canvas();
 }
 
-TimelineArea::~TimelineArea() {
-}
-
-void TimelineArea::add_misc_editor(shared_ptr<CanvasEditor> editor) {
-    misc_editors.push_back(editor);
+QGraphicsScene* CanvasAttachable::get_scene() const {
+    if (canvas)
+        return canvas->scene();
+    return nullptr;
 }
 
 } // namespace rainynite::studio

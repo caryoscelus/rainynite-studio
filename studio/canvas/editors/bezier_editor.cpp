@@ -42,9 +42,8 @@ BezierEditor::~BezierEditor() {
     uninit();
 }
 
-void BezierEditor::set_canvas(Canvas* canvas) {
+void BezierEditor::setup_canvas() {
     uninit();
-    CanvasEditor::set_canvas(canvas);
     init();
 }
 

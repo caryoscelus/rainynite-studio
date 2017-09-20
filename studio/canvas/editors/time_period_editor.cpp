@@ -30,8 +30,7 @@ class TimePeriodEditor :
     public NodeEditor
 {
 public:
-    void set_canvas(TimelineArea* canvas) override {
-        TimelineEditor::set_canvas(canvas);
+    void setup_canvas() override {
         /**
          * TODO: generalize and move out
          */
@@ -47,18 +46,18 @@ public:
                 }
             };
         };
-        first_item = std::make_unique<TimeItem>(
+        first_item = make_unique<TimeItem>(
             item_lambda([](auto node, auto time) {
                 node->mod().set_first(time);
             })
         );
-        last_item = std::make_unique<TimeItem>(
+        last_item = make_unique<TimeItem>(
             item_lambda([](auto node, auto time) {
                 node->mod().set_last(time);
             })
         );
-        canvas->scene()->addItem(first_item.get());
-        canvas->scene()->addItem(last_item.get());
+        get_scene()->addItem(first_item.get());
+        get_scene()->addItem(last_item.get());
         node_update();
     }
     void set_position_hint(int y, int height) override {
@@ -92,12 +91,12 @@ private:
         }
     }
 private:
-    std::unique_ptr<TimeItem> first_item;
-    std::unique_ptr<TimeItem> last_item;
+    unique_ptr<TimeItem> first_item;
+    unique_ptr<TimeItem> last_item;
     bool ignore_time_change = false;
 };
 
-REGISTER_TIMELINE_NODE_EDITOR(TimePeriodEditor, core::TimePeriod, TimePeriodEditor);
+REGISTER_CANVAS_EDITOR(TimelineArea, TimePeriodEditor, core::TimePeriod);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(CompositeTimePeriod, "CompositeTimePeriod", true);
 
 }

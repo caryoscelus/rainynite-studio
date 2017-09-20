@@ -16,10 +16,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__GENERIC__NODE_MENU_H__A418F828
-#define __STUDIO__GENERIC__NODE_MENU_H__A418F828
+#ifndef STUDIO_GENERIC_NODE_MENU_H_0B8A2DD1_AED8_52B2_AF1C_E607DC12CB26
+#define STUDIO_GENERIC_NODE_MENU_H_0B8A2DD1_AED8_52B2_AF1C_E607DC12CB26
 
-#include <memory>
+#include <core/std/memory.h>
+#include <core/std/set.h>
 
 #include <QMenu>
 
@@ -28,6 +29,7 @@ class QLineEdit;
 
 namespace rainynite::core {
 class NodeInfo;
+class Time;
 }
 
 namespace rainynite::studio {
@@ -39,17 +41,17 @@ private:
     void update_node_list();
     void add_custom_property();
 private:
-    std::vector<QAction*> convert_actions;
+    vector<QAction*> convert_actions;
     NodeModel* model;
     QModelIndex index;
     QList<QModelIndex> selection;
-    std::set<core::NodeInfo const*> node_infos;
+    set<core::NodeInfo const*> node_infos;
     core::Time time;
     QLineEdit* search_widget = nullptr;
 };
 
-inline std::unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
-    return std::make_unique<NodeContextMenu>(model, selection_model, time);
+inline unique_ptr<QMenu> node_context_menu(NodeModel* model, QItemSelectionModel* selection_model, core::Time time) {
+    return make_unique<NodeContextMenu>(model, selection_model, time);
 }
 
 } // namespace rainynite::studio

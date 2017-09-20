@@ -30,14 +30,15 @@
 
 namespace rainynite::studio {
 
-TimeareaDock::TimeareaDock(std::shared_ptr<EditorContext> context_, QWidget* parent) :
+TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) :
     DockWidget(parent),
     ContextListener(context_),
-    ui(std::make_unique<Ui::TimeareaDock>()),
-    node_list_model(std::make_unique<NodeListModel>())
+    ui(make_unique<Ui::TimeareaDock>()),
+    node_list_model(make_unique<NodeListModel>())
 {
     ui->setupUi(this);
-    add_timeline_named_editor(*ui->timeline, "TimelineCursor");
+    auto cursor = add_canvas_named_editor(*ui->timeline, "TimelineCursor");
+    ui->timeline->add_misc_editor(cursor);
     ui->timeline->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     ui->node_list->setModel(node_list_model.get());
 
@@ -71,36 +72,49 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
     auto index = ui->node_list->selectionModel()->currentIndex();
     if (index.isValid()) {
         QMenu menu(this);
-        menu.addAction(
-            QIcon::fromTheme("list-remove"),
-            "Remove from timeline area",
-            [this, index]() {
-                node_list_model->removeRow(index.row());
-            }
-        );
+        if (index.row() == node_list_model->rowCount()-1 && !pinned) {
+            menu.addAction(
+                QIcon::fromTheme("list-add"),
+                "Pin to timeline area",
+                [this]() {
+                    pinned = true;
+                }
+            );
+        } else {
+            menu.addAction(
+                QIcon::fromTheme("list-remove"),
+                "Remove from timeline area",
+                [this, index]() {
+                    node_list_model->removeRow(index.row());
+                }
+            );
+        }
         menu.exec(event->globalPos());
     }
 }
 
-void TimeareaDock::set_context(std::shared_ptr<EditorContext> context) {
+void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     ui->timeline->set_context(context);
     connect_boost(
         context->changed_active_node(),
         [this](core::AbstractReference node) {
-            node_list_model->insert_unique_node(node);
+            if (!pinned && node_list_model->rowCount() > 0)
+                node_list_model->removeRow(node_list_model->rowCount()-1);
+            pinned = !node_list_model->insert_unique_node(node);
         }
     );
 }
 
 void TimeareaDock::update_editors() {
-    ui->timeline->clear_node_editors();
+    ui->timeline->clear_editors();
     for (int i = 0; i < node_list_model->rowCount(); ++i) {
         auto index = node_list_model->index(i, 0);
         auto node = node_list_model->get_node(index);
-        if (auto editor = add_timeline_node_editor(*ui->timeline, node)) {
+        if (auto editor = add_canvas_node_editor(*ui->timeline, node)) {
             auto rect = ui->node_list->visualRect(index);
-            editor->set_position_hint(rect.y(), rect.height());
+            if (auto timeline_editor = dynamic_cast<TimelineEditor*>(editor.get()))
+                timeline_editor->set_position_hint(rect.y(), rect.height());
         }
     }
 }

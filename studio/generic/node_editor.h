@@ -19,7 +19,7 @@
 #ifndef __STUDIO__NODE_EDITOR_H__8BFEEC92
 #define __STUDIO__NODE_EDITOR_H__8BFEEC92
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <QWidget>
 
@@ -43,8 +43,8 @@ public:
     virtual void node_update() {
     }
 public:
-    void set_node(std::shared_ptr<core::AbstractValue> node_);
-    inline std::shared_ptr<core::AbstractValue> get_node() {
+    void set_node(shared_ptr<core::AbstractValue> node_);
+    inline shared_ptr<core::AbstractValue> get_node() {
         return node;
     }
 public:
@@ -56,11 +56,11 @@ public:
         return {};
     }
     template <typename T>
-    std::shared_ptr<core::BaseValue<T>> get_node_as() {
-        return std::dynamic_pointer_cast<core::BaseValue<T>>(std::move(get_node()));
+    shared_ptr<core::BaseValue<T>> get_node_as() {
+        return dynamic_pointer_cast<core::BaseValue<T>>(std::move(get_node()));
     }
 private:
-    std::shared_ptr<core::AbstractValue> node = nullptr;
+    shared_ptr<core::AbstractValue> node = nullptr;
     boost::signals2::connection node_connection;
 };
 

@@ -20,7 +20,7 @@
 
 namespace rainynite::studio {
 
-void NodeEditor::set_node(std::shared_ptr<core::AbstractValue> node_) {
+void NodeEditor::set_node(shared_ptr<core::AbstractValue> node_) {
     if (node_connection.connected())
         node_connection.disconnect();
     node = node_;

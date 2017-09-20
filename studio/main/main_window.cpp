@@ -18,8 +18,6 @@
 
 #include <fstream>
 
-#include <boost/filesystem/path.hpp>
-
 #include <fmt/format.h>
 
 #include <QFileDialog>
@@ -34,11 +32,11 @@
 #include <core/filters/yaml_reader.h>
 #include <core/filters/json_writer.h>
 #include <core/filters/yaml_writer.h>
-#include <core/renderers/svg_renderer.h>
 
 #include <version.h>
 #include <util/strings.h>
 #include <generic/dock_registry.h>
+#include "renderer.h"
 #include "about.h"
 #include "main_window.h"
 #include "ui_main_window.h"
@@ -50,11 +48,12 @@ namespace rainynite::studio {
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ContextListener(),
-    ui(std::make_unique<Ui::MainWindow>()),
-    error_box(std::make_unique<QErrorMessage>())
+    ui(make_unique<Ui::MainWindow>()),
+    error_box(make_unique<QErrorMessage>())
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
+    renderer = make_shared<Renderer>(ui->canvas);
     window_title_template = util::str(windowTitle());
     update_title();
 
@@ -70,12 +69,11 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_undo, SIGNAL(triggered()), this, SLOT(undo()));
     connect(ui->action_redo, SIGNAL(triggered()), this, SLOT(redo()));
 
-    connect(ui->action_render, SIGNAL(triggered()), this, SLOT(render()));
-    connect(ui->action_render_frame, SIGNAL(triggered()), this, SLOT(render_frame()));
-    connect(ui->action_stop_render, SIGNAL(triggered()), this, SLOT(stop_render()));
-    connect(this, SIGNAL(redraw_signal()), this, SLOT(redraw()));
-    connect(ui->action_redraw, SIGNAL(triggered()), this, SLOT(redraw()));
-    connect(ui->action_extra_style, SIGNAL(toggled(bool)), this, SLOT(toggle_extra_style(bool)));
+    connect(ui->action_render, SIGNAL(triggered()), renderer.get(), SLOT(render()));
+    connect(ui->action_render_frame, SIGNAL(triggered()), renderer.get(), SLOT(render_frame()));
+    connect(ui->action_stop_render, SIGNAL(triggered()), renderer.get(), SLOT(stop_render()));
+    connect(ui->action_redraw, SIGNAL(triggered()), renderer.get(), SLOT(redraw()));
+    connect(ui->action_extra_style, SIGNAL(toggled(bool)), renderer.get(), SLOT(toggle_extra_style(bool)));
 
     setup_tools();
 
@@ -83,15 +81,14 @@ MainWindow::MainWindow(QWidget* parent) :
     add_all_docks();
 
     new_document();
-    setup_renderer();
-    render_frame();
+    renderer->render_frame();
 }
 
 MainWindow::~MainWindow() {
 }
 
 void MainWindow::new_document() {
-    document = std::make_shared<core::Document>();
+    document = make_shared<core::Document>();
     set_core_context(document->get_default_context());
     set_fname("");
 }
@@ -129,7 +126,7 @@ void MainWindow::reload() {
         qDebug() << msg;
         error_box->showMessage(msg);
     }
-    render_frame();
+    renderer->render_frame();
 }
 
 void MainWindow::save_as() {
@@ -190,8 +187,9 @@ void MainWindow::save(QString format) {
     }
 }
 
-void MainWindow::set_fname(std::string const& fname_) {
+void MainWindow::set_fname(string const& fname_) {
     fname = fname_;
+    renderer->set_fname(fname);
     update_title();
 }
 
@@ -202,73 +200,6 @@ void MainWindow::update_title() {
         "version"_a=RAINYNITE_STUDIO_VERSION,
         "codename"_a=RAINYNITE_STUDIO_CODENAME
     )));
-}
-
-void MainWindow::setup_renderer() {
-    renderer = std::make_shared<core::renderers::SvgRenderer>();
-    render_thread = std::thread([this]() {
-        while (!renderer_quit) {
-            if (renderer_queue.size() > 0) {
-                renderer_mutex.lock();
-                auto ctx = std::move(renderer_queue.front());
-                renderer_queue.pop();
-                renderer_mutex.unlock();
-
-                try {
-                    renderer->render(std::move(ctx));
-                } catch (std::exception const& ex) {
-                    auto msg = util::str("Uncaught exception while rendering:\n{}"_format(ex.what()));
-                    qDebug() << msg;
-                }
-                Q_EMIT redraw_signal();
-            } else {
-                std::this_thread::sleep_for(std::chrono::milliseconds(128));
-            }
-        }
-    });
-}
-
-void MainWindow::render_period(core::TimePeriod const& period) {
-    if (get_core_context()->get_document()) {
-        auto rsettings = core::renderers::SvgRendererSettings();
-        rsettings.render_pngs = true;
-        rsettings.keep_alive = true;
-        rsettings.extra_style = extra_style;
-        rsettings.path = fname;
-        get_core_context()->mod_render_settings() = rsettings;
-        auto ctx = *get_core_context();
-        ctx.set_period(period);
-
-        std::lock_guard<std::mutex> lock(renderer_mutex);
-        renderer_queue.push(ctx);
-    }
-}
-
-void MainWindow::render() {
-    render_period(get_core_context()->get_period());
-}
-
-void MainWindow::render_frame() {
-    auto time = get_core_context()->get_time();
-    auto time_end = time;
-    ++time_end;
-    render_period({time, time_end});
-}
-
-void MainWindow::stop_render() {
-    renderer->stop();
-}
-
-void MainWindow::redraw() {
-    // TODO: fix this mess
-    boost::filesystem::path base_path = fname;
-    base_path.remove_filename();
-    auto path = base_path/"renders"/"{:.3f}.png"_format(get_core_context()->get_time().get_seconds());
-    set_mainarea_image(path.string());
-}
-
-void MainWindow::toggle_extra_style(bool checked) {
-    extra_style = checked;
 }
 
 void MainWindow::undo() {
@@ -285,18 +216,8 @@ void MainWindow::about() {
 }
 
 void MainWindow::quit() {
-    stop_render();
-    if (render_thread.joinable()) {
-        renderer_quit = true;
-        render_thread.join();
-    }
+    renderer.reset();
     QApplication::quit();
-}
-
-void MainWindow::set_mainarea_image(std::string const& fname) {
-    QPixmap pixmap;
-    pixmap.load(util::str(fname));
-    ui->canvas->set_main_image(pixmap);
 }
 
 void MainWindow::add_all_docks() {
@@ -305,7 +226,7 @@ void MainWindow::add_all_docks() {
     }
 }
 
-void MainWindow::add_dock(std::string const& name) {
+void MainWindow::add_dock(string const& name) {
     auto dock = spawn_dock(name, get_context());
     auto position = dock_preferred_area(name);
     addDockWidget(position, dock.release());
@@ -324,20 +245,18 @@ void MainWindow::setup_tools() {
     // TODO
 }
 
-void MainWindow::set_context(std::shared_ptr<EditorContext> context_) {
+void MainWindow::set_context(shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
-    get_context()->changed_time().connect([this](core::Time){
-        redraw();
-    });
+    renderer->set_context(context_);
     for (auto dock : findChildren<QWidget*>()) {
         if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
-        if (dock->metaObject()->indexOfSignal("activated(std::shared_ptr<core::AbstractValue>)") != -1)
-            connect(dock, SIGNAL(activated(std::shared_ptr<core::AbstractValue>)), this, SLOT(activate(std::shared_ptr<core::AbstractValue>)));
+        if (dock->metaObject()->indexOfSignal("activated(shared_ptr<core::AbstractValue>)") != -1)
+            connect(dock, SIGNAL(activated(shared_ptr<core::AbstractValue>)), this, SLOT(activate(shared_ptr<core::AbstractValue>)));
     }
 }
 
-void MainWindow::activate(std::shared_ptr<core::AbstractValue> node) {
+void MainWindow::activate(shared_ptr<core::AbstractValue> node) {
     get_context()->set_active_node(node);
 }
 

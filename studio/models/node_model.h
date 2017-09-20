@@ -33,7 +33,7 @@ class NodeModel : public QAbstractItemModel, public ContextListener
     Q_OBJECT
 
 public:
-    explicit NodeModel(core::AbstractReference root, std::shared_ptr<core::ActionStack> action_stack, QObject* parent = nullptr);
+    explicit NodeModel(core::AbstractReference root, shared_ptr<core::ActionStack> action_stack, QObject* parent = nullptr);
     virtual ~NodeModel();
 
     QVariant data(QModelIndex const& index, int role) const override;
@@ -101,12 +101,12 @@ public:
 
 public:
     optional<std::type_index> get_link_type(QModelIndex const& index) const;
-    std::shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
+    shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
     template <class T>
-    std::shared_ptr<T> get_node_as(QModelIndex const& index) const {
-        return std::dynamic_pointer_cast<T>(get_node(index));
+    shared_ptr<T> get_node_as(QModelIndex const& index) const {
+        return dynamic_pointer_cast<T>(get_node(index));
     }
-    inline std::shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const {
+    inline shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const {
         return get_node_as<core::AbstractListLinked>(index);
     }
 
@@ -117,10 +117,10 @@ private:
 
 private:
     core::AbstractReference root;
-    std::shared_ptr<core::ActionStack> action_stack;
+    shared_ptr<core::ActionStack> action_stack;
 private:
-    mutable std::map<std::pair<QModelIndex, size_t>, quintptr> indexes;
-    mutable std::map<quintptr, QModelIndex> parents;
+    mutable map<pair<QModelIndex, size_t>, quintptr> indexes;
+    mutable map<quintptr, QModelIndex> parents;
     mutable quintptr index_count = 0;
 };
 

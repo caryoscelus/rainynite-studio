@@ -19,10 +19,10 @@
 #ifndef __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
 #define __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
 
-#include <memory>
+#include <core/std/memory.h>
 
 #include <generic/node_editor.h>
-#include <generic/canvas_editor.h>
+#include <canvas/editor.h>
 #include <generic/context_listener.h>
 
 class QGraphicsRectItem;
@@ -34,12 +34,12 @@ public:
     RectangleEditor();
     virtual ~RectangleEditor();
 public:
-    void set_canvas(Canvas* canvas) override;
+    void setup_canvas() override;
     void node_update() override;
     void time_changed(core::Time time) override;
 private:
     void update_position();
-    std::unique_ptr<QGraphicsRectItem> rectangle_item;
+    unique_ptr<QGraphicsRectItem> rectangle_item;
 };
 
 } // namespace rainynite::studio

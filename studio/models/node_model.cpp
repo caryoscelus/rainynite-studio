@@ -33,7 +33,7 @@ using namespace fmt::literals;
 
 namespace rainynite::studio {
 
-NodeModel::NodeModel(core::AbstractReference root_, std::shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
+NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
     QAbstractItemModel(parent),
     root(root_),
     action_stack(action_stack_)
@@ -286,12 +286,12 @@ bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
 }
 
 quintptr NodeModel::get_id(QModelIndex const& parent, size_t i) const {
-    std::pair<QModelIndex,size_t> pair = {parent, i};
-    auto found = indexes.find(pair);
+    pair<QModelIndex,size_t> parent_and_index = {parent, i};
+    auto found = indexes.find(parent_and_index);
     if (found != indexes.end())
         return found->second;
     auto interal_id = index_count++;
-    indexes.emplace(pair, interal_id);
+    indexes.emplace(parent_and_index, interal_id);
     parents.emplace(interal_id, parent);
     return interal_id;
 }
@@ -308,7 +308,7 @@ core::AbstractReference NodeModel::get_node(QModelIndex const& index) const {
     if (index.parent() == QModelIndex())
         return root;
     if (auto pnode = get_node(index.parent())) {
-        if (auto parent_node = std::dynamic_pointer_cast<core::AbstractListLinked>(pnode))
+        if (auto parent_node = dynamic_pointer_cast<core::AbstractListLinked>(pnode))
             if ((size_t) index.row() < parent_node->link_count())
                 return parent_node->get_link(index.row());
     }
@@ -328,7 +328,7 @@ QModelIndex NodeModel::parent(QModelIndex const& index) const {
 
 int NodeModel::rowCount(QModelIndex const& parent) const {
     if (auto value = get_node(parent)) {
-        if (auto node = std::dynamic_pointer_cast<core::AbstractListLinked>(value))
+        if (auto node = dynamic_pointer_cast<core::AbstractListLinked>(value))
             return node->link_count();
         return 0;
     }

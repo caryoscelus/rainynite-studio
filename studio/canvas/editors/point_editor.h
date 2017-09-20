@@ -1,5 +1,5 @@
 /*
- *  timeline_area.cpp - advanced timeline
+ *  point_editor.h - edit points on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,26 +16,34 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGraphicsScene>
+#ifndef __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
+#define __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
 
-#include <generic/timeline_editor.h>
+#include <core/std/memory.h>
 
-#include "timeline_area.h"
+#include <generic/node_editor.h>
+#include <canvas/editor.h>
+#include <generic/context_listener.h>
 
 namespace rainynite::studio {
 
-TimelineArea::TimelineArea(QWidget* parent) :
-    AbstractCanvas(parent)
-{
-    setDragMode(QGraphicsView::RubberBandDrag);
-    scale(16, 1);
-}
+class PointItem;
 
-TimelineArea::~TimelineArea() {
-}
-
-void TimelineArea::add_misc_editor(shared_ptr<CanvasEditor> editor) {
-    misc_editors.push_back(editor);
-}
+class PointEditor : public NodeEditor, public CanvasEditor {
+public:
+    PointEditor();
+    virtual ~PointEditor();
+public:
+    void setup_canvas() override;
+    void node_update() override;
+    void time_changed(core::Time time) override;
+private:
+    void update_position();
+    void save_position(double x, double y);
+private:
+    unique_ptr<PointItem> point_item;
+};
 
 } // namespace rainynite::studio
+
+#endif
