@@ -25,7 +25,8 @@
 #include <core/std/map.h>
 #include <core/std/vector.h>
 
-#include <generic/context_listener.h>
+#include <canvas/abstract_canvas.h>
+#include <canvas/registry.h>
 
 class QGraphicsScene;
 
@@ -33,26 +34,18 @@ namespace rainynite::studio {
 
 class TimelineEditor;
 
-class TimelineArea : public QGraphicsView, public ContextListener {
-    Q_OBJECT
-
+class TimelineArea : public AbstractCanvas {
 public:
     explicit TimelineArea(QWidget* parent = nullptr);
     virtual ~TimelineArea();
 
-public:
-    TimelineEditor* add_editor(unique_ptr<TimelineEditor> editor);
-    void add_node_editor(shared_ptr<core::AbstractValue> node, unique_ptr<TimelineEditor> editor);
-    void clear_node_editors();
-
-public:
-    void set_context(shared_ptr<EditorContext> context) override;
+    void add_misc_editor(shared_ptr<CanvasEditor> editor);
 
 private:
-    unique_ptr<QGraphicsScene> the_scene;
-    vector<unique_ptr<TimelineEditor>> misc_editors;
-    map<shared_ptr<core::AbstractValue>, unique_ptr<TimelineEditor>> node_editors;
+    vector<shared_ptr<CanvasEditor>> misc_editors;
 };
+
+REGISTER_CANVAS(TimelineArea);
 
 }
 

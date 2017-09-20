@@ -33,14 +33,13 @@ PointEditor::PointEditor() {
 PointEditor::~PointEditor() {
 }
 
-void PointEditor::set_canvas(Canvas* canvas) {
-    CanvasEditor::set_canvas(canvas);
+void PointEditor::setup_canvas() {
     point_item = make_unique<PointItem>(
         [this](double x, double y) {
             save_position(x, y);
         }
     );
-    canvas->scene()->addItem(point_item.get());
+    get_scene()->addItem(point_item.get());
     update_position();
 }
 

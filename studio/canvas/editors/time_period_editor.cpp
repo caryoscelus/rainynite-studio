@@ -30,8 +30,7 @@ class TimePeriodEditor :
     public NodeEditor
 {
 public:
-    void set_canvas(TimelineArea* canvas) override {
-        TimelineEditor::set_canvas(canvas);
+    void setup_canvas() override {
         /**
          * TODO: generalize and move out
          */
@@ -57,8 +56,8 @@ public:
                 node->mod().set_last(time);
             })
         );
-        canvas->scene()->addItem(first_item.get());
-        canvas->scene()->addItem(last_item.get());
+        get_scene()->addItem(first_item.get());
+        get_scene()->addItem(last_item.get());
         node_update();
     }
     void set_position_hint(int y, int height) override {
@@ -97,7 +96,7 @@ private:
     bool ignore_time_change = false;
 };
 
-REGISTER_TIMELINE_NODE_EDITOR(TimePeriodEditor, core::TimePeriod, TimePeriodEditor);
+REGISTER_CANVAS_EDITOR(TimelineArea, TimePeriodEditor, core::TimePeriod);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(CompositeTimePeriod, "CompositeTimePeriod", true);
 
 }

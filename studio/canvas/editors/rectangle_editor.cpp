@@ -33,9 +33,8 @@ RectangleEditor::RectangleEditor() {
 RectangleEditor::~RectangleEditor() {
 }
 
-void RectangleEditor::set_canvas(Canvas* canvas) {
-    CanvasEditor::set_canvas(canvas);
-    rectangle_item.reset(canvas->scene()->addRect({}));
+void RectangleEditor::setup_canvas() {
+    rectangle_item.reset(get_scene()->addRect({}));
     rectangle_item->setPen(pens::cosmetic_dash());
     update_position();
 }

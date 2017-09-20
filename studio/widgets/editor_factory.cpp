@@ -28,18 +28,19 @@
 #include <generic/custom_widgets.h>
 #include "color_button.h"
 #include "point_value_editor.h"
-#include <canvas/point_editor.h>
-#include <canvas/rectangle_editor.h>
-#include <canvas/bezier_editor.h>
+#include <canvas/editors/point_editor.h>
+#include <canvas/editors/rectangle_editor.h>
+#include <canvas/editors/bezier_editor.h>
+#include <widgets/canvas.h>
 
 namespace rainynite::studio {
 
 REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, (NodeEditorWidget<ColorButton, core::colors::Color>));
 REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, (NodeEditorWidget<PointValueEditor, Geom::Point>));
 
-REGISTER_CANVAS_EDITOR(BezierEdit, Geom::BezierKnots, BezierEditor);
-REGISTER_CANVAS_EDITOR(PointEdit, Geom::Point, PointEditor);
-REGISTER_CANVAS_EDITOR(RectangleEdit, Geom::Rectangle, RectangleEditor);
+REGISTER_CANVAS_EDITOR(Canvas, BezierEditor, Geom::BezierKnots);
+REGISTER_CANVAS_EDITOR(Canvas, PointEditor, Geom::Point);
+REGISTER_CANVAS_EDITOR(Canvas, RectangleEditor, Geom::Rectangle);
 
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RenderShape, "RenderShape", true);

@@ -20,25 +20,19 @@
 #define __STUDIO__MAIN_WINDOW_H__D1BD80BA
 
 #include <memory>
-#include <thread>
-#include <mutex>
-#include <queue>
 
 #include <QMainWindow>
 
 #include <core/node/abstract_value.h>
 
 #include <generic/context_listener.h>
+#include "renderer.h"
 
 namespace Ui {
 class MainWindow;
 }
 
 class QErrorMessage;
-
-namespace rainynite::core::renderers {
-class SvgRenderer;
-}
 
 namespace rainynite::studio {
 
@@ -51,12 +45,6 @@ public:
 
 public:
     void set_context(shared_ptr<EditorContext> context_) override;
-
-private:
-    void set_mainarea_image(string const& fname);
-
-Q_SIGNALS:
-    void redraw_signal();
 
 private Q_SLOTS:
     void new_document();
@@ -72,12 +60,6 @@ private Q_SLOTS:
     void undo();
     void redo();
 
-    void render();
-    void render_frame();
-    void stop_render();
-    void redraw();
-    void toggle_extra_style(bool checked);
-
     void activate(shared_ptr<core::AbstractValue> node);
 
     void add_all_docks();
@@ -87,11 +69,10 @@ private:
     void setup_dock_menu();
     void setup_tools();
 
-    void setup_renderer();
-    void render_period(core::TimePeriod const& period);
     void set_fname(string const& fname_);
 
 private:
+    shared_ptr<Renderer> renderer;
     unique_ptr<Ui::MainWindow> ui;
     unique_ptr<QErrorMessage> error_box;
     shared_ptr<core::Document> document;
@@ -99,13 +80,6 @@ private:
 
     string fname;
     string window_title_template;
-    bool extra_style = true;
-
-    std::thread render_thread;
-    shared_ptr<core::renderers::SvgRenderer> renderer;
-    std::queue<core::Context> renderer_queue;
-    std::mutex renderer_mutex;
-    bool renderer_quit = false;
 };
 
 } // namespace rainynite::studio

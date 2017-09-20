@@ -6,6 +6,8 @@ target_sources(rainynite-studio
         main/main_window.h
         main/about.cpp
         main/about.h
+        main/renderer.cpp
+        main/renderer.h
 
         docks/playback_dock.cpp
         docks/playback_dock.h
@@ -30,20 +32,29 @@ target_sources(rainynite-studio
         widgets/point_value_editor.cpp
         widgets/point_value_editor.h
 
-        canvas/point_item.h
-        canvas/point_item.cpp
-        canvas/point_editor.cpp
-        canvas/point_editor.h
-        canvas/bezier_editor.cpp
-        canvas/bezier_editor.h
-        canvas/rectangle_editor.cpp
-        canvas/rectangle_editor.h
+        canvas/abstract_canvas.h
+        canvas/abstract_canvas.cpp
+        canvas/editor.h
+        canvas/editor.cpp
+        canvas/tool.h
+        canvas/attachable.h
+        canvas/attachable.cpp
 
-        canvas/time_item.h
-        canvas/time_item.cpp
-        canvas/timeline_cursor.cpp
-        canvas/time_editor.cpp
-        canvas/time_period_editor.cpp
+        canvas/editors/point_item.h
+        canvas/editors/point_item.cpp
+        canvas/editors/point_editor.cpp
+        canvas/editors/point_editor.h
+        canvas/editors/bezier_editor.cpp
+        canvas/editors/bezier_editor.h
+        canvas/editors/qt_path.h
+        canvas/editors/rectangle_editor.cpp
+        canvas/editors/rectangle_editor.h
+
+        canvas/editors/time_item.h
+        canvas/editors/time_item.cpp
+        canvas/editors/timeline_cursor.cpp
+        canvas/editors/time_editor.cpp
+        canvas/editors/time_period_editor.cpp
 
         generic/node_menu.cpp
         generic/node_menu.h
@@ -55,9 +66,6 @@ target_sources(rainynite-studio
         generic/context_listener.h
         generic/editor_context.cpp
         generic/editor_context.h
-        generic/canvas_editor.cpp
-        generic/canvas_editor.h
-        generic/timeline_editor.cpp
         generic/timeline_editor.h
         generic/dock_registry.h
 

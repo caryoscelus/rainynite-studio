@@ -22,9 +22,7 @@
 #include <core/std/memory.h>
 #include <core/std/vector.h>
 
-#include <QGraphicsView>
-
-#include <generic/context_listener.h>
+#include <canvas/registry.h>
 
 class QGraphicsScene;
 class QGraphicsItem;
@@ -33,47 +31,26 @@ class QGraphicsRectItem;
 
 namespace rainynite::studio {
 
-class CanvasEditor;
-
-class Canvas : public QGraphicsView, public ContextListener {
+class Canvas : public AbstractCanvas {
 public:
     explicit Canvas(QWidget* parent = nullptr);
     virtual ~Canvas();
 
-protected:
-    void wheelEvent(QWheelEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-
-public:
     void set_main_image(QPixmap const& pixmap);
 
-public:
-    void add_node_editor(unique_ptr<CanvasEditor> editor_);
-    void remove_node_editor();
-    void clear_node_editors();
-
 protected:
-    void active_node_changed(shared_ptr<core::AbstractValue> node) override;
     void set_context(shared_ptr<EditorContext> context) override;
 
 private:
     void update_border();
 
 private:
-    unique_ptr<QGraphicsScene> the_scene;
     unique_ptr<QGraphicsPixmapItem> image;
     unique_ptr<QGraphicsRectItem> image_border;
-    shared_ptr<core::AbstractValue> active_node;
-    vector<unique_ptr<CanvasEditor>> editors;
-
-private:
-    QPoint scroll_pos;
-    bool is_scrolling;
 };
+
+REGISTER_CANVAS(Canvas);
 
 }
 
 #endif
-
