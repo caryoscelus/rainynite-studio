@@ -22,9 +22,10 @@
 #include <core/node/make.h>
 #include <core/node/abstract_node.h>
 #include <core/nothing.h>
+#include <core/serialize/node_writer.h>
 #include <core/action.h>
 #include <core/actions/change_link.h>
-#include <core/serialize/node_writer.h>
+#include <core/actions/custom_property.h>
 
 #include <util/strings.h>
 #include "node_model.h"
@@ -55,12 +56,12 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
     if (index.column() == 0) {
         switch (role) {
             case Qt::DisplayRole: {
-                std::string node_role = "document";
+                string node_role = "document";
                 if (auto parent_node = get_node_as<core::AbstractNode>(parent(index)))
                     node_role = parent_node->get_name_at(index.row());
                 else if (parent(index).isValid())
                     node_role = "{}"_format(index.row());
-                std::string type_name = "<Bad node!>";
+                string type_name = "<Bad node!>";
                 if (auto node = get_node(index))
                     type_name = core::node_name(*node);
                 return util::str("{}: {}"_format(node_role, type_name));
@@ -127,8 +128,11 @@ bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
     return false;
 }
 
-void NodeModel::add_empty_custom_property(QModelIndex const& parent, std::string const& name) {
-    get_node_as<core::AbstractNode>(parent)->set_property(name, core::make_value<core::Nothing>());
+void NodeModel::add_empty_custom_property(QModelIndex const& parent, string const& name) {
+    if (auto parent_node = get_node_as<core::AbstractNode>(parent)) {
+        action_stack->emplace<core::actions::AddCustomProperty>(parent_node, name, core::make_value<core::Nothing>());
+        // TODO: add rows
+    }
 }
 
 bool NodeModel::is_custom_property(QModelIndex const& index) const {
@@ -142,7 +146,8 @@ bool NodeModel::is_custom_property(QModelIndex const& index) const {
 void NodeModel::remove_custom_property(QModelIndex const& index) {
     if (auto parent = get_node_as<core::AbstractNode>(index.parent())) {
         auto i = index.row();
-        parent->remove_property(parent->get_name_at(i));
+        action_stack->emplace<core::actions::RemoveCustomProperty>(parent, parent->get_name_at(i));
+        // TODO: remove rows
     }
 }
 
@@ -154,6 +159,7 @@ bool NodeModel::can_add_element(QModelIndex const& parent) const {
 
 void NodeModel::add_empty_element(QModelIndex const& parent) {
     if (auto node = get_list_node(parent)) {
+        // TODO
         auto last = node->link_count();
         beginInsertRows(parent, last-1, last-1);
         node->push_new();
