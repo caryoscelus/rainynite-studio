@@ -1,5 +1,4 @@
-/*
- *  node_model.cpp - node tree model wrapper
+/*  node_model.cpp - node tree model wrapper
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -26,6 +25,7 @@
 #include <core/action.h>
 #include <core/actions/change_link.h>
 #include <core/actions/custom_property.h>
+#include <core/actions/list.h>
 
 #include <util/strings.h>
 #include "node_model.h"
@@ -159,10 +159,9 @@ bool NodeModel::can_add_element(QModelIndex const& parent) const {
 
 void NodeModel::add_empty_element(QModelIndex const& parent) {
     if (auto node = get_list_node(parent)) {
-        // TODO
         auto last = node->link_count();
         beginInsertRows(parent, last-1, last-1);
-        node->push_new();
+        action_stack->emplace<core::actions::ListPushNew>(node);
         endInsertRows();
     }
 }
@@ -284,7 +283,7 @@ bool NodeModel::removeRows(int row, int count, QModelIndex const& parent) {
     if (auto parent_node = get_list_node(parent)) {
         beginRemoveRows(parent, row, row+count-1);
         for (int i = 0; i < count; ++i)
-            parent_node->remove(row+i);
+            action_stack->emplace<core::actions::ListRemoveElement>(parent_node, row+i);
         endRemoveRows();
         return true;
     }
