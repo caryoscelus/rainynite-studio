@@ -50,7 +50,7 @@ private Q_SLOTS:
     void new_document();
     void open();
     void reload();
-    void save();
+    void save(QString format="");
     void save_as();
 
     void update_title();
@@ -79,6 +79,7 @@ private:
     shared_ptr<core::AbstractValue> active_node;
 
     string fname;
+    string saved_format;
     string window_title_template;
 };
 

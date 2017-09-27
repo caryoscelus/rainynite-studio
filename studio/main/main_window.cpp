@@ -21,6 +21,7 @@
 #include <fmt/format.h>
 
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <QDockWidget>
@@ -28,7 +29,9 @@
 
 #include <core/document.h>
 #include <core/filters/json_reader.h>
+#include <core/filters/yaml_reader.h>
 #include <core/filters/json_writer.h>
+#include <core/filters/yaml_writer.h>
 
 #include <version.h>
 #include <util/strings.h>
@@ -100,46 +103,81 @@ void MainWindow::reload() {
     if (fname.empty())
         return;
     // TODO: proper filter modularization
-    try {
-        auto reader = core::filters::JsonReader();
-        std::ifstream in(fname);
-        document = reader.read_document(in);
-        if (!document)
-            throw std::runtime_error("Unknown parse failure");
-        set_core_context(document->get_default_context());
-        in.close();
-    } catch (std::exception const& ex) {
-        auto msg = util::str("Uncaught exception in JSON filter:\n{}"_format(ex.what()));
+    unique_ptr<core::DocumentReader> json_reader = make_unique<core::filters::JsonReader>();
+    unique_ptr<core::DocumentReader> yaml_reader = make_unique<core::filters::YamlReader>();
+    vector<string> errors;
+    for (auto&& reader : { std::move(yaml_reader), std::move(json_reader )}) {
+        try {
+            std::ifstream in(fname);
+            document = reader->read_document(in);
+            if (!document)
+                throw std::runtime_error("Unknown parse failure");
+            set_core_context(document->get_default_context());
+            in.close();
+            break;
+        } catch (std::exception const& ex) {
+            errors.push_back("Uncaught exception in filter:\n{}"_format(ex.what()));
+        } catch (...) {
+            errors.push_back("Unknown error while trying to open document via filter");
+        }
+    }
+    if (!document) {
+        auto msg = util::str(std::accumulate(errors.begin(), errors.end(), string("\n\n")));
         qDebug() << msg;
         error_box->showMessage(msg);
-    } catch (...) {
-        qDebug() << "Unknown error while trying to open document via JSON filter";
     }
     renderer->render_frame();
 }
 
 void MainWindow::save_as() {
+    QString filter;
     auto fname_qt = QFileDialog::getSaveFileName(
         this,
         "Save",
         util::str(fname),
-        "RainyNite file (*.rnite)(*.rnite);;All files(*)"
+        "RainyNite file (*.rnite)(*.rnite);;"
+        "All files(*)",
+        &filter
     );
     if (!fname_qt.isEmpty()) {
+        QString format;
+        if (filter.contains("*.rnite")) {
+            format = QInputDialog::getItem(this, "Choose .rnite format", "Choose save format", {"yaml", "json"});
+        } else {
+            error_box->showMessage("Unknown save format");
+            return;
+        }
         set_fname(util::str(fname_qt));
-        save();
+        save(format);
     }
 }
 
-void MainWindow::save() {
+void MainWindow::save(QString format) {
     if (fname.empty()) {
         save_as();
         return;
     }
+
+    if (format.isEmpty())
+        format = util::str(saved_format);
+    if (format.isEmpty())
+        format = "yaml";
+
+    // TODO: proper filter modularization
+    unique_ptr<core::DocumentWriter> writer;
+    if (format == "yaml") {
+        writer.reset(new core::filters::YamlWriter());
+    } else if (format == "json") {
+        writer.reset(new core::filters::JsonWriter());
+    } else {
+        error_box->showMessage("Unknown save format");
+        return;
+    }
+
     try {
-        auto writer = core::filters::JsonWriter();
         std::ofstream out(fname);
-        writer.write_document(out, document);
+        writer->write_document(out, document);
+        saved_format = util::str(format);
     } catch (std::exception const& ex) {
         auto msg = util::str("Uncaught exception while saving document:\n{}"_format(ex.what()));
         qDebug() << msg;
