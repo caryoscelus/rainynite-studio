@@ -20,7 +20,7 @@
 
 #include "point_value_editor.h"
 
-#define MAX_POINT_COORD 10000
+static const double MAX_POINT_COORD = 10000;
 
 namespace rainynite::studio {
 
