@@ -1,4 +1,4 @@
-/*  node_edit_dock.h - simple text editing of selecting node
+/*  node_edit_dock.h - widget-based node editing dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -36,19 +36,12 @@ namespace rainynite::studio {
  * node type.
  */
 class NodeEditDock : public DockWidget, public NodeEditor {
-    Q_OBJECT
-
 public:
     explicit NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     ~NodeEditDock();
 
-public:
     void active_node_changed(shared_ptr<core::AbstractValue> node) override;
     void time_changed(core::Time time) override;
-    void node_update() override;
-
-private Q_SLOTS:
-    void write_node();
 
 private:
     void update_value();

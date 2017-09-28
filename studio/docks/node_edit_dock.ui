@@ -16,7 +16,7 @@
   <widget class="QWidget" name="content">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLineEdit" name="text_edit"/>
+     <widget class="rainynite::studio::NodeStringEditor" name="text_edit"/>
     </item>
     <item>
      <widget class="QWidget" name="custom_placeholder" native="true"/>
@@ -24,6 +24,13 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>rainynite::studio::NodeStringEditor</class>
+   <extends>QLineEdit</extends>
+   <header location="global">widgets/node_string_editor.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -41,7 +41,6 @@ NodeEditDock::NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     ui->setupUi(this);
     custom_widget = ui->custom_placeholder;
     ui->text_edit->setReadOnly(true);
-    connect(ui->text_edit, SIGNAL(editingFinished()), this, SLOT(write_node()));
     set_context(context_);
 }
 
@@ -62,39 +61,9 @@ void NodeEditDock::time_changed(core::Time time) {
     update_value();
 }
 
-void NodeEditDock::node_update() {
-    // custom should be capable of updating itself..
-    update_generic();
-}
-
 void NodeEditDock::update_value() {
     update_generic();
     update_custom();
-}
-
-void NodeEditDock::update_generic() {
-    if (!active_node)
-        return;
-    bool writeable = active_node->is_const();
-    boost::any value;
-    try {
-        if (writeable) {
-            value = active_node->static_any();
-        } else {
-            value = active_node->get_any(get_core_context());
-        }
-        auto s = core::serialize::value_to_string(value);
-        ui->text_edit->setText(util::str(s));
-    } catch (class_init::RuntimeTypeError const& ex) {
-        auto s = "<Type Exception: {}>"_format(ex.what());
-        ui->text_edit->setText(util::str(s));
-        writeable = false;
-    } catch (std::exception const& ex) {
-        auto s = "<Uncaught Exception: {}>"_format(ex.what());
-        ui->text_edit->setText(util::str(s));
-        writeable = false;
-    }
-    ui->text_edit->setReadOnly(!writeable);
 }
 
 void NodeEditDock::setup_custom_widget(shared_ptr<core::AbstractValue> node) {
@@ -108,28 +77,17 @@ void NodeEditDock::setup_custom_widget(shared_ptr<core::AbstractValue> node) {
     update_custom();
 }
 
+void NodeEditDock::update_generic() {
+    ui->text_edit->set_node(active_node);
+    ui->text_edit->set_context(get_context());
+}
+
 void NodeEditDock::update_custom() {
     if (auto node_editor = dynamic_cast<NodeEditor*>(custom_widget)) {
         node_editor->set_node(active_node);
     }
     if (auto listener = dynamic_cast<ContextListener*>(custom_widget)) {
         listener->set_context(get_context());
-    }
-}
-
-void NodeEditDock::write_node() {
-    if (!active_node) {
-        // this shouldn't really happen
-        return;
-    }
-    if (ui->text_edit->isReadOnly())
-        return;
-    auto text = ui->text_edit->text().toStdString();
-    try {
-        active_node->set_any(core::parse_primitive_type(active_node->get_type(), text));
-    } catch (std::exception const& ex) {
-        qDebug() << "Exception while parsing input:" << ex.what();
-        active_node_changed(active_node);
     }
 }
 
