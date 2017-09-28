@@ -1,5 +1,4 @@
-/*
- *  node_edit_dock.h - simple text editing of selecting node
+/*  node_edit_dock.h - simple text editing of selecting node
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,11 +15,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__NODE_EDIT_DOCK_H__49AA85D4
-#define __STUDIO__NODE_EDIT_DOCK_H__49AA85D4
+#ifndef STUDIO_DOCKS_NODE_EDIT_DOCK_H_633C5258_EC08_508A_AB1E_77E71F094702
+#define STUDIO_DOCKS_NODE_EDIT_DOCK_H_633C5258_EC08_508A_AB1E_77E71F094702
 
 #include <core/std/memory.h>
-
 #include <core/context.h>
 
 #include <generic/node_editor.h>
@@ -67,6 +65,6 @@ private:
 
 REGISTER_DOCK("Node editor", NodeEditDock, Qt::LeftDockWidgetArea);
 
-}
+} // namespace rainynite::studio
 
 #endif

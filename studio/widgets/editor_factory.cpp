@@ -26,6 +26,7 @@
 #include <geom_helpers/rectangle.h>
 
 #include <generic/custom_widgets.h>
+#include <generic/node_editor_widget.h>
 #include "color_button.h"
 #include "point_value_editor.h"
 #include <canvas/editors/point_editor.h>
