@@ -106,26 +106,28 @@ void MainWindow::reload() {
     unique_ptr<core::DocumentReader> json_reader = make_unique<core::filters::JsonReader>();
     unique_ptr<core::DocumentReader> yaml_reader = make_unique<core::filters::YamlReader>();
     vector<string> errors;
-    for (auto&& reader : { std::move(yaml_reader), std::move(json_reader )}) {
+    shared_ptr<core::Document> new_document;
+    for (auto&& reader : { std::move(json_reader), std::move(yaml_reader) }) {
         try {
             std::ifstream in(fname);
-            document = reader->read_document(in);
-            if (!document)
+            new_document = reader->read_document(in);
+            if (new_document == nullptr)
                 throw std::runtime_error("Unknown parse failure");
-            set_core_context(document->get_default_context());
+            set_core_context(new_document->get_default_context());
             in.close();
             break;
         } catch (std::exception const& ex) {
             errors.push_back("Uncaught exception in filter:\n{}"_format(ex.what()));
         } catch (...) {
-            errors.push_back("Unknown error while trying to open document via filter");
+            errors.push_back("Unknown error while trying to open document via filter\n");
         }
     }
-    if (!document) {
+    if (new_document == nullptr) {
         auto msg = util::str(std::accumulate(errors.begin(), errors.end(), string("\n\n")));
         qDebug() << msg;
         error_box->showMessage(msg);
     }
+    document = new_document;
     renderer->render_frame();
 }
 
