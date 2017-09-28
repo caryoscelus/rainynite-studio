@@ -105,6 +105,9 @@ public:
         } catch (core::serialize::DeserializationError const&) {
             // TODO
             return;
+        } catch (std::exception const&) {
+            // TODO
+            return;
         }
         this->get_context()->action_stack()->template emplace<core::actions::ChangeValue>(this->get_node(), value);
     }
