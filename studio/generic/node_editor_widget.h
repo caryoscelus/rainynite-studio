@@ -66,6 +66,7 @@ public:
 
 private:
     inline Self* self() {
+        static_assert(std::is_base_of_v<AbstractNodeEditorWidget, Self>);
         return static_cast<Self*>(this);
     }
 
