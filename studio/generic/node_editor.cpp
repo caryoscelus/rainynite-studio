@@ -24,6 +24,8 @@ void NodeEditor::set_node(shared_ptr<core::AbstractValue> node_) {
     if (node_connection.connected())
         node_connection.disconnect();
     node = node_;
+    if (node == nullptr)
+        return;
     node_connection = node->subscribe([this]() {
         node_update();
     });
