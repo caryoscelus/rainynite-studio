@@ -38,8 +38,8 @@ public:
     explicit AdvancedColorDock(shared_ptr<EditorContext> context_, QWidget* parent_ = nullptr);
     virtual ~AdvancedColorDock();
 
-public:
-    void set_context(shared_ptr<EditorContext> context_) override;
+    void active_node_changed(shared_ptr<core::AbstractValue>) override;
+    void write_color(QColor c);
 
 private:
     unique_ptr<Ui::AdvancedColorDock> ui;
