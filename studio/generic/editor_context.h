@@ -38,6 +38,9 @@ public:
         return context;
     }
     void set_active_node(shared_ptr<core::AbstractValue> node);
+    inline shared_ptr<core::AbstractValue> get_active_node() const {
+        return active_node;
+    }
     shared_ptr<core::ActionStack> action_stack();
 public:
     inline boost::signals2::signal<void(core::Time)>& changed_time() {
