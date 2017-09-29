@@ -23,4 +23,5 @@ find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 find_package(Threads)
 
+add_subdirectory(thirdparty/Qt-Color-Widgets)
 add_subdirectory(studio)

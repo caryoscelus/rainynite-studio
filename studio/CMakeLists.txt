@@ -83,6 +83,7 @@ target_sources(rainynite-studio
 
 target_link_libraries(rainynite-studio
     Qt5::Widgets
+    ColorWidgets-qt5
     geom_helpers
     time
     document
