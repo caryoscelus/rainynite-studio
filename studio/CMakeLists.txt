@@ -17,6 +17,8 @@ target_sources(rainynite-studio
         docks/node_tree_dock.h
         docks/node_edit_dock.cpp
         docks/node_edit_dock.h
+        docks/advanced_color_dock.h
+        docks/advanced_color_dock.cpp
         docks/close_destroy_dock.h
 
         widgets/editor_factory.cpp
