@@ -1,0 +1,3 @@
+[submodule "thirdparty/Qt-Color-Widgets"]
+	path = thirdparty/Qt-Color-Widgets
+	url = https://github.com/caryoscelus/Qt-Color-Widgets.git

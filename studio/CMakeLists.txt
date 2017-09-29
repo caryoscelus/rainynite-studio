@@ -17,6 +17,8 @@ target_sources(rainynite-studio
         docks/node_tree_dock.h
         docks/node_edit_dock.cpp
         docks/node_edit_dock.h
+        docks/advanced_color_dock.h
+        docks/advanced_color_dock.cpp
         docks/close_destroy_dock.h
 
         widgets/editor_factory.cpp
@@ -83,6 +85,7 @@ target_sources(rainynite-studio
 
 target_link_libraries(rainynite-studio
     Qt5::Widgets
+    ColorWidgets-qt5
     geom_helpers
     time
     document
@@ -92,12 +95,6 @@ target_link_libraries(rainynite-studio
     boost_system
     boost_filesystem
     Threads::Threads
-    ${SIGCPP_LIBRARIES}
-)
-
-target_include_directories(rainynite-studio
-    SYSTEM BEFORE PUBLIC
-        ${SIGCPP_INCLUDE_DIRS}
 )
 
 configure_file(version.h.cmake.in version.h)
