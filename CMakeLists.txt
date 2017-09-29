@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.8)
 
 project(rainynite-studio)
 
-set(RAINYNITE_STUDIO_VERSION "0.4+" CACHE STRING "RainyNite studio version number string" FORCE)
-set(RAINYNITE_STUDIO_CODENAME "Time Flies" CACHE STRING "RainyNite studio version codename" FORCE)
+set(RAINYNITE_STUDIO_VERSION "0.5" CACHE STRING "RainyNite studio version number string" FORCE)
+set(RAINYNITE_STUDIO_CODENAME "The Wrong Half" CACHE STRING "RainyNite studio version codename" FORCE)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
