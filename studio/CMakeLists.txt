@@ -92,12 +92,6 @@ target_link_libraries(rainynite-studio
     boost_system
     boost_filesystem
     Threads::Threads
-    ${SIGCPP_LIBRARIES}
-)
-
-target_include_directories(rainynite-studio
-    SYSTEM BEFORE PUBLIC
-        ${SIGCPP_INCLUDE_DIRS}
 )
 
 configure_file(version.h.cmake.in version.h)
