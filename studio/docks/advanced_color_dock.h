@@ -45,7 +45,7 @@ private:
     unique_ptr<Ui::AdvancedColorDock> ui;
 };
 
-REGISTER_DOCK("Advanced Color Dock", AdvancedColorDock, Qt::LeftDockWidgetArea);
+REGISTER_DOCK("Advanced Color Dock", AdvancedColorDock, Qt::RightDockWidgetArea);
 
 } // namespace rainynite::studio
 
