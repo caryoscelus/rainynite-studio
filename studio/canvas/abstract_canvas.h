@@ -82,7 +82,7 @@ private:
     vector<shared_ptr<CanvasEditor>> editors;
     vector<unique_ptr<CanvasTool>> tools;
     map<string, CanvasTool*> named_tools;
-    CanvasTool* current_tool;
+    CanvasTool* current_tool = nullptr;
     shared_ptr<core::AbstractValue> active_node;
 };
 
