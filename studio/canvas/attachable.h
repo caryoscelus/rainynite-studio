@@ -42,7 +42,7 @@ protected:
     QGraphicsScene* get_scene() const;
 
 private:
-    AbstractCanvas* canvas;
+    AbstractCanvas* canvas = nullptr;
 };
 
 } // namespace rainynite::studio
