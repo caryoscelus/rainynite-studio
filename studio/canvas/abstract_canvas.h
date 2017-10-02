@@ -78,6 +78,11 @@ public:
 protected:
     void active_node_changed(shared_ptr<core::AbstractValue> node) override;
 
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
     void use_tool(CanvasTool* tool);

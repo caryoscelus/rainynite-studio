@@ -17,6 +17,8 @@
 
 #include <algorithm>
 
+#include <QMouseEvent>
+
 #include "abstract_canvas.h"
 #include "registry.h"
 
@@ -76,8 +78,13 @@ void AbstractCanvas::use_tool(string name) {
 }
 
 void AbstractCanvas::use_tool(CanvasTool* tool) {
-    removeEventFilter(current_tool);
+    if (current_tool != nullptr) {
+        removeEventFilter(current_tool);
+        current_tool->set_canvas(nullptr);
+    }
+    tool->set_canvas(this);
     installEventFilter(tool);
+    current_tool = tool;
 }
 
 void AbstractCanvas::zoom_at(QPoint point, double factor) {
@@ -101,6 +108,23 @@ void AbstractCanvas::active_node_changed(shared_ptr<core::AbstractValue> node) {
         add_canvas_node_editor(*this, node);
     }
 }
+
+// Unfortunately, mouse events are not sent to filter..
+#define MOUSE_HANDLER(method) \
+void AbstractCanvas::method(QMouseEvent* event) { \
+    if (current_tool != nullptr) { \
+        if (current_tool->eventFilter(this, event)) \
+            return; \
+    } \
+    QGraphicsView::method(event); \
+}
+
+MOUSE_HANDLER(mouseDoubleClickEvent)
+MOUSE_HANDLER(mouseMoveEvent)
+MOUSE_HANDLER(mousePressEvent)
+MOUSE_HANDLER(mouseReleaseEvent)
+
+#undef MOUSE_HANDLER
 
 void AbstractCanvas::set_context(shared_ptr<EditorContext> context) {
     for (auto const& editor : editors) {
