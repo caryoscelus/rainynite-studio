@@ -80,6 +80,19 @@ void AbstractCanvas::use_tool(CanvasTool* tool) {
     installEventFilter(tool);
 }
 
+void AbstractCanvas::zoom_at(QPoint point, double factor) {
+    auto old_pos = mapToScene(point);
+    scale(factor, factor);
+    auto new_pos = mapToScene(point);
+    auto delta = new_pos-old_pos;
+    translate(delta.x(), delta.y());
+}
+
+void AbstractCanvas::scroll_by(QPoint delta) {
+    delta /= transform().m11();
+    translate(delta.x(), delta.y());
+}
+
 void AbstractCanvas::active_node_changed(shared_ptr<core::AbstractValue> node) {
     if (active_node != node) {
         // TODO: handle selection

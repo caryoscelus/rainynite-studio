@@ -68,6 +68,11 @@ public:
     /// Switch to tool
     void use_tool(string name);
 
+    /// Zoom at `point`
+    void zoom_at(QPoint point, double factor);
+
+    void scroll_by(QPoint delta);
+
     void set_context(shared_ptr<EditorContext> context) override;
 
 protected:
