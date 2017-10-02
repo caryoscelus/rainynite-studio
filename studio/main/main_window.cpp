@@ -53,6 +53,8 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
+    ui->canvas->load_registered_tools();
+    ui->canvas->use_tool("Default");
     renderer = make_shared<Renderer>(ui->canvas);
     window_title_template = util::str(windowTitle());
     update_title();

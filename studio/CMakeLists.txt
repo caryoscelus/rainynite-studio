@@ -39,8 +39,11 @@ target_sources(rainynite-studio
         canvas/editor.h
         canvas/editor.cpp
         canvas/tool.h
+        canvas/tool.cpp
         canvas/attachable.h
         canvas/attachable.cpp
+
+        canvas/tools/default.cpp
 
         canvas/editors/point_item.h
         canvas/editors/point_item.cpp
