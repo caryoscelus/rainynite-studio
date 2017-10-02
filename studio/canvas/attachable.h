@@ -1,5 +1,4 @@
-/*
- *  attachable.h - attachable to canvas interface
+/*  attachable.h - attachable to canvas interface
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
