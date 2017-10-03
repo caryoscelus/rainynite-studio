@@ -21,6 +21,7 @@
 #include <fmt/format.h>
 
 #include <QLineEdit>
+#include <QDebug>
 
 #include <util/strings.h>
 #include <generic/node_editor_widget.h>
@@ -43,8 +44,10 @@ public:
         try {
             s = core::serialize::value_to_string(value);
         } catch (class_init::RuntimeTypeError const& ex) {
-            s = "<Type Exception: {}>"_format(ex.what());
+            qDebug() << "Type Exception: " << ex.what();
+            s = "<??>";
         } catch (std::exception const& ex) {
+            qDebug() << "Uncaught Exception: " << ex.what();
             s = "<Uncaught Exception: {}>"_format(ex.what());
         }
         setText(util::str(s));
