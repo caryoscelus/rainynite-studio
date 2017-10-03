@@ -29,10 +29,6 @@ Build instructions
 
 These instructions assume unix-like environment.
 
-(currently all instructions for all modules are described here; eventually,
-it will be split between repos and there will be one central repo with
-build script(s))
-
 The build process itself is usual CMake procedure, but there are quite a few dependencies and code is split across repositories.
 
 Modules:
@@ -52,10 +48,12 @@ Core:
 - [fmt](https://github.com/fmtlib/fmt)
 - [catch](https://github.com/philsquared/Catch) (bundled in repository)
 - [rapidjson](https://github.com/miloyip/rapidjson) (bundled as git module)
+- [yaml-cpp](https://github.com/caryoscelus/yaml-cpp) (bundled as git module)
 
 Editor:
 
 - [qt](https://www.qt.io/)
+- [Qt-Color-Widgets](https://github.com/mbasaglia/Qt-Color-Widgets) (bundled as git module)
 
 Runtime renderer dependency:
 
@@ -64,4 +62,10 @@ Runtime renderer dependency:
 Build process
 -------------
 
-See [BUILDING.md](BUILDING.md) For the detailed build instructions.
+The easy way is to clone [united repository](https://notabug.org/caryoscelus/rainynite)
+and run `update_and_build.sh` script.
+
+However, if you're interested in development, you may find it more convenient to
+setup build directories yourself. Build process is mostly usual CMake routine,
+except for a few caveats. You can look them up at [BUILDING.md] or
+in [build script](https://notabug.org/caryoscelus/rainynite/src/master/update_and_build.sh).
