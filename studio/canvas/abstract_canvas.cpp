@@ -110,21 +110,25 @@ void AbstractCanvas::active_node_changed(shared_ptr<core::AbstractValue> node) {
 }
 
 // Unfortunately, mouse events are not sent to filter..
-#define MOUSE_HANDLER(method) \
-void AbstractCanvas::method(QMouseEvent* event) { \
+#define EVENT_HANDLER(method, Event) \
+void AbstractCanvas::method(Event* event) { \
     if (current_tool != nullptr) { \
         if (current_tool->eventFilter(this, event)) \
             return; \
     } \
     QGraphicsView::method(event); \
 }
+#define MOUSE_HANDLER(method) EVENT_HANDLER(method, QMouseEvent)
 
 MOUSE_HANDLER(mouseDoubleClickEvent)
 MOUSE_HANDLER(mouseMoveEvent)
 MOUSE_HANDLER(mousePressEvent)
 MOUSE_HANDLER(mouseReleaseEvent)
 
+EVENT_HANDLER(wheelEvent, QWheelEvent)
+
 #undef MOUSE_HANDLER
+#undef EVENT_HANDLER
 
 void AbstractCanvas::set_context(shared_ptr<EditorContext> context) {
     for (auto const& editor : editors) {

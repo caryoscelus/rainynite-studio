@@ -82,6 +82,8 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
 
+    void wheelEvent(QWheelEvent* event) override;
+
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
     void use_tool(CanvasTool* tool);
