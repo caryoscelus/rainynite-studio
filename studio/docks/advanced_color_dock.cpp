@@ -59,7 +59,8 @@ void AdvancedColorDock::write_color(QColor c) {
             (unsigned char)c.red(),
             (unsigned char)c.green(),
             (unsigned char)c.blue(),
-            (unsigned char)c.alpha()
+            // temporary fix for #41
+            node->get(get_core_context()).a
         });
     }
 }
