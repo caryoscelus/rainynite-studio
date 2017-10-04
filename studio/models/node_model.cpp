@@ -34,6 +34,8 @@ using namespace fmt::literals;
 
 namespace rainynite::studio {
 
+static const size_t MAX_VALUE_LENGTH = 16;
+
 NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
     QAbstractItemModel(parent),
     root(root_),
@@ -82,7 +84,9 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
                     auto value = node->get_any(get_core_context());
                     try {
                         auto s = core::serialize::value_to_string(value);
-                        return QString::fromStdString(s);
+                        auto s_fixed = s.substr(0, MAX_VALUE_LENGTH);
+                        auto s_fixed2 = s_fixed.substr(0, s_fixed.find('\n'));
+                        return util::str(s_fixed2);
                     } catch (class_init::RuntimeTypeError const& ex) {
                         return {};
                     }
