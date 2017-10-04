@@ -66,6 +66,12 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
                     type_name = core::node_name(*node);
                 return util::str("{}: {}"_format(node_role, type_name));
             } break;
+            case Qt::ToolTipRole: {
+                // TODO: node role documentation
+                if (auto node = get_node_as<core::DocString>(index))
+                    return util::str(node->doc_string());
+                return {};
+            } break;
             default:
                 return {};
         }
