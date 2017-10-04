@@ -53,8 +53,6 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
-    ui->canvas->load_registered_tools();
-    ui->canvas->use_tool("Default");
     renderer = make_shared<Renderer>(ui->canvas);
     window_title_template = util::str(windowTitle());
     update_title();
@@ -246,7 +244,19 @@ void MainWindow::setup_dock_menu() {
 }
 
 void MainWindow::setup_tools() {
-    // TODO
+    ui->canvas->load_registered_tools();
+    for (auto const& e : ui->canvas->list_tools()) {
+        auto const& name = e.first;
+        auto tool = e.second;
+        ui->tools_bar->addAction(
+            QIcon::fromTheme(util::str(tool->icon())),
+            util::str(name),
+            [this, name] () {
+                ui->canvas->use_tool(name);
+            }
+        );
+    }
+    ui->canvas->use_tool("Default");
 }
 
 void MainWindow::set_context(shared_ptr<EditorContext> context_) {

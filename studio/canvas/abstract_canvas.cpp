@@ -57,17 +57,8 @@ void AbstractCanvas::clear_editors() {
     editors.clear();
 }
 
-vector<string> AbstractCanvas::list_tools() const {
-    vector<string> result;
-    std::transform(
-        tools.begin(),
-        tools.end(),
-        std::back_inserter(result),
-        [](auto const& tool) {
-            return tool->name();
-        }
-    );
-    return result;
+map<string, observer_ptr<CanvasTool>> const& AbstractCanvas::list_tools() const {
+    return named_tools;
 }
 
 void AbstractCanvas::use_tool(string name) {
@@ -77,13 +68,13 @@ void AbstractCanvas::use_tool(string name) {
     use_tool(it->second);
 }
 
-void AbstractCanvas::use_tool(CanvasTool* tool) {
+void AbstractCanvas::use_tool(observer_ptr<CanvasTool> tool) {
     if (current_tool != nullptr) {
-        removeEventFilter(current_tool);
+        removeEventFilter(current_tool.get());
         current_tool->set_canvas(nullptr);
     }
     tool->set_canvas(this);
-    installEventFilter(tool);
+    installEventFilter(tool.get());
     current_tool = tool;
 }
 

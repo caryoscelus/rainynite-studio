@@ -57,11 +57,15 @@ public:
         return is_scrolling;
     }
 
-public:
+    string icon() const override {
+        return "cursor-arrow";
+    }
+
     string name() const override {
         return global_name();
     }
 
+public:
     static string global_name() {
         return "Default";
     }

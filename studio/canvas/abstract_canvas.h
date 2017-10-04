@@ -62,7 +62,7 @@ public:
     void clear_editors();
 
     /// Get available tool names list
-    vector<string> list_tools() const;
+    map<string, observer_ptr<CanvasTool>> const& list_tools() const;
 
     /// Switch to tool
     void use_tool(string name);
@@ -86,14 +86,14 @@ protected:
 
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
-    void use_tool(CanvasTool* tool);
+    void use_tool(observer_ptr<CanvasTool> tool);
 
 private:
     unique_ptr<QGraphicsScene> the_scene;
     vector<shared_ptr<CanvasEditor>> editors;
     vector<unique_ptr<CanvasTool>> tools;
-    map<string, CanvasTool*> named_tools;
-    CanvasTool* current_tool = nullptr;
+    map<string, observer_ptr<CanvasTool>> named_tools;
+    observer_ptr<CanvasTool> current_tool = nullptr;
     shared_ptr<core::AbstractValue> active_node;
 };
 
