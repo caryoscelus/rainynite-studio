@@ -45,6 +45,8 @@ class CanvasTool;
  * tools and/or editors.
  */
 class AbstractCanvas : public QGraphicsView, public ContextListener {
+    Q_OBJECT
+
 public:
     explicit AbstractCanvas(QWidget* parent = nullptr);
     virtual ~AbstractCanvas();
@@ -76,6 +78,9 @@ public:
     void scroll_by(QPoint delta);
 
     void set_context(shared_ptr<EditorContext> context) override;
+
+Q_SIGNALS:
+    void zoomed(double new_level);
 
 protected:
     void active_node_changed(shared_ptr<core::AbstractValue> node) override;
