@@ -1,5 +1,4 @@
-/*
- *  canvas.cpp - main canvas widget
+/*  canvas.cpp - main canvas widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -23,6 +22,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QWheelEvent>
+#include <QSlider>
 #include <QDebug>
 
 #include <geom_helpers/knots.h>
@@ -38,6 +38,10 @@ using namespace fmt::literals;
 
 namespace rainynite::studio {
 
+static const int SLIDER_FACTOR = 8;
+static const int MIN_ZOOM = 6; // x64
+static const int MAX_ZOOM = 8; // x256
+
 Canvas::Canvas(QWidget* parent) :
     AbstractCanvas(parent),
     image(make_unique<QGraphicsPixmapItem>())
@@ -48,6 +52,28 @@ Canvas::Canvas(QWidget* parent) :
     image_border->setPen(pens::cosmetic_dash());
     setResizeAnchor(QGraphicsView::NoAnchor);
     setTransformationAnchor(QGraphicsView::NoAnchor);
+
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    zoom_slider.reset(new QSlider(Qt::Horizontal, this));
+    zoom_slider->setRange(-SLIDER_FACTOR*MIN_ZOOM, SLIDER_FACTOR*MAX_ZOOM);
+    connect(
+        zoom_slider.get(),
+        &QSlider::valueChanged,
+        [this] (int value) {
+            set_zoom(std::pow(2, value*1.0/SLIDER_FACTOR));
+        }
+    );
+    connect(
+        this,
+        &AbstractCanvas::zoomed,
+        [this] (double level) {
+            auto old_lock = zoom_slider->blockSignals(true);
+            zoom_slider->setValue(std::log2(level)*SLIDER_FACTOR);
+            zoom_slider->blockSignals(old_lock);
+        }
+    );
 }
 
 Canvas::~Canvas() {
@@ -68,6 +94,16 @@ void Canvas::set_context(shared_ptr<EditorContext> context) {
         }
     );
     update_border();
+}
+
+void Canvas::resizeEvent(QResizeEvent* event) {
+    auto pos = event->size();
+    zoom_slider->setGeometry({
+        pos.width()-128,
+        pos.height()-16,
+        128,
+        16
+    });
 }
 
 void Canvas::update_border() {

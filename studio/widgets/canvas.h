@@ -1,5 +1,4 @@
-/*
- *  canvas.h - main canvas widget
+/*  canvas.h - main canvas widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__CANVAS_H__4539A958
-#define __STUDIO__CANVAS_H__4539A958
+#ifndef STUDIO_WIDGETS_CANVAS_H_20C351D1_AD17_5E84_B8D3_6EC2A325B3E4
+#define STUDIO_WIDGETS_CANVAS_H_20C351D1_AD17_5E84_B8D3_6EC2A325B3E4
 
 #include <core/std/memory.h>
 #include <core/std/vector.h>
@@ -28,6 +27,7 @@ class QGraphicsScene;
 class QGraphicsItem;
 class QGraphicsPixmapItem;
 class QGraphicsRectItem;
+class QSlider;
 
 namespace rainynite::studio {
 
@@ -41,12 +41,16 @@ public:
 protected:
     void set_context(shared_ptr<EditorContext> context) override;
 
+    void resizeEvent(QResizeEvent* event) override;
+
 private:
     void update_border();
 
 private:
     unique_ptr<QGraphicsPixmapItem> image;
     unique_ptr<QGraphicsRectItem> image_border;
+
+    observer_ptr<QSlider> zoom_slider;
 };
 
 REGISTER_CANVAS(Canvas);
