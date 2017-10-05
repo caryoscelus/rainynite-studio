@@ -81,9 +81,16 @@ void AbstractCanvas::use_tool(observer_ptr<CanvasTool> tool) {
 void AbstractCanvas::zoom_at(QPoint point, double factor) {
     auto old_pos = mapToScene(point);
     scale(factor, factor);
+    zoom_level *= factor;
     auto new_pos = mapToScene(point);
     auto delta = new_pos-old_pos;
     translate(delta.x(), delta.y());
+}
+
+void AbstractCanvas::set_zoom(double level) {
+    auto factor = level/zoom_level;
+    scale(factor, factor);
+    zoom_level = level;
 }
 
 void AbstractCanvas::scroll_by(QPoint delta) {

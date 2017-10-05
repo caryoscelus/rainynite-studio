@@ -70,6 +70,9 @@ public:
     /// Zoom at `point`
     void zoom_at(QPoint point, double factor);
 
+    /// Set zoom level
+    void set_zoom(double level);
+
     void scroll_by(QPoint delta);
 
     void set_context(shared_ptr<EditorContext> context) override;
@@ -95,6 +98,7 @@ private:
     map<string, observer_ptr<CanvasTool>> named_tools;
     observer_ptr<CanvasTool> current_tool = nullptr;
     shared_ptr<core::AbstractValue> active_node;
+    double zoom_level = 1.0;
 };
 
 } // namespace rainynite::studio
