@@ -43,6 +43,7 @@ target_sources(rainynite-studio
         canvas/attachable.h
         canvas/attachable.cpp
 
+        canvas/tools/base.h
         canvas/tools/default.cpp
         canvas/tools/zoom_area.cpp
         canvas/tools/rectangle.cpp

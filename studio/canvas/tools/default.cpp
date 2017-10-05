@@ -15,48 +15,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QWheelEvent>
-#include <QMouseEvent>
-#include <QDebug>
-#include <iostream>
+#include "base.h"
 
-#include <canvas/tool.h>
-#include <widgets/canvas.h>
+namespace rainynite::studio::tools {
 
-namespace rainynite::studio {
-
-class DefaultTool : public CanvasTool {
+class Default : public Base {
 public:
-    bool canvas_event(QEvent* event) override {
-        if (get_canvas() == nullptr)
-            return false;
-        if (auto wheel_event = dynamic_cast<QWheelEvent*>(event)) {
-            auto scale_factor = std::pow(2, wheel_event->angleDelta().y() / 256.0);
-            get_canvas()->zoom_at(wheel_event->pos(), scale_factor);
-            return true;
-        }
-        if (auto mouse_event = dynamic_cast<QMouseEvent*>(event)) {
-            if (is_scrolling) {
-                get_canvas()->scroll_by(mouse_event->pos() - scroll_pos);
-                scroll_pos = mouse_event->pos();
-            }
-            switch (mouse_event->type()) {
-                case QEvent::MouseButtonPress: {
-                    if (mouse_event->button() == Qt::MidButton) {
-                        scroll_pos = mouse_event->pos();
-                        is_scrolling = true;
-                    }
-                } break;
-                case QEvent::MouseButtonRelease: {
-                    is_scrolling = false;
-                } break;
-                default:
-                    break;
-            }
-        }
-        return is_scrolling;
-    }
-
     string icon() const override {
         return "cursor-arrow";
     }
@@ -69,12 +33,10 @@ public:
     static string global_name() {
         return "Default";
     }
-
-private:
-    bool is_scrolling = false;
-    QPoint scroll_pos;
 };
 
-REGISTER_CANVAS_TOOL(DefaultTool, Canvas);
+} // namespace rainynite::studio::tools
 
-} // namespace rainynite::studio
+namespace rainynite::studio {
+REGISTER_CANVAS_TOOL(tools::Default, Canvas);
+}
