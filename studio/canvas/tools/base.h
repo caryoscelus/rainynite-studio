@@ -38,30 +38,45 @@ public:
             return true;
         }
         if (auto mouse_event = dynamic_cast<QMouseEvent*>(event)) {
+            auto delta = mouse_event->pos() - scroll_pos;
+            scroll_pos = mouse_event->pos();
             if (is_scrolling) {
-                get_canvas()->scroll_by(mouse_event->pos() - scroll_pos);
-                scroll_pos = mouse_event->pos();
+                get_canvas()->scroll_by(delta);
+            } else if (is_zooming) {
+                auto scale_factor = std::pow(2, -delta.y() / 64.0);
+                get_canvas()->zoom_at(zoom_pos, scale_factor);
             }
             switch (mouse_event->type()) {
                 case QEvent::MouseButtonPress: {
+                    if (is_scrolling || is_zooming) {
+                        // this shouldn't really happen, but just in case
+                        break;
+                    }
                     if (mouse_event->button() == Qt::MidButton) {
-                        scroll_pos = mouse_event->pos();
-                        is_scrolling = true;
+                        if (mouse_event->modifiers().testFlag(Qt::ControlModifier)) {
+                            is_zooming = true;
+                            zoom_pos = mouse_event->pos();
+                        } else {
+                            is_scrolling = true;
+                        }
                     }
                 } break;
                 case QEvent::MouseButtonRelease: {
-                    is_scrolling = false;
+                    if (mouse_event->button() == Qt::MidButton)
+                        is_zooming = is_scrolling = false;
                 } break;
                 default:
                     break;
             }
         }
-        return is_scrolling;
+        return is_scrolling || is_zooming;
     }
 
 private:
     bool is_scrolling = false;
+    bool is_zooming = false;
     QPoint scroll_pos;
+    QPoint zoom_pos;
 };
 
 } // namespace rainynite::studio::tools
