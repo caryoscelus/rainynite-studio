@@ -45,6 +45,7 @@ target_sources(rainynite-studio
 
         canvas/tools/default.cpp
         canvas/tools/zoom_area.cpp
+        canvas/tools/rectangle.cpp
 
         canvas/editors/point_item.h
         canvas/editors/point_item.cpp
