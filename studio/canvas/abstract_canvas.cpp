@@ -18,6 +18,7 @@
 #include <algorithm>
 
 #include <QMouseEvent>
+#include <QGraphicsPixmapItem>
 
 #include "abstract_canvas.h"
 #include "registry.h"
@@ -26,9 +27,18 @@ namespace rainynite::studio {
 
 AbstractCanvas::AbstractCanvas(QWidget* parent) :
     QGraphicsView(parent),
-    the_scene(make_unique<QGraphicsScene>())
+    the_scene(make_unique<QGraphicsScene>()),
+    image(make_unique<QGraphicsPixmapItem>())
 {
     setScene(the_scene.get());
+    scene()->addItem(image.get());
+}
+
+AbstractCanvas::~AbstractCanvas() {
+}
+
+void AbstractCanvas::set_background_image(QPixmap const& pixmap) {
+    image->setPixmap(pixmap);
 }
 
 void AbstractCanvas::load_registered_tools() {
@@ -39,9 +49,6 @@ void AbstractCanvas::load_registered_tools() {
 void AbstractCanvas::add_tool(unique_ptr<CanvasTool> tool) {
     named_tools.emplace(tool->name(), tool.get());
     tools.push_back(std::move(tool));
-}
-
-AbstractCanvas::~AbstractCanvas() {
 }
 
 void AbstractCanvas::add_editor(shared_ptr<CanvasEditor> editor) {

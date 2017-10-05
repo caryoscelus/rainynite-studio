@@ -20,7 +20,7 @@
 #include <fmt/format.h>
 
 #include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include <QWheelEvent>
 #include <QSlider>
 #include <QDebug>
@@ -43,10 +43,8 @@ static const int MIN_ZOOM = 6; // x64
 static const int MAX_ZOOM = 8; // x256
 
 Canvas::Canvas(QWidget* parent) :
-    AbstractCanvas(parent),
-    image(make_unique<QGraphicsPixmapItem>())
+    AbstractCanvas(parent)
 {
-    scene()->addItem(image.get());
     setDragMode(QGraphicsView::RubberBandDrag);
     image_border.reset(scene()->addRect(0, 0, 0, 0));
     image_border->setPen(pens::cosmetic_dash());
@@ -77,10 +75,6 @@ Canvas::Canvas(QWidget* parent) :
 }
 
 Canvas::~Canvas() {
-}
-
-void Canvas::set_main_image(QPixmap const& pixmap) {
-    image->setPixmap(pixmap);
 }
 
 void Canvas::set_context(shared_ptr<EditorContext> context) {

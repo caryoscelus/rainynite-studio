@@ -25,7 +25,6 @@
 
 class QGraphicsScene;
 class QGraphicsItem;
-class QGraphicsPixmapItem;
 class QGraphicsRectItem;
 class QSlider;
 
@@ -36,8 +35,6 @@ public:
     explicit Canvas(QWidget* parent = nullptr);
     virtual ~Canvas();
 
-    void set_main_image(QPixmap const& pixmap);
-
 protected:
     void set_context(shared_ptr<EditorContext> context) override;
 
@@ -47,7 +44,6 @@ private:
     void update_border();
 
 private:
-    unique_ptr<QGraphicsPixmapItem> image;
     unique_ptr<QGraphicsRectItem> image_border;
 
     observer_ptr<QSlider> zoom_slider;

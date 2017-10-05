@@ -51,6 +51,8 @@ public:
     explicit AbstractCanvas(QWidget* parent = nullptr);
     virtual ~AbstractCanvas();
 
+    void set_background_image(QPixmap const& pixmap);
+
     /// Load registered tools for this canvas
     void load_registered_tools();
 
@@ -102,6 +104,7 @@ private:
 
 private:
     unique_ptr<QGraphicsScene> the_scene;
+    unique_ptr<QGraphicsPixmapItem> image;
     vector<shared_ptr<CanvasEditor>> editors;
     vector<unique_ptr<CanvasTool>> tools;
     map<string, observer_ptr<CanvasTool>> named_tools;

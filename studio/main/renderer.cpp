@@ -125,7 +125,7 @@ void Renderer::toggle_extra_style(bool checked) {
 void Renderer::set_mainarea_image(string const& fname) {
     QPixmap pixmap;
     pixmap.load(util::str(fname));
-    canvas->set_main_image(pixmap);
+    canvas->set_background_image(pixmap);
 }
 
 void Renderer::quit() {
