@@ -75,6 +75,9 @@ public:
     /// Set zoom level
     void set_zoom(double level);
 
+    /// Zoom to show rect area
+    void zoom_to_rect(QRectF rect);
+
     void scroll_by(QPoint delta);
 
     void set_context(shared_ptr<EditorContext> context) override;
@@ -95,6 +98,7 @@ protected:
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
     void use_tool(observer_ptr<CanvasTool> tool);
+    double zoom_level();
 
 private:
     unique_ptr<QGraphicsScene> the_scene;
@@ -103,7 +107,6 @@ private:
     map<string, observer_ptr<CanvasTool>> named_tools;
     observer_ptr<CanvasTool> current_tool = nullptr;
     shared_ptr<core::AbstractValue> active_node;
-    double zoom_level = 1.0;
 };
 
 } // namespace rainynite::studio

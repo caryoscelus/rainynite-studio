@@ -49,7 +49,7 @@ public:
                             get_canvas()->mapToScene(rect.topLeft()),
                             get_canvas()->mapToScene(rect.bottomRight())
                         };
-                        get_canvas()->fitInView(scene_rect, Qt::KeepAspectRatio);
+                        get_canvas()->zoom_to_rect(scene_rect);
                         delete rubber_band;
                         is_zooming = false;
                     }
