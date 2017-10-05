@@ -15,15 +15,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QMouseEvent>
 #include <QRubberBand>
 
-#include <canvas/tool.h>
-#include <widgets/canvas.h>
+#include "base.h"
 
-namespace rainynite::studio {
+namespace rainynite::studio::tools {
 
-class ZoomAreaTool : public CanvasTool {
+class ZoomArea : public Base {
 public:
     bool canvas_event(QEvent* event) override {
         if (get_canvas() == nullptr)
@@ -60,7 +58,7 @@ public:
                     break;
             }
         }
-        return is_zooming;
+        return is_zooming || Base::canvas_event(event);
     }
 
     string icon() const override {
@@ -93,6 +91,8 @@ private:
     QRubberBand* rubber_band;
 };
 
-REGISTER_CANVAS_TOOL(ZoomAreaTool, Canvas);
+} // namespace rainynite::studio::tools
 
-} // namespace rainynite::studio
+namespace rainynite::studio {
+REGISTER_CANVAS_TOOL(tools::ZoomArea, Canvas);
+}

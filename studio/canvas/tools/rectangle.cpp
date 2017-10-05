@@ -15,7 +15,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QMouseEvent>
 #include <QRubberBand>
 
 #include <core/node/abstract_value.h>
@@ -25,8 +24,7 @@
 
 #include <geom_helpers/rectangle.h>
 
-#include <canvas/tool.h>
-#include <widgets/canvas.h>
+#include "base.h"
 
 namespace rainynite::studio {
 namespace tools {
@@ -36,7 +34,7 @@ namespace tools {
  *
  * TODO: merge common code with zoom_area tool
  */
-class Rectangle : public CanvasTool {
+class Rectangle : public Base {
 public:
     bool canvas_event(QEvent* event) override {
         if (get_canvas() == nullptr)
@@ -49,7 +47,7 @@ public:
                 }
             }
         }
-        return is_drawing;
+        return is_drawing || Base::canvas_event(event);
     }
 
     string icon() const override {
