@@ -63,6 +63,7 @@ target_sources(rainynite-studio
         canvas/editors/timeline_cursor.cpp
         canvas/editors/time_editor.cpp
         canvas/editors/time_period_editor.cpp
+        canvas/editors/waveform.cpp
 
         generic/node_menu.cpp
         generic/node_menu.h
