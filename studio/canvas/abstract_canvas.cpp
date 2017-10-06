@@ -41,6 +41,10 @@ void AbstractCanvas::set_background_image(QPixmap const& pixmap) {
     image->setPixmap(pixmap);
 }
 
+void AbstractCanvas::set_bg_transform(QTransform const& transform) {
+    image->setTransform(transform);
+}
+
 void AbstractCanvas::load_registered_tools() {
     for (auto factory : get_canvas_tools_by_type(typeid(*this)))
         add_tool((*factory)());

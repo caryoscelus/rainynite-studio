@@ -52,6 +52,7 @@ public:
     virtual ~AbstractCanvas();
 
     void set_background_image(QPixmap const& pixmap);
+    void set_bg_transform(QTransform const& transform);
 
     /// Load registered tools for this canvas
     void load_registered_tools();
