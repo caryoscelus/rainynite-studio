@@ -111,6 +111,7 @@ public:
             return;
         }
         this->get_context()->action_stack()->template emplace<core::actions::ChangeValue>(this->get_node(), value);
+        this->get_context()->action_stack()->close();
     }
 
     /// This function forwards update_value call
@@ -153,6 +154,7 @@ public:
                 return;
         }
         this->get_context()->action_stack()->template emplace<core::actions::ChangeValue>(this->get_node(), Widget::value());
+        this->get_context()->action_stack()->close();
     }
 
     /// This function forwards update_value call
