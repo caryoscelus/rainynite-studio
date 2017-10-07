@@ -1,5 +1,4 @@
-/*
- *  node_model.h - node tree model wrapper
+/*  node_model.h - node tree model wrapper
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__NODE_MODEL_H_E924C400
-#define __STUDIO__NODE_MODEL_H_E924C400
+#ifndef STUDIO_MODELS_NODE_MODEL_H_7049227A_5FEA_5FDF_9D8E_5C61B5F8AAAF
+#define STUDIO_MODELS_NODE_MODEL_H_7049227A_5FEA_5FDF_9D8E_5C61B5F8AAAF
 
 #include <QAbstractItemModel>
 
@@ -100,7 +99,7 @@ public:
     }
 
 public:
-    optional<std::type_index> get_link_type(QModelIndex const& index) const;
+    core::TypeConstraint get_link_type(QModelIndex const& index) const;
     shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
     template <class T>
     shared_ptr<T> get_node_as(QModelIndex const& index) const {

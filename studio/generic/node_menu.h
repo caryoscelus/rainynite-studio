@@ -1,5 +1,4 @@
-/*
- *  node_menu.h - node context menu
+/*  node_menu.h - node context menu
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

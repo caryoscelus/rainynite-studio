@@ -239,9 +239,7 @@ bool NodeModel::can_remove_node(QModelIndex const& index) const {
     if (auto node = get_node_as<core::AbstractListLinked>(index)) {
         if (node->link_count() == 0)
             return false;
-        if (auto req_type = get_link_type(index))
-            return node->get_link_type(0) == *req_type;
-        return index.parent().isValid();
+        return index.parent().isValid() && get_link_type(index).accept(node->get_link(0)->get_type());
     }
     return false;
 }
@@ -313,7 +311,7 @@ quintptr NodeModel::get_id(QModelIndex const& parent, size_t i) const {
     return interal_id;
 }
 
-optional<std::type_index> NodeModel::get_link_type(QModelIndex const& index) const {
+core::TypeConstraint NodeModel::get_link_type(QModelIndex const& index) const {
     if (auto parent = get_node_as<core::AbstractListLinked>(index.parent()))
         return parent->get_link_type(get_node_index(index));
     return {};

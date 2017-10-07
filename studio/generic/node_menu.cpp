@@ -34,8 +34,17 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
     auto parent_index = index.parent();
     if (auto parent_node = dynamic_pointer_cast<core::AbstractListLinked>(model->get_node(parent_index))) {
         size_t node_index = model->get_node_index(index);
-        auto type = parent_node->get_link_type(node_index);
-        node_infos = type ? core::node_types()[*type] : core::all_node_infos();
+        auto type_constraint = parent_node->get_link_type(node_index);
+        auto t = core::all_node_infos();
+        node_infos = {};
+        std::copy_if(
+            t.begin(),
+            t.end(),
+            std::inserter(node_infos, node_infos.end()),
+            [type_constraint](auto info) {
+                return type_constraint.accept(info->type());
+            }
+        );
 
         selection = selection_model->selectedIndexes();
         // selection may contain other columns, which should be ignored
