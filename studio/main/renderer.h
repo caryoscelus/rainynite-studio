@@ -1,5 +1,4 @@
-/*
- *  renderer.h - renderer
+/*  renderer.h - renderer
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -49,11 +48,20 @@ public:
     void set_context(shared_ptr<EditorContext> context_) override;
 
 public Q_SLOTS:
+    /// Render active period
     void render();
+
+    /// Render current frame
     void render_frame();
+
     void stop_render();
+
+    /// Redraw canvas using render result
     void redraw();
+
     void toggle_extra_style(bool checked);
+
+    void toggle_auto_redraw(bool checked);
 
 Q_SIGNALS:
     void redraw_signal();
@@ -67,6 +75,7 @@ private:
 
     string fname;
     bool extra_style = true;
+    bool auto_redraw = true;
 
     std::thread render_thread;
     shared_ptr<core::renderers::SvgRenderer> renderer;

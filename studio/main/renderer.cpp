@@ -1,5 +1,4 @@
-/*
- *  renderer.cpp - renderer
+/*  renderer.cpp - renderer
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -24,6 +23,7 @@
 #include <QPixmap>
 
 #include <core/renderers/svg_renderer.h>
+#include <core/document.h>
 
 #include <util/strings.h>
 #include <widgets/canvas.h>
@@ -53,6 +53,15 @@ void Renderer::set_context(shared_ptr<EditorContext> context_) {
     get_context()->changed_time().connect([this](core::Time){
         redraw();
     });
+    if (auto doc = get_core_context()->get_document()) {
+        connect_boost(
+            doc->get_action_stack()->action_closed,
+            [this]() {
+                if (auto_redraw)
+                    render_frame();
+            }
+        );
+    }
 }
 
 void Renderer::setup_renderer() {
@@ -120,6 +129,11 @@ void Renderer::redraw() {
 
 void Renderer::toggle_extra_style(bool checked) {
     extra_style = checked;
+}
+
+void Renderer::toggle_auto_redraw(bool checked) {
+    auto_redraw = checked;
+    render_frame();
 }
 
 void Renderer::set_mainarea_image(string const& fname) {
