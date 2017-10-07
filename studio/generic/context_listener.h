@@ -1,5 +1,4 @@
-/*
- *  context_listener.h - Context-dependent entity
+/*  context_listener.h - Context-dependent entity
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,17 +15,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__CONTEXT_LISTENER_H__9E128DC4
-#define __STUDIO__CONTEXT_LISTENER_H__9E128DC4
+#ifndef STUDIO_GENERIC_CONTEXT_LISTENER_H_4EE76790_980D_55BC_9584_1B71A700816E
+#define STUDIO_GENERIC_CONTEXT_LISTENER_H_4EE76790_980D_55BC_9584_1B71A700816E
 
 #include <core/std/memory.h>
 #include <type_traits>
 
 #include "editor_context.h"
+#include "destroy_detector.h"
 
 namespace rainynite::studio {
 
-class ContextListener {
+class ContextListener : public DestroyDetector {
 public:
     ContextListener(shared_ptr<EditorContext> context_=nullptr);
     virtual ~ContextListener() = default;
@@ -53,18 +53,9 @@ protected:
     virtual void fps_changed(core::Time::fps_type) {}
     virtual void active_node_changed(shared_ptr<core::AbstractValue>) {}
 
-    template <class S, class F>
-    void connect_boost(S& signal, F lambda) {
-        auto slot = typename S::slot_type(lambda);
-        slot.track_foreign(destroy_detector);
-        signal.connect(slot);
-    }
-
 private:
     shared_ptr<EditorContext> context;
     core::Time time;
-    struct Null {};
-    shared_ptr<Null> destroy_detector;
 };
 
 }

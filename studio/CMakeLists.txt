@@ -65,6 +65,7 @@ target_sources(rainynite-studio
         canvas/editors/time_period_editor.cpp
         canvas/editors/waveform.cpp
 
+        generic/destroy_detector.h
         generic/node_menu.cpp
         generic/node_menu.h
         generic/node_editor.cpp

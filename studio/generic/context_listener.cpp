@@ -1,5 +1,4 @@
-/*
- *  context_listener.cpp - Context-dependent entity
+/*  context_listener.cpp - Context-dependent entity
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -22,9 +21,7 @@
 
 namespace rainynite::studio {
 
-ContextListener::ContextListener(shared_ptr<EditorContext> context_) :
-    destroy_detector(make_shared<Null>())
-{
+ContextListener::ContextListener(shared_ptr<EditorContext> context_) {
     set_context(context_);
 }
 
