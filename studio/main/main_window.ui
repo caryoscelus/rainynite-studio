@@ -80,6 +80,7 @@
     <addaction name="action_stop_render"/>
     <addaction name="separator"/>
     <addaction name="action_extra_style"/>
+    <addaction name="action_auto_redraw"/>
    </widget>
    <widget class="QMenu" name="menu_view">
     <property name="title">
@@ -297,6 +298,20 @@
    </property>
    <property name="text">
     <string>&amp;Stop</string>
+   </property>
+  </action>
+  <action name="action_auto_redraw">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable auto-redraw</string>
+   </property>
+   <property name="toolTip">
+    <string>Disable this if rendering starts to happen at unfortunate times.</string>
    </property>
   </action>
  </widget>

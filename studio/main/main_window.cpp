@@ -1,5 +1,4 @@
-/*
- *  main_window.cpp - main window
+/*  main_window.cpp - main window
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -74,6 +73,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_stop_render, SIGNAL(triggered()), renderer.get(), SLOT(stop_render()));
     connect(ui->action_redraw, SIGNAL(triggered()), renderer.get(), SLOT(redraw()));
     connect(ui->action_extra_style, SIGNAL(toggled(bool)), renderer.get(), SLOT(toggle_extra_style(bool)));
+    connect(ui->action_auto_redraw, SIGNAL(toggled(bool)), renderer.get(), SLOT(toggle_auto_redraw(bool)));
 
     setup_tools();
 
