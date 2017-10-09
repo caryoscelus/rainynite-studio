@@ -82,6 +82,7 @@ private:
     std::queue<core::Context> renderer_queue;
     std::mutex renderer_mutex;
     bool renderer_quit = false;
+    bool renderer_restart = false;
 };
 
 } // namespace rainynite::studio

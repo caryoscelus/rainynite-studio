@@ -21,6 +21,7 @@
 
 #include <QDebug>
 #include <QPixmap>
+#include <QTimer>
 
 #include <core/renderers/svg_renderer.h>
 #include <core/document.h>
@@ -138,8 +139,10 @@ void Renderer::toggle_auto_redraw(bool checked) {
 
 void Renderer::set_mainarea_image(string const& fname) {
     QPixmap pixmap;
-    pixmap.load(util::str(fname));
-    canvas->set_background_image(pixmap);
+    if (pixmap.load(util::str(fname)))
+        canvas->set_background_image(pixmap);
+    else
+        QTimer::singleShot(64, this, &Renderer::redraw);
 }
 
 void Renderer::quit() {
