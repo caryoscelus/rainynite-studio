@@ -68,7 +68,7 @@ void Renderer::set_context(shared_ptr<EditorContext> context_) {
 void Renderer::setup_renderer() {
     renderer = make_shared<core::renderers::SvgRenderer>();
     render_thread = std::thread([this]() {
-        while (!renderer_quit) {
+        while (!renderer_quit && !renderer_restart) {
             if (renderer_queue.size() > 0) {
                 renderer_mutex.lock();
                 auto ctx = std::move(renderer_queue.front());
@@ -78,18 +78,25 @@ void Renderer::setup_renderer() {
                 try {
                     renderer->render(std::move(ctx));
                 } catch (std::exception const& ex) {
-                    auto msg = util::str("Uncaught exception while rendering:\n{}"_format(ex.what()));
-                    qDebug() << msg;
+                    auto msg = "Uncaught exception while rendering:\n{}"_format(ex.what());
+                    qInfo() << util::str(msg);
+                    renderer_restart = true;
                 }
                 Q_EMIT redraw_signal();
             } else {
                 std::this_thread::sleep_for(std::chrono::milliseconds(128));
             }
         }
+        qDebug() << "Render thread quit!";
     });
 }
 
 void Renderer::render_period(core::TimePeriod const& period) {
+    if (renderer_restart) {
+        render_thread.join();
+        renderer_restart = false;
+        setup_renderer();
+    }
     if (get_core_context()->get_document()) {
         auto rsettings = core::renderers::SvgRendererSettings();
         rsettings.render_pngs = true;
