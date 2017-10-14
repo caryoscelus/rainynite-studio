@@ -102,7 +102,10 @@ void Canvas::resizeEvent(QResizeEvent* event) {
 
 void Canvas::update_border() {
     auto size = get_core_context()->get_document()->get_size()->value(get_core_context());
-    image_border->setRect(0, 0, size.x(), size.y());
+    auto w = size.x();
+    auto h = size.y();
+    image_border->setRect(0, 0, w, h);
+    setSceneRect(-w, -h, w*3, h*3);
 }
 
 } // namespace rainynite::studio
