@@ -18,11 +18,23 @@
 #ifndef STUDIO_GENERIC_NODE_EDITOR_WIDGET_H_825E9422_9018_587A_82D1_1ECB634E35EF
 #define STUDIO_GENERIC_NODE_EDITOR_WIDGET_H_825E9422_9018_587A_82D1_1ECB634E35EF
 
+#include <experimental/type_traits>
+
 #include <core/type_info.h>
 
 #include "node_editor.h"
 
 namespace rainynite::studio {
+
+namespace detail {
+
+template <class C>
+using editing_finished_t = decltype(std::declval<C&>().editingFinished());
+
+template <class C>
+constexpr bool has_editing_finished_signal = std::experimental::is_detected_v<editing_finished_t, C>;
+
+}
 
 /**
  * Abstract template for "converting" editor widget classes into node editors.
@@ -44,12 +56,14 @@ public:
      * It cannot be called from ctr here because this is not yet Self*
      */
     void init() {
-        QObject::connect(
-            self(),
-            &Self::editingFinished,
-            self(),
-            &Self::write_action
-        );
+        if constexpr (detail::has_editing_finished_signal<Self>) {
+            QObject::connect(
+                self(),
+                &Self::editingFinished,
+                self(),
+                &Self::write_action
+            );
+        }
     }
 
     void node_update() override {
