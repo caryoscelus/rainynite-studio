@@ -1,5 +1,4 @@
-/*
- *  rectangle_editor.h - edit rectangles on canvas
+/*  rectangle_editor.h - edit rectangles on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
-#define __STUDIO__WIDGETS__RECTANGLE_EDITOR_H__F5CE7038
+#ifndef STUDIO_CANVAS_EDITORS_RECTANGLE_EDITOR_H_5FBB15E0_F217_5146_81A4_7B6D6DA85EC3
+#define STUDIO_CANVAS_EDITORS_RECTANGLE_EDITOR_H_5FBB15E0_F217_5146_81A4_7B6D6DA85EC3
 
 #include <core/std/memory.h>
 

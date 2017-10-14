@@ -1,5 +1,4 @@
-/*
- *  point_item.cpp - point item reporting its position changes
+/*  point_item.cpp - point item reporting its position changes
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

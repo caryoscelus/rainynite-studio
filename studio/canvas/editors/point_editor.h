@@ -1,5 +1,4 @@
-/*
- *  point_editor.h - edit points on canvas
+/*  point_editor.h - edit points on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
-#define __STUDIO__WIDGETS__POINT_EDITOR_H__58F87146
+#ifndef STUDIO_CANVAS_EDITORS_POINT_EDITOR_H_6F6D6AE0_995B_5368_B00E_6609805AEA1A
+#define STUDIO_CANVAS_EDITORS_POINT_EDITOR_H_6F6D6AE0_995B_5368_B00E_6609805AEA1A
+
+/*
+ * TODO: move to .cpp
+ */
 
 #include <core/std/memory.h>
 
@@ -29,6 +32,7 @@ namespace rainynite::studio {
 
 class PointItem;
 
+/// Simple on-canvas point editor, based on PointItem.
 class PointEditor : public NodeEditor, public CanvasEditor {
 public:
     PointEditor();

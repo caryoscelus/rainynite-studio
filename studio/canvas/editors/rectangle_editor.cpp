@@ -1,5 +1,4 @@
-/*
- *  rectangle_editor.cpp - edit rectangles on canvas
+/*  rectangle_editor.cpp - edit rectangles on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

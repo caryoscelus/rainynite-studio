@@ -1,5 +1,4 @@
-/*
- *  bezier_editor.h - edit beziers on canvas
+/*  bezier_editor.h - edit beziers on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -28,6 +27,7 @@ class QGraphicsPathItem;
 
 namespace rainynite::studio {
 
+/// Primitive bezier path canvas editor
 class BezierEditor : public NodeEditor, public CanvasEditor {
 public:
     BezierEditor();

@@ -1,5 +1,4 @@
-/*
- *  time_period_editor.cpp - time period editing widget
+/*  time_period_editor.cpp - time period editing widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

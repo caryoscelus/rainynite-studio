@@ -1,5 +1,4 @@
-/*
- *  bezier_editor.cpp - edit beziers on canvas
+/*  bezier_editor.cpp - edit beziers on canvas
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

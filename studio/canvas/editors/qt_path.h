@@ -1,5 +1,4 @@
-/*
- *  qt_path.h - Qt <-> lib2geom path conversion
+/*  qt_path.h - Qt <-> lib2geom path conversion
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,11 +15,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__CANVAS__QT_PATH_H__A793615E
-#define __STUDIO__CANVAS__QT_PATH_H__A793615E
+#ifndef STUDIO_CANVAS_EDITORS_QT_PATH_H_3FCA40F9_C398_5905_B884_1EA23BEF81F4
+#define STUDIO_CANVAS_EDITORS_QT_PATH_H_3FCA40F9_C398_5905_B884_1EA23BEF81F4
 
 /**
  * TODO: move to separate Qt lib2geom wrapper library, perhaps?
+ * TODO: namespace
  */
 
 #include <QPainterPath>

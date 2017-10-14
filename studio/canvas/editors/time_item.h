@@ -1,5 +1,4 @@
-/*
- *  time_item.h - time editing item
+/*  time_item.h - time editing item
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__CANVAS__TIME_ITEM_H__DD92BED4
-#define __STUDIO__CANVAS__TIME_ITEM_H__DD92BED4
+#ifndef STUDIO_CANVAS_EDITORS_TIME_ITEM_H_E6E1B74E_13BE_5F5F_B46E_771E4C2E09A3
+#define STUDIO_CANVAS_EDITORS_TIME_ITEM_H_E6E1B74E_13BE_5F5F_B46E_771E4C2E09A3
 
 #include <functional>
 
@@ -27,6 +26,11 @@
 
 namespace rainynite::studio {
 
+/**
+ * Time-editing canvas item that can be used to make editors on timeline.
+ *
+ * TODO: more flexible fps support (currently editors stick to const fps).
+ */
 class TimeItem : public QGraphicsRectItem {
 public:
     using Callback = std::function<void(core::Time)>;

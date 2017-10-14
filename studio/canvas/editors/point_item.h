@@ -1,5 +1,4 @@
-/*
- *  point_item.h - point item reporting its position changes
+/*  point_item.h - point item reporting its position changes
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,13 +15,21 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__CANVAS__POINT_ITEM_H__C2FC4E6E
-#define __STUDIO__CANVAS__POINT_ITEM_H__C2FC4E6E
+#ifndef STUDIO_CANVAS_EDITORS_POINT_ITEM_H_8B768D2E_AB91_5E39_9D6E_8B2F45174CB7
+#define STUDIO_CANVAS_EDITORS_POINT_ITEM_H_8B768D2E_AB91_5E39_9D6E_8B2F45174CB7
 
 #include <QGraphicsEllipseItem>
 
 namespace rainynite::studio {
 
+/**
+ * On-canvas item for displaying "point" handles.
+ *
+ * Basically, it's a circle with the following properties:
+ * - has its position in center, not lefttop corner
+ * - automatically scales to stay the same size (NOTE: works for one view only!)
+ * - supports dragging that can be turned on and off
+ */
 class PointItem : public QGraphicsEllipseItem {
 public:
     using Callback = std::function<void(double, double)>;

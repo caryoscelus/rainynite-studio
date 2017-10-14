@@ -1,5 +1,4 @@
-/*
- *  timeline_cursor.cpp - timeline cursor widget
+/*  timeline_cursor.cpp - timeline cursor widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
