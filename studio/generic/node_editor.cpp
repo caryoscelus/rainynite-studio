@@ -1,5 +1,4 @@
-/*
- *  node_editor.cpp - abstract node editor widget class
+/*  node_editor.cpp - abstract node editor widget class
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -26,6 +25,7 @@ void NodeEditor::set_node(shared_ptr<core::AbstractValue> node_) {
     node = node_;
     if (node == nullptr)
         return;
+    node_update();
     node_connection = node->subscribe([this]() {
         node_update();
     });
