@@ -1,5 +1,4 @@
-/*
- *  node_menu.cpp - node context menu
+/*  node_menu.cpp - node context menu
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -83,6 +82,9 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
                 "Disconnect",
                 [this]() {
                     model->disconnect_node(index);
+                    // NOTE: this won't return active node back on undo!
+                    // TODO: replace this quick-fix with proper notification-based system
+                    model->get_context()->set_active_node(model->get_node(index));
                 }
             );
         }
