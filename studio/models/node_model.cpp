@@ -22,7 +22,7 @@
 #include <core/node/abstract_node.h>
 #include <core/nothing.h>
 #include <core/serialize/node_writer.h>
-#include <core/action.h>
+#include <core/action_stack.h>
 #include <core/actions/change_link.h>
 #include <core/actions/custom_property.h>
 #include <core/actions/list.h>

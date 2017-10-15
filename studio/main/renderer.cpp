@@ -25,6 +25,7 @@
 
 #include <core/renderers/svg_renderer.h>
 #include <core/document.h>
+#include <core/action_stack.h>
 
 #include <util/strings.h>
 #include <widgets/canvas.h>

@@ -21,6 +21,7 @@
 #include <experimental/type_traits>
 
 #include <core/type_info.h>
+#include <core/action_stack.h>
 
 #include "node_editor.h"
 

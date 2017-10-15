@@ -27,6 +27,7 @@
 #include <QDebug>
 
 #include <core/document.h>
+#include <core/action_stack.h>
 #include <core/filters/json_reader.h>
 #include <core/filters/yaml_reader.h>
 #include <core/filters/json_writer.h>
