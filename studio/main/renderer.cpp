@@ -56,12 +56,17 @@ void Renderer::set_context(shared_ptr<EditorContext> context_) {
         redraw();
     });
     if (auto doc = get_core_context()->get_document()) {
+        auto redraw_f = [this]() {
+            if (auto_redraw)
+                render_frame();
+        };
         connect_boost(
             doc->get_action_stack()->action_closed,
-            [this]() {
-                if (auto_redraw)
-                    render_frame();
-            }
+            redraw_f
+        );
+        connect_boost(
+            doc->get_action_stack()->undone_or_redone,
+            redraw_f
         );
     }
 }
