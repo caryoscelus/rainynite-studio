@@ -29,20 +29,26 @@ namespace rainynite::studio {
  * - has its position in center, not lefttop corner
  * - automatically scales to stay the same size (NOTE: works for one view only!)
  * - supports dragging that can be turned on and off
+ * - reports its new position when drag is over
+ *
+ * TODO: revert back reporting in the process of moving, but call
+ * different functions for moving and moving end.
  */
 class PointItem : public QGraphicsEllipseItem {
 public:
     using Callback = std::function<void(double, double)>;
-public:
+
     static const int radius = 2;
+
 public:
     PointItem(Callback callback);
-public:
+
     void paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) override;
-    QVariant itemChange(GraphicsItemChange change, QVariant const& value) override;
 public:
     void set_readonly(bool ro);
     void set_pos(double x, double y);
+protected:
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 private:
     Callback position_callback;
 };

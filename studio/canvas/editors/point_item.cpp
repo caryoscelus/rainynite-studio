@@ -42,11 +42,9 @@ void PointItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* option,
     QGraphicsEllipseItem::paint(painter, option, widget);
 }
 
-QVariant PointItem::itemChange(GraphicsItemChange change, QVariant const& value) {
-    if (change == ItemPositionHasChanged) {
-        position_callback(pos().x(), pos().y());
-    }
-    return QGraphicsItem::itemChange(change, value);
+void PointItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
+    QGraphicsEllipseItem::mouseReleaseEvent(event);
+    position_callback(pos().x(), pos().y());
 }
 
 void PointItem::set_readonly(bool ro) {
