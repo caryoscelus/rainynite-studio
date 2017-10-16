@@ -17,6 +17,8 @@
 
 #include <core/color.h>
 #include <core/node/abstract_value.h>
+#include <core/action_stack.h>
+#include <core/actions/change_value.h>
 
 #include "advanced_color_dock.h"
 #include "ui_advanced_color_dock.h"
@@ -52,16 +54,20 @@ void AdvancedColorDock::active_node_changed(shared_ptr<core::AbstractValue> node
 
 void AdvancedColorDock::write_color(QColor c) {
     using core::BaseValue;
+    using core::actions::ChangeValue;
     using core::colors::Color;
-    if (auto node = dynamic_cast<BaseValue<Color>*>(get_context()->get_active_node().get())) {
+    if (auto node = dynamic_pointer_cast<BaseValue<Color>>(get_context()->get_active_node())) {
         // TODO: use generic color conversion
-        node->set({
-            (unsigned char)c.red(),
-            (unsigned char)c.green(),
-            (unsigned char)c.blue(),
-            // temporary fix for #41
-            node->get(get_core_context()).a
-        });
+        get_context()->action_stack()->emplace<ChangeValue>(
+            node,
+            Color {
+                (unsigned char)c.red(),
+                (unsigned char)c.green(),
+                (unsigned char)c.blue(),
+                // temporary fix for #41
+                node->get(get_core_context()).a
+            }
+        );
     }
 }
 
