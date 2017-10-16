@@ -20,6 +20,9 @@
 
 #include <2geom/point.h>
 
+#include <core/action_stack.h>
+#include <core/actions/change_value.h>
+
 #include <widgets/canvas.h>
 #include "point_item.h"
 #include "point_editor.h"
@@ -63,8 +66,14 @@ void PointEditor::update_position() {
 
 void PointEditor::save_position(double x, double y) {
     if (auto node = get_node_as<Geom::Point>()) {
-        if (node->can_set())
-            node->set({x, y});
+        if (node->can_set()) {
+            auto action_stack = get_context()->action_stack();
+            action_stack->emplace<core::actions::ChangeValue>(
+                node,
+                Geom::Point{x, y}
+            );
+            action_stack->close();
+        }
     }
 }
 
