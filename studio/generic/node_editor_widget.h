@@ -18,8 +18,7 @@
 #ifndef STUDIO_GENERIC_NODE_EDITOR_WIDGET_H_825E9422_9018_587A_82D1_1ECB634E35EF
 #define STUDIO_GENERIC_NODE_EDITOR_WIDGET_H_825E9422_9018_587A_82D1_1ECB634E35EF
 
-#include <experimental/type_traits>
-
+#include <core/std/traits.h>
 #include <core/type_info.h>
 #include <core/action_stack.h>
 
@@ -81,7 +80,7 @@ public:
 
 private:
     inline Self* self() {
-        static_assert(std::is_base_of_v<AbstractNodeEditorWidget, Self>);
+        static_assert(is_base_of_v<AbstractNodeEditorWidget, Self>);
         return static_cast<Self*>(this);
     }
 
