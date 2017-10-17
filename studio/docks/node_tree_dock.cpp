@@ -1,5 +1,4 @@
-/*
- *  node_tree_dock.cpp - Dock with node tree
+/*  node_tree_dock.cpp - Dock with node tree
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -40,7 +39,13 @@ NodeTreeDock::NodeTreeDock(shared_ptr<EditorContext> context_, QWidget* parent) 
 {
     ui->setupUi(this);
     ui->tree_view->setSelectionMode(QAbstractItemView::SelectionMode::ExtendedSelection);
-    connect(ui->tree_view, SIGNAL(activated(QModelIndex)), this, SLOT(activate(QModelIndex)));
+
+    // Unfortunately, Qt mimics platform-dependent behaviour (double click for
+    // some platforms like Gtk) for `activated` signal, so we have to duplicate
+    // with `clicked` in order to make sure single click activates nodes
+    connect(ui->tree_view, &QAbstractItemView::activated, this, &NodeTreeDock::activate);
+    connect(ui->tree_view, &QAbstractItemView::clicked, this, &NodeTreeDock::activate);
+
     set_context(get_context());
 }
 
