@@ -1,5 +1,4 @@
-/*
- *  timearea_dock.h - time dock
+/*  docks/timearea.h - time dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__TIMEAREA_DOCK_H__13AFC148
-#define __STUDIO__TIMEAREA_DOCK_H__13AFC148
+#ifndef STUDIO_DOCKS_TIMEAREA_H_2F4F72BD_FE7C_50B3_BA68_26B2F94D4AD6
+#define STUDIO_DOCKS_TIMEAREA_H_2F4F72BD_FE7C_50B3_BA68_26B2F94D4AD6
 
 #include <core/std/memory.h>
 

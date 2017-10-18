@@ -1,5 +1,4 @@
-/*
- *  node_edit_dock.cpp - simple text editing of selecting node
+/*  docks/node_edit.cpp - simple text editing of selecting node
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-
 #include <fmt/format.h>
 
 #include <core/document.h>
@@ -27,8 +24,8 @@
 #include <util/strings.h>
 #include <generic/custom_widgets.h>
 #include <generic/node_editor.h>
-#include "node_edit_dock.h"
-#include "ui_node_edit_dock.h"
+#include "node_edit.h"
+#include "ui_node_edit.h"
 
 using namespace fmt::literals;
 

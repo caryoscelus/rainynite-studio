@@ -1,4 +1,4 @@
-/*  node_edit_dock.h - widget-based node editing dock
+/*  docks/node_edit.h - widget-based node editing dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

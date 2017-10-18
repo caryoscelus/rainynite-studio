@@ -1,5 +1,4 @@
-/*
- *  playback_dock.cpp - playback controls dock
+/*  docks/playback.cpp - playback controls dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "playback_dock.h"
-#include "ui_playback_dock.h"
+#include "playback.h"
+#include "ui_playback.h"
 
 namespace rainynite::studio {
 

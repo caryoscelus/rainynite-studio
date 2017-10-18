@@ -1,5 +1,4 @@
-/*
- *  timearea_dock.cpp - time area / timeline dock
+/*  docks/timearea.cpp - time area / timeline dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -25,8 +24,8 @@
 #include <widgets/timeline_area.h>
 #include <generic/timeline_editor.h>
 #include <models/node_list.h>
-#include "timearea_dock.h"
-#include "ui_timearea_dock.h"
+#include "timearea.h"
+#include "ui_timearea.h"
 
 namespace rainynite::studio {
 

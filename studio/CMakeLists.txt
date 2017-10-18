@@ -9,17 +9,17 @@ target_sources(rainynite-studio
         main/renderer.cpp
         main/renderer.h
 
-        docks/playback_dock.cpp
-        docks/playback_dock.h
-        docks/timearea_dock.cpp
-        docks/timearea_dock.h
-        docks/node_tree_dock.cpp
-        docks/node_tree_dock.h
-        docks/node_edit_dock.cpp
-        docks/node_edit_dock.h
-        docks/advanced_color_dock.h
-        docks/advanced_color_dock.cpp
         docks/close_destroy_dock.h
+        docks/playback.h
+        docks/playback.cpp
+        docks/timearea.h
+        docks/timearea.cpp
+        docks/node_tree.h
+        docks/node_tree.cpp
+        docks/node_edit.h
+        docks/node_edit.cpp
+        docks/advanced_color_selector.h
+        docks/advanced_color_selector.cpp
 
         widgets/editor_factory.cpp
 
