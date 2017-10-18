@@ -1,5 +1,4 @@
-/*
- *  timeline_ruler.h - simple timeline
+/*  timeline_ruler.h - timeline ruler
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__TIMELINE_RULER_H__B5968130
-#define __STUDIO__WIDGETS__TIMELINE_RULER_H__B5968130
+#ifndef STUDIO_WIDGETS_TIMELINE_RULER_H_B185C2D9_8188_5868_8357_1F76BAB68C4F
+#define STUDIO_WIDGETS_TIMELINE_RULER_H_B185C2D9_8188_5868_8357_1F76BAB68C4F
 
 #include <QWidget>
 #include <QPen>
@@ -50,6 +49,6 @@ private:
     int zero_pos = 0;
 };
 
-}
+} // namespace rainynite::studio
 
 #endif

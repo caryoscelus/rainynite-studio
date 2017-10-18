@@ -51,6 +51,6 @@ private:
 
 REGISTER_CANVAS(Canvas);
 
-}
+} // namespace rainynite::studio
 
 #endif

@@ -1,5 +1,4 @@
-/*
- *  custom_widgets.h - widgets for value editing
+/*  custom_widgets.h - widgets for value editing
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__CUSTOM_WIDGET_H__29DB1902
-#define __STUDIO__CUSTOM_WIDGET_H__29DB1902
+#ifndef STUDIO_GENERIC_CUSTOM_WIDGETS_H_37C12673_B92F_587A_B88E_37BC163EB80F
+#define STUDIO_GENERIC_CUSTOM_WIDGETS_H_37C12673_B92F_587A_B88E_37BC163EB80F
 
 #include <typeindex>
 
@@ -32,7 +31,7 @@ public:
 
 QWidget* new_custom_widget(std::type_index type);
 
-}
+} // namespace rainynite::studio
 
 #define REGISTER_CUSTOM_WIDGET(Name, Type, Widget) \
 class Name##Factory : \

@@ -1,5 +1,4 @@
-/*
- *  point_value_editor.cpp - 2d point editor widget
+/*  point_value_editor.cpp - 2d point editor widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

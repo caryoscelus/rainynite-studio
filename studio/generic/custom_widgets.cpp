@@ -1,5 +1,4 @@
-/*
- *  custom_widgets.cpp - widgets for value editing
+/*  custom_widgets.cpp - widgets for value editing
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

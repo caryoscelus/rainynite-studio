@@ -1,5 +1,4 @@
-/*
- *  main_window.h - main window
+/*  main_window.h - main window
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__MAIN_WINDOW_H__D1BD80BA
-#define __STUDIO__MAIN_WINDOW_H__D1BD80BA
+#ifndef STUDIO_MAIN_MAIN_WINDOW_H_A13C4B3D_EED9_5A8F_B608_29AB3D72761B
+#define STUDIO_MAIN_MAIN_WINDOW_H_A13C4B3D_EED9_5A8F_B608_29AB3D72761B
 
 #include <memory>
 

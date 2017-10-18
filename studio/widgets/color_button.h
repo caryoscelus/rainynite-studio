@@ -1,5 +1,4 @@
-/*
- *  color_button.h - choose color button
+/*  color_button.h - choose color button
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__COLOR_BUTTON_H__2CC74D64
-#define __STUDIO__COLOR_BUTTON_H__2CC74D64
+#ifndef STUDIO_WIDGETS_COLOR_BUTTON_H_7B49507F_31E7_5286_8CCA_E064A56F26EB
+#define STUDIO_WIDGETS_COLOR_BUTTON_H_7B49507F_31E7_5286_8CCA_E064A56F26EB
 
 #include <QDebug>
 #include <QPushButton>
