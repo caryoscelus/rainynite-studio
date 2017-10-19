@@ -1,0 +1,8 @@
+IndentWidth: 4
+AccessModifierOffset: -4
+PointerAlignment: Left
+IndentCaseLabels: true
+
+AllowShortFunctionsOnASingleLine: None
+
+FixNamespaceComments: true
