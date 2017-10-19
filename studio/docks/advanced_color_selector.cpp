@@ -1,4 +1,4 @@
-/*  advanced_color_dock.cpp - Advanced color selector dock
+/*  docks/advanced_color_selector.cpp - Advanced color selector dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
 
-#include "advanced_color_dock.h"
-#include "ui_advanced_color_dock.h"
+#include "advanced_color_selector.h"
+#include "ui_advanced_color_selector.h"
 
 namespace rainynite::studio {
 

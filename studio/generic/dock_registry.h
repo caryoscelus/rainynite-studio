@@ -1,5 +1,4 @@
-/*
- *  dock_registry.h - Dock registry
+/*  dock_registry.h - Dock registry
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__GENERIC__DOCK_REGISTRY_H__A4BF97D0
-#define __STUDIO__GENERIC__DOCK_REGISTRY_H__A4BF97D0
+#ifndef STUDIO_GENERIC_DOCK_REGISTRY_H_D4B0FD04_ED8E_5231_9949_64326B0FE611
+#define STUDIO_GENERIC_DOCK_REGISTRY_H_D4B0FD04_ED8E_5231_9949_64326B0FE611
 
 #include <core/std/memory.h>
 

@@ -1,5 +1,4 @@
-/*
- *  pen.cpp - QPen utils
+/*  pen.cpp - QPen utils
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -21,8 +20,7 @@
 
 #include "pen.h"
 
-namespace rainynite::studio {
-namespace pens {
+namespace rainynite::studio::pens {
 
 QPen cosmetic_dash() {
     QPen pen(QGuiApplication::palette().dark(), 1, Qt::DashLine);
@@ -36,5 +34,4 @@ QPen cosmetic_solid() {
     return pen;
 }
 
-} // namespace pens
-} // namespace rainynite::studio
+} // namespace rainynite::studio::pens

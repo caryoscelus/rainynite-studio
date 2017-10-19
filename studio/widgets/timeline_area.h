@@ -1,5 +1,4 @@
-/*
- *  timeline_area.h - advanced timeline
+/*  timeline_area.h - advanced timeline
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__TIMELINE_AREA_H__9A8A8D52
-#define __STUDIO__WIDGETS__TIMELINE_AREA_H__9A8A8D52
+#ifndef STUDIO_WIDGETS_TIMELINE_AREA_H_642C9BBC_A699_5EA7_99D3_EDF15CA95ECD
+#define STUDIO_WIDGETS_TIMELINE_AREA_H_642C9BBC_A699_5EA7_99D3_EDF15CA95ECD
 
 #include <QGraphicsView>
 
@@ -47,6 +46,6 @@ private:
 
 REGISTER_CANVAS(TimelineArea);
 
-}
+} // namespace rainynite::studio
 
 #endif

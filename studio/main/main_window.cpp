@@ -28,9 +28,7 @@
 
 #include <core/document.h>
 #include <core/action_stack.h>
-#include <core/filters/json_reader.h>
 #include <core/filters/yaml_reader.h>
-#include <core/filters/json_writer.h>
 #include <core/filters/yaml_writer.h>
 
 #include <version.h>
@@ -104,11 +102,10 @@ void MainWindow::reload() {
     if (fname.empty())
         return;
     // TODO: proper filter modularization
-    unique_ptr<core::DocumentReader> json_reader = make_unique<core::filters::JsonReader>();
     unique_ptr<core::DocumentReader> yaml_reader = make_unique<core::filters::YamlReader>();
     vector<string> errors;
     shared_ptr<core::Document> new_document;
-    for (auto&& reader : { std::move(json_reader), std::move(yaml_reader) }) {
+    for (auto&& reader : { std::move(yaml_reader) }) {
         try {
             std::ifstream in(fname);
             new_document = reader->read_document(in);
@@ -143,15 +140,12 @@ void MainWindow::save_as() {
         &filter
     );
     if (!fname_qt.isEmpty()) {
-        QString format;
-        if (filter.contains("*.rnite")) {
-            format = QInputDialog::getItem(this, "Choose .rnite format", "Choose save format", {"yaml", "json"});
-        } else {
+        if (!filter.contains("*.rnite")) {
             error_box->showMessage("Unknown save format");
             return;
         }
         set_fname(util::str(fname_qt));
-        save(format);
+        save("yaml");
     }
 }
 
@@ -170,8 +164,6 @@ void MainWindow::save(QString format) {
     unique_ptr<core::DocumentWriter> writer;
     if (format == "yaml") {
         writer.reset(new core::filters::YamlWriter());
-    } else if (format == "json") {
-        writer.reset(new core::filters::JsonWriter());
     } else {
         error_box->showMessage("Unknown save format");
         return;

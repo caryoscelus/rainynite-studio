@@ -1,5 +1,4 @@
-/*
- *  point_value_editor.h - 2d point editor widget
+/*  point_value_editor.h - 2d point editor widget
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__WIDGETS__POINT_VALUE_EDITOR_H__2CF69954
-#define __STUDIO__WIDGETS__POINT_VALUE_EDITOR_H__2CF69954
+#ifndef STUDIO_WIDGETS_POINT_VALUE_EDITOR_H_488DD101_6F7C_5EDC_A6C7_E8DFB0A1BC20
+#define STUDIO_WIDGETS_POINT_VALUE_EDITOR_H_488DD101_6F7C_5EDC_A6C7_E8DFB0A1BC20
 
 #include <core/std/memory.h>
 

@@ -1,5 +1,4 @@
-/*
- *  close_destroy_dock.h - QDockWidget that destroys on closing
+/*  close_destroy_dock.h - QDockWidget that destroys on closing
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__DOCK__CLOSE_DESTROY_DOCK_H__8531378A
-#define __STUDIO__DOCK__CLOSE_DESTROY_DOCK_H__8531378A
+#ifndef STUDIO_DOCKS_CLOSE_DESTROY_DOCK_H_1C635A9C_92A1_5C82_BFC0_F6D576B7A9E3
+#define STUDIO_DOCKS_CLOSE_DESTROY_DOCK_H_1C635A9C_92A1_5C82_BFC0_F6D576B7A9E3
 
 #include <QDockWidget>
 

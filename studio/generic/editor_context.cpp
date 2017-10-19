@@ -1,5 +1,4 @@
-/*
- *  editor_context.cpp - editor Context
+/*  editor_context.cpp - editor Context
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

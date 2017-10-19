@@ -1,5 +1,4 @@
-/*
- *  pen.h - QPen utils
+/*  pen.h - QPen utils
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,20 +15,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__UTIL__PEN_H__51304424
-#define __STUDIO__UTIL__PEN_H__51304424
+#ifndef STUDIO_UTIL_PEN_H_84F08A20_D07D_508B_A5B3_BBD2B2EC7E0B
+#define STUDIO_UTIL_PEN_H_84F08A20_D07D_508B_A5B3_BBD2B2EC7E0B
 
 #include <QPen>
 #include <QGuiApplication>
 #include <QPalette>
 
-namespace rainynite::studio {
-namespace pens {
+namespace rainynite::studio::pens {
 
 QPen cosmetic_dash();
 QPen cosmetic_solid();
 
-} // namespace pens
-} // namespace rainynite::studio
+} // namespace rainynite::studio::pens
 
 #endif

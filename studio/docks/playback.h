@@ -1,5 +1,4 @@
-/*
- *  playback_dock.h - playback controls dock
+/*  dock/playback.h - playback controls dock
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
-#define __STUDIO__PLAYBACK_DOCK_H__AFB5B1D6
+#ifndef STUDIO_DOCKS_PLAYBACK_H_107746CB_5F9B_5080_B6C1_A0670622A8FE
+#define STUDIO_DOCKS_PLAYBACK_H_107746CB_5F9B_5080_B6C1_A0670622A8FE
 
 #include <core/std/memory.h>
 

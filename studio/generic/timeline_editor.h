@@ -1,5 +1,4 @@
-/*
- *  timeline_editor.h - timeline editing widgets
+/*  timeline_editor.h - timeline editing widgets
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__GENERIC__TIMELINE_EDITOR_H__043F26E4
-#define __STUDIO__GENERIC__TIMELINE_EDITOR_H__043F26E4
+#ifndef STUDIO_GENERIC_TIMELINE_EDITOR_H_805B2CB8_423E_5B86_BC21_F2CA9ABFA520
+#define STUDIO_GENERIC_TIMELINE_EDITOR_H_805B2CB8_423E_5B86_BC21_F2CA9ABFA520
 
 #include <core/std/memory.h>
 #include <core/class_init.h>

@@ -1,5 +1,4 @@
-/*
- *  editor_context.h - editor Context
+/*  editor_context.h - editor Context
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__GENERIC__EDITOR_CONTEXT_H__4E809780
-#define __STUDIO__GENERIC__EDITOR_CONTEXT_H__4E809780
+#ifndef STUDIO_GENERIC_EDITOR_CONTEXT_H_E5FE1C55_3375_5F79_8BBB_5D6A55CA2AA0
+#define STUDIO_GENERIC_EDITOR_CONTEXT_H_E5FE1C55_3375_5F79_8BBB_5D6A55CA2AA0
 
 #include <core/context.h>
 

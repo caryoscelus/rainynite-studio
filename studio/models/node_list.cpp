@@ -1,5 +1,4 @@
-/*
- *  node_list.cpp - node list model
+/*  node_list.cpp - node list model
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

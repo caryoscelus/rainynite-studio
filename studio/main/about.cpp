@@ -1,5 +1,4 @@
-/*
- *  about.cpp - about dialog
+/*  about.cpp - about dialog
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify

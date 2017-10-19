@@ -1,5 +1,4 @@
-/*
- *  node_list.h - node list model
+/*  node_list.h - node list model
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__MODELS__NODE_LIST_H__CE0F8EE4
-#define __STUDIO__MODELS__NODE_LIST_H__CE0F8EE4
+#ifndef STUDIO_MODELS_NODE_LIST_H_D9546412_036D_5DE7_AF03_B5FFEC71F437
+#define STUDIO_MODELS_NODE_LIST_H_D9546412_036D_5DE7_AF03_B5FFEC71F437
 
 #include <QAbstractItemModel>
 

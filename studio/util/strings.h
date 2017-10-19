@@ -1,5 +1,4 @@
-/*
- *  strings.h - Qt <-> std string conversions
+/*  strings.h - Qt <-> std string conversions
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__UTIL_STRINGS_H__5FD72FC8
-#define __STUDIO__UTIL_STRINGS_H__5FD72FC8
+#ifndef STUDIO_UTIL_STRINGS_H_6E4FCAFB_9FD7_5EE6_9F44_8C71873BFB98
+#define STUDIO_UTIL_STRINGS_H_6E4FCAFB_9FD7_5EE6_9F44_8C71873BFB98
 
 #include <type_traits>
 
@@ -26,21 +25,21 @@
 namespace util {
 
 template <typename S, typename T>
-T str(S&& string);
+T str(S&& s);
 
 // TODO: C++17 is_same_v
 template <typename S>
 std::enable_if_t<std::is_same<std::decay_t<S>,std::string>::value, QString>
-str(S&& string) {
-    return QString::fromStdString(std::forward<S>(string));
+str(S&& s) {
+    return QString::fromStdString(std::forward<S>(s));
 }
 
 template <typename S>
 std::enable_if_t<std::is_same<std::decay_t<S>,QString>::value, std::string>
-str(S&& string) {
-    return string.toStdString();
+str(S&& s) {
+    return s.toStdString();
 }
 
-}
+} // namespace util
 
 #endif

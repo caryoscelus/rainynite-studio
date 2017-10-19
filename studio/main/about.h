@@ -1,5 +1,4 @@
-/*
- *  about.h - about dialog
+/*  about.h - about dialog
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__MAIN__ABOUT_H__3F6FBEBC
-#define __STUDIO__MAIN__ABOUT_H__3F6FBEBC
+#ifndef STUDIO_MAIN_ABOUT_H_1D61A388_DD61_5E9C_AEE9_B37FC2DFB6B9
+#define STUDIO_MAIN_ABOUT_H_1D61A388_DD61_5E9C_AEE9_B37FC2DFB6B9
 
 #include <core/std/memory.h>
 

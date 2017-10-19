@@ -1,5 +1,4 @@
-/*
- *  node_tree_dock.h - Dock with node tree
+/*  docks/node_tree.h - Dock with node tree
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUDIO__NODE_TREE_DOCK_H__8AC1EE40
-#define __STUDIO__NODE_TREE_DOCK_H__8AC1EE40
+#ifndef STUDIO_DOCKS_NODE_TREE_DOCK_H_85472C8A_FD7F_5252_A26B_79DF8D0503A0
+#define STUDIO_DOCKS_NODE_TREE_DOCK_H_85472C8A_FD7F_5252_A26B_79DF8D0503A0
 
 #include <generic/context_listener.h>
 #include <generic/dock_registry.h>
