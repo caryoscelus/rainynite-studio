@@ -142,7 +142,7 @@ bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
 
 void NodeModel::add_empty_custom_property(QModelIndex const& parent, string const& name) {
     if (auto parent_node = get_node_as<core::AbstractNode>(parent)) {
-        action_stack->emplace<core::actions::AddCustomProperty>(parent_node, name, core::make_value<core::Nothing>());
+        action_stack->emplace<core::actions::AddCustomProperty>(parent_node, name, core::make_value<Nothing>());
         // TODO: add rows
     }
 }

@@ -19,10 +19,9 @@
 #define STUDIO_GENERIC_CONTEXT_LISTENER_H_4EE76790_980D_55BC_9584_1B71A700816E
 
 #include <core/std/memory.h>
-#include <type_traits>
+#include <core/destroy_detector.h>
 
 #include "editor_context.h"
-#include "destroy_detector.h"
 
 namespace rainynite::studio {
 
