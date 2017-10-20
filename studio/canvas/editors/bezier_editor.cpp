@@ -22,6 +22,9 @@
 
 #include <geom_helpers/knots.h>
 
+#include <core/action_stack.h>
+#include <core/actions/change_value.h>
+
 #include <util/strings.h>
 #include <util/pen.h>
 #include <widgets/canvas.h>
@@ -94,11 +97,17 @@ void BezierEditor::init() {
             ](size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent = nullptr) {
                 auto e = new PointItem(
                     [this, i, bezier_node, pref](double x, double y) {
-                        auto& path = bezier_node->mod();
+                        auto path = bezier_node->mod();
                         auto& point = path.knots[i].*pref;
                         point.x() = x;
                         point.y() = y;
-                        bezier_node->changed();
+
+                        auto action_stack = get_context()->action_stack();
+                        action_stack->emplace<core::actions::ChangeValue>(
+                            bezier_node,
+                            path
+                        );
+                        action_stack->close();
                     }
                 );
                 if (parent)
