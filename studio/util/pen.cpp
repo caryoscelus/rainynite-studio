@@ -34,4 +34,10 @@ QPen cosmetic_solid() {
     return pen;
 }
 
+QPen cosmetic_think_light_solid() {
+    QPen pen(QGuiApplication::palette().light(), 2, Qt::SolidLine);
+    pen.setCosmetic(true);
+    return pen;
+}
+
 } // namespace rainynite::studio::pens
