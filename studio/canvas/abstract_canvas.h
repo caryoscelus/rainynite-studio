@@ -81,7 +81,7 @@ public:
     /// Zoom to show rect area
     void zoom_to_rect(QRectF rect);
 
-    void scroll_by(QPoint delta);
+    void scroll_by(QPointF delta);
 
     void set_context(shared_ptr<EditorContext> context) override;
 

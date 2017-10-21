@@ -111,7 +111,7 @@ double AbstractCanvas::zoom_level() {
     return transform().m11();
 }
 
-void AbstractCanvas::scroll_by(QPoint delta) {
+void AbstractCanvas::scroll_by(QPointF delta) {
     delta /= transform().m11();
     translate(delta.x(), delta.y());
 }
