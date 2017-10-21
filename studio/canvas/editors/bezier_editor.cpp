@@ -20,8 +20,6 @@
 #include <QGraphicsItem>
 #include <QDebug>
 
-#include <geom_helpers/knots.h>
-
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
 

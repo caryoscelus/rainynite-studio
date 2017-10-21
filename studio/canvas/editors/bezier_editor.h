@@ -18,6 +18,8 @@
 #ifndef STUDIO_CANVAS_BEZIER_EDITOR_H_301B627E_5F98_521F_93AD_92571F72CAAC
 #define STUDIO_CANVAS_BEZIER_EDITOR_H_301B627E_5F98_521F_93AD_92571F72CAAC
 
+#include <geom_helpers/knots.h>
+
 #include <generic/node_editor.h>
 #include <canvas/editor.h>
 #include <generic/context_listener.h>

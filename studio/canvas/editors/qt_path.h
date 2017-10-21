@@ -27,6 +27,8 @@
 
 #include <2geom/path-sink.h>
 
+#include <geom_helpers/knots.h>
+
 class QtPathSink : public Geom::PathSink {
 public:
     void moveTo(Geom::Point const& p) override {
