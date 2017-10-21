@@ -50,6 +50,7 @@ target_sources(rainynite-studio
         canvas/tools/shape.cpp
         canvas/tools/zoom_area.cpp
         canvas/tools/rectangle.cpp
+        canvas/tools/circle.cpp
 
         canvas/editors/point_item.h
         canvas/editors/point_item.cpp
