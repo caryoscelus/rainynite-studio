@@ -147,6 +147,7 @@ EVENT_HANDLER(wheelEvent, QWheelEvent)
 #undef EVENT_HANDLER
 
 void AbstractCanvas::set_context(shared_ptr<EditorContext> context) {
+    ContextListener::set_context(context);
     for (auto const& editor : editors) {
         if (auto cl = dynamic_cast<ContextListener*>(editor.get())) {
             cl->set_context(context);
