@@ -42,6 +42,14 @@ BezierEditor::~BezierEditor() {
     uninit();
 }
 
+void BezierEditor::set_display_tags(bool display_tags_) {
+    if (display_tags != display_tags_) {
+        display_tags = display_tags_;
+        uninit();
+        init();
+    }
+}
+
 void BezierEditor::setup_canvas() {
     uninit();
     init();
@@ -125,7 +133,7 @@ void BezierEditor::init() {
                 add_point_editor(i, &Geom::Knot::tg2, pos);
                 knot_items.emplace_back(pos);
 
-                if (!knot.uid.empty()) {
+                if (!knot.uid.empty() && display_tags) {
                     auto e = scene->addText(util::str(knot.uid));
                     e->setX(knot.pos.x());
                     e->setY(knot.pos.y());

@@ -35,15 +35,15 @@ public:
     BezierEditor();
     virtual ~BezierEditor();
 
-public:
     void setup_canvas() override;
     void node_update() override;
     void time_changed(core::Time time_) override;
 
-private:
     void redraw();
     void init();
     void uninit();
+
+    void set_display_tags(bool display_tags_);
 
 private:
     inline shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node() {
@@ -57,6 +57,7 @@ private:
     vector<unique_ptr<QGraphicsItem>> knot_items;
     unique_ptr<QGraphicsPathItem> curve_item;
     size_t old_size;
+    bool display_tags = true;
 };
 
 } // namespace rainynite::studio
