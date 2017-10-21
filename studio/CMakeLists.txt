@@ -46,6 +46,8 @@ target_sources(rainynite-studio
 
         canvas/tools/base.h
         canvas/tools/default.cpp
+        canvas/tools/shape.h
+        canvas/tools/shape.cpp
         canvas/tools/zoom_area.cpp
         canvas/tools/rectangle.cpp
 
