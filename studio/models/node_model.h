@@ -89,7 +89,7 @@ public:
         // TODO: perfect forward f
         return core::traverse_once<T>(
             root,
-            [this, &f, &node_to_find](auto const& node) -> optional<T> {
+            [&f, &node_to_find](auto const& node) -> optional<T> {
                 if (node == node_to_find)
                     return f();
                 return {};

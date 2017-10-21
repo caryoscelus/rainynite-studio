@@ -105,7 +105,7 @@ private:
         auto pid = fork_pipe(pipe_input, pipe_output, {"/usr/bin/env", "ffmpeg", "-i", cached_path, "-filter_complex", "showwavespic=s={}x{}:colors=black|gray"_format(int(duration*pixels_per_second), 80), "-frames:v", "1", "-y", cached_path+".png"});
         if (read_thread.joinable())
             read_thread.detach();
-        read_thread = std::thread([this, pipe_output, pid]() {
+        read_thread = std::thread([this, pid]() {
             int status;
             waitpid(pid, &status, 0);
             if (status == 0)
