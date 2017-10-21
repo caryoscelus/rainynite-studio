@@ -18,6 +18,8 @@
 #ifndef STUDIO_CANVAS_BEZIER_EDITOR_H_301B627E_5F98_521F_93AD_92571F72CAAC
 #define STUDIO_CANVAS_BEZIER_EDITOR_H_301B627E_5F98_521F_93AD_92571F72CAAC
 
+#include <QPen>
+
 #include <geom_helpers/knots.h>
 
 #include <generic/node_editor.h>
@@ -44,6 +46,7 @@ public:
     void uninit();
 
     void set_display_tags(bool display_tags_);
+    void set_curve_pen(QPen const& pen);
 
 private:
     inline shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node() {
@@ -58,6 +61,7 @@ private:
     unique_ptr<QGraphicsPathItem> curve_item;
     size_t old_size;
     bool display_tags = true;
+    QPen curve_pen;
 };
 
 } // namespace rainynite::studio

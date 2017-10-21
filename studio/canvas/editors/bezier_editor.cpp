@@ -35,6 +35,7 @@ using namespace fmt::literals;
 namespace rainynite::studio {
 
 BezierEditor::BezierEditor() {
+    set_curve_pen(pens::cosmetic_dash());
     init();
 }
 
@@ -48,6 +49,12 @@ void BezierEditor::set_display_tags(bool display_tags_) {
         uninit();
         init();
     }
+}
+
+void BezierEditor::set_curve_pen(QPen const& pen) {
+    curve_pen = pen;
+    if (curve_item)
+        curve_item->setPen(curve_pen);
 }
 
 void BezierEditor::setup_canvas() {
@@ -92,7 +99,7 @@ void BezierEditor::init() {
             old_size = path.size();
 
             curve_item.reset(scene->addPath(path_to_qt(path)));
-            curve_item->setPen(pens::cosmetic_dash());
+            curve_item->setPen(curve_pen);
 
             auto add_point_editor = [
                 this,
