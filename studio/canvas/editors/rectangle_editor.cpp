@@ -26,11 +26,9 @@
 
 namespace rainynite::studio {
 
-RectangleEditor::RectangleEditor() {
-}
+RectangleEditor::RectangleEditor() = default;
 
-RectangleEditor::~RectangleEditor() {
-}
+RectangleEditor::~RectangleEditor() = default;
 
 void RectangleEditor::setup_canvas() {
     rectangle_item.reset(get_scene()->addRect({}));

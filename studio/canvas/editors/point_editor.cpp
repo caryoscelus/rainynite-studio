@@ -29,11 +29,9 @@
 
 namespace rainynite::studio {
 
-PointEditor::PointEditor() {
-}
+PointEditor::PointEditor() = default;
 
-PointEditor::~PointEditor() {
-}
+PointEditor::~PointEditor() = default;
 
 void PointEditor::setup_canvas() {
     point_item = make_unique<PointItem>(

@@ -26,7 +26,7 @@ class AbstractCanvas;
 
 class CanvasAttachable {
 public:
-    virtual ~CanvasAttachable() {}
+    virtual ~CanvasAttachable() = default;
 
     void set_canvas(AbstractCanvas* canvas_);
 
