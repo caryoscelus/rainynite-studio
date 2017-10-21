@@ -24,7 +24,7 @@
 
 #include <geom_helpers/rectangle.h>
 
-#include "base.h"
+#include "shape.h"
 
 namespace rainynite::studio {
 namespace tools {
@@ -34,22 +34,8 @@ namespace tools {
  *
  * TODO: merge common code with zoom_area tool
  */
-class Rectangle : public Base {
+class Rectangle : public Shape {
 public:
-    bool canvas_event(QEvent* event) override {
-        if (get_canvas() == nullptr)
-            return false;
-        if (auto ctx = get_canvas()->get_context()) {
-            if (auto node = ctx->get_active_node()) {
-                if (accept(node)) {
-                    active_node = std::move(node);
-                    draw_rectangle(event);
-                }
-            }
-        }
-        return is_drawing || Base::canvas_event(event);
-    }
-
     string icon() const override {
         return "draw-rectangle";
     }
@@ -58,65 +44,47 @@ public:
         return global_name();
     }
 
-public:
     static string global_name() {
         return "Rectangle";
     }
 
 protected:
-    bool accept(shared_ptr<core::AbstractValue> node) {
-        // TODO: accept nodes which may be rectangle or have rectangle children
-        return node->get_type() == typeid(vector<Geom::Rectangle>);
-//             || node->get_type() == typeid(Rectangle);
+    bool mouse_press(QPoint const& pos) override {
+        rect_start = pos;
+        rubber_band = new QRubberBand(QRubberBand::Rectangle, get_canvas());
+        rubber_band->setGeometry({rect_start, rect_start});
+        rubber_band->show();
+        return is_drawing = true;
+    }
+    bool mouse_move(QPoint const& pos) override {
+        if (is_drawing) {
+            rubber_band->setGeometry(get_rect(rect_start, pos));
+        }
+        return is_drawing;
+    }
+    bool mouse_release(QPoint const& pos) override {
+        if (is_drawing) {
+            auto rect = get_rect(rect_start, pos);
+            rubber_band->setGeometry(rect);
+            rectangle_drawn(
+                get_canvas()->mapToScene(rect_start),
+                get_canvas()->mapToScene(pos)
+            );
+            delete rubber_band;
+            is_drawing = false;
+            return true;
+        }
+        return false;
     }
 
     void rectangle_drawn(QPointF a, QPointF b) {
-        if (auto node = dynamic_cast<core::BaseValue<vector<Geom::Rectangle>>*>(active_node.get())) {
-            if (auto l = dynamic_cast<core::AbstractListLinked*>(node)) {
-                auto rect_node = core::make_node_with_name<core::Node<Geom::Rectangle>>("RectangleAB");
-                rect_node->set_property("a", core::make_value<Geom::Point>(a.x(), a.y()));
-                rect_node->set_property("b", core::make_value<Geom::Point>(b.x(), b.y()));
-                l->push_back(rect_node);
-            }
-        }
+        auto rect_node = core::make_node_with_name<core::Node<Geom::Rectangle>>("RectangleAB");
+        rect_node->set_property("a", core::make_value<Geom::Point>(a.x(), a.y()));
+        rect_node->set_property("b", core::make_value<Geom::Point>(b.x(), b.y()));
+        write_shape(rect_node);
     }
 
 private:
-    void draw_rectangle(QEvent* event) {
-        if (auto mouse_event = dynamic_cast<QMouseEvent*>(event)) {
-            switch (mouse_event->type()) {
-                case QEvent::MouseButtonPress: {
-                    if (mouse_event->button() == Qt::LeftButton) {
-                        rect_start = mouse_event->pos();
-                        rubber_band = new QRubberBand(QRubberBand::Rectangle, get_canvas());
-                        rubber_band->setGeometry({rect_start, rect_start});
-                        rubber_band->show();
-                        is_drawing = true;
-                    }
-                } break;
-                case QEvent::MouseMove: {
-                    if (is_drawing) {
-                        rubber_band->setGeometry(get_rect(rect_start, mouse_event->pos()));
-                    }
-                } break;
-                case QEvent::MouseButtonRelease: {
-                    if (mouse_event->button() == Qt::LeftButton) {
-                        auto rect = get_rect(rect_start, mouse_event->pos());
-                        rubber_band->setGeometry(rect);
-                        rectangle_drawn(
-                            get_canvas()->mapToScene(rect_start),
-                            get_canvas()->mapToScene(mouse_event->pos())
-                        );
-                        delete rubber_band;
-                        is_drawing = false;
-                    }
-                } break;
-                default:
-                    break;
-            }
-        }
-    }
-
     QRect get_rect(QPoint a, QPoint b) {
         return {
             std::min(a.x(), b.x()),
@@ -130,7 +98,6 @@ private:
     bool is_drawing = false;
     QPoint rect_start;
     QRubberBand* rubber_band;
-    shared_ptr<core::AbstractValue> active_node;
 };
 
 } // namespace tools
