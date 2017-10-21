@@ -29,6 +29,9 @@ public:
         if (auto mouse_event = dynamic_cast<QMouseEvent*>(event)) {
             switch (mouse_event->type()) {
                 case QEvent::MouseButtonPress: {
+                    if (mouse_event->button() == Qt::MidButton) {
+                        break;
+                    }
                     zooming_button = mouse_event->button();
                     zoom_start = mouse_event->pos();
                     rubber_band = new QRubberBand(QRubberBand::Rectangle, get_canvas());

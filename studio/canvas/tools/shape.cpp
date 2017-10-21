@@ -32,7 +32,8 @@ bool Shape::canvas_event(QEvent* event) {
     if (auto ctx = get_canvas()->get_context()) {
         if (auto node = ctx->get_active_node()) {
             if (accept(node)) {
-                return draw_shape_event(event);
+                if (draw_shape_event(event))
+                    return true;
             }
         }
     }
