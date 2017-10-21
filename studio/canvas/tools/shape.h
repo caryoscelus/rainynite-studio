@@ -43,6 +43,9 @@ protected:
 
     /// Write shape to active node
     virtual void write_shape(shared_ptr<core::AbstractValue> node);
+
+private:
+    void add_renderable_to_list(shared_ptr<core::ActionStack> action_stack, shared_ptr<core::AbstractListLinked> list, shared_ptr<core::AbstractValue> shape);
 };
 
 } // namespace rainynite::studio::tools
