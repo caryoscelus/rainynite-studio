@@ -74,7 +74,7 @@ void BezierEditor::redraw() {
     if (get_scene()) {
         auto path = get_path();
         // TODO
-        if (path.size() == old_size) {
+        if ((ssize_t) path.size() == old_size) {
             curve_item->setPath(path_to_qt(path));
         } else {
             uninit();
@@ -154,6 +154,7 @@ void BezierEditor::init() {
 }
 
 void BezierEditor::uninit() {
+    old_size = -1;
     if (auto canvas = get_canvas()) {
         for (auto const& e : knot_items) {
             canvas->scene()->removeItem(e.get());
