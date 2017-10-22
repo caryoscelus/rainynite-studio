@@ -39,6 +39,8 @@ TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     auto cursor = add_canvas_named_editor(*ui->timeline, "TimelineCursor");
     ui->timeline->add_misc_editor(cursor);
     ui->timeline->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    ui->timeline->load_registered_tools();
+    ui->timeline->use_tool("Default");
     ui->node_list->setModel(node_list_model.get());
 
     connect(node_list_model.get(), &QAbstractItemModel::layoutChanged, this, &TimeareaDock::update_editors);
