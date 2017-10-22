@@ -74,7 +74,7 @@ void BezierEditor::redraw() {
     if (get_scene()) {
         auto path = get_path();
         // TODO
-        if ((ssize_t) path.size() == old_size) {
+        if ((ptrdiff_t) path.size() == old_size) {
             curve_item->setPath(path_to_qt(path));
         } else {
             uninit();

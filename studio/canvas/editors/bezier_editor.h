@@ -59,7 +59,7 @@ private:
 private:
     vector<unique_ptr<QGraphicsItem>> knot_items;
     unique_ptr<QGraphicsPathItem> curve_item;
-    ssize_t old_size = -1;
+    ptrdiff_t old_size = -1;
     bool display_tags = true;
     QPen curve_pen;
 };
