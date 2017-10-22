@@ -1,4 +1,4 @@
-/*  absttract_canvas.h - generic canvas which can be edited with tools
+/*  abstract_canvas.h - generic canvas which can be edited with tools
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -38,8 +38,8 @@ class CanvasTool;
 /**
  * Base class for canvas editable with tools.
  *
- * Register editors with ???
- * Register tools with ???
+ * Register editors with REGISTER_CANVAS_EDITOR macro
+ * Register tools with REGISTER_CANVAS_TOOL macro
  *
  * You can subclass this to have a specific canvas with specific
  * tools and/or editors.
@@ -51,7 +51,10 @@ public:
     explicit AbstractCanvas(QWidget* parent = nullptr);
     virtual ~AbstractCanvas();
 
+    /// Set an image to display below all editors and other elements
     void set_background_image(QPixmap const& pixmap);
+
+    /// Set transform of background image
     void set_bg_transform(QTransform const& transform);
 
     /// Load registered tools for this canvas
@@ -81,6 +84,7 @@ public:
     /// Zoom to show rect area
     void zoom_to_rect(QRectF rect);
 
+    /// Scroll by `delta` (in view coordinates)
     void scroll_by(QPointF delta);
 
     void set_context(shared_ptr<EditorContext> context) override;
