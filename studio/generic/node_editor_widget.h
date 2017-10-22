@@ -70,6 +70,8 @@ public:
         if (value_node = dynamic_cast<ValueNodeType*>(this->get_node().get())) {
             self()->do_update_value(get_core_context());
             self()->setReadOnly(self()->is_readonly(value_node));
+        } else {
+            self()->setReadOnly(false);
         }
     }
     void time_changed(core::Time time_) override {
@@ -113,6 +115,8 @@ public:
     void write_action() {
         if (this->value_node == nullptr)
             return;
+        if (is_readonly(this->value_node))
+            return; // why should this even happen?..
         auto s = Widget::value();
         any value;
         try {
@@ -133,8 +137,8 @@ public:
         this->update_value(this->value_node->get_any(std::move(ctx)));
     }
 
-    bool is_readonly(ValueNodeType* /*node*/) const {
-        return false;
+    bool is_readonly(ValueNodeType* node) const {
+        return !node->is_const();
     }
 };
 
