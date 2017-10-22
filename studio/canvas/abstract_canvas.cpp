@@ -19,7 +19,9 @@
 
 #include <QMouseEvent>
 #include <QGraphicsPixmapItem>
+#include <QDebug>
 
+#include <util/strings.h>
 #include "abstract_canvas.h"
 #include "registry.h"
 
@@ -74,8 +76,10 @@ map<string, observer_ptr<CanvasTool>> const& AbstractCanvas::list_tools() const 
 
 void AbstractCanvas::use_tool(string name) {
     auto it = named_tools.find(name);
-    if (it == named_tools.end())
+    if (it == named_tools.end()) {
+        qWarning() << "Cannot find tool" << util::str(name);
         return;
+    }
     use_tool(it->second);
 }
 
