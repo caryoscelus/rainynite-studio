@@ -45,4 +45,8 @@ REGISTER_CANVAS_EDITOR(Canvas, RectangleEditor, Geom::Rectangle);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RenderShape, "RenderShape", true);
 
+REGISTER_TEMPLATE_NODE_EDITOR_SHOW_CHILDREN(Frame, "Frame", true)
+REGISTER_TEMPLATE_NODE_EDITOR_SHOW_CHILDREN(List, "List", true)
+REGISTER_TEMPLATE_NODE_EDITOR_SHOW_CHILDREN(ListFrame, "List/Frame", true)
+
 } // namespace rainynite::studio
