@@ -36,8 +36,7 @@ AbstractCanvas::AbstractCanvas(QWidget* parent) :
     scene()->addItem(image.get());
 }
 
-AbstractCanvas::~AbstractCanvas() {
-}
+AbstractCanvas::~AbstractCanvas() = default;
 
 void AbstractCanvas::set_background_image(QPixmap const& pixmap) {
     image->setPixmap(pixmap);

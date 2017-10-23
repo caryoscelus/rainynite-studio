@@ -110,12 +110,12 @@ private:
     double zoom_level();
 
 private:
-    unique_ptr<QGraphicsScene> the_scene;
-    unique_ptr<QGraphicsPixmapItem> image;
+    unique_ptr<QGraphicsScene> const the_scene;
+    unique_ptr<QGraphicsPixmapItem> const image;
     vector<shared_ptr<CanvasEditor>> editors;
     vector<unique_ptr<CanvasTool>> tools;
     map<string, observer_ptr<CanvasTool>> named_tools;
-    observer_ptr<CanvasTool> current_tool = nullptr;
+    observer_ptr<CanvasTool> current_tool;
     shared_ptr<core::AbstractValue> active_node;
 };
 
