@@ -24,6 +24,7 @@
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <QDockWidget>
+#include <QActionGroup>
 #include <QDebug>
 
 #include <core/document.h>
@@ -47,7 +48,8 @@ MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ContextListener(),
     ui(make_unique<Ui::MainWindow>()),
-    error_box(make_unique<QErrorMessage>())
+    error_box(make_unique<QErrorMessage>()),
+    tool_actions(make_unique<QActionGroup>(this))
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
@@ -241,13 +243,15 @@ void MainWindow::setup_tools() {
     for (auto const& e : ui->canvas->list_tools()) {
         auto const& name = e.first;
         auto tool = e.second;
-        ui->tools_bar->addAction(
+        auto action = ui->tools_bar->addAction(
             QIcon::fromTheme(util::str(tool->icon())),
             util::str(name),
             [this, name] () {
                 ui->canvas->use_tool(name);
             }
         );
+        action->setCheckable(true);
+        tool_actions->addAction(action);
     }
     ui->canvas->use_tool("Default");
 }

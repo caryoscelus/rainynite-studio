@@ -32,6 +32,7 @@ class MainWindow;
 }
 
 class QErrorMessage;
+class QActionGroup;
 
 namespace rainynite::studio {
 
@@ -76,6 +77,7 @@ private:
     unique_ptr<QErrorMessage> error_box;
     shared_ptr<core::Document> document;
     shared_ptr<core::AbstractValue> active_node;
+    unique_ptr<QActionGroup> tool_actions;
 
     string fname;
     string saved_format;
