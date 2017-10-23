@@ -22,6 +22,7 @@
 
 #include <QMainWindow>
 
+#include <core/std/map.h>
 #include <core/node/abstract_value.h>
 
 #include <generic/context_listener.h>
@@ -78,6 +79,7 @@ private:
     shared_ptr<core::Document> document;
     shared_ptr<core::AbstractValue> active_node;
     unique_ptr<QActionGroup> tool_actions;
+    map<string, observer_ptr<QAction>> tool_actions_named;
 
     string fname;
     string saved_format;

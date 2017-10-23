@@ -73,7 +73,7 @@ public:
     map<string, observer_ptr<CanvasTool>> const& list_tools() const;
 
     /// Switch to tool
-    void use_tool(string name);
+    void use_tool(string const& name);
 
     /// Zoom at `point`
     void zoom_at(QPoint point, double factor);
@@ -92,6 +92,8 @@ public:
 Q_SIGNALS:
     void zoomed(double new_level);
 
+    void tool_changed(string const& tool);
+
 protected:
     void active_node_changed(shared_ptr<core::AbstractValue> node) override;
 
@@ -104,7 +106,7 @@ protected:
 
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
-    void use_tool(observer_ptr<CanvasTool> tool);
+    bool use_tool(observer_ptr<CanvasTool> tool);
     double zoom_level();
 
 private:

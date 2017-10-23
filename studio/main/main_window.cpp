@@ -239,6 +239,16 @@ void MainWindow::setup_dock_menu() {
 }
 
 void MainWindow::setup_tools() {
+    connect(
+        ui->canvas,
+        &AbstractCanvas::tool_changed,
+        [this](string const& s) {
+            auto found = tool_actions_named.find(s);
+            if (found != tool_actions_named.end()) {
+                found->second->setChecked(true);
+            }
+        }
+    );
     ui->canvas->load_registered_tools();
     for (auto const& e : ui->canvas->list_tools()) {
         auto const& name = e.first;
@@ -252,6 +262,7 @@ void MainWindow::setup_tools() {
         );
         action->setCheckable(true);
         tool_actions->addAction(action);
+        tool_actions_named.emplace(name, action);
     }
     ui->canvas->use_tool("Default");
 }

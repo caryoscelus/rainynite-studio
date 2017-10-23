@@ -74,16 +74,19 @@ map<string, observer_ptr<CanvasTool>> const& AbstractCanvas::list_tools() const 
     return named_tools;
 }
 
-void AbstractCanvas::use_tool(string name) {
+void AbstractCanvas::use_tool(string const& name) {
     auto it = named_tools.find(name);
     if (it == named_tools.end()) {
         qWarning() << "Cannot find tool" << util::str(name);
         return;
     }
-    use_tool(it->second);
+    if (use_tool(it->second))
+        Q_EMIT tool_changed(name);
 }
 
-void AbstractCanvas::use_tool(observer_ptr<CanvasTool> tool) {
+bool AbstractCanvas::use_tool(observer_ptr<CanvasTool> tool) {
+    if (current_tool == tool)
+        return false;
     if (current_tool != nullptr) {
         removeEventFilter(current_tool.get());
         current_tool->set_canvas(nullptr);
@@ -91,6 +94,7 @@ void AbstractCanvas::use_tool(observer_ptr<CanvasTool> tool) {
     tool->set_canvas(this);
     installEventFilter(tool.get());
     current_tool = tool;
+    return true;
 }
 
 void AbstractCanvas::zoom_at(QPoint point, double factor) {
