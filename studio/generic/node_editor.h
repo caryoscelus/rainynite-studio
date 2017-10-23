@@ -18,10 +18,10 @@
 #ifndef STUDIO_GENERIC_NODE_EDITOR_H_81406495_5D02_5256_A039_914B9CE337E8
 #define STUDIO_GENERIC_NODE_EDITOR_H_81406495_5D02_5256_A039_914B9CE337E8
 
-#include <core/std/memory.h>
-
 #include <QWidget>
 
+#include <core/std/memory.h>
+#include <core/all_types.h>
 #include <core/actions/change_value.h>
 #include <core/node/value.h>
 #include <core/serialize/exceptions.h>
@@ -83,6 +83,26 @@ public: \
         return value; \
     } \
 }
+
+#define REGISTER_TEMPLATE_NODE_EDITOR_SHOW_CHILDREN(Name, node_name, value) \
+template <typename T> \
+class Name##ShowChildren : \
+    public NodeEditorShowChildren, \
+    private class_init::StringRegistered< \
+        Name##ShowChildren<T>, \
+        NodeEditorShowChildren \
+    > \
+{ \
+public: \
+    static std::string name() { \
+        return node_name+string("/")+core::get_primitive_type(typeid(T))(); \
+    } \
+public: \
+    bool operator()() const override { \
+        return value; \
+    } \
+}; \
+TYPE_INSTANCES(Name##ShowChildren)
 
 } // namespace rainynite::studio
 
