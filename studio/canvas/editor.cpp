@@ -35,22 +35,24 @@ shared_ptr<CanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string 
     }
 }
 
-shared_ptr<CanvasEditor> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node) {
+vector<shared_ptr<CanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node) {
     if (node == nullptr)
-        return nullptr;
+        return {};
 
-    shared_ptr<CanvasEditor> editor = nullptr;
+    vector<shared_ptr<CanvasEditor>> added_editors;
+    shared_ptr<CanvasEditor> editor;
     try {
         editor = make_canvas_editor_for(canvas, node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
     }
 
-    if (editor) {
+    if (editor != nullptr) {
         canvas.add_editor(editor);
         if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
             node_editor->set_node(node);
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
             context_listener->set_context(canvas.get_context());
+        added_editors.push_back(editor);
     }
 
     bool show_children = false;
@@ -62,12 +64,18 @@ shared_ptr<CanvasEditor> add_canvas_node_editor(AbstractCanvas& canvas, shared_p
     if (show_children) {
         // NOTE: this may lead to infinite recursion if node tree is looped
         if (auto parent = dynamic_cast<core::AbstractListLinked*>(node.get())) {
-            for (auto child : parent->get_links())
-                add_canvas_node_editor(canvas, child);
+            for (auto child : parent->get_links()) {
+                auto children_editors = add_canvas_node_editor(canvas, child);
+                added_editors.insert(
+                    added_editors.end(),
+                    children_editors.begin(),
+                    children_editors.end()
+                );
+            }
         }
     }
 
-    return editor;
+    return added_editors;
 }
 
 } // namespace rainynite::studio

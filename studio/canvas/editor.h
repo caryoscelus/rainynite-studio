@@ -18,6 +18,7 @@
 #ifndef STUDIO_CANVAS_EDITOR_H_78E5E734_53ED_511D_B6F7_AD0003B70709
 #define STUDIO_CANVAS_EDITOR_H_78E5E734_53ED_511D_B6F7_AD0003B70709
 
+#include <core/std/vector.h>
 #include <core/abstract_factory.h>
 #include <core/class_init.h>
 
@@ -83,7 +84,7 @@ unique_ptr<CanvasEditor> make_canvas_editor(Type type) {
 shared_ptr<CanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name);
 
 /// Create & add canvas node editor to canvas
-shared_ptr<CanvasEditor> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node);
+vector<shared_ptr<CanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node);
 
 } // namespace rainynite::studio
 

@@ -112,7 +112,8 @@ void TimeareaDock::update_editors() {
     for (int i = 0; i < node_list_model->rowCount(); ++i) {
         auto index = node_list_model->index(i, 0);
         auto node = node_list_model->get_node(index);
-        if (auto editor = add_canvas_node_editor(*ui->timeline, node)) {
+        auto editors = add_canvas_node_editor(*ui->timeline, node);
+        for (auto editor : editors) {
             auto rect = ui->node_list->visualRect(index);
             if (auto timeline_editor = dynamic_cast<TimelineEditor*>(editor.get()))
                 timeline_editor->set_position_hint(rect.y(), rect.height());
