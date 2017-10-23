@@ -40,8 +40,10 @@ class WaveformDisplay :
 {
 public:
     virtual ~WaveformDisplay() {
-        if (read_thread.joinable())
-            read_thread.detach();
+        if (read_thread_1.joinable())
+            read_thread_1.join();
+        if (read_thread_2.joinable())
+            read_thread_2.join();
     }
 
     void setup_canvas() override {
@@ -85,7 +87,7 @@ private:
 #warning "it isn't very safe to pass unchecked string to external program"
         auto pid = fork_pipe(pipe_input, pipe_output, {"/usr/bin/env", "ffprobe", "-i", file_path, "-show_entries", "format=duration", "-v", "quiet", "-of", "csv=p=0"});
         cached_path = file_path;
-        read_thread = std::thread([this, pipe_output, pid]() {
+        read_thread_1 = std::thread([this, pipe_output, pid]() {
             int status;
             waitpid(pid, &status, 0);
             if (status != 0)
@@ -103,9 +105,9 @@ private:
         FILE* pipe_output; // unused
 #warning "it isn't very safe to pass unchecked string to external program"
         auto pid = fork_pipe(pipe_input, pipe_output, {"/usr/bin/env", "ffmpeg", "-i", cached_path, "-filter_complex", "showwavespic=s={}x{}:colors=black|gray"_format(int(duration*pixels_per_second), 80), "-frames:v", "1", "-y", cached_path+".png"});
-        if (read_thread.joinable())
-            read_thread.detach();
-        read_thread = std::thread([this, pid]() {
+        if (read_thread_2.joinable())
+            read_thread_2.detach();
+        read_thread_2 = std::thread([this, pid]() {
             int status;
             waitpid(pid, &status, 0);
             if (status == 0)
@@ -122,7 +124,8 @@ private:
 private:
     string cached_path;
     const double pixels_per_second = 8;
-    std::thread read_thread;
+    std::thread read_thread_1;
+    std::thread read_thread_2;
 };
 
 REGISTER_CANVAS_EDITOR(TimelineArea, WaveformDisplay, core::Audio);
