@@ -8,6 +8,8 @@ target_sources(rainynite-studio
         main/about.h
         main/renderer.cpp
         main/renderer.h
+        main/audio.h
+        main/audio.cpp
 
         docks/close_destroy_dock.h
         docks/playback.h

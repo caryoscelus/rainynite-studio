@@ -37,6 +37,8 @@ class QActionGroup;
 
 namespace rainynite::studio {
 
+class AudioPlayer;
+
 class MainWindow : public QMainWindow, public ContextListener {
     Q_OBJECT
 
@@ -74,6 +76,7 @@ private:
 
 private:
     shared_ptr<Renderer> renderer;
+    unique_ptr<AudioPlayer> audio_player;
     unique_ptr<Ui::MainWindow> ui;
     unique_ptr<QErrorMessage> error_box;
     shared_ptr<core::Document> document;

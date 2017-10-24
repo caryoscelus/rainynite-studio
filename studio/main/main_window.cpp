@@ -36,6 +36,7 @@
 #include <util/strings.h>
 #include <generic/dock_registry.h>
 #include "renderer.h"
+#include "audio.h"
 #include "about.h"
 #include "main_window.h"
 #include "ui_main_window.h"
@@ -47,6 +48,7 @@ namespace rainynite::studio {
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ContextListener(),
+    audio_player(make_unique<AudioPlayer>()),
     ui(make_unique<Ui::MainWindow>()),
     error_box(make_unique<QErrorMessage>()),
     tool_actions(make_unique<QActionGroup>(this))
@@ -270,6 +272,7 @@ void MainWindow::setup_tools() {
 void MainWindow::set_context(shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
     renderer->set_context(context_);
+    audio_player->set_context(context_);
     for (auto dock : findChildren<QWidget*>()) {
         if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
