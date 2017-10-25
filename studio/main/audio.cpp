@@ -41,18 +41,39 @@ void AudioPlayer::set_context(shared_ptr<EditorContext> context) {
         auto maybe_fname = audio_node->get_property_value<string>("file_path", get_core_context());
         if (!maybe_fname)
             return;
+        auto fname = *maybe_fname;
+        if (fname == cached_file)
+            return;
         player->setMedia(QUrl::fromLocalFile(
-            QFileInfo(util::str(*maybe_fname)).absoluteFilePath()
+            QFileInfo(util::str(fname)).absoluteFilePath()
         ));
-        get_context()->changed_time().connect([this](auto time){
-            update(std::move(time));
-        });
+        cached_file = fname;
+
+        connect_boost(
+            get_context()->changed_time(),
+            [this](auto time) {
+                update(std::move(time));
+            }
+        );
+
+        connect_boost(
+            get_context()->playback_change,
+            [this](bool playing) {
+                is_playing = playing;
+                if (playing)
+                    player->play();
+                else
+                    player->pause();
+            }
+        );
     }
 }
 
 void AudioPlayer::update(core::Time time) {
     player->setPosition(time.get_seconds()*1000);
-    player->play();
+    // TODO: play one frame sample even when not playing
+    if (is_playing)
+        player->play();
 }
 
 } // namespace rainynite::studio

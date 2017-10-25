@@ -29,10 +29,13 @@ namespace rainynite::studio {
 
 class EditorContext {
 public:
+    template <typename... Args>
+    using Signal = boost::signals2::signal<Args...>;
+
     EditorContext(shared_ptr<core::Context> context_) :
         context(context_)
     {}
-public:
+
     inline shared_ptr<core::Context> get_context() const {
         return context;
     }
@@ -51,6 +54,7 @@ public:
     inline boost::signals2::signal<void(shared_ptr<core::AbstractValue>)>& changed_active_node() {
         return changed_active_node_;
     }
+    Signal<void(bool)> playback_change;
 private:
     shared_ptr<core::Context> context;
     shared_ptr<core::AbstractValue> active_node;

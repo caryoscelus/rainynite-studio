@@ -67,6 +67,7 @@ void PlaybackDock::toggle_playback(bool play) {
             timer->start(1000/context->get_fps());
         else
             timer->stop();
+        get_context()->playback_change(play);
     }
 }
 

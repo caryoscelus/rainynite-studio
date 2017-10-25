@@ -39,6 +39,8 @@ private:
     string cached_file;
 
     unique_ptr<QMediaPlayer> player;
+
+    bool is_playing;
 };
 
 } // namespace rainynite::studio
