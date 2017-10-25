@@ -36,30 +36,37 @@ public:
         context(context_)
     {}
 
-    inline shared_ptr<core::Context> get_context() const {
+    shared_ptr<core::Context> get_context() const {
         return context;
     }
+
     void set_active_node(shared_ptr<core::AbstractValue> node);
-    inline shared_ptr<core::AbstractValue> get_active_node() const {
+
+    shared_ptr<core::AbstractValue> get_active_node() const {
         return active_node;
     }
+
     shared_ptr<core::ActionStack> action_stack();
-public:
-    inline boost::signals2::signal<void(core::Time)>& changed_time() {
+
+    Signal<void(core::Time)>& changed_time() {
         return context->changed_time;
     }
-    inline boost::signals2::signal<void(core::Time::fps_type)>& changed_fps() {
+
+    Signal<void(core::Time::fps_type)>& changed_fps() {
         return context->changed_fps;
     }
-    inline boost::signals2::signal<void(shared_ptr<core::AbstractValue>)>& changed_active_node() {
+
+    Signal<void(shared_ptr<core::AbstractValue>)>& changed_active_node() {
         return changed_active_node_;
     }
+
     Signal<void(bool)> playback_change;
+
 private:
     shared_ptr<core::Context> context;
     shared_ptr<core::AbstractValue> active_node;
-private:
-    boost::signals2::signal<void(shared_ptr<core::AbstractValue>)> changed_active_node_;
+
+    Signal<void(shared_ptr<core::AbstractValue>)> changed_active_node_;
 };
 
 shared_ptr<EditorContext> global_dummy_context();
