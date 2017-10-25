@@ -87,8 +87,7 @@ MainWindow::MainWindow(QWidget* parent) :
     renderer->render_frame();
 }
 
-MainWindow::~MainWindow() {
-}
+MainWindow::~MainWindow() = default;
 
 void MainWindow::new_document() {
     document = make_shared<core::Document>();
@@ -188,6 +187,7 @@ void MainWindow::save(QString format) {
 
 void MainWindow::set_fname(string const& fname_) {
     fname = fname_;
+    get_context()->set_file_name(fname);
     renderer->set_fname(fname);
     update_title();
 }
@@ -270,6 +270,7 @@ void MainWindow::setup_tools() {
 }
 
 void MainWindow::set_context(shared_ptr<EditorContext> context_) {
+    context_->set_file_name(fname);
     ContextListener::set_context(context_);
     renderer->set_context(context_);
     audio_player->set_context(context_);

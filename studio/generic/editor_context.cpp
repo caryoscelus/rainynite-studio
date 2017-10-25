@@ -28,9 +28,10 @@ void EditorContext::set_active_node(shared_ptr<core::AbstractValue> node) {
     changed_active_node()(node);
 }
 
-shared_ptr<core::ActionStack> EditorContext::action_stack() {
+shared_ptr<core::ActionStack> EditorContext::action_stack() const {
     if (auto document = get_context()->get_document())
         return document->get_action_stack();
+    // TODO: check whether it's ok to return nullptr here
     return nullptr;
 }
 

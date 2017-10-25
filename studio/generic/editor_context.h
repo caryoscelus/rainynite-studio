@@ -18,6 +18,7 @@
 #ifndef STUDIO_GENERIC_EDITOR_CONTEXT_H_E5FE1C55_3375_5F79_8BBB_5D6A55CA2AA0
 #define STUDIO_GENERIC_EDITOR_CONTEXT_H_E5FE1C55_3375_5F79_8BBB_5D6A55CA2AA0
 
+#include <core/std/string.h>
 #include <core/context.h>
 
 namespace rainynite::core {
@@ -46,7 +47,16 @@ public:
         return active_node;
     }
 
-    shared_ptr<core::ActionStack> action_stack();
+    /// Get action stack
+    shared_ptr<core::ActionStack> action_stack() const;
+
+    void set_file_name(string const& fname) {
+        file_name = fname;
+    }
+
+    string get_file_name() const {
+        return file_name;
+    }
 
     Signal<void(core::Time)>& changed_time() {
         return context->changed_time;
@@ -65,6 +75,7 @@ public:
 private:
     shared_ptr<core::Context> context;
     shared_ptr<core::AbstractValue> active_node;
+    string file_name;
 
     Signal<void(shared_ptr<core::AbstractValue>)> changed_active_node_;
 };
