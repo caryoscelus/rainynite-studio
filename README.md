@@ -17,8 +17,9 @@ Usage examples
 Screenshots
 ===========
 
-![sunrise editing screenshot](https://caryoscelus.github.io/images/screenshots/2017.04.30-sunrise.png)
+!["pulse of life" editing screenshot (v0.6)](https://caryoscelus.github.io/images/screenshots/2017.10.25-pulse.png)
 ![bouncing ball editing screenshot](https://caryoscelus.github.io/images/screenshots/2017.07.29-ball.png)
+![sunrise editing screenshot](https://caryoscelus.github.io/images/screenshots/2017.04.30-sunrise.png)
 
 [ld38]: https://ldjam.com/events/ludum-dare/38/power-department
 [ld38_intro]: https://media.githubusercontent.com/media/spirulence/power-department-ld38/e4e0915cd6fe2f2f2bc9510c637ffaba8c55ee4d/assets/video/intro-720p.webm
@@ -58,6 +59,7 @@ Editor:
 Runtime renderer dependency:
 
 - [Inkscape](https://inkscape.org/) - used to render SVG output of RainyNite "renderer"; can be replaced with other command line SVG renderer
+- ffmpeg: optional, for waveform generation
 
 Build process
 -------------
@@ -67,5 +69,5 @@ and run `update_and_build.sh` script.
 
 However, if you're interested in development, you may find it more convenient to
 setup build directories yourself. Build process is mostly usual CMake routine,
-except for a few caveats. You can look them up at [BUILDING.md] or
+except for a few caveats. You can look them up at [BUILDING.md][BUILDING.md] or
 in [build script](https://notabug.org/caryoscelus/rainynite/src/master/update_and_build.sh).
