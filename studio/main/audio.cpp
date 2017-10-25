@@ -44,8 +44,10 @@ void AudioPlayer::set_context(shared_ptr<EditorContext> context) {
         auto fname = *maybe_fname;
         if (fname == cached_file)
             return;
-        player->setMedia(QUrl::fromLocalFile(
-            QFileInfo(util::str(fname)).absoluteFilePath()
+        using util::str;
+        player->setMedia(QUrl::fromUserInput(
+            str(fname),
+            QFileInfo(str(get_context()->get_file_name())).absolutePath()
         ));
         cached_file = fname;
 
