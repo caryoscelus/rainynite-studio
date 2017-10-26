@@ -57,17 +57,20 @@ void AdvancedColorDock::write_color(QColor c) {
     using core::actions::ChangeValue;
     using core::colors::Color;
     if (auto node = dynamic_pointer_cast<BaseValue<Color>>(get_context()->get_active_node())) {
-        // TODO: use generic color conversion
-        get_context()->action_stack()->emplace<ChangeValue>(
-            node,
-            Color {
-                (unsigned char)c.red(),
-                (unsigned char)c.green(),
-                (unsigned char)c.blue(),
-                // temporary fix for #41
-                node->get(get_core_context()).a
-            }
-        );
+        auto color = Color {
+            (unsigned char)c.red(),
+            (unsigned char)c.green(),
+            (unsigned char)c.blue(),
+            // temporary fix for #41
+            node->get(get_core_context()).a
+        };
+        if (node->can_set_any(color)) {
+            // TODO: use generic color conversion
+            get_context()->action_stack()->emplace<ChangeValue>(
+                node,
+                color
+            );
+        }
     }
 }
 
