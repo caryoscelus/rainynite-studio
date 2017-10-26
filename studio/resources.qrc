@@ -1,6 +1,6 @@
 <RCC>
   <qresource prefix="images">
-    <file>wrong_half.png</file>
+    <file>pulse.png</file>
     <file>transparency.png</file>
   </qresource>
   <qresource prefix="text">
