@@ -18,6 +18,8 @@
 #include <fmt/format.h>
 
 #include <QFile>
+#include <QVideoWidget>
+#include <QMediaPlayer>
 
 #include <version.h>
 #include <util/strings.h>
@@ -28,7 +30,8 @@ namespace rainynite::studio {
 
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent),
-    ui(make_unique<Ui::AboutDialog>())
+    ui(make_unique<Ui::AboutDialog>()),
+    player(make_unique<QMediaPlayer>())
 {
     ui->setupUi(this);
 
@@ -51,10 +54,29 @@ AboutDialog::AboutDialog(QWidget* parent) :
         third_party.close();
     }
 
+    ui->image->installEventFilter(this);
     connect(ui->close_button, SIGNAL(clicked()), this, SLOT(accept()));
 }
 
-AboutDialog::~AboutDialog() {
+AboutDialog::~AboutDialog() = default;
+
+bool AboutDialog::eventFilter(QObject* /*target*/, QEvent* event) {
+    if (event->type() == QEvent::MouseButtonPress) {
+        play_video();
+        return true;
+    }
+    return false;
+}
+
+void AboutDialog::play_video() {
+    auto video = new QVideoWidget();
+    delete ui->image_container->replaceWidget(ui->image, video);
+    delete ui->image;
+
+    player->setVideoOutput(video);
+
+    player->setMedia(QUrl{"qrc:/video/pulse.webm"});
+    player->play();
 }
 
 } // namespace rainynite::studio

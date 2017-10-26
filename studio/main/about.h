@@ -26,14 +26,22 @@ namespace Ui {
 class AboutDialog;
 }
 
+class QMediaPlayer;
+
 namespace rainynite::studio {
 
 class AboutDialog : public QDialog {
 public:
     explicit AboutDialog(QWidget* parent = nullptr);
     ~AboutDialog();
+
+    bool eventFilter(QObject* target, QEvent* event);
+
+    void play_video();
+
 private:
     unique_ptr<Ui::AboutDialog> ui;
+    unique_ptr<QMediaPlayer> player;
 };
 
 } // namespace rainynite::studio
