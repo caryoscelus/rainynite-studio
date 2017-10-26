@@ -1,4 +1,7 @@
 <RCC>
+  <qresource prefix="video">
+    <file>pulse.webm</file>
+  </qresource>
   <qresource prefix="images">
     <file>pulse.png</file>
     <file>transparency.png</file>

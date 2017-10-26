@@ -96,3 +96,6 @@ Third-party modules may have its own license terms apply.
 
 All original non-code content is licensed under CC-BY-SA 4.0 unless noted
 otherwise.
+
+`pulse.webm` soundtrack uses heartbeat sound by Benboncan, which is available at
+<https://freesound.org/people/Benboncan/sounds/108207/>.
