@@ -15,7 +15,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 add_definitions(-DQT_NO_KEYWORDS)   ## avoid slots/signals definition conflict
 
-find_package(Qt5 COMPONENTS Core Widgets Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Multimedia MultimediaWidgets REQUIRED)
 
 find_package(geom_helpers REQUIRED)
 find_package(rainynite_core REQUIRED)
