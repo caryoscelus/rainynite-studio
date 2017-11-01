@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 
 project(rainynite-studio)
 
-set(RAINYNITE_STUDIO_VERSION "0.6" CACHE STRING "RainyNite studio version number string" FORCE)
+set(RAINYNITE_STUDIO_VERSION "0.6+" CACHE STRING "RainyNite studio version number string" FORCE)
 set(RAINYNITE_STUDIO_CODENAME "Pulse Of Life" CACHE STRING "RainyNite studio version codename" FORCE)
 
 set(CMAKE_CXX_STANDARD 17)
