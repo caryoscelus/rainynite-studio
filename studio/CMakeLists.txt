@@ -35,6 +35,7 @@ target_sources(rainynite-studio
         widgets/color_button.h
         widgets/point_value_editor.cpp
         widgets/point_value_editor.h
+        widgets/boolean_editor.cpp
         widgets/multiline_editor.cpp
 
         canvas/abstract_canvas.h
