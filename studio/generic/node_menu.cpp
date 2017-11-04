@@ -173,11 +173,11 @@ void NodeContextMenu::update_node_list() {
         removeAction(action);
     }
     convert_actions.clear();
-    auto search_string = search_widget->text();
+    auto search_string = search_widget->text().toLower();
     bool first_action = true;
     for (auto node_info : node_infos) {
         auto name = util::str(node_info->name());
-        if (name.indexOf(search_string) != -1) {
+        if (name.toLower().indexOf(search_string) != -1) {
             auto action = addAction(name, [this, node_info]() {
                 model->convert_node(index, node_info);
             });
