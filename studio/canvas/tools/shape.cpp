@@ -56,6 +56,11 @@ bool Shape::draw_shape_event(QEvent* event) {
                     return mouse_release(mouse_event->pos());
                 }
             } break;
+            case QEvent::MouseButtonDblClick: {
+                if (mouse_event->button() == Qt::LeftButton) {
+                    return editing_done();
+                }
+            } break;
             default:
                 break;
         }

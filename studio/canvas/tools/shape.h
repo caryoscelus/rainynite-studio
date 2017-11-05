@@ -38,6 +38,16 @@ protected:
     virtual bool mouse_move(QPoint const& pos) = 0;
     virtual bool mouse_release(QPoint const& pos) = 0;
 
+    /**
+     * Called on double click which should indicate editing is finished.
+     *
+     * Default implementation is empty because some shapes are finished
+     * implicitly by end of dragging (circle, rectangle, etc)
+     */
+    virtual bool editing_done() {
+        return false;
+    }
+
     /// Returns whether this node can accept the shape
     virtual bool accept(shared_ptr<core::AbstractValue> node);
 
