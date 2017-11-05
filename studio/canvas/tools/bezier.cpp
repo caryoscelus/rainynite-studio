@@ -56,23 +56,21 @@ protected:
             editor->set_canvas(get_canvas());
             editor->set_node(path_node);
         }
-        next_pos = convert_pos(pos);
+        path->emplace_back(convert_pos(pos));
         return true;
     }
     bool mouse_move(QPoint const& pos) override {
         if (is_drawing) {
+            auto p = convert_pos(pos);
+            auto& knot = path->last();
+            knot.tg1 = knot.pos-p;
+            knot.tg2 = p-knot.pos;
             editor->redraw();
         }
         return is_drawing;
     }
-    bool mouse_release(QPoint const& pos) override {
-        auto p = convert_pos(pos);
+    bool mouse_release(QPoint const& /*pos*/) override {
         if (is_drawing) {
-            path->emplace_back(
-                next_pos,
-                next_pos-p,
-                p-next_pos
-            );
             return true;
         }
         return false;
