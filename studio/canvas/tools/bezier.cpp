@@ -46,6 +46,10 @@ public:
     }
 
 protected:
+    void setup_canvas() override {
+        get_canvas()->viewport()->setMouseTracking(true);
+    }
+
     bool mouse_press(QPoint const& pos) override {
         if (!is_drawing) {
             is_drawing = true;
@@ -55,28 +59,40 @@ protected:
             editor = make_unique<BezierEditor>();
             editor->set_canvas(get_canvas());
             editor->set_node(path_node);
+            path->emplace_back(convert_pos(pos));
         }
-        path->emplace_back(convert_pos(pos));
+        is_pressed = true;
         return true;
     }
     bool mouse_move(QPoint const& pos) override {
         if (is_drawing) {
             auto p = convert_pos(pos);
             auto& knot = path->last();
-            knot.tg1 = knot.pos-p;
-            knot.tg2 = p-knot.pos;
-            editor->redraw();
+            if (is_pressed) {
+                knot.tg1 = knot.pos-p;
+                knot.tg2 = p-knot.pos;
+                editor->redraw();
+            } else {
+                knot.pos = p;
+                editor->redraw();
+            }
         }
         return is_drawing;
     }
-    bool mouse_release(QPoint const& /*pos*/) override {
+    bool mouse_release(QPoint const& pos) override {
         if (is_drawing) {
+            path->emplace_back(convert_pos(pos));
+            is_pressed = false;
             return true;
         }
         return false;
     }
     bool editing_done() override {
         if (is_drawing) {
+            // Remove last knot that appears due to double-click..
+            path->knots.pop_back();
+            // ..and the one created by mouse move
+            path->knots.pop_back();
             write_shape(path_node);
             editor.reset();
             is_drawing = false;
@@ -92,6 +108,7 @@ private:
 
 private:
     bool is_drawing = false;
+    bool is_pressed = false;
     unique_ptr<BezierEditor> editor;
     shared_ptr<core::Value<Geom::BezierKnots>> path_node;
     observer_ptr<Geom::BezierKnots> path;
