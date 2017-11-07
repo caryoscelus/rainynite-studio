@@ -20,7 +20,7 @@
 
 #include <fmt/format.h>
 
-#include <core/color.h>
+#include <core/color/color.h>
 
 #include <util/strings.h>
 #include "color_button.h"

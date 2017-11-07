@@ -21,7 +21,7 @@
 #include <QDebug>
 #include <QPushButton>
 
-#include <core/color.h>
+#include <core/color/color.h>
 
 #include <generic/node_editor.h>
 

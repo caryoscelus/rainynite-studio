@@ -245,7 +245,7 @@ bool NodeModel::can_remove_node(QModelIndex const& index) const {
 }
 
 void NodeModel::remove_node(QModelIndex const& index) {
-    if (auto node = get_node_as<core::AbstractNode>(index)) {
+    if (auto node = get_node_as<core::AbstractNodeBase>(index)) {
         auto child = node->get_link(0);
         replace_node(index, child);
     }

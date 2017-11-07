@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <core/color.h>
+#include <core/color/color.h>
 #include <core/node/abstract_value.h>
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
