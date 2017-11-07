@@ -83,6 +83,12 @@ public:
     void move_up(size_t offset, QModelIndex const& parent);
     void move_down(size_t offset, QModelIndex const& parent);
 
+    /// Return node enabled status
+    bool node_enabled(QModelIndex const& index) const;
+
+    /// Enable/disable node
+    void node_set_enabled(QModelIndex const& index, bool value);
+
 public:
     template <typename T, typename F>
     T find_nodes(core::AbstractReference node_to_find, F f) const {

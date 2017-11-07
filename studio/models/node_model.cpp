@@ -25,6 +25,7 @@
 #include <core/action_stack.h>
 #include <core/actions/change_link.h>
 #include <core/actions/custom_property.h>
+#include <core/actions/set_enabled.h>
 #include <core/actions/list.h>
 
 #include <util/strings.h>
@@ -248,6 +249,21 @@ void NodeModel::remove_node(QModelIndex const& index) {
     if (auto node = get_node_as<core::AbstractNodeBase>(index)) {
         auto child = node->get_link(0);
         replace_node(index, child);
+    }
+}
+
+bool NodeModel::node_enabled(QModelIndex const& index) const {
+    if (auto node = get_node(index)) {
+        return node->enabled();
+    }
+    return false;
+}
+
+void NodeModel::node_set_enabled(QModelIndex const& index, bool value) {
+    if (!action_stack)
+        return;
+    if (auto node = get_node(index)) {
+        action_stack->emplace<core::actions::SetEnabled>(node, value);
     }
 }
 

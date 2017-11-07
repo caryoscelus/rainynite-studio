@@ -99,6 +99,13 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
             );
         }
 
+        auto on_off_action = addAction("Enabled");
+        on_off_action->setCheckable(true);
+        on_off_action->setChecked(model->node_enabled(index));
+        connect(on_off_action, &QAction::toggled, [this](bool value) {
+            model->node_set_enabled(index, value);
+        });
+
         if (model->can_add_element(index)) {
             addAction(
                 QIcon::fromTheme("list-add"),
