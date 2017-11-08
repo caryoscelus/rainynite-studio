@@ -27,6 +27,7 @@ class NodeTreeDock;
 }
 
 class QMenu;
+class QSortFilterProxyModel;
 
 namespace rainynite::studio {
 
@@ -54,12 +55,15 @@ Q_SIGNALS:
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 
-private Q_SLOTS:
+    void apply_filter(QString const& s);
+
+private:
     void activate(QModelIndex const& index);
 
 private:
     unique_ptr<Ui::NodeTreeDock> ui;
     unique_ptr<NodeModel> model;
+    unique_ptr<QSortFilterProxyModel> proxy_model;
     unique_ptr<QMenu> menu;
 };
 

@@ -20,6 +20,7 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QInputDialog>
+#include <QSortFilterProxyModel>
 
 #include <core/document.h>
 #include <core/node_info.h>
@@ -46,6 +47,8 @@ NodeTreeDock::NodeTreeDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     connect(ui->tree_view, &QAbstractItemView::activated, this, &NodeTreeDock::activate);
     connect(ui->tree_view, &QAbstractItemView::clicked, this, &NodeTreeDock::activate);
 
+    connect(ui->filter, &QLineEdit::textEdited, this, &NodeTreeDock::apply_filter);
+
     set_context(get_context());
 }
 
@@ -60,7 +63,9 @@ void NodeTreeDock::set_context(shared_ptr<EditorContext> context_) {
         model = make_unique<NodeModel>(nullptr, nullptr);
     }
     model->set_context(context_);
-    ui->tree_view->setModel(model.get());
+    proxy_model = make_unique<QSortFilterProxyModel>();
+    proxy_model->setSourceModel(model.get());
+    ui->tree_view->setModel(proxy_model.get());
 }
 
 void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
@@ -68,6 +73,10 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
     if (menu = node_context_menu(model.get(), selection_model, get_time())) {
         menu->exec(event->globalPos());
     }
+}
+
+void NodeTreeDock::apply_filter(QString const& s) {
+    proxy_model->setFilterRegExp({s});
 }
 
 void NodeTreeDock::activate(QModelIndex const& index) {

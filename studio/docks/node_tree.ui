@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>208</width>
-    <height>128</height>
+    <height>147</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>&amp;Node Tree</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -30,6 +30,13 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
+    <item>
+     <widget class="QLineEdit" name="filter">
+      <property name="clearButtonEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QTreeView" name="tree_view">
       <property name="autoScroll">
