@@ -17,6 +17,7 @@
 
 #include <core/color/color.h>
 #include <core/node/abstract_value.h>
+#include <core/node/cast.h>
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
 
@@ -39,9 +40,9 @@ AdvancedColorDock::~AdvancedColorDock() {
 }
 
 void AdvancedColorDock::active_node_changed(shared_ptr<core::AbstractValue> node) {
-    using core::BaseValue;
+    using core::base_value_cast;
     using core::colors::Color;
-    if (auto color_node = dynamic_cast<BaseValue<Color>*>(node.get())) {
+    if (auto color_node = base_value_cast<Color>(std::move(node))) {
         auto color = color_node->value(get_core_context());
         ui->color_widget->setColor({
             color.r,
@@ -53,10 +54,10 @@ void AdvancedColorDock::active_node_changed(shared_ptr<core::AbstractValue> node
 }
 
 void AdvancedColorDock::write_color(QColor c) {
-    using core::BaseValue;
+    using core::base_value_cast;
     using core::actions::ChangeValue;
     using core::colors::Color;
-    if (auto node = dynamic_pointer_cast<BaseValue<Color>>(get_context()->get_active_node())) {
+    if (auto node = base_value_cast<Color>(get_context()->get_active_node())) {
         auto color = Color {
             (unsigned char)c.red(),
             (unsigned char)c.green(),
