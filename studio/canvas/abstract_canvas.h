@@ -84,6 +84,12 @@ public:
     /// Zoom to show rect area
     void zoom_to_rect(QRectF rect);
 
+    /// Mirror canvas horizontally (i.e. left-right, along Y axis)
+    void mirror_horizontally(bool value);
+
+    /// Return horizontal mirrored status
+    bool is_mirrored_horizontally() const;
+
     /// Scroll by `delta` (in view coordinates)
     void scroll_by(QPointF delta);
 

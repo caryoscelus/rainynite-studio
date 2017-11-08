@@ -78,6 +78,14 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_extra_style, SIGNAL(toggled(bool)), renderer.get(), SLOT(toggle_extra_style(bool)));
     connect(ui->action_auto_redraw, SIGNAL(toggled(bool)), renderer.get(), SLOT(toggle_auto_redraw(bool)));
 
+    connect(
+        ui->action_mirror,
+        &QAction::toggled,
+        [this](bool value) {
+            ui->canvas->mirror_horizontally(value);
+        }
+    );
+
     setup_tools();
 
     setup_dock_menu();

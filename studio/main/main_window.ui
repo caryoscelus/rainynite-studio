@@ -87,6 +87,7 @@
      <string>&amp;View</string>
     </property>
     <addaction name="action_redraw"/>
+    <addaction name="action_mirror"/>
    </widget>
    <widget class="QMenu" name="menu_dock">
     <property name="title">
@@ -312,6 +313,14 @@
    </property>
    <property name="toolTip">
     <string>Disable this if rendering starts to happen at unfortunate times.</string>
+   </property>
+  </action>
+  <action name="action_mirror">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mirror</string>
    </property>
   </action>
  </widget>

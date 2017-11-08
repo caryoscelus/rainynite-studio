@@ -115,7 +115,16 @@ void AbstractCanvas::zoom_to_rect(QRectF rect) {
 }
 
 double AbstractCanvas::zoom_level() {
-    return transform().m11();
+    return std::abs(transform().m11());
+}
+
+void AbstractCanvas::mirror_horizontally(bool value) {
+    if (value != is_mirrored_horizontally())
+        scale(-1.0, 1.0);
+}
+
+bool AbstractCanvas::is_mirrored_horizontally() const {
+    return transform().m11() < 0;
 }
 
 void AbstractCanvas::scroll_by(QPointF delta) {
