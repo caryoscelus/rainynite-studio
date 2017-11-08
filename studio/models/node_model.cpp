@@ -184,23 +184,7 @@ void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* nod
         auto node = get_node(index);
         auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), node, get_core_context());
 
-        // now tell Qt about our intentions
-        size_t old_rows = 0;
-        if (auto node = get_list_node(index))
-            old_rows = node->link_count();
-        size_t new_rows = 0;
-        if (auto new_list = dynamic_cast<core::AbstractListLinked*>(new_node.get()))
-            new_rows = new_list->link_count();
-        if (new_rows > old_rows)
-            beginInsertRows(index, old_rows, new_rows-1);
-        else
-            beginRemoveRows(index, new_rows, old_rows-1);
-        // perform action
         replace_node(index, new_node);
-        if (new_rows > old_rows)
-            endInsertRows();
-        else
-            endRemoveRows();
     }
 }
 
@@ -271,8 +255,24 @@ void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference n
     if (!action_stack)
         return;
     if (auto parent = get_list_node(index.parent())) {
+        // now tell Qt about our intentions
+        size_t old_rows = 0;
+        if (auto old_node = get_list_node(index))
+            old_rows = old_node->link_count();
+        size_t new_rows = 0;
+        if (auto new_list = core::list_cast(node))
+            new_rows = new_list->link_count();
+        if (new_rows > old_rows)
+            beginInsertRows(index, old_rows, new_rows-1);
+        else
+            beginRemoveRows(index, new_rows, old_rows-1);
+
         action_stack->emplace<core::actions::ChangeLink>(parent, index.row(), node);
-        // TODO: insert/remove rows
+
+        if (new_rows > old_rows)
+            endInsertRows();
+        else
+            endRemoveRows();
     }
 }
 
