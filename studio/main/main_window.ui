@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>{file} - RainyNite {version} &quot;{codename}&quot;</string>
+   <string>{status}{file} - RainyNite {version} &quot;{codename}&quot;</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -308,7 +308,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Enable auto-redraw</string>
+    <string>Enable &amp;auto-redraw</string>
    </property>
    <property name="toolTip">
     <string>Disable this if rendering starts to happen at unfortunate times.</string>

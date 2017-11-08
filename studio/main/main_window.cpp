@@ -176,6 +176,8 @@ void MainWindow::save(QString format) {
         std::ofstream out(fname);
         writer->write_document(out, document);
         saved_format = util::str(format);
+        is_saved = true;
+        update_title();
     } catch (std::exception const& ex) {
         auto msg = util::str("Uncaught exception while saving document:\n{}"_format(ex.what()));
         qDebug() << msg;
@@ -195,6 +197,7 @@ void MainWindow::set_fname(string const& fname_) {
 void MainWindow::update_title() {
     setWindowTitle(util::str(fmt::format(
         window_title_template,
+        "status"_a=is_saved ? "" : "*",
         "file"_a=fname,
         "version"_a=RAINYNITE_STUDIO_VERSION,
         "codename"_a=RAINYNITE_STUDIO_CODENAME
@@ -280,6 +283,18 @@ void MainWindow::set_context(shared_ptr<EditorContext> context_) {
         if (dock->metaObject()->indexOfSignal("activated(shared_ptr<core::AbstractValue>)") != -1)
             connect(dock, SIGNAL(activated(shared_ptr<core::AbstractValue>)), this, SLOT(activate(shared_ptr<core::AbstractValue>)));
     }
+    auto set_dirty = [this]() {
+        is_saved = false;
+        update_title();
+    };
+    connect_boost(
+        get_context()->action_stack()->action_closed,
+        set_dirty
+    );
+    connect_boost(
+        get_context()->action_stack()->undone_or_redone,
+        set_dirty
+    );
 }
 
 void MainWindow::activate(shared_ptr<core::AbstractValue> node) {

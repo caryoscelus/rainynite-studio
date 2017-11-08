@@ -87,6 +87,8 @@ private:
     string fname;
     string saved_format;
     string window_title_template;
+
+    bool is_saved = false;
 };
 
 } // namespace rainynite::studio
