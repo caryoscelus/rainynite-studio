@@ -27,7 +27,7 @@ class NodeTreeDock;
 }
 
 class QMenu;
-class QSortFilterProxyModel;
+class KRecursiveFilterProxyModel;
 
 namespace rainynite::studio {
 
@@ -63,7 +63,7 @@ private:
 private:
     unique_ptr<Ui::NodeTreeDock> ui;
     unique_ptr<NodeModel> model;
-    unique_ptr<QSortFilterProxyModel> proxy_model;
+    unique_ptr<KRecursiveFilterProxyModel> proxy_model;
     unique_ptr<QMenu> menu;
 };
 
