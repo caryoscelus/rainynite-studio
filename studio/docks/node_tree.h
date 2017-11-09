@@ -27,11 +27,11 @@ class NodeTreeDock;
 }
 
 class QMenu;
-class KRecursiveFilterProxyModel;
 
 namespace rainynite::studio {
 
 class NodeModel;
+class RecursiveFilterProxyModel;
 
 /**
  * Node graph tree representation dock.
@@ -63,7 +63,7 @@ private:
 private:
     unique_ptr<Ui::NodeTreeDock> ui;
     unique_ptr<NodeModel> model;
-    unique_ptr<KRecursiveFilterProxyModel> proxy_model;
+    unique_ptr<RecursiveFilterProxyModel> proxy_model;
     unique_ptr<QMenu> menu;
 };
 

@@ -21,13 +21,12 @@
 #include <QContextMenuEvent>
 #include <QInputDialog>
 
-#include <KRecursiveFilterProxyModel>
-
 #include <core/document.h>
 #include <core/node_info.h>
 
 #include <util/strings.h>
 #include <models/node_model.h>
+#include <models/model_filter.h>
 #include <generic/node_menu.h>
 #include "node_tree.h"
 #include "ui_node_tree.h"
@@ -64,7 +63,7 @@ void NodeTreeDock::set_context(shared_ptr<EditorContext> context_) {
         model = make_unique<NodeModel>(nullptr, nullptr);
     }
     model->set_context(context_);
-    proxy_model = make_unique<KRecursiveFilterProxyModel>();
+    proxy_model = make_unique<RecursiveFilterProxyModel>();
     proxy_model->setSourceModel(model.get());
     ui->tree_view->setModel(proxy_model.get());
 }
