@@ -31,6 +31,7 @@ class QMenu;
 namespace rainynite::studio {
 
 class NodeModel;
+class RecursiveFilterProxyModel;
 
 /**
  * Node graph tree representation dock.
@@ -54,12 +55,15 @@ Q_SIGNALS:
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 
-private Q_SLOTS:
+    void apply_filter(QString const& s);
+
+private:
     void activate(QModelIndex const& index);
 
 private:
     unique_ptr<Ui::NodeTreeDock> ui;
     unique_ptr<NodeModel> model;
+    unique_ptr<RecursiveFilterProxyModel> proxy_model;
     unique_ptr<QMenu> menu;
 };
 
