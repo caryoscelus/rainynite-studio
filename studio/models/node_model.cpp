@@ -264,14 +264,14 @@ void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference n
             new_rows = new_list->link_count();
         if (new_rows > old_rows)
             beginInsertRows(index, old_rows, new_rows-1);
-        else
+        else if (new_rows < old_rows)
             beginRemoveRows(index, new_rows, old_rows-1);
 
         action_stack->emplace<core::actions::ChangeLink>(parent, index.row(), node);
 
         if (new_rows > old_rows)
             endInsertRows();
-        else
+        else if (new_rows < old_rows)
             endRemoveRows();
     }
 }
