@@ -54,6 +54,7 @@ TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     connect(ui->node_list->verticalScrollBar(), &QScrollBar::valueChanged, ui->timeline->verticalScrollBar(), &QScrollBar::setValue);
 
     connect(ui->timeline->horizontalScrollBar(), &QScrollBar::valueChanged, this, &TimeareaDock::update_ruler);
+    connect(ui->timeline->scene(), &QGraphicsScene::sceneRectChanged, this, &TimeareaDock::update_ruler);
     ui->timeline->installEventFilter(this);
     update_ruler();
 
