@@ -173,7 +173,7 @@ bool NodeModel::can_add_element(QModelIndex const& parent) const {
 void NodeModel::add_empty_element(QModelIndex const& parent) {
     if (auto node = get_list_node(parent)) {
         auto last = node->link_count();
-        beginInsertRows(parent, last-1, last-1);
+        beginInsertRows(parent, last, last);
         action_stack->emplace<core::actions::ListPushNew>(node);
         endInsertRows();
     }
