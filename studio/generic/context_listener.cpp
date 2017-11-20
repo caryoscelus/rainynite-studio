@@ -61,4 +61,8 @@ void ContextListener::redo() {
     get_context()->action_stack()->redo();
 }
 
+void ContextListener::clear_undo_history() {
+    get_context()->action_stack()->clear();
+}
+
 } // namespace rainynite::studio

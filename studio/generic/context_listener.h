@@ -44,6 +44,7 @@ public:
 
     void undo();
     void redo();
+    void clear_undo_history();
 
 protected:
     core::Time get_time() const {
