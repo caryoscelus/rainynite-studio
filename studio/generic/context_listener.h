@@ -42,6 +42,9 @@ public:
     }
     virtual void set_context(shared_ptr<EditorContext> context_);
 
+    void undo();
+    void redo();
+
 protected:
     core::Time get_time() const {
         return time;

@@ -60,9 +60,6 @@ private Q_SLOTS:
     void about();
     void quit();
 
-    void undo();
-    void redo();
-
     void activate(shared_ptr<core::AbstractValue> node);
 
     void add_all_docks();

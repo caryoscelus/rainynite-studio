@@ -16,6 +16,7 @@
  */
 
 #include <core/context.h>
+#include <core/action_stack.h>
 
 #include "context_listener.h"
 
@@ -52,4 +53,12 @@ void ContextListener::set_context(shared_ptr<EditorContext> context_) {
     fps_changed(get_core_context()->get_fps());
 }
 
+void ContextListener::undo() {
+    get_context()->action_stack()->undo();
 }
+
+void ContextListener::redo() {
+    get_context()->action_stack()->redo();
+}
+
+} // namespace rainynite::studio

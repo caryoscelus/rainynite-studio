@@ -68,8 +68,12 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->action_about, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(quit()));
 
-    connect(ui->action_undo, SIGNAL(triggered()), this, SLOT(undo()));
-    connect(ui->action_redo, SIGNAL(triggered()), this, SLOT(redo()));
+    connect(ui->action_undo, &QAction::triggered, [this]() {
+        undo();
+    });
+    connect(ui->action_redo, &QAction::triggered, [this]() {
+        redo();
+    });
 
     connect(ui->action_render, SIGNAL(triggered()), renderer.get(), SLOT(render()));
     connect(ui->action_render_frame, SIGNAL(triggered()), renderer.get(), SLOT(render_frame()));
@@ -210,14 +214,6 @@ void MainWindow::update_title() {
         "version"_a=RAINYNITE_STUDIO_VERSION,
         "codename"_a=RAINYNITE_STUDIO_CODENAME
     )));
-}
-
-void MainWindow::undo() {
-    get_context()->action_stack()->undo();
-}
-
-void MainWindow::redo() {
-    get_context()->action_stack()->redo();
 }
 
 void MainWindow::about() {
