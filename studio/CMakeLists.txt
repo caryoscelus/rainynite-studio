@@ -22,6 +22,8 @@ target_sources(rainynite-studio
         docks/node_edit.cpp
         docks/advanced_color_selector.h
         docks/advanced_color_selector.cpp
+        docks/undo_history.h
+        docks/undo_history.cpp
 
         widgets/editor_factory.cpp
 
@@ -92,6 +94,8 @@ target_sources(rainynite-studio
         models/node_model.h
         models/node_list.cpp
         models/node_list.h
+        models/undo_model.h
+        models/undo_model.cpp
 
         util/strings.h
         util/pen.h
