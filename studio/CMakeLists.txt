@@ -90,6 +90,7 @@ target_sources(rainynite-studio
         generic/timeline_editor.h
         generic/dock_registry.h
 
+        models/model_filter.h
         models/node_model.cpp
         models/node_model.h
         models/node_list.cpp
@@ -110,9 +111,7 @@ target_link_libraries(rainynite-studio
     Qt5::MultimediaWidgets
     KF5::ItemModels
     ColorWidgets-qt5
-    geom_helpers
-    time
-    document
+    nodes
     filters
     renderers
     fmt

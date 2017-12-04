@@ -22,6 +22,7 @@
 
 #include <core/node_info.h>
 #include <core/node/traverse.h>
+#include <core/node_tree.h>
 
 #include <generic/context_listener.h>
 
@@ -45,13 +46,8 @@ public:
     int rowCount(QModelIndex const& parent = QModelIndex()) const override;
     int columnCount(QModelIndex const& parent = QModelIndex()) const override;
 
-public:
-    bool removeRows(int row, int count, QModelIndex const& parent = QModelIndex()) override;
-
-public:
     void time_changed(core::Time time) override;
 
-public:
     bool can_add_custom_property(QModelIndex const& parent) const;
     void add_empty_custom_property(QModelIndex const& parent, std::string const& name);
     bool is_custom_property(QModelIndex const& index) const;
@@ -89,7 +85,6 @@ public:
     /// Enable/disable node
     void node_set_enabled(QModelIndex const& index, bool value);
 
-public:
     template <typename T, typename F>
     T find_nodes(core::AbstractReference node_to_find, F f) const {
         // TODO: perfect forward f
@@ -104,7 +99,6 @@ public:
         );
     }
 
-public:
     core::TypeConstraint get_link_type(QModelIndex const& index) const;
     shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
     template <class T>
@@ -118,12 +112,14 @@ public:
     size_t get_node_index(QModelIndex const& index) const;
 
 private:
-    quintptr get_id(QModelIndex const& parent, size_t i) const;
+    core::NodeTree::Index get_inner_index(QModelIndex const& parent, size_t i) const;
+    core::NodeTree::Index get_inner_index(QModelIndex const& index) const;
 
 private:
     core::AbstractReference root;
+    shared_ptr<core::NodeTree> tree;
     shared_ptr<core::ActionStack> action_stack;
-private:
+
     mutable map<pair<QModelIndex, size_t>, quintptr> indexes;
     mutable map<quintptr, QModelIndex> parents;
     mutable quintptr index_count = 0;
