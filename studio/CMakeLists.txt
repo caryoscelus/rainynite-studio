@@ -110,9 +110,7 @@ target_link_libraries(rainynite-studio
     Qt5::MultimediaWidgets
     KF5::ItemModels
     ColorWidgets-qt5
-    geom_helpers
-    time
-    document
+    nodes
     filters
     renderers
     fmt
