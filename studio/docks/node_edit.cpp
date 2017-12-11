@@ -39,6 +39,16 @@ NodeEditDock::NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     custom_widget = ui->custom_placeholder;
     ui->text_edit->setReadOnly(true);
     set_context(context_);
+    connect(
+        ui->enable_autoupdate,
+        &QAbstractButton::toggled,
+        [this](bool value) {
+            ui->text_edit->set_update_enabled(value);
+            if (auto node_editor = dynamic_cast<NodeEditor*>(custom_widget)) {
+                node_editor->set_update_enabled(value);
+            }
+        }
+    );
 }
 
 NodeEditDock::~NodeEditDock() {
@@ -55,7 +65,8 @@ void NodeEditDock::active_node_changed(shared_ptr<core::AbstractValue> node) {
 
 void NodeEditDock::time_changed(core::Time time) {
     ContextListener::time_changed(time);
-    update_value();
+    if (ui->enable_autoupdate->isChecked())
+        update_value();
 }
 
 void NodeEditDock::update_value() {

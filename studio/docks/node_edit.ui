@@ -16,7 +16,27 @@
   <widget class="QWidget" name="content">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="rainynite::studio::NodeStringEditor" name="text_edit"/>
+     <layout class="QHBoxLayout" name="layout">
+      <item>
+       <widget class="QToolButton" name="enable_autoupdate">
+        <property name="text">
+         <string>Enable autoupdate</string>
+        </property>
+        <property name="icon">
+         <iconset theme="view-refresh"/>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="rainynite::studio::NodeStringEditor" name="text_edit"/>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QWidget" name="custom_placeholder" native="true"/>

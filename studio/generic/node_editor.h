@@ -39,15 +39,19 @@ public:
     virtual ~NodeEditor() {
         node_connection.disconnect();
     }
-public:
+
+    void set_update_enabled(bool value) {
+        update_enabled = value;
+    }
+
     virtual void node_update() {
     }
-public:
+
     void set_node(shared_ptr<core::AbstractValue> node_);
-    inline shared_ptr<core::AbstractValue> get_node() {
+    shared_ptr<core::AbstractValue> get_node() {
         return node;
     }
-public:
+
     template <typename T>
     optional<T> get_value() {
         if (auto node = get_node_as<T>()) {
@@ -59,6 +63,10 @@ public:
     shared_ptr<core::BaseValue<T>> get_node_as() {
         return dynamic_pointer_cast<core::BaseValue<T>>(std::move(get_node()));
     }
+
+protected:
+    bool update_enabled = true;
+
 private:
     shared_ptr<core::AbstractValue> node = nullptr;
     boost::signals2::connection node_connection;

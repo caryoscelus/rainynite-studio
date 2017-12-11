@@ -77,11 +77,12 @@ public:
     void time_changed(core::Time time_) override {
         ContextListener::time_changed(time_);
         if (value_node = dynamic_cast<ValueNodeType*>(this->get_node().get()))
-            self()->do_update_value(get_core_context());
+            if (update_enabled)
+                self()->do_update_value(get_core_context());
     }
 
 private:
-    inline Self* self() {
+    Self* self() {
         static_assert(is_base_of_v<AbstractNodeEditorWidget, Self>);
         return static_cast<Self*>(this);
     }
