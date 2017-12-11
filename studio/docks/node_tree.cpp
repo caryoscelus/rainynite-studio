@@ -65,7 +65,7 @@ void NodeTreeDock::set_context(shared_ptr<EditorContext> context_) {
     model->set_context(context_);
     proxy_model = make_unique<RecursiveFilterProxyModel>();
     proxy_model->setSourceModel(model.get());
-    ui->tree_view->setModel(proxy_model.get());
+    apply_filter(ui->filter->text());
 }
 
 void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
@@ -76,7 +76,12 @@ void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
 }
 
 void NodeTreeDock::apply_filter(QString const& s) {
-    proxy_model->setFilterRegExp({s});
+    if (s.isEmpty()) {
+        ui->tree_view->setModel(model.get());
+    } else {
+        proxy_model->setFilterRegExp({s});
+        ui->tree_view->setModel(proxy_model.get());
+    }
 }
 
 void NodeTreeDock::activate(QModelIndex const& index) {
