@@ -131,9 +131,9 @@ core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& parent, size
         return nullptr;
     if (!parent.isValid()) {
         if (i == 0)
-            return tree->get_root();
+            return tree->get_root_index();
         else
-            return tree->get_null();
+            return tree->get_null_index();
     } else {
         return tree->index(get_inner_index(parent), i);
     }
@@ -143,7 +143,7 @@ core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& index) const
     if (tree == nullptr)
         return nullptr;
     if (!index.isValid()) {
-        return tree->get_null();
+        return tree->get_null_index();
     }
     return make_observer(static_cast<core::NodeTreeIndex*>(index.internalPointer()));
 }
