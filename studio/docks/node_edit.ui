@@ -19,6 +19,9 @@
      <layout class="QHBoxLayout" name="layout">
       <item>
        <widget class="QToolButton" name="enable_autoupdate">
+        <property name="toolTip">
+         <string>Update value while playing</string>
+        </property>
         <property name="text">
          <string>Enable autoupdate</string>
         </property>
