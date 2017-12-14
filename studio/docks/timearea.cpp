@@ -20,6 +20,10 @@
 #include <QScrollBar>
 
 #include <core/node/abstract_value.h>
+#include <core/node/abstract_node.h>
+#include <core/node/traverse.h>
+#include <core/node/make.h>
+#include <core/document.h>
 
 #include <widgets/timeline_area.h>
 #include <generic/timeline_editor.h>
@@ -78,8 +82,11 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
             menu.addAction(
                 QIcon::fromTheme("list-add"),
                 "Pin to timeline area",
-                [this]() {
+                [this, index]() {
                     pinned = true;
+                    // TODO: check for existing property, etc
+                    if (auto node = abstract_node_cast(node_list_model->get_node(index)))
+                        node->set_property("_pin_in_timeline", core::make_value<bool>(true));
                 }
             );
         } else {
@@ -88,6 +95,8 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
                 "Remove from timeline area",
                 [this, index]() {
                     node_list_model->removeRow(index.row());
+                    if (auto node = abstract_node_cast(node_list_model->get_node(index)))
+                        node->remove_property("_pin_in_timeline");
                 }
             );
         }
@@ -98,12 +107,30 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
 void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     ui->timeline->set_context(context);
+    if (auto new_document = context->get_context()->get_document()) {
+        document = new_document;
+        load_pinned_from_file(std::move(new_document));
+    }
     connect_boost(
         context->changed_active_node(),
         [this](core::AbstractReference node) {
             if (!pinned && node_list_model->rowCount() > 0)
                 node_list_model->removeRow(node_list_model->rowCount()-1);
             pinned = !node_list_model->insert_unique_node(node);
+        }
+    );
+}
+
+void TimeareaDock::load_pinned_from_file(shared_ptr<core::Document> new_document) {
+    core::traverse_once<bool>(
+        new_document,
+        [this](core::AbstractReference value) -> optional<bool> {
+            // TODO: support dynamic _pin_in_timeline
+            if (auto node = abstract_node_cast(value)) {
+                if (node->get_property_value<bool>("_pin_in_timeline", get_core_context()).value_or(false))
+                    node_list_model->insert_unique_node(value);
+            }
+            return {};
         }
     );
 }

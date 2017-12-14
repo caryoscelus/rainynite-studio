@@ -52,10 +52,12 @@ public:
 protected:
     void update_editors();
     void update_ruler();
+    void load_pinned_from_file(shared_ptr<core::Document> new_document);
 
 private:
     unique_ptr<Ui::TimeareaDock> ui;
     unique_ptr<NodeListModel> node_list_model;
+    weak_ptr<core::Document> document;
     bool pinned = false;
 };
 
