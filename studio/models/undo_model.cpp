@@ -51,10 +51,10 @@ QVariant UndoModel::data(QModelIndex const& index, int role) const {
 }
 
 Qt::ItemFlags UndoModel::flags(QModelIndex const& /*index*/) const {
-    return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    return Qt::ItemIsEnabled;
 }
 
-QVariant UndoModel::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant UndoModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const {
     return {};
 }
 
@@ -64,7 +64,7 @@ QModelIndex UndoModel::index(int row, int column, QModelIndex const& parent) con
     return createIndex(row, column);
 }
 
-QModelIndex UndoModel::parent(QModelIndex const& index) const {
+QModelIndex UndoModel::parent(QModelIndex const& /*index*/) const {
     return {};
 }
 
@@ -76,7 +76,7 @@ int UndoModel::rowCount(QModelIndex const& parent) const {
         action_stack->get_redo_stack().size();
 }
 
-int UndoModel::columnCount(QModelIndex const& parent) const {
+int UndoModel::columnCount(QModelIndex const& /*parent*/) const {
     return 1;
 }
 
