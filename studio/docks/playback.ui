@@ -30,6 +30,22 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
+       <widget class="QToolButton" name="loop_button">
+        <property name="toolTip">
+         <string>Toggle looping</string>
+        </property>
+        <property name="text">
+         <string>loop</string>
+        </property>
+        <property name="icon">
+         <iconset theme="view-refresh"/>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QToolButton" name="move_start_button">
         <property name="text">
          <string>To start</string>

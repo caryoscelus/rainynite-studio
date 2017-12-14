@@ -31,6 +31,9 @@ PlaybackDock::PlaybackDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     connect(ui->move_end_button, SIGNAL(clicked()), this, SLOT(move_end()));
     connect(ui->play_button, SIGNAL(toggled(bool)), this, SLOT(toggle_playback(bool)));
     connect(ui->stop_button, SIGNAL(clicked()), this, SLOT(stop()));
+    connect(ui->loop_button, &QAbstractButton::toggled, [this](bool loop) {
+        is_looping = loop;
+    });
 
     connect(ui->time_box, SIGNAL(editingFinished()), this, SLOT(change_time()));
     connect(ui->fps_box, SIGNAL(editingFinished()), this, SLOT(change_fps()));
@@ -79,12 +82,16 @@ void PlaybackDock::stop() {
 void PlaybackDock::next_frame() {
     if (auto context = get_core_context()) {
         auto time = context->get_time();
-        auto t = time;
-        ++t;
-        if (t == context->get_period().get_last())
-            ui->play_button->setChecked(false);
-        else
-            context->set_time(time + core::Time(0, context->get_fps(), 1));
+        time.set_fps(context->get_fps());
+        ++time;
+        if (time == context->get_period().get_last()) {
+            if (!is_looping) {
+                ui->play_button->setChecked(false);
+                return;
+            }
+            time = context->get_period().get_first();
+        }
+        context->set_time(time);
     }
 }
 

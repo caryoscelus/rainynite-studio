@@ -61,6 +61,7 @@ private Q_SLOTS:
 private:
     unique_ptr<Ui::PlaybackDock> ui;
     QTimer* timer;
+    bool is_looping = false;
 };
 
 REGISTER_DOCK("Playback", PlaybackDock, Qt::BottomDockWidgetArea);
