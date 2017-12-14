@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
+#include <QIcon>
 
 #include <core/action_stack.h>
 
@@ -45,6 +45,10 @@ QVariant UndoModel::data(QModelIndex const& index, int role) const {
     switch (role) {
         case Qt::DisplayRole:
             return "action";
+        case Qt::DecorationRole:
+            if (index.row() < (ptrdiff_t)action_stack->get_undo_stack().size())
+                return QIcon::fromTheme("emblem-ok-symbolic");
+            return QIcon::fromTheme("clock");
         default:
             return {};
     }
