@@ -347,7 +347,7 @@ QModelIndex NodeModel::parent(QModelIndex const& index) const {
         return {};
     if (auto id = get_inner_index(index)) {
         if (auto parent = id->parent)
-            return createIndex(parent->index, index.column(), (void*)parent.get());
+            return createIndex(parent->index, 0, (void*)parent.get());
         return {};
     }
     return {};
