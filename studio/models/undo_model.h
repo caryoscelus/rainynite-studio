@@ -42,6 +42,8 @@ public:
     int rowCount(QModelIndex const& parent={}) const override;
     int columnCount(QModelIndex const& parent={}) const override;
 
+    void reset();
+
 protected:
     unique_ptr<core::AbstractAction> const& get_action(QModelIndex const& index) const;
 

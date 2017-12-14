@@ -97,4 +97,9 @@ unique_ptr<core::AbstractAction> const& UndoModel::get_action(QModelIndex const&
     return undo_stack[undo_index];
 }
 
+void UndoModel::reset() {
+    beginResetModel();
+    endResetModel();
+}
+
 } // namespace rainynite::studio

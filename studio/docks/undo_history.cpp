@@ -36,6 +36,7 @@ UndoHistoryDock::UndoHistoryDock(shared_ptr<EditorContext> context, QWidget* par
     });
     connect(ui->clear, &QAbstractButton::clicked, [this]() {
         clear_undo_history();
+        model->reset();
     });
 }
 
