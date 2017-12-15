@@ -31,9 +31,11 @@ AdvancedColorDock::AdvancedColorDock(shared_ptr<EditorContext> context_, QWidget
     ContextListener(context_),
     ui(make_unique<Ui::AdvancedColorDock>())
 {
+    using namespace color_widgets;
     ui->setupUi(this);
+    ui->color_widget->setEnabledWidgets(AdvancedColorSelector::Main | AdvancedColorSelector::History);
     set_context(get_context());
-    connect(ui->color_widget, &color_widgets::AdvancedColorSelector::colorChanged, this, &AdvancedColorDock::write_color);
+    connect(ui->color_widget, &AdvancedColorSelector::colorChanged, this, &AdvancedColorDock::write_color);
 }
 
 AdvancedColorDock::~AdvancedColorDock() {
