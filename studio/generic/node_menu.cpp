@@ -137,7 +137,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
                 QIcon::fromTheme("list-remove"),
                 "Remove list item",
                 [this, node_index, parent_index]() {
-                    model->removeRow(node_index, parent_index);
+                    model->remove_list_item(parent_index, node_index);
                 }
             );
             auto up_action = addAction(

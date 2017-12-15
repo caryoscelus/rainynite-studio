@@ -193,6 +193,16 @@ void NodeModel::add_empty_element(QModelIndex const& parent) {
     }
 }
 
+void NodeModel::remove_list_item(QModelIndex const& parent, size_t index) {
+    if (auto node = get_node_as<core::AbstractListLinked>(parent)) {
+        if (node->is_editable_list()) {
+            beginRemoveRows(parent, index, index);
+            action_stack->emplace<core::actions::ListRemoveElement>(node, index);
+            endRemoveRows();
+        }
+    }
+}
+
 void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info) {
     if (auto parent_node = get_list_node(index.parent())) {
         auto node = get_node(index);
