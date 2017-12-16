@@ -27,10 +27,10 @@
 #include <util/strings.h>
 #include "timeline_ruler.h"
 
+namespace rainynite::studio {
+
 using util::str;
 using namespace fmt::literals;
-
-namespace rainynite::studio {
 
 TimelineRuler::TimelineRuler(QWidget* parent) :
     QWidget(parent),

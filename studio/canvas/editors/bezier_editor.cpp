@@ -25,8 +25,8 @@
 
 #include <util/strings.h>
 #include <util/pen.h>
+#include <util/qt_path.h>
 #include <widgets/canvas.h>
-#include "qt_path.h"
 #include "point_item.h"
 #include "bezier_editor.h"
 
@@ -73,9 +73,10 @@ void BezierEditor::time_changed(core::Time) {
 void BezierEditor::redraw() {
     if (get_scene()) {
         auto path = get_path();
-        // TODO
-        if ((ptrdiff_t) path.size() == old_size) {
-            curve_item->setPath(path_to_qt(path));
+        // NOTE: this is to avoid full redraw while editing
+        // TODO: make sure it gets properly updated on non-editing changes
+        if ((ptrdiff_t)path.size() == old_size) {
+            curve_item->setPath(util::path_to_qt(path));
         } else {
             uninit();
             init();
@@ -98,7 +99,7 @@ void BezierEditor::init() {
 
             old_size = path.size();
 
-            curve_item.reset(scene->addPath(path_to_qt(path)));
+            curve_item.reset(scene->addPath(util::path_to_qt(path)));
             curve_item->setPen(curve_pen);
 
             auto add_point_editor = [

@@ -65,7 +65,6 @@ target_sources(rainynite-studio
         canvas/editors/point_editor.h
         canvas/editors/bezier_editor.cpp
         canvas/editors/bezier_editor.h
-        canvas/editors/qt_path.h
         canvas/editors/rectangle_editor.cpp
         canvas/editors/rectangle_editor.h
 
@@ -99,6 +98,8 @@ target_sources(rainynite-studio
         models/undo_model.cpp
 
         util/strings.h
+        util/geom.h
+        util/qt_path.h
         util/pen.h
         util/pen.cpp
 

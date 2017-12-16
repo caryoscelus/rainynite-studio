@@ -15,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STUDIO_CANVAS_EDITORS_QT_PATH_H_3FCA40F9_C398_5905_B884_1EA23BEF81F4
-#define STUDIO_CANVAS_EDITORS_QT_PATH_H_3FCA40F9_C398_5905_B884_1EA23BEF81F4
+#ifndef STUDIO_UTIL_QT_PATH_H_3FCA40F9_C398_5905_B884_1EA23BEF81F4
+#define STUDIO_UTIL_QT_PATH_H_3FCA40F9_C398_5905_B884_1EA23BEF81F4
 
 /**
  * TODO: move to separate Qt lib2geom wrapper library, perhaps?
@@ -29,10 +29,12 @@
 
 #include <geom_helpers/knots.h>
 
+
+namespace rainynite::util {
+
 class QtPathSink : public Geom::PathSink {
 public:
     void moveTo(Geom::Point const& p) override {
-        // TODO: Geom::Point <-> QGeom::PointF convertors
         target.moveTo(p.x(), p.y());
     }
     void lineTo(Geom::Point const& p) override {
@@ -60,18 +62,21 @@ public:
     }
     void flush() override {
     }
-public:
-    inline QPainterPath get() {
+
+    QPainterPath get() {
         return target;
     }
+
 private:
     QPainterPath target;
 };
 
-QPainterPath path_to_qt(Geom::BezierKnots const& path) {
+inline QPainterPath path_to_qt(Geom::BezierKnots const& path) {
     QtPathSink sink;
     sink.feed(Geom::knots_to_path(path));
     return sink.get();
 }
+
+} // namespace rainynite::util
 
 #endif

@@ -22,7 +22,7 @@
 
 #include <QString>
 
-namespace util {
+namespace rainynite::util {
 
 template <typename S, typename T>
 T str(S&& s);
@@ -40,6 +40,6 @@ str(S&& s) {
     return s.toStdString();
 }
 
-} // namespace util
+} // namespace rainynite::util
 
 #endif
