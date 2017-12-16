@@ -1,4 +1,4 @@
-/*  node_editor.h - abstract node editor widget class
+/*  node_editor.h - abstract node editor class
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -48,6 +48,7 @@ public:
     }
 
     void set_node(shared_ptr<core::AbstractValue> node_);
+
     shared_ptr<core::AbstractValue> get_node() {
         return node;
     }
@@ -59,9 +60,10 @@ public:
         }
         return {};
     }
+
     template <typename T>
     shared_ptr<core::BaseValue<T>> get_node_as() {
-        return dynamic_pointer_cast<core::BaseValue<T>>(std::move(get_node()));
+        return dynamic_pointer_cast<core::BaseValue<T>>(get_node());
     }
 
 protected:

@@ -31,7 +31,9 @@ class QGraphicsPathItem;
 
 namespace rainynite::studio {
 
-/// Primitive bezier path canvas editor
+/**
+ * On-canvas bezier path editor
+ */
 class BezierEditor : public NodeEditor, public CanvasEditor {
 public:
     BezierEditor();
@@ -49,12 +51,8 @@ public:
     void set_curve_pen(QPen const& pen);
 
 private:
-    inline shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node() {
-        return dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node());
-    }
-    inline Geom::BezierKnots get_path() {
-        return get_bezier_node()->value(get_core_context());
-    }
+    shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node();
+    Geom::BezierKnots get_path();
 
 private:
     vector<unique_ptr<QGraphicsItem>> knot_items;

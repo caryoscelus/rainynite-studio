@@ -164,4 +164,12 @@ void BezierEditor::uninit() {
     curve_item.reset();
 }
 
+shared_ptr<core::BaseValue<Geom::BezierKnots>> BezierEditor::get_bezier_node() {
+    return dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node());
 }
+
+Geom::BezierKnots BezierEditor::get_path() {
+    return get_bezier_node()->value(get_core_context());
+}
+
+} // namespace rainynite::studio
