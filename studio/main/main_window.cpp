@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QDockWidget>
 #include <QActionGroup>
+#include <QCloseEvent>
 #include <QDebug>
 
 #include <core/document.h>
@@ -221,6 +222,11 @@ void MainWindow::update_title() {
 void MainWindow::about() {
     AboutDialog dialog;
     dialog.exec();
+}
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    event->ignore();
+    quit();
 }
 
 void MainWindow::quit() {

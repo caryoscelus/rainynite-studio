@@ -46,8 +46,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-public:
     void set_context(shared_ptr<EditorContext> context_) override;
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
 
 private Q_SLOTS:
     void new_document();
