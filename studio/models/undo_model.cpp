@@ -19,6 +19,7 @@
 
 #include <core/action_stack.h>
 
+#include <util/strings.h>
 #include "undo_model.h"
 
 namespace rainynite::studio {
@@ -44,7 +45,7 @@ QVariant UndoModel::data(QModelIndex const& index, int role) const {
 
     switch (role) {
         case Qt::DisplayRole:
-            return "action";
+            return util::str(get_action(index)->doc_string());
         case Qt::DecorationRole:
             if (index.row() < (ptrdiff_t)action_stack->get_undo_stack().size())
                 return QIcon::fromTheme("emblem-ok-symbolic");
