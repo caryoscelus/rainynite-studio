@@ -60,6 +60,15 @@ void TimelineRuler::paintEvent(QPaintEvent* /*event*/) {
     }
 }
 
+void TimelineRuler::mousePressEvent(QMouseEvent* event) {
+    auto s = (event->pos().x()-zero_pos)*1.0/step;
+    get_core_context()->set_seconds(s);
+}
+
+void TimelineRuler::mouseMoveEvent(QMouseEvent* event) {
+    mousePressEvent(event);
+}
+
 void TimelineRuler::set_scroll(int zero_pos_) {
     zero_pos = zero_pos_;
     update();
@@ -70,4 +79,4 @@ void TimelineRuler::set_zoom(unsigned step_) {
     update();
 }
 
-}
+} // namespace rainynite::studio

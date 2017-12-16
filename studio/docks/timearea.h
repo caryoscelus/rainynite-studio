@@ -63,6 +63,6 @@ private:
 
 REGISTER_DOCK("Timeline", TimeareaDock, Qt::BottomDockWidgetArea);
 
-}
+} // namespace rainynite::studio
 
 #endif

@@ -108,6 +108,7 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
 void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     ui->timeline->set_context(context);
+    ui->ruler->set_context(context);
     if (auto new_document = context->get_context()->get_document()) {
         document = new_document;
         load_pinned_from_file(std::move(new_document));

@@ -25,7 +25,7 @@
 
 namespace rainynite::studio {
 
-class TimelineRuler : public QWidget {
+class TimelineRuler : public QWidget, public ContextListener {
 public:
     explicit TimelineRuler(QWidget* parent = nullptr);
 
@@ -33,7 +33,9 @@ public:
     QSize sizeHint() const override;
 
 protected:
-    void paintEvent(QPaintEvent* paintEvent) override;
+    void paintEvent(QPaintEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 
 public:
     void set_scroll(int end_pos_);
