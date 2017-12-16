@@ -96,7 +96,7 @@ public:
     void set_context(shared_ptr<EditorContext> context) override;
 
 Q_SIGNALS:
-    void zoomed(double new_level);
+    void zoomed();
 
     void tool_changed(string const& tool);
 
@@ -110,10 +110,11 @@ protected:
 
     void wheelEvent(QWheelEvent* event) override;
 
+    double zoom_level();
+
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
     bool use_tool(observer_ptr<CanvasTool> tool);
-    double zoom_level();
 
 private:
     unique_ptr<QGraphicsScene> const the_scene;

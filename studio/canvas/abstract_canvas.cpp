@@ -102,7 +102,7 @@ void AbstractCanvas::zoom_at(QPoint point, double factor) {
     auto new_pos = mapToScene(point);
     auto delta = new_pos-old_pos;
     translate(delta.x(), delta.y());
-    Q_EMIT zoomed(zoom_level());
+    Q_EMIT zoomed();
 }
 
 void AbstractCanvas::set_zoom(double level) {
@@ -111,7 +111,7 @@ void AbstractCanvas::set_zoom(double level) {
 
 void AbstractCanvas::zoom_to_rect(QRectF rect) {
     fitInView(rect, Qt::KeepAspectRatio);
-    Q_EMIT zoomed(zoom_level());
+    Q_EMIT zoomed();
 }
 
 double AbstractCanvas::zoom_level() {

@@ -66,9 +66,9 @@ Canvas::Canvas(QWidget* parent) :
     connect(
         this,
         &AbstractCanvas::zoomed,
-        [this] (double level) {
+        [this]() {
             auto old_lock = zoom_slider->blockSignals(true);
-            zoom_slider->setValue(std::log2(level)*SLIDER_FACTOR);
+            zoom_slider->setValue(std::log2(zoom_level())*SLIDER_FACTOR);
             zoom_slider->blockSignals(old_lock);
         }
     );

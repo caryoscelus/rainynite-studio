@@ -27,10 +27,15 @@ TimelineArea::TimelineArea(QWidget* parent) :
     AbstractCanvas(parent)
 {
     setDragMode(QGraphicsView::RubberBandDrag);
-    scale(16, 1);
+    zoom_time_by(24);
 }
 
 TimelineArea::~TimelineArea() {
+}
+
+void TimelineArea::zoom_time_by(double factor) {
+    scale(factor, 1.0);
+    Q_EMIT zoomed();
 }
 
 void TimelineArea::add_misc_editor(shared_ptr<CanvasEditor> editor) {

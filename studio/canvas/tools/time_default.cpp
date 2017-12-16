@@ -44,7 +44,7 @@ public:
         if (auto wheel_event = dynamic_cast<QWheelEvent*>(event)) {
             auto scale_factor = std::pow(2, wheel_event->angleDelta().y() / 256.0);
             // TODO: proper zoom
-            timeline_area()->scale(scale_factor, 1.0);
+            timeline_area()->zoom_time_by(scale_factor);
             return true;
         }
         return false;

@@ -38,6 +38,8 @@ public:
     explicit TimelineArea(QWidget* parent = nullptr);
     virtual ~TimelineArea();
 
+    void zoom_time_by(double factor);
+
     void add_misc_editor(shared_ptr<CanvasEditor> editor);
 
 private:
