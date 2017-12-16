@@ -53,8 +53,8 @@ private Q_SLOTS:
     void new_document();
     void open();
     void reload();
-    void save(QString format="");
-    void save_as();
+    bool save(QString format="");
+    bool save_as();
 
     void update_title();
     void about();
@@ -66,6 +66,8 @@ private Q_SLOTS:
     void add_dock(string const& name);
 
 private:
+    bool confirm_exit();
+
     void setup_dock_menu();
     void setup_tools();
 

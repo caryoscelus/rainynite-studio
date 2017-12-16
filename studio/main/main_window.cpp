@@ -144,7 +144,7 @@ void MainWindow::reload() {
     renderer->render_frame();
 }
 
-void MainWindow::save_as() {
+bool MainWindow::save_as() {
     QString filter;
     auto fname_qt = QFileDialog::getSaveFileName(
         this,
@@ -157,17 +157,17 @@ void MainWindow::save_as() {
     if (!fname_qt.isEmpty()) {
         if (!filter.contains("*.rnite")) {
             error_box->showMessage("Unknown save format");
-            return;
+            return false;
         }
         set_fname(util::str(fname_qt));
-        save("yaml");
+        return save("yaml");
     }
+    return false;
 }
 
-void MainWindow::save(QString format) {
+bool MainWindow::save(QString format) {
     if (fname.empty()) {
-        save_as();
-        return;
+        return save_as();
     }
 
     if (format.isEmpty())
@@ -181,7 +181,7 @@ void MainWindow::save(QString format) {
         writer.reset(new core::filters::YamlWriter());
     } else {
         error_box->showMessage("Unknown save format");
-        return;
+        return false;
     }
 
     try {
@@ -190,6 +190,7 @@ void MainWindow::save(QString format) {
         saved_format = util::str(format);
         is_saved = true;
         update_title();
+        return true;
     } catch (std::exception const& ex) {
         auto msg = util::str("Uncaught exception while saving document:\n{}"_format(ex.what()));
         qDebug() << msg;
@@ -197,6 +198,7 @@ void MainWindow::save(QString format) {
     } catch (...) {
         qDebug() << "Unknown error while saving document";
     }
+    return false;
 }
 
 void MainWindow::set_fname(string const& fname_) {
@@ -222,8 +224,31 @@ void MainWindow::about() {
 }
 
 void MainWindow::quit() {
+    if (!is_saved && !confirm_exit())
+        return;
     renderer.reset();
     QApplication::quit();
+}
+
+bool MainWindow::confirm_exit() {
+    QMessageBox dialog;
+    dialog.setText("Document was (perhaps) modified.");
+    dialog.setInformativeText("Save changes?");
+    dialog.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    dialog.setDefaultButton(QMessageBox::Save);
+
+    while (true) {
+        switch (dialog.exec()) {
+            case QMessageBox::Save:
+                if (!save())
+                    break;
+                [[fallthrough]];
+            case QMessageBox::Discard:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
 
 void MainWindow::add_all_docks() {
