@@ -24,10 +24,26 @@
 
 namespace rainynite::studio {
 
+class CursorItem : public TimeItem {
+public:
+    CursorItem(Callback callback) :
+        TimeItem(callback)
+    {
+        set_readonly(false);
+        setFlag(QGraphicsItem::ItemIsSelectable, false);
+    }
+
+    void mousePressEvent(QGraphicsSceneMouseEvent* /*event*/) {
+        if (auto canvas = scene()) {
+            canvas->clearSelection();
+        }
+    }
+};
+
 /**
  * Cursor for timeline area.
  *
- * Uses TimeItem for real work.
+ * Uses TimeItem (through CursorItem) for real work.
  * TODO: merge generic parts with TimeEditor
  */
 class TimelineCursor :
@@ -36,7 +52,7 @@ class TimelineCursor :
 {
 public:
     void setup_canvas() override {
-        time_item = make_unique<TimeItem>(
+        time_item = make_unique<CursorItem>(
             [this](core::Time time) {
                 ignore_time_change = true;
                 get_core_context()->set_time(time);
@@ -44,8 +60,6 @@ public:
             }
         );
         get_scene()->addItem(time_item.get());
-        time_item->set_readonly(false);
-        time_item->setFlag(QGraphicsItem::ItemIsSelectable, false);
         time_item->set_pos_height(0, 1024); // "infinitely" big
     }
 public:
@@ -60,10 +74,10 @@ public:
             time_item->set_fps(fps);
     }
 private:
-    unique_ptr<TimeItem> time_item;
+    unique_ptr<CursorItem> time_item;
     bool ignore_time_change = false;
 };
 
 REGISTER_CANVAS_EDITOR_NAME(TimelineArea, TimelineCursor, TimelineCursor);
 
-}
+} // rainynite::studio
