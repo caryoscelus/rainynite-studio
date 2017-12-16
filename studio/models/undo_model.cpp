@@ -97,7 +97,7 @@ unique_ptr<core::AbstractAction> const& UndoModel::get_action(QModelIndex const&
         auto const& redo_stack = action_stack->get_redo_stack();
         if (redo_index >= (ptrdiff_t)redo_stack.size())
             return static_null;
-        return redo_stack[redo_index];
+        return redo_stack.rbegin()[redo_index];
     }
     return undo_stack[undo_index];
 }
