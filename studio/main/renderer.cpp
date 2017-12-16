@@ -137,7 +137,8 @@ void Renderer::redraw() {
     // TODO: fix this mess
     boost::filesystem::path base_path = fname;
     base_path.remove_filename();
-    auto path = base_path/"renders"/"{:.3f}.png"_format(get_core_context()->get_time().get_seconds());
+    using core::renderers::SvgRenderer;
+    auto path = base_path/SvgRenderer::get_rendered_frame_path(get_core_context()->get_time(), ".png");
     set_mainarea_image(path.string());
 }
 
