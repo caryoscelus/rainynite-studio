@@ -36,6 +36,7 @@
 #include <version.h>
 #include <util/strings.h>
 #include <generic/dock_registry.h>
+#include <generic/action.h>
 #include "renderer.h"
 #include "audio.h"
 #include "about.h"
@@ -92,6 +93,8 @@ MainWindow::MainWindow(QWidget* parent) :
     );
 
     setup_tools();
+
+    add_all_actions_to_menu(*this, *ui->menu_actions);
 
     setup_dock_menu();
     add_all_docks();

@@ -107,10 +107,16 @@
     <addaction name="action_undo"/>
     <addaction name="action_redo"/>
    </widget>
+   <widget class="QMenu" name="menu_actions">
+    <property name="title">
+     <string>&amp;Actions</string>
+    </property>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_edit"/>
    <addaction name="menu_view"/>
    <addaction name="menu_render"/>
+   <addaction name="menu_actions"/>
    <addaction name="menu_dock"/>
    <addaction name="menu_help"/>
   </widget>
@@ -320,7 +326,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Mirror</string>
+    <string>&amp;Mirror</string>
    </property>
   </action>
  </widget>

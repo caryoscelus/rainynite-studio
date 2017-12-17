@@ -88,6 +88,8 @@ target_sources(rainynite-studio
         generic/editor_context.h
         generic/timeline_editor.h
         generic/dock_registry.h
+        generic/action.h
+        generic/action_menu.cpp
 
         models/model_filter.h
         models/node_model.cpp
