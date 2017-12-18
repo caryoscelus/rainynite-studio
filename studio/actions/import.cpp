@@ -129,6 +129,12 @@ public:
     }
 };
 
+struct ImportError : public std::runtime_error {
+    ImportError(string const& msg) :
+        std::runtime_error(msg)
+    {}
+};
+
 /**
  * Import file paths
  */
@@ -149,10 +155,10 @@ public:
                     target->feed(util::str(s));
                 target->end_list();
             } else {
-                // report error
+                throw ImportError("Cannot find suitable target node.");
             }
         } else {
-            // report error
+            throw ImportError("No context! This is a bug.");
         }
     }
 };
