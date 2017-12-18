@@ -59,59 +59,67 @@ public:
 
 REGISTER_PROCESS_NODE(FillRenderableList, string, ImportFilesTag)
 
-/**
- * Import file paths
- */
-class ImportRasterLayers : CONTEXT_ACTION(ImportRasterLayers) {
-    ACTION_NAME("Import raster layers")
+template <typename Processor>
+class FindTargetNode {
 public:
-    using Processor = ProcessNode<string, ImportFilesTag>;
-
-    void process() override {
-        if (auto target = find_appropriate_target()) {
-            // TODO: filter images
-            auto strings = QFileDialog::getOpenFileNames(nullptr, "Import layers");
-            for (auto const& s : strings)
-                target->feed(util::str(s));
-        } else {
-            // report error
-        }
-    }
-
-    unique_ptr<Processor> find_appropriate_target() {
-        // TODO: more generic
-        if (auto ctx = get_context()) {
-            if (auto active_node = ctx->get_active_node()) {
-                if (auto r = check_target(active_node))
-                    return r;
-                if (auto list = list_cast(active_node)) {
-                    for (auto child : list->get_links()) {
-                        if (auto r = check_target(child))
-                            return r;
-                    }
+    unique_ptr<Processor> find_appropriate_target(shared_ptr<EditorContext> ctx) {
+        if (auto active_node = ctx->get_active_node()) {
+            if (auto r = check_target(active_node, ctx))
+                return r;
+            if (auto list = list_cast(active_node)) {
+                for (auto child : list->get_links()) {
+                    if (auto r = check_target(child, ctx))
+                        return r;
                 }
             }
-            if (auto doc = get_core_context()->get_document()) {
-                if (auto root = list_cast(doc->get_property("root"))) {
-                    for (auto child : root->get_links()) {
-                        if (auto r = check_target(child))
-                            return r;
-                    }
+        }
+        if (auto doc = ctx->get_context()->get_document()) {
+            if (auto root = list_cast(doc->get_property("root"))) {
+                for (auto child : root->get_links()) {
+                    if (auto r = check_target(child, ctx))
+                        return r;
                 }
             }
         }
         return {};
     }
 
-    unique_ptr<Processor> check_target(shared_ptr<core::AbstractValue> node) {
+    unique_ptr<Processor> check_target(shared_ptr<core::AbstractValue> node, shared_ptr<EditorContext> ctx) const {
         using namespace class_init;
         for (auto factory : class_list_registry<AbstractFactory<Processor>>()) {
             auto r = (*factory)();
-            r->set_context(get_context());
+            r->set_context(ctx);
             if (r->set_node(node))
                 return r;
         }
         return nullptr;
+    }
+};
+
+using ImportFilesProcessor = ProcessNode<string, ImportFilesTag>;
+
+/**
+ * Import file paths
+ */
+class ImportRasterLayers :
+    CONTEXT_ACTION(ImportRasterLayers),
+    FindTargetNode<ImportFilesProcessor>
+{
+    ACTION_NAME("Import raster layers")
+public:
+    void process() override {
+        if (auto ctx = get_context()) {
+            if (auto target = find_appropriate_target(ctx)) {
+                // TODO: filter images
+                auto strings = QFileDialog::getOpenFileNames(nullptr, "Import layers");
+                for (auto const& s : strings)
+                    target->feed(util::str(s));
+            } else {
+                // report error
+            }
+        } else {
+            // report error
+        }
     }
 };
 
