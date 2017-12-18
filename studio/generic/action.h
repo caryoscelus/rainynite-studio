@@ -44,10 +44,13 @@ inline map<string,UiAction*> const& get_all_actions() {
  */
 void add_all_actions_to_menu(ContextListener const& parent, QMenu& menu);
 
+#define REGISTERED_ACTION(Self) \
+    private class_init::StringRegistered<Self, UiAction>
+
 #define CONTEXT_ACTION(Self) \
     public UiAction, \
     public ContextListener, \
-    private class_init::StringRegistered<Self, UiAction>
+    REGISTERED_ACTION(Self)
 
 #define ACTION_NAME(name_) \
 public: \

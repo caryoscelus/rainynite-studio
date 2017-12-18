@@ -101,15 +101,16 @@ using ImportFilesProcessor = ProcessNode<string, ImportFilesTag>;
 /**
  * Import file paths
  */
-class ImportRasterLayers :
-    CONTEXT_ACTION(ImportRasterLayers),
-    FindTargetNode<ImportFilesProcessor>
+template <typename Processor>
+class ImportFiles :
+    public UiAction,
+    public ContextListener,
+    FindTargetNode<Processor>
 {
-    ACTION_NAME("Import raster layers")
 public:
     void process() override {
         if (auto ctx = get_context()) {
-            if (auto target = find_appropriate_target(ctx)) {
+            if (auto target = this->find_appropriate_target(ctx)) {
                 // TODO: filter images
                 auto strings = QFileDialog::getOpenFileNames(nullptr, "Import layers");
                 for (auto const& s : strings)
@@ -121,6 +122,13 @@ public:
             // report error
         }
     }
+};
+
+class ImportRasterLayers :
+    public ImportFiles<ImportFilesProcessor>,
+    REGISTERED_ACTION(ImportRasterLayers)
+{
+    ACTION_NAME("Import raster layers")
 };
 
 } // namespace rainynite::studio::actions
