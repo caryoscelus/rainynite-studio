@@ -25,7 +25,7 @@
 
 namespace rainynite::studio::actions {
 
-template <typename T>
+template <typename T, typename Tag>
 class ProcessNode : public ContextListener {
 public:
     virtual bool accept(core::AbstractValue const& node) = 0;
@@ -47,14 +47,17 @@ private:
     shared_ptr<core::AbstractValue> node;
 };
 
-template <class P, typename T>
+template <class P, typename T, typename Tag>
 struct ProcessNodeFactoryImpl :
-    public AbstractFactoryImpl<ProcessNode<T>, P>,
-    private class_init::ListRegistered<ProcessNodeFactoryImpl<P, T>, AbstractFactory<ProcessNode<T>>>
+    public AbstractFactoryImpl<ProcessNode<T, Tag>, P>,
+    private class_init::ListRegistered<
+        ProcessNodeFactoryImpl<P, T, Tag>,
+        AbstractFactory<ProcessNode<T, Tag>>
+    >
 {};
 
-#define REGISTER_PROCESS_NODE(Processor, Type) \
-template struct ProcessNodeFactoryImpl<Processor, Type>;
+#define REGISTER_PROCESS_NODE(Processor, Type, Tag) \
+template struct ProcessNodeFactoryImpl<Processor, Type, Tag>;
 
 } // namespace rainynite::studio::actions
 

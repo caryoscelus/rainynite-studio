@@ -28,7 +28,9 @@
 
 namespace rainynite::studio::actions {
 
-class FillStringList : public ProcessNode<string> {
+struct ImportFilesTag {};
+
+class FillStringList : public ProcessNode<string, ImportFilesTag> {
 public:
     bool accept(core::AbstractValue const& node) override {
         return node.get_type() == typeid(vector<string>);
@@ -39,9 +41,9 @@ public:
     }
 };
 
-REGISTER_PROCESS_NODE(FillStringList, string)
+REGISTER_PROCESS_NODE(FillStringList, string, ImportFilesTag)
 
-class FillRenderableList : public ProcessNode<string> {
+class FillRenderableList : public ProcessNode<string, ImportFilesTag> {
 public:
     bool accept(core::AbstractValue const& node) override {
         return node.get_type() == typeid(vector<core::Renderable>);
@@ -55,7 +57,7 @@ public:
     }
 };
 
-REGISTER_PROCESS_NODE(FillRenderableList, string)
+REGISTER_PROCESS_NODE(FillRenderableList, string, ImportFilesTag)
 
 /**
  * Import file paths
@@ -63,6 +65,8 @@ REGISTER_PROCESS_NODE(FillRenderableList, string)
 class ImportRasterLayers : CONTEXT_ACTION(ImportRasterLayers) {
     ACTION_NAME("Import raster layers")
 public:
+    using Processor = ProcessNode<string, ImportFilesTag>;
+
     void process() override {
         if (auto target = find_appropriate_target()) {
             // TODO: filter images
@@ -74,7 +78,7 @@ public:
         }
     }
 
-    unique_ptr<ProcessNode<string>> find_appropriate_target() {
+    unique_ptr<Processor> find_appropriate_target() {
         // TODO: more generic
         if (auto ctx = get_context()) {
             if (auto active_node = ctx->get_active_node()) {
@@ -99,9 +103,9 @@ public:
         return {};
     }
 
-    unique_ptr<ProcessNode<string>> check_target(shared_ptr<core::AbstractValue> node) {
+    unique_ptr<Processor> check_target(shared_ptr<core::AbstractValue> node) {
         using namespace class_init;
-        for (auto factory : class_list_registry<AbstractFactory<ProcessNode<string>>>()) {
+        for (auto factory : class_list_registry<AbstractFactory<Processor>>()) {
             auto r = (*factory)();
             r->set_context(get_context());
             if (r->set_node(node))
