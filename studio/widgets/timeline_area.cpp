@@ -27,6 +27,7 @@ TimelineArea::TimelineArea(QWidget* parent) :
     AbstractCanvas(parent)
 {
     setDragMode(QGraphicsView::RubberBandDrag);
+    setSceneRect(-5, 0, 65, 30);
     zoom_time_by(24);
 }
 
