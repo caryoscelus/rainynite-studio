@@ -23,6 +23,7 @@
 #include "context_listener.h"
 
 class QMenu;
+class QErrorMessage;
 
 namespace rainynite::studio {
 
@@ -40,9 +41,11 @@ inline map<string,UiAction*> const& get_all_actions() {
 /**
  * Add all registered actions to QMenu.
  *
- * `menu` should never outlive `parent`
+ * `menu` and `error_box` should never outlive `parent`
+ *
+ * TODO: better error-reporting
  */
-void add_all_actions_to_menu(ContextListener const& parent, QMenu& menu);
+void add_all_actions_to_menu(ContextListener const& parent, QMenu& menu, QErrorMessage& error_box);
 
 #define REGISTERED_ACTION(Self) \
     private class_init::StringRegistered<Self, UiAction>

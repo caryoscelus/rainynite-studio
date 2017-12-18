@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     setup_tools();
 
-    add_all_actions_to_menu(*this, *ui->menu_actions);
+    add_all_actions_to_menu(*this, *ui->menu_actions, *error_box);
 
     setup_dock_menu();
     add_all_docks();

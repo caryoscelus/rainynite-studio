@@ -15,22 +15,31 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <fmt/format.h>
+
 #include <QMenu>
+#include <QErrorMessage>
 
 #include <util/strings.h>
 #include "action.h"
 
+using namespace fmt::literals;
+
 namespace rainynite::studio {
 
-void add_all_actions_to_menu(ContextListener const& parent, QMenu& menu) {
+void add_all_actions_to_menu(ContextListener const& parent, QMenu& menu, QErrorMessage& error_box) {
     for (auto const& e : get_all_actions()) {
         auto action = e.second;
         menu.addAction(
             util::str(e.first),
-            [&parent, action]() {
+            [&parent, &error_box, action]() {
                 if (auto context_listener = dynamic_cast<ContextListener*>(action))
                     context_listener->set_context(parent.get_context());
-                action->process();
+                try {
+                    action->process();
+                } catch (std::exception const& ex) {
+                    error_box.showMessage(util::str("Action failed: {}"_format(ex.what())));
+                }
             }
         );
     }
