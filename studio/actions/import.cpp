@@ -18,47 +18,15 @@
 #include <QFileDialog>
 
 #include <core/document.h>
-#include <core/class_init.h>
 #include <core/node_info.h>
 #include <core/action_stack.h>
 #include <core/actions/list.h>
-#include <core/abstract_factory.h>
 
 #include <generic/action.h>
 #include <util/strings.h>
+#include "process_node.h"
 
 namespace rainynite::studio::actions {
-
-template <typename T>
-class ProcessNode : public ContextListener {
-public:
-    virtual bool accept(core::AbstractValue const& node) = 0;
-    virtual void feed(T const& argument) = 0;
-
-    bool set_node(shared_ptr<core::AbstractValue> node_) {
-        if (accept(*node_)) {
-            node = node_;
-            return true;
-        }
-        return false;
-    }
-
-    shared_ptr<core::AbstractValue> get_node() const {
-        return node;
-    }
-
-private:
-    shared_ptr<core::AbstractValue> node;
-};
-
-template <class P, typename T>
-struct ProcessNodeFactoryImpl :
-    public AbstractFactoryImpl<ProcessNode<T>, P>,
-    private class_init::ListRegistered<ProcessNodeFactoryImpl<P, T>, AbstractFactory<ProcessNode<T>>>
-{};
-
-#define REGISTER_PROCESS_NODE(Processor, Type) \
-template struct ProcessNodeFactoryImpl<Processor, Type>;
 
 class FillStringList : public ProcessNode<string> {
 public:

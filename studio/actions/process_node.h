@@ -1,0 +1,61 @@
+/*  process_node.h - node processor
+ *  Copyright (C) 2017 caryoscelus
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef STUDIO_ACTIONS_PROCESS_NODE_H_D9E2969B_5C37_5085_828C_4708ED7EC469
+#define STUDIO_ACTIONS_PROCESS_NODE_H_D9E2969B_5C37_5085_828C_4708ED7EC469
+
+#include <core/class_init.h>
+#include <core/abstract_factory.h>
+
+#include <generic/context_listener.h>
+
+namespace rainynite::studio::actions {
+
+template <typename T>
+class ProcessNode : public ContextListener {
+public:
+    virtual bool accept(core::AbstractValue const& node) = 0;
+    virtual void feed(T const& argument) = 0;
+
+    bool set_node(shared_ptr<core::AbstractValue> node_) {
+        if (accept(*node_)) {
+            node = node_;
+            return true;
+        }
+        return false;
+    }
+
+    shared_ptr<core::AbstractValue> get_node() const {
+        return node;
+    }
+
+private:
+    shared_ptr<core::AbstractValue> node;
+};
+
+template <class P, typename T>
+struct ProcessNodeFactoryImpl :
+    public AbstractFactoryImpl<ProcessNode<T>, P>,
+    private class_init::ListRegistered<ProcessNodeFactoryImpl<P, T>, AbstractFactory<ProcessNode<T>>>
+{};
+
+#define REGISTER_PROCESS_NODE(Processor, Type) \
+template struct ProcessNodeFactoryImpl<Processor, Type>;
+
+} // namespace rainynite::studio::actions
+
+#endif
