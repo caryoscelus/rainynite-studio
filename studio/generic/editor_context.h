@@ -47,6 +47,11 @@ public:
         return active_node;
     }
 
+    template <class T>
+    shared_ptr<T> get_active_node_as() const {
+        return dynamic_pointer_cast<T>(get_active_node());
+    }
+
     /// Get action stack
     shared_ptr<core::ActionStack> action_stack() const;
 
