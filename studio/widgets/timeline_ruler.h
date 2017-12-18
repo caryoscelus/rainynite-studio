@@ -39,7 +39,7 @@ protected:
 
 public:
     void set_scroll(int end_pos_);
-    void set_zoom(unsigned step_);
+    void set_zoom(double step_);
 
 private:
     QBrush brush;
@@ -47,7 +47,7 @@ private:
     QPen bold_pen;
 
 private:
-    unsigned step = 1;
+    double step = 1;
     int zero_pos = 0;
 };
 

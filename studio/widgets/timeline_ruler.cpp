@@ -46,10 +46,12 @@ QSize TimelineRuler::sizeHint() const {
 
 void TimelineRuler::paintEvent(QPaintEvent* /*event*/) {
     QPainter painter(this);
-    auto start_pos = zero_pos % step;
+    if (step < 2)
+        return;
     int sec = -(zero_pos / step);
+    auto start_pos = zero_pos + sec*step;
     painter.setFont({"sans", 8});
-    for (int x = start_pos; x < width(); x += step) {
+    for (double x = start_pos; x < width(); x += step) {
         painter.setPen(pen);
         if (sec % 5 == 0) {
             painter.drawText(x + 2, 12, str("{}"_format(std::abs(sec))));
@@ -61,7 +63,9 @@ void TimelineRuler::paintEvent(QPaintEvent* /*event*/) {
 }
 
 void TimelineRuler::mousePressEvent(QMouseEvent* event) {
-    auto s = (event->pos().x()-zero_pos)*1.0/step;
+    if (step <= 0)
+        return;
+    auto s = (event->pos().x()-zero_pos)/step;
     get_core_context()->set_seconds(s);
 }
 
@@ -74,7 +78,7 @@ void TimelineRuler::set_scroll(int zero_pos_) {
     update();
 }
 
-void TimelineRuler::set_zoom(unsigned step_) {
+void TimelineRuler::set_zoom(double step_) {
     step = step_;
     update();
 }
