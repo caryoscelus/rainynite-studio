@@ -92,6 +92,7 @@ target_sources(rainynite-studio
         generic/action_menu.cpp
 
         actions/external_player.cpp
+        actions/import.cpp
 
         models/model_filter.h
         models/node_model.cpp
