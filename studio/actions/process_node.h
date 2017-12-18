@@ -28,8 +28,10 @@ namespace rainynite::studio::actions {
 template <typename T, typename Tag>
 class ProcessNode : public ContextListener {
 public:
-    virtual bool accept(core::AbstractValue const& node) = 0;
+    virtual bool accept(core::AbstractValue const& node) const = 0;
     virtual void feed(T const& argument) = 0;
+    virtual void start_list() {}
+    virtual void end_list() {}
 
     bool set_node(shared_ptr<core::AbstractValue> node_) {
         if (accept(*node_)) {

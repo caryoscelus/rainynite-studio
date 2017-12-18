@@ -29,10 +29,14 @@
 namespace rainynite::studio::actions {
 
 struct ImportFilesTag {};
+struct ImportFramesTag {};
+
+using ImportFilesProcessor = ProcessNode<string, ImportFilesTag>;
+using ImportFramesProcessor = ProcessNode<string, ImportFramesTag>;
 
 class FillStringList : public ProcessNode<string, ImportFilesTag> {
 public:
-    bool accept(core::AbstractValue const& node) override {
+    bool accept(core::AbstractValue const& node) const override {
         return node.get_type() == typeid(vector<string>);
     }
     void feed(string const& s) override {
@@ -45,7 +49,7 @@ REGISTER_PROCESS_NODE(FillStringList, string, ImportFilesTag)
 
 class FillRenderableList : public ProcessNode<string, ImportFilesTag> {
 public:
-    bool accept(core::AbstractValue const& node) override {
+    bool accept(core::AbstractValue const& node) const override {
         return node.get_type() == typeid(vector<core::Renderable>);
     }
     void feed(string const& s) override {
@@ -58,6 +62,35 @@ public:
 };
 
 REGISTER_PROCESS_NODE(FillRenderableList, string, ImportFilesTag)
+
+class AddFramedAnimationToRenderableList : public ProcessNode<string, ImportFramesTag> {
+public:
+    bool accept(core::AbstractValue const& node) const override {
+        return node.get_type() == typeid(vector<core::Renderable>);
+    }
+    void start_list() override {
+        file_name_list_node = core::make_node_with_name<core::AbstractListLinked>("List/String");
+    }
+    void feed(string const& s) override {
+        push_value(file_name_list_node, std::move(s));
+    }
+    void end_list() override {
+        auto image_node = core::make_node_with_name<core::AbstractNode>("Image");
+        auto file_name_node = core::make_node_with_name<core::AbstractNode>("ListElement/String");
+        auto linear_node = core::make_node_with_name<core::AbstractNode>("Linear");
+
+        linear_node->set_property("speed", core::make_value<double>(get_core_context()->get_fps()));
+        file_name_node->set_property("source", abstract_value_cast(file_name_list_node));
+        file_name_node->set_property("n", abstract_value_cast(linear_node));
+        image_node->set_property("file_path", abstract_value_cast(file_name_node));
+
+        get_context()->action_stack()->emplace<core::actions::ListPush>(list_cast(get_node()), abstract_value_cast(image_node));
+    }
+private:
+    shared_ptr<core::AbstractListLinked> file_name_list_node;
+};
+
+REGISTER_PROCESS_NODE(AddFramedAnimationToRenderableList, string, ImportFramesTag)
 
 template <typename Processor>
 class FindTargetNode {
@@ -96,8 +129,6 @@ public:
     }
 };
 
-using ImportFilesProcessor = ProcessNode<string, ImportFilesTag>;
-
 /**
  * Import file paths
  */
@@ -113,8 +144,10 @@ public:
             if (auto target = this->find_appropriate_target(ctx)) {
                 // TODO: filter images
                 auto strings = QFileDialog::getOpenFileNames(nullptr, "Import layers");
+                target->start_list();
                 for (auto const& s : strings)
                     target->feed(util::str(s));
+                target->end_list();
             } else {
                 // report error
             }
@@ -124,11 +157,24 @@ public:
     }
 };
 
+/**
+ * Import file paths as Image layers
+ */
 class ImportRasterLayers :
     public ImportFiles<ImportFilesProcessor>,
     REGISTERED_ACTION(ImportRasterLayers)
 {
     ACTION_NAME("Import raster layers")
+};
+
+/**
+ * Import file paths as frames
+ */
+class ImportRasterFrames :
+    public ImportFiles<ImportFramesProcessor>,
+    REGISTERED_ACTION(ImportRasterFrames)
+{
+    ACTION_NAME("Import raster frames")
 };
 
 } // namespace rainynite::studio::actions
