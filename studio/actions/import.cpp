@@ -30,9 +30,11 @@ namespace rainynite::studio::actions {
 
 struct ImportFilesTag {};
 struct ImportFramesTag {};
+struct ImportSvgLayersTag {};
 
 using ImportFilesProcessor = ProcessNode<string, ImportFilesTag>;
 using ImportFramesProcessor = ProcessNode<string, ImportFramesTag>;
+using ImportSvgLayersProcessor = ProcessNode<string, ImportSvgLayersTag>;
 
 class FillStringList : public ProcessNode<string, ImportFilesTag> {
 public:
@@ -91,6 +93,21 @@ private:
 };
 
 REGISTER_PROCESS_NODE(AddFramedAnimationToRenderableList, string, ImportFramesTag)
+
+class FillRenderableListWithSvgs : public ProcessNode<string, ImportSvgLayersTag> {
+public:
+    bool accept(core::AbstractValue const& node) const override {
+        return node.get_type() == typeid(vector<core::Renderable>);
+    }
+    void feed(string const& s) override {
+        auto string_node = core::make_value<string>(std::move(s));
+        auto image_node = core::make_node_with_name<core::AbstractNode>("EmbedSvg");
+        image_node->set_property("file_path", string_node);
+        get_context()->action_stack()->emplace<core::actions::ListPush>(list_cast(get_node()), abstract_value_cast(image_node));
+    }
+};
+
+REGISTER_PROCESS_NODE(FillRenderableListWithSvgs, string, ImportSvgLayersTag)
 
 template <typename Processor>
 class FindTargetNode {
@@ -181,6 +198,16 @@ class ImportRasterFrames :
     REGISTERED_ACTION(ImportRasterFrames)
 {
     ACTION_NAME("Import raster frames")
+};
+
+/**
+ * Import svgs
+ */
+class ImportSvgLayers :
+    public ImportFiles<ImportSvgLayersProcessor>,
+    REGISTERED_ACTION(ImportSvgLayers)
+{
+    ACTION_NAME("Import svg layers")
 };
 
 } // namespace rainynite::studio::actions
