@@ -23,6 +23,7 @@
 #include <core/nothing.h>
 #include <core/serialize/node_writer.h>
 #include <core/action_stack.h>
+#include <core/document.h>
 #include <core/actions/change_link.h>
 #include <core/actions/custom_property.h>
 #include <core/actions/set_enabled.h>
@@ -40,9 +41,13 @@ static const size_t MAX_VALUE_LENGTH = 32;
 NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
     QAbstractItemModel(parent),
     root(root_),
-    tree(root_?make_shared<core::NodeTree>(root_, action_stack_):nullptr),
     action_stack(action_stack_)
 {
+    if (auto document = dynamic_cast<core::Document*>(root.get())) {
+        tree = document->get_tree();
+    } else {
+        tree = root_ ? make_shared<core::NodeTree>(root_, action_stack_) : nullptr;
+    }
 }
 
 NodeModel::~NodeModel() {
@@ -356,8 +361,10 @@ QModelIndex NodeModel::parent(QModelIndex const& index) const {
     if (!index.isValid())
         return {};
     if (auto id = get_inner_index(index)) {
-        if (auto parent = id->parent)
-            return createIndex(parent->index, 0, (void*)parent.get());
+        if (auto parent = id->parent) {
+            if (!parent->null())
+                return createIndex(parent->index, 0, (void*)parent.get());
+        }
         return {};
     }
     return {};
