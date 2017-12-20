@@ -244,7 +244,7 @@ bool MainWindow::confirm_exit() {
     dialog.setText("Document was (perhaps) modified.");
     dialog.setInformativeText("Save changes?");
     dialog.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    dialog.setDefaultButton(QMessageBox::Save);
+    dialog.setDefaultButton(QMessageBox::Cancel);
 
     while (true) {
         switch (dialog.exec()) {
