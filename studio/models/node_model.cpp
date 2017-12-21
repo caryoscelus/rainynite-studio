@@ -298,6 +298,8 @@ void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference n
 
         action_stack->emplace<core::actions::ChangeLink>(parent, index.row(), node);
 
+        Q_EMIT dataChanged(index, index);
+
         if (new_rows > old_rows)
             endInsertRows();
         else if (new_rows < old_rows)
