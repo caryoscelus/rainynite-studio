@@ -18,14 +18,14 @@
 #include <core/node_info.h>
 
 #include <generic/node_editor.h>
-#include "editor.h"
+#include "abstract_editor.h"
 #include "registry.h"
 
 namespace rainynite::studio {
 
-shared_ptr<CanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name) {
+shared_ptr<AbstractCanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name) {
     try {
-        shared_ptr<CanvasEditor> editor = class_init::name_info<AbstractCanvasEditorFactory>(name)();
+        shared_ptr<AbstractCanvasEditor> editor = class_init::name_info<AbstractAbstractCanvasEditorFactory>(name)();
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
             context_listener->set_context(canvas.get_context());
         canvas.add_editor(editor);
@@ -35,12 +35,13 @@ shared_ptr<CanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string 
     }
 }
 
-vector<shared_ptr<CanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node) {
+vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, core::NodeTree::Index index) {
+    auto node = canvas.get_context()->get_node(index);
     if (node == nullptr)
         return {};
 
-    vector<shared_ptr<CanvasEditor>> added_editors;
-    shared_ptr<CanvasEditor> editor;
+    vector<shared_ptr<AbstractCanvasEditor>> added_editors;
+    shared_ptr<AbstractCanvasEditor> editor;
     try {
         editor = make_canvas_editor_for(canvas, node->get_type());
     } catch (class_init::RuntimeTypeError const&) {
@@ -49,7 +50,7 @@ vector<shared_ptr<CanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, 
     if (editor != nullptr) {
         canvas.add_editor(editor);
         if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
-            node_editor->set_node(node);
+            node_editor->set_node(index);
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
             context_listener->set_context(canvas.get_context());
         added_editors.push_back(editor);
@@ -62,10 +63,13 @@ vector<shared_ptr<CanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, 
     }
 
     if (show_children) {
+        if (auto tree = canvas.get_context()->tree()) {
+
         // NOTE: this may lead to infinite recursion if node tree is looped
-        if (auto parent = dynamic_cast<core::AbstractListLinked*>(node.get())) {
-            for (auto child : parent->get_links()) {
-                auto children_editors = add_canvas_node_editor(canvas, child);
+//         if (auto parent = dynamic_cast<core::AbstractListLinked*>(node.get())) {
+            for (size_t i = 0; i < tree->children_count(index); ++i) {
+                auto child_idx = tree->index(index, i);
+                auto children_editors = add_canvas_node_editor(canvas, child_idx);
                 added_editors.insert(
                     added_editors.end(),
                     children_editors.begin(),

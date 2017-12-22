@@ -40,10 +40,10 @@ public:
 
     void zoom_time_by(double factor);
 
-    void add_misc_editor(shared_ptr<CanvasEditor> editor);
+    void add_misc_editor(shared_ptr<AbstractCanvasEditor> editor);
 
 private:
-    vector<shared_ptr<CanvasEditor>> misc_editors;
+    vector<shared_ptr<AbstractCanvasEditor>> misc_editors;
 };
 
 REGISTER_CANVAS(TimelineArea);

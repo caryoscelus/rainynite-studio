@@ -22,20 +22,20 @@
 #include <core/std/vector.h>
 
 #include "abstract_canvas.h"
-#include "editor.h"
+#include "abstract_editor.h"
 #include "tool.h"
 
 namespace rainynite::studio {
 
 class CanvasTool;
-class CanvasEditor;
+class AbstractCanvasEditor;
 
 struct CanvasToolsInfo {
     virtual vector<AbstractFactory<CanvasTool>*> operator()() const = 0;
 };
 
-struct CanvasEditorsInfo {
-    virtual unique_ptr<CanvasEditor> operator()(Type type) const = 0;
+struct AbstractCanvasEditorsInfo {
+    virtual unique_ptr<AbstractCanvasEditor> operator()(Type type) const = 0;
 };
 
 template <class CanvasT>
@@ -63,29 +63,29 @@ struct CanvasToolsInfoInstance :
 };
 
 template <class CanvasT>
-struct CanvasEditorsInfoInstance :
-    public CanvasEditorsInfo,
+struct AbstractCanvasEditorsInfoInstance :
+    public AbstractCanvasEditorsInfo,
     private class_init::Registered<
-        CanvasEditorsInfoInstance<CanvasT>,
+        AbstractCanvasEditorsInfoInstance<CanvasT>,
         CanvasT,
-        CanvasEditorsInfo
+        AbstractCanvasEditorsInfo
     >
 {
-    unique_ptr<CanvasEditor> operator()(Type type) const override {
+    unique_ptr<AbstractCanvasEditor> operator()(Type type) const override {
         return make_canvas_editor<CanvasT>(type);
     }
 };
 
 #define REGISTER_CANVAS(CanvasT) \
 template struct CanvasToolsInfoInstance<CanvasT>; \
-template struct CanvasEditorsInfoInstance<CanvasT>
+template struct AbstractCanvasEditorsInfoInstance<CanvasT>
 
 inline vector<AbstractFactory<CanvasTool>*> get_canvas_tools_by_type(Type type) {
     return class_init::type_info<CanvasToolsInfo,vector<AbstractFactory<CanvasTool>*>>(type);
 }
 
-inline unique_ptr<CanvasEditor> make_canvas_editor_for(AbstractCanvas const& canvas, Type type) {
-    return class_init::type_info<CanvasEditorsInfo,unique_ptr<CanvasEditor>>(typeid(canvas), type);
+inline unique_ptr<AbstractCanvasEditor> make_canvas_editor_for(AbstractCanvas const& canvas, Type type) {
+    return class_init::type_info<AbstractCanvasEditorsInfo,unique_ptr<AbstractCanvasEditor>>(typeid(canvas), type);
 }
 
 } // namespace rainynite::studio

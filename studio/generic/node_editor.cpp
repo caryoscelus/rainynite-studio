@@ -19,10 +19,11 @@
 
 namespace rainynite::studio {
 
-void NodeEditor::set_node(shared_ptr<core::AbstractValue> node_) {
+void NodeEditor::set_node(core::NodeTree::Index index) {
     if (node_connection.connected())
         node_connection.disconnect();
-    node = node_;
+    node_index = index;
+    auto node = get_context()->get_node(node_index);
     if (node == nullptr)
         return;
     node_update();

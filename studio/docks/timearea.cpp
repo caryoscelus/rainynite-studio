@@ -39,6 +39,7 @@ TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     ui(make_unique<Ui::TimeareaDock>()),
     node_list_model(make_unique<NodeListModel>())
 {
+    node_list_model->set_context(get_context());
     ui->setupUi(this);
     auto cursor = add_canvas_named_editor(*ui->timeline, "TimelineCursor");
     ui->timeline->add_misc_editor(cursor);
@@ -109,40 +110,41 @@ void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     ui->timeline->set_context(context);
     ui->ruler->set_context(context);
+    node_list_model->set_context(context);
     if (auto new_document = context->get_context()->get_document()) {
         document = new_document;
         load_pinned_from_file(std::move(new_document));
     }
     connect_boost(
         context->changed_active_node(),
-        [this](core::AbstractReference node) {
+        [this](auto index) {
             if (!pinned && node_list_model->rowCount() > 0)
                 node_list_model->removeRow(node_list_model->rowCount()-1);
-            pinned = !node_list_model->insert_unique_node(node);
+            pinned = !node_list_model->insert_unique_node(index);
         }
     );
 }
 
 void TimeareaDock::load_pinned_from_file(shared_ptr<core::Document> new_document) {
-    core::traverse_once<bool>(
-        new_document,
-        [this](core::AbstractReference value) -> optional<bool> {
-            // TODO: support dynamic _pin_in_timeline
-            if (auto node = abstract_node_cast(value)) {
-                if (node->get_property_value<bool>("_pin_in_timeline", get_core_context()).value_or(false))
-                    node_list_model->insert_unique_node(value);
-            }
-            return {};
-        }
-    );
+//     core::traverse_once<bool>(
+//         new_document,
+//         [this](core::AbstractReference value) -> optional<bool> {
+//             // TODO: support dynamic _pin_in_timeline
+//             if (auto node = abstract_node_cast(value)) {
+//                 if (node->get_property_value<bool>("_pin_in_timeline", get_core_context()).value_or(false))
+//                     node_list_model->insert_unique_node(value);
+//             }
+//             return {};
+//         }
+//     );
 }
 
 void TimeareaDock::update_editors() {
     ui->timeline->clear_editors();
     for (int i = 0; i < node_list_model->rowCount(); ++i) {
         auto index = node_list_model->index(i, 0);
-        auto node = node_list_model->get_node(index);
-        auto editors = add_canvas_node_editor(*ui->timeline, node);
+        auto inner_index = node_list_model->get_inner_index(index);
+        auto editors = add_canvas_node_editor(*ui->timeline, inner_index);
         for (auto editor : editors) {
             auto rect = ui->node_list->visualRect(index);
             if (auto timeline_editor = dynamic_cast<TimelineEditor*>(editor.get()))

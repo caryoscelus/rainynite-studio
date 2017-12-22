@@ -35,6 +35,8 @@ public:
     explicit Canvas(QWidget* parent = nullptr);
     virtual ~Canvas();
 
+    void add_editor(shared_ptr<AbstractCanvasEditor> editor) override;
+
 protected:
     void set_context(shared_ptr<EditorContext> context) override;
 

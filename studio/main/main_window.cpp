@@ -318,8 +318,6 @@ void MainWindow::set_context(shared_ptr<EditorContext> context_) {
     for (auto dock : findChildren<QWidget*>()) {
         if (auto ctx_dock = dynamic_cast<ContextListener*>(dock))
             ctx_dock->set_context(context_);
-        if (dock->metaObject()->indexOfSignal("activated(shared_ptr<core::AbstractValue>)") != -1)
-            connect(dock, SIGNAL(activated(shared_ptr<core::AbstractValue>)), this, SLOT(activate(shared_ptr<core::AbstractValue>)));
     }
     auto set_dirty = [this]() {
         is_saved = false;
@@ -333,10 +331,6 @@ void MainWindow::set_context(shared_ptr<EditorContext> context_) {
         get_context()->action_stack()->undone_or_redone,
         set_dirty
     );
-}
-
-void MainWindow::activate(shared_ptr<core::AbstractValue> node) {
-    get_context()->set_active_node(node);
 }
 
 } // namespace rainynite::studio

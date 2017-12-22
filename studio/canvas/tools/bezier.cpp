@@ -58,7 +58,7 @@ protected:
             path->closed = false;
             editor = make_unique<BezierEditor>();
             editor->set_canvas(get_canvas());
-            editor->set_node(path_node);
+//             editor->set_node(path_node);
             path->emplace_back(convert_pos(pos));
         }
         is_pressed = true;

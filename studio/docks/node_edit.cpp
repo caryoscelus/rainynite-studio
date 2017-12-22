@@ -54,13 +54,13 @@ NodeEditDock::NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent) 
 NodeEditDock::~NodeEditDock() {
 }
 
-void NodeEditDock::active_node_changed(shared_ptr<core::AbstractValue> node) {
-    set_node(node);
-    active_node = node;
-    if (!node)
+void NodeEditDock::active_node_index_changed(core::NodeTree::Index index) {
+    set_node(index);
+    active_node = index;
+    if (!index)
         return;
     update_generic();
-    setup_custom_widget(node);
+//     setup_custom_widget(node);
 }
 
 void NodeEditDock::time_changed(core::Time time) {

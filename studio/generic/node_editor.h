@@ -47,10 +47,14 @@ public:
     virtual void node_update() {
     }
 
-    void set_node(shared_ptr<core::AbstractValue> node_);
+    void set_node(core::NodeTree::Index index);
 
-    shared_ptr<core::AbstractValue> get_node() {
-        return node;
+    shared_ptr<core::AbstractValue> get_node() const {
+        return get_context()->get_node(get_node_index());
+    }
+
+    core::NodeTree::Index get_node_index() const {
+        return node_index;
     }
 
     template <typename T>
@@ -70,7 +74,7 @@ protected:
     bool update_enabled = true;
 
 private:
-    shared_ptr<core::AbstractValue> node = nullptr;
+    core::NodeTree::Index node_index;
     boost::signals2::connection node_connection;
 };
 

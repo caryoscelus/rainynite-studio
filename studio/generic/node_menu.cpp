@@ -84,7 +84,7 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
                     model->disconnect_node(index);
                     // NOTE: this won't return active node back on undo!
                     // TODO: replace this quick-fix with proper notification-based system
-                    model->get_context()->set_active_node(model->get_node(index));
+                    model->get_context()->set_active_node(model->get_inner_index(index));
                 }
             );
         }

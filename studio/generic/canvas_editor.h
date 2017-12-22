@@ -1,4 +1,4 @@
-/*  timeline_area.cpp - advanced timeline
+/*  canvas_editor.h - canvas editor
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -15,32 +15,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGraphicsScene>
+#ifndef GENERIC_CANVAS_EDITOR_H_2A8A29CC_A76A_5226_BA88_A39F61B5F43E
+#define GENERIC_CANVAS_EDITOR_H_2A8A29CC_A76A_5226_BA88_A39F61B5F43E
 
-#include <generic/timeline_editor.h>
+#include <core/std/memory.h>
+#include <core/class_init.h>
 
-#include "timeline_area.h"
+#include <canvas/abstract_editor.h>
+
+class QTransform;
 
 namespace rainynite::studio {
 
-TimelineArea::TimelineArea(QWidget* parent) :
-    AbstractCanvas(parent)
-{
-    setDragMode(QGraphicsView::RubberBandDrag);
-    setSceneRect(-5, 0, 65, 30);
-    zoom_time_by(24);
-}
-
-TimelineArea::~TimelineArea() {
-}
-
-void TimelineArea::zoom_time_by(double factor) {
-    scale(factor, 1.0);
-    Q_EMIT zoomed();
-}
-
-void TimelineArea::add_misc_editor(shared_ptr<AbstractCanvasEditor> editor) {
-    misc_editors.push_back(editor);
-}
+class CanvasEditor : public AbstractCanvasEditor {
+public:
+    /// Set editor base transform
+    virtual void set_transform(QTransform const& transform) {}
+};
 
 } // namespace rainynite::studio
+
+#endif

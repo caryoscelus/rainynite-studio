@@ -20,10 +20,11 @@
 
 #include <QAbstractItemModel>
 
+#include <generic/context_listener.h>
+
 namespace rainynite::studio {
 
-class NodeListModel : public QAbstractItemModel
-{
+class NodeListModel : public QAbstractItemModel, public ContextListener {
 public:
     explicit NodeListModel(QObject* parent = nullptr);
     virtual ~NodeListModel();
@@ -41,22 +42,23 @@ public:
     bool removeRows(int row, int count, QModelIndex const& parent={}) override;
 
     /// Insert node at position
-    void insert_node(shared_ptr<core::AbstractValue> node, int position=-1);
+    void insert_node(core::NodeTree::Index node, int position=-1);
 
     /**
      * Insert node only if it isn't already in model
      * @return true if node was added
      */
-    bool insert_unique_node(shared_ptr<core::AbstractValue> node, int position=-1);
+    bool insert_unique_node(core::NodeTree::Index node, int position=-1);
 
     /// Get list of all nodes
-    vector<shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
-        return nodes;
-    }
+//     vector<shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
+//         return nodes;
+//     }
     shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
+    core::NodeTree::Index get_inner_index(QModelIndex const& index) const;
 
 private:
-    vector<shared_ptr<core::AbstractValue>> nodes;
+    vector<core::NodeTree::Index> nodes;
 };
 
 } // namespace rainynite::studio

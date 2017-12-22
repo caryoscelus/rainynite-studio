@@ -56,12 +56,12 @@ void AbstractCanvas::add_tool(unique_ptr<CanvasTool> tool) {
     tools.push_back(std::move(tool));
 }
 
-void AbstractCanvas::add_editor(shared_ptr<CanvasEditor> editor) {
+void AbstractCanvas::add_editor(shared_ptr<AbstractCanvasEditor> editor) {
     editors.push_back(editor);
     editor->set_canvas(this);
 }
 
-void AbstractCanvas::remove_editor(shared_ptr<CanvasEditor> editor) {
+void AbstractCanvas::remove_editor(shared_ptr<AbstractCanvasEditor> editor) {
     editors.erase(std::remove(editors.begin(), editors.end(), editor), editors.end());
 }
 
@@ -132,12 +132,12 @@ void AbstractCanvas::scroll_by(QPointF delta) {
     translate(delta.x(), delta.y());
 }
 
-void AbstractCanvas::active_node_changed(shared_ptr<core::AbstractValue> node) {
-    if (active_node != node) {
+void AbstractCanvas::active_node_index_changed(core::NodeTree::Index index) {
+    if (active_node_index != index) {
         // TODO: handle selection
-        active_node = node;
+        active_node_index = index;
         clear_editors();
-        add_canvas_node_editor(*this, node);
+        add_canvas_node_editor(*this, index);
     }
 }
 

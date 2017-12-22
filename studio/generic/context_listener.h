@@ -46,6 +46,8 @@ public:
     void redo();
     void clear_undo_history();
 
+    void set_active_node(core::NodeTree::Index index);
+
 protected:
     core::Time get_time() const {
         return time;
@@ -54,13 +56,15 @@ protected:
         time = time_;
     }
     virtual void fps_changed(core::Time::fps_type) {}
+    virtual void active_node_index_changed(core::NodeTree::Index index);
     virtual void active_node_changed(shared_ptr<core::AbstractValue>) {}
 
 private:
     shared_ptr<EditorContext> context;
     core::Time time;
+    core::NodeTree::Index active_node_index;
 };
 
-}
+} // namespace rainynite::studio
 
 #endif

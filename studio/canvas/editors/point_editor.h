@@ -25,7 +25,7 @@
 #include <core/std/memory.h>
 
 #include <generic/node_editor.h>
-#include <canvas/editor.h>
+#include <generic/canvas_editor.h>
 #include <generic/context_listener.h>
 
 namespace rainynite::studio {

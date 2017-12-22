@@ -45,8 +45,8 @@ void ContextListener::set_context(shared_ptr<EditorContext> context_) {
     );
     connect_boost(
         context->changed_active_node(),
-        [this](shared_ptr<core::AbstractValue> node) {
-            active_node_changed(node);
+        [this](auto index) {
+            active_node_index_changed(index);
         }
     );
     time_changed(get_core_context()->get_time());
@@ -63,6 +63,14 @@ void ContextListener::redo() {
 
 void ContextListener::clear_undo_history() {
     get_context()->action_stack()->clear();
+}
+
+void ContextListener::set_active_node(core::NodeTree::Index index) {
+    get_context()->set_active_node(index);
+}
+
+void ContextListener::active_node_index_changed(core::NodeTree::Index index) {
+    active_node_changed(get_context()->get_node(index));
 }
 
 } // namespace rainynite::studio
