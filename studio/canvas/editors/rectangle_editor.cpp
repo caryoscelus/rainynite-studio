@@ -20,9 +20,12 @@
 
 #include <geom_helpers/rectangle.h>
 
+#include <core/node_tree_transform.h>
+
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>
 #include <widgets/canvas.h>
+#include <util/geom.h>
 #include <util/pen.h>
 
 namespace rainynite::studio {
@@ -56,6 +59,12 @@ private:
                 rectangle.size.x(),
                 rectangle.size.y()
             );
+        }
+        if (auto node_tree = get_context()->tree()) {
+            if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(get_node_index())) {
+                auto affine = calculate_tr->get_transform(get_core_context());
+                rectangle_item->setTransform(QTransform{util::matrix(affine)});
+            }
         }
     }
 
