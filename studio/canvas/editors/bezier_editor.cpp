@@ -71,7 +71,7 @@ void BezierEditor::time_changed(core::Time) {
 }
 
 void BezierEditor::redraw() {
-    if (get_scene()) {
+    if (get_scene() && get_bezier_node()) {
         auto path = get_path();
         // NOTE: this is to avoid full redraw while editing
         // TODO: make sure it gets properly updated on non-editing changes
