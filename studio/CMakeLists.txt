@@ -62,7 +62,6 @@ target_sources(rainynite-studio
         canvas/editors/point_item.h
         canvas/editors/point_item.cpp
         canvas/editors/point_editor.cpp
-        canvas/editors/point_editor.h
         canvas/editors/bezier_editor.cpp
         canvas/editors/bezier_editor.h
         canvas/editors/rectangle_editor.cpp

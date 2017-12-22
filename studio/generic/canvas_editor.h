@@ -30,7 +30,7 @@ namespace rainynite::studio {
 class CanvasEditor : public AbstractCanvasEditor {
 public:
     /// Set editor base transform
-    virtual void set_transform(QTransform const& transform) {}
+    virtual void set_transform(QTransform const& /*transform*/) {}
 };
 
 } // namespace rainynite::studio

@@ -78,15 +78,6 @@ Canvas::Canvas(QWidget* parent) :
 Canvas::~Canvas() {
 }
 
-void Canvas::add_editor(shared_ptr<AbstractCanvasEditor> editor) {
-    AbstractCanvas::add_editor(editor);
-    if (auto canvas_editor = dynamic_pointer_cast<CanvasEditor>(std::move(editor))) {
-        if (auto node_editor = dynamic_pointer_cast<NodeEditor>(canvas_editor)) {
-            canvas_editor->set_transform({});
-        }
-    }
-}
-
 void Canvas::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     // TODO: listen to document change
