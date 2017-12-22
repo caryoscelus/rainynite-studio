@@ -28,7 +28,6 @@
 #include <generic/node_editor_widget.h>
 #include "color_button.h"
 #include "point_value_editor.h"
-#include <canvas/editors/rectangle_editor.h>
 #include <canvas/editors/bezier_editor.h>
 #include <widgets/canvas.h>
 
@@ -38,7 +37,6 @@ REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, (NodeEditorWidget<ColorBu
 REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, (NodeEditorWidget<PointValueEditor, Geom::Point>));
 
 REGISTER_CANVAS_EDITOR(Canvas, BezierEditor, Geom::BezierKnots);
-REGISTER_CANVAS_EDITOR(Canvas, RectangleEditor, Geom::Rectangle);
 
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(RenderShape, "RenderShape", true);

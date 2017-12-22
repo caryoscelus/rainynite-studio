@@ -65,7 +65,6 @@ target_sources(rainynite-studio
         canvas/editors/bezier_editor.cpp
         canvas/editors/bezier_editor.h
         canvas/editors/rectangle_editor.cpp
-        canvas/editors/rectangle_editor.h
 
         canvas/editors/time_item.h
         canvas/editors/time_item.cpp

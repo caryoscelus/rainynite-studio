@@ -20,43 +20,48 @@
 
 #include <geom_helpers/rectangle.h>
 
+#include <generic/node_editor.h>
+#include <generic/canvas_editor.h>
 #include <widgets/canvas.h>
 #include <util/pen.h>
-#include "rectangle_editor.h"
 
 namespace rainynite::studio {
 
-RectangleEditor::RectangleEditor() = default;
+class RectangleEditor : public NodeEditor, public CanvasEditor {
+public:
+    virtual ~RectangleEditor() = default;
 
-RectangleEditor::~RectangleEditor() = default;
-
-void RectangleEditor::setup_canvas() {
-    rectangle_item.reset(get_scene()->addRect({}));
-    rectangle_item->setPen(pens::cosmetic_dash());
-    update_position();
-}
-
-void RectangleEditor::node_update() {
-    update_position();
-}
-
-void RectangleEditor::time_changed(core::Time time) {
-    ContextListener::time_changed(time);
-    update_position();
-}
-
-void RectangleEditor::update_position() {
-    if (rectangle_item == nullptr)
-        return;
-    if (auto node = dynamic_cast<core::BaseValue<Geom::Rectangle>*>(get_node().get())) {
-        auto rectangle = node->value(get_core_context());
-        rectangle_item->setRect(
-            rectangle.pos.x(),
-            rectangle.pos.y(),
-            rectangle.size.x(),
-            rectangle.size.y()
-        );
+    void setup_canvas() override {
+        rectangle_item.reset(get_scene()->addRect({}));
+        rectangle_item->setPen(pens::cosmetic_dash());
+        update_position();
     }
-}
+    void node_update() override {
+        update_position();
+    }
+    void time_changed(core::Time time) override {
+        ContextListener::time_changed(time);
+        update_position();
+    }
+
+private:
+    void update_position() {
+        if (rectangle_item == nullptr)
+            return;
+        if (auto node = dynamic_cast<core::BaseValue<Geom::Rectangle>*>(get_node().get())) {
+            auto rectangle = node->value(get_core_context());
+            rectangle_item->setRect(
+                rectangle.pos.x(),
+                rectangle.pos.y(),
+                rectangle.size.x(),
+                rectangle.size.y()
+            );
+        }
+    }
+
+    unique_ptr<QGraphicsRectItem> rectangle_item;
+};
+
+REGISTER_CANVAS_EDITOR(Canvas, RectangleEditor, Geom::Rectangle);
 
 } // namespace rainynite::studio
