@@ -39,13 +39,16 @@ public:
     virtual ~PointEditor() = default;
 
     void setup_canvas() override {
-        point_item = make_unique<PointItem>(
+        point_item.reset(new PointItem(
             [this](double x, double y) {
                 save_position(x, y);
             }
-        );
-        get_scene()->addItem(point_item.get());
-        item_group.reset(get_scene()->createItemGroup({point_item.get()}));
+        ));
+        // GroupItem blocks movement, just Item is abstract, so using
+        // an empty Pixmap item.
+        item_group = make_unique<QGraphicsPixmapItem>();
+        get_scene()->addItem(item_group.get());
+        point_item->setParentItem(item_group.get());
         update_position();
     }
     void node_update() override {
@@ -87,8 +90,8 @@ private:
     }
 
 private:
-    unique_ptr<PointItem> point_item;
-    observer_ptr<QGraphicsItemGroup> item_group;
+    observer_ptr<PointItem> point_item;
+    unique_ptr<QGraphicsItem> item_group;
 };
 
 
