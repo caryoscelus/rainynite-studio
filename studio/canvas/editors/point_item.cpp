@@ -37,8 +37,8 @@ void PointItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* option,
     // Set correct size if view was zooomed..
     // NOTE: this dirty hack relies on the scene being used only by one view
     auto transform = painter->transform();
-    auto rx = radius/transform.m11();
-    auto ry = radius/transform.m22();
+    auto rx = radius/(transform.m11()+transform.m21());
+    auto ry = radius/(transform.m22()+transform.m12());
     setRect(-rx, -ry, rx*2, ry*2);
     QGraphicsEllipseItem::paint(painter, option, widget);
 }
