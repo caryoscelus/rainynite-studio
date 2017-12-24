@@ -123,7 +123,7 @@ private:
 
 private:
     string cached_path;
-    const double pixels_per_second = 8;
+    const double pixels_per_second = 48;
     std::thread read_thread_1;
     std::thread read_thread_2;
 };
