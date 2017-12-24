@@ -27,7 +27,11 @@ TimeItem::TimeItem(Callback callback_) :
     QGraphicsRectItem {0, 0, 0.25, 80},
     callback(callback_)
 {
-    setBrush(QGuiApplication::palette().text());
+    auto brush = QGuiApplication::palette().text();
+    auto color = brush.color();
+    color.setAlphaF(0.5);
+    brush.setColor(color);
+    setBrush(brush);
     setPen({Qt::NoPen});
 }
 
