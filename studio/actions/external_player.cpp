@@ -16,6 +16,7 @@
  */
 
 #include <cstdlib>
+#include <thread>
 
 #include <fmt/format.h>
 
@@ -48,7 +49,10 @@ public:
                 "lst_file"_a="renders/rendered.lst",
                 "fps"_a=ctx->get_fps()
             );
-            std::system(command.c_str());
+            std::thread t([command]() {
+                std::system(command.c_str());
+            });
+            t.detach();
         }
     }
 
