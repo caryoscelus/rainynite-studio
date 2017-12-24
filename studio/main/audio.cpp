@@ -30,18 +30,32 @@ AudioPlayer::AudioPlayer() :
     player(make_unique<QMediaPlayer>())
 {}
 
-AudioPlayer::~AudioPlayer() = default;
+AudioPlayer::~AudioPlayer() {
+    if (node_connection.connected())
+        node_connection.disconnect();
+}
 
 void AudioPlayer::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
+    // TODO: detect audio node change
+    if (node_connection.connected())
+        node_connection.disconnect();
+    audio_node = nullptr;
     if (auto doc = get_core_context()->get_document()) {
-        auto audio_node = dynamic_pointer_cast<core::AbstractNode>(doc->get_property("soundtrack"));
-        if (audio_node == nullptr)
-            return;
+        if (auto value = doc->get_property("soundtrack")) {
+            node_connection = value->subscribe([this]() {
+                update_audio();
+            });
+            audio_node = abstract_node_cast(value);
+        }
+    }
+    update_audio();
+}
+
+void AudioPlayer::update_audio() {
+    if (audio_node) {
         auto maybe_fname = audio_node->get_property_value<string>("file_path", get_core_context());
-        if (!maybe_fname)
-            return;
-        auto fname = *maybe_fname;
+        auto fname = maybe_fname.value_or("");
         if (fname == cached_file)
             return;
         using util::str;

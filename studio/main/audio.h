@@ -36,7 +36,12 @@ public:
     void update(core::Time time);
 
 private:
+    void update_audio();
+
+private:
     string cached_file;
+    boost::signals2::connection node_connection;
+    shared_ptr<core::AbstractNode> audio_node;
 
     unique_ptr<QMediaPlayer> player;
 
