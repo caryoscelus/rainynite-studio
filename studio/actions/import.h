@@ -42,6 +42,10 @@ public:
             }
         }
         if (auto doc = ctx->get_context()->get_document()) {
+            for (auto child : doc->get_links()) {
+                if (auto r = check_target(child, ctx))
+                    return r;
+            }
             if (auto root = list_cast(doc->get_property("root"))) {
                 for (auto child : root->get_links()) {
                     if (auto r = check_target(child, ctx))
