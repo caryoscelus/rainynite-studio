@@ -17,8 +17,8 @@
 
 #include <QGuiApplication>
 #include <QPalette>
-#include <QPen>
 
+#include <util/pen.h>
 #include "time_item.h"
 
 namespace rainynite::studio {
@@ -32,7 +32,10 @@ TimeItem::TimeItem(Callback callback_) :
     color.setAlphaF(0.5);
     brush.setColor(color);
     setBrush(brush);
-    setPen({Qt::NoPen});
+    auto pen = pens::cosmetic_solid();
+    color.setAlphaF(0.8);
+    pen.setColor(color);
+    setPen(pen);
 }
 
 QVariant TimeItem::itemChange(GraphicsItemChange change, QVariant const& value) {
@@ -47,6 +50,13 @@ QVariant TimeItem::itemChange(GraphicsItemChange change, QVariant const& value) 
 void TimeItem::move_to(core::Time time) {
     auto s = time.get_seconds();
     setPos(s, 0);
+}
+
+void TimeItem::set_fps(core::Time::fps_type fps_) {
+    fps = fps_;
+    auto r = rect();
+    r.setWidth(1.0/fps);
+    setRect(r);
 }
 
 void TimeItem::set_readonly(bool ro) {
