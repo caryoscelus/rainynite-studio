@@ -26,7 +26,7 @@ namespace rainynite::studio::pens {
 
 QPen cosmetic_dash();
 QPen cosmetic_solid();
-QPen cosmetic_think_light_solid();
+QPen cosmetic_thick_light_solid();
 
 } // namespace rainynite::studio::pens
 

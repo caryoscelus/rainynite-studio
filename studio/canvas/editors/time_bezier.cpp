@@ -32,7 +32,7 @@ public:
         editor(make_unique<BezierEditor>())
     {
         editor->set_display_tags(false);
-        editor->set_curve_pen(pens::cosmetic_think_light_solid());
+        editor->set_curve_pen(pens::cosmetic_thick_light_solid());
     }
 
     void setup_canvas() override {
