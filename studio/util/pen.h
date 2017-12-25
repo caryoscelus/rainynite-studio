@@ -19,8 +19,6 @@
 #define STUDIO_UTIL_PEN_H_84F08A20_D07D_508B_A5B3_BBD2B2EC7E0B
 
 #include <QPen>
-#include <QGuiApplication>
-#include <QPalette>
 
 namespace rainynite::studio::pens {
 
