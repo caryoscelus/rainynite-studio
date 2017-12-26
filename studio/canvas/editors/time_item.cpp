@@ -47,6 +47,10 @@ QVariant TimeItem::itemChange(GraphicsItemChange change, QVariant const& value) 
     return QGraphicsItem::itemChange(change, value);
 }
 
+QRectF TimeItem::boundingRect() const {
+    return rect();
+}
+
 void TimeItem::move_to(core::Time time) {
     auto s = time.get_seconds();
     setPos(s, 0);
