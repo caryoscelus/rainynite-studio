@@ -17,6 +17,9 @@
 
 #include <QGraphicsRectItem>
 
+#include <core/action_stack.h>
+#include <core/actions/change_value.h>
+
 #include <generic/node_editor.h>
 #include <generic/timeline_editor.h>
 #include <widgets/timeline_area.h>
@@ -34,8 +37,12 @@ public:
             [this](core::Time time) {
                 if (auto node = get_node_as<core::Time>()) {
                     ignore_time_change = true;
-                    if (node->can_set())
-                        node->set(time);
+                    if (node->can_set()) {
+                        if (auto action_stack = get_context()->action_stack()) {
+                            using core::actions::ChangeValue;
+                            action_stack->emplace<ChangeValue>(node, time);
+                        }
+                    }
                     ignore_time_change = false;
                 }
             }
