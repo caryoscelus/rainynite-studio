@@ -17,6 +17,9 @@
 
 #include <QGraphicsRectItem>
 
+#include <core/action_stack.h>
+#include <core/actions/change_value.h>
+
 #include <generic/node_editor.h>
 #include <generic/timeline_editor.h>
 #include <widgets/timeline_area.h>
@@ -33,26 +36,30 @@ public:
         /**
          * TODO: generalize and move out
          */
-        auto item_lambda = [this](auto set_node_lambda) {
-            return [this, set_node_lambda](core::Time time) {
+        auto item_lambda = [this](auto mod_timeperiod) {
+            return [this, mod_timeperiod](core::Time time) {
                 if (auto node = get_node_as<core::TimePeriod>()) {
                     ignore_time_change = true;
                     if (node->can_set()) {
-                        set_node_lambda(node, time);
-                        node->changed();
+                        if (auto action_stack = get_context()->action_stack()) {
+                            using core::actions::ChangeValue;
+                            auto value = node->mod();
+                            mod_timeperiod(value, time);
+                            action_stack->emplace<ChangeValue>(node, value);
+                        }
                     }
                     ignore_time_change = false;
                 }
             };
         };
         first_item = make_unique<TimeItem>(
-            item_lambda([](auto node, auto time) {
-                node->mod().set_first(time);
+            item_lambda([](auto& period, auto time) {
+                period.set_first(time);
             })
         );
         last_item = make_unique<TimeItem>(
-            item_lambda([](auto node, auto time) {
-                node->mod().set_last(time);
+            item_lambda([](auto& period, auto time) {
+                period.set_first(time);
             })
         );
         get_scene()->addItem(first_item.get());
