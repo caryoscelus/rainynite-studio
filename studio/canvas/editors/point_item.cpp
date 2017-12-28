@@ -58,4 +58,8 @@ void PointItem::set_pos(double x, double y) {
     setPos(x, y);
 }
 
+void PointItem::set_color(QColor const& color) {
+    setBrush(color);
+}
+
 } // namespace rainynite::studio
