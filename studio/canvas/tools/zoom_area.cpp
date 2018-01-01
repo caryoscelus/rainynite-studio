@@ -1,5 +1,5 @@
 /*  zoom_area.cpp - zoom area tool
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -97,5 +97,5 @@ private:
 } // namespace rainynite::studio::tools
 
 namespace rainynite::studio {
-REGISTER_CANVAS_TOOL(tools::ZoomArea, Canvas);
+REGISTER_CANVAS_TOOL(tools::ZoomArea, Canvas, 0x01);
 }

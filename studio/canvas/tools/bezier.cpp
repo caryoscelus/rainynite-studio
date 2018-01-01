@@ -1,5 +1,5 @@
 /*  bezier.cpp - draw bezier tool
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -157,6 +157,6 @@ private:
 
 namespace rainynite::studio {
 
-REGISTER_CANVAS_TOOL(tools::Bezier, Canvas);
+REGISTER_CANVAS_TOOL(tools::Bezier, Canvas, 0x10);
 
 } // namespace rainynite::studio

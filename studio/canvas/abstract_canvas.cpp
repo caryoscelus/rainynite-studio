@@ -1,5 +1,5 @@
 /*  abstract_canvas.cpp - generic canvas which can be edited with tools
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -69,8 +69,17 @@ void AbstractCanvas::clear_editors() {
     editors.clear();
 }
 
-map<string, observer_ptr<CanvasTool>> const& AbstractCanvas::list_tools() const {
-    return named_tools;
+vector<observer_ptr<CanvasTool>> AbstractCanvas::list_tools() const {
+    vector<observer_ptr<CanvasTool>> result;
+    std::transform(
+        tools.begin(),
+        tools.end(),
+        std::back_inserter(result),
+        [](auto const& e) {
+            return make_observer(e.get());
+        }
+    );
+    return result;
 }
 
 void AbstractCanvas::use_tool(string const& name) {

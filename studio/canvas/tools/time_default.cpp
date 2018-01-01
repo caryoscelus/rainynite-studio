@@ -1,5 +1,5 @@
 /*  time_default.cpp - default time area tool
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -59,5 +59,5 @@ private:
 } // namespace rainynite::studio::tools
 
 namespace rainynite::studio {
-REGISTER_CANVAS_TOOL(tools::TimeDefault, TimelineArea);
+REGISTER_CANVAS_TOOL(tools::TimeDefault, TimelineArea, 0x0);
 }

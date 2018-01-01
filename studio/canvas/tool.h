@@ -1,5 +1,5 @@
 /*  tool.h - abstract canvas tool
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,32 +37,33 @@ public:
 };
 
 template <class CanvasT>
-class CanvasToolFactory : public AbstractFactory<CanvasTool> {
+struct CanvasToolFactory : public AbstractFactory<CanvasTool> {
+    virtual size_t priority() const = 0;
 };
 
 // TODO: make more generic
-template <class CanvasT, class ToolT>
+template <class CanvasT, class ToolT, size_t P>
 struct CanvasToolFactoryInstance :
     public CanvasToolFactory<CanvasT>,
-    private class_init::StringRegistered<
-        CanvasToolFactoryInstance<CanvasT, ToolT>,
+    private class_init::ListRegistered<
+        CanvasToolFactoryInstance<CanvasT, ToolT, P>,
         CanvasToolFactory<CanvasT>
     >
 {
     unique_ptr<CanvasTool> operator()() const override {
         return make_unique<ToolT>();
     }
-    static string name() {
-        return ToolT::global_name();
+    size_t priority() const override {
+        return P;
     }
 };
 
-#define REGISTER_CANVAS_TOOL(Tool, CanvasT) \
-template struct CanvasToolFactoryInstance<CanvasT, Tool>
+#define REGISTER_CANVAS_TOOL(Tool, CanvasT, P) \
+template struct CanvasToolFactoryInstance<CanvasT, Tool, P>
 
 template <class CanvasT>
-map<string, CanvasToolFactory<CanvasT>*> const& get_canvas_tools() {
-    return class_init::string_registry<CanvasToolFactory<CanvasT>>();
+vector<CanvasToolFactory<CanvasT>*> const& get_canvas_tools() {
+    return class_init::class_list_registry<CanvasToolFactory<CanvasT>>();
 }
 
 } // namespace rainynite::studio

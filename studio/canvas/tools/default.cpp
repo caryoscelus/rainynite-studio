@@ -1,5 +1,5 @@
 /*  default.cpp - default tool
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,5 +38,5 @@ public:
 } // namespace rainynite::studio::tools
 
 namespace rainynite::studio {
-REGISTER_CANVAS_TOOL(tools::Default, Canvas);
+REGISTER_CANVAS_TOOL(tools::Default, Canvas, 0x00);
 }

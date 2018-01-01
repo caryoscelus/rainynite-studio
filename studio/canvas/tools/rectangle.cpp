@@ -1,5 +1,5 @@
 /*  rectangle.cpp - draw rectangle tool
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -102,6 +102,6 @@ private:
 
 } // namespace tools
 
-REGISTER_CANVAS_TOOL(tools::Rectangle, Canvas);
+REGISTER_CANVAS_TOOL(tools::Rectangle, Canvas, 0x12);
 
 } // namespace rainynite::studio
