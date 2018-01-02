@@ -1,5 +1,5 @@
 /*  canvas.cpp - main canvas widget
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include <QGraphicsRectItem>
 #include <QWheelEvent>
 #include <QSlider>
-#include <QDebug>
+#include <QToolButton>
 
 #include <geom_helpers/knots.h>
 
@@ -56,11 +56,21 @@ Canvas::Canvas(QWidget* parent) :
 
     zoom_slider.reset(new QSlider(Qt::Horizontal, this));
     zoom_slider->setRange(-SLIDER_FACTOR*MIN_ZOOM, SLIDER_FACTOR*MAX_ZOOM);
+    zoom_reset.reset(new QToolButton(this));
+    zoom_reset->setIcon(QIcon::fromTheme("zoom-reset"));
+    zoom_reset->setToolTip("Reset zoom to 100%");
     connect(
         zoom_slider.get(),
         &QSlider::valueChanged,
         [this] (int value) {
             set_zoom(std::pow(2, value*1.0/SLIDER_FACTOR));
+        }
+    );
+    connect(
+        zoom_reset.get(),
+        &QAbstractButton::clicked,
+        [this]() {
+            set_zoom(1.0);
         }
     );
     connect(
@@ -96,6 +106,12 @@ void Canvas::resizeEvent(QResizeEvent* event) {
         pos.width()-128,
         pos.height()-16,
         128,
+        16
+    });
+    zoom_reset->setGeometry({
+        pos.width()-144,
+        pos.height()-16,
+        16,
         16
     });
 }
