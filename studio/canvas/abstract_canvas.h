@@ -69,6 +69,9 @@ public:
     /// Remove all editors
     void clear_editors();
 
+    /// Get latest editor, if any
+    shared_ptr<AbstractCanvasEditor> latest_editor() const;
+
     /// Get available tool names list
     vector<observer_ptr<CanvasTool>> list_tools() const;
 

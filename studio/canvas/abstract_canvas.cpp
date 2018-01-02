@@ -69,6 +69,12 @@ void AbstractCanvas::clear_editors() {
     editors.clear();
 }
 
+shared_ptr<AbstractCanvasEditor> AbstractCanvas::latest_editor() const {
+    if (editors.size() > 0)
+        return editors.back();
+    return nullptr;
+}
+
 vector<observer_ptr<CanvasTool>> AbstractCanvas::list_tools() const {
     vector<observer_ptr<CanvasTool>> result;
     std::transform(
