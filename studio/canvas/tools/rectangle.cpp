@@ -24,10 +24,10 @@
 
 #include <geom_helpers/rectangle.h>
 
+#include <util/geom.h>
 #include "shape.h"
 
-namespace rainynite::studio {
-namespace tools {
+namespace rainynite::studio::tools {
 
 /**
  * Rectangle draw tool.
@@ -50,58 +50,26 @@ public:
 
 protected:
     bool mouse_press(QPoint const& pos) override {
-        rect_start = pos;
-        rubber_band = new QRubberBand(QRubberBand::Rectangle, get_canvas());
-        rubber_band->setGeometry({rect_start, rect_start});
-        rubber_band->show();
-        return is_drawing = true;
-    }
-    bool mouse_move(QPoint const& pos) override {
-        if (is_drawing) {
-            rubber_band->setGeometry(get_rect(rect_start, pos));
-        }
-        return is_drawing;
-    }
-    bool mouse_release(QPoint const& pos) override {
-        if (is_drawing) {
-            auto rect = get_rect(rect_start, pos);
-            rubber_band->setGeometry(rect);
-            rectangle_drawn(
-                get_canvas()->mapToScene(rect_start),
-                get_canvas()->mapToScene(pos)
-            );
-            delete rubber_band;
-            is_drawing = false;
-            return true;
-        }
+        new_shape_at(
+            get_canvas()->mapToScene(pos),
+            [] (Geom::Point start_pos) {
+                using namespace core;
+                using util::point;
+                using Geom::Rectangle, Geom::Point;
+                auto rect_node = make_node_with_name<Node<Rectangle>>("RectangleAB");
+                rect_node->set_property("a", make_value<Point>(start_pos));
+                rect_node->set_property("b", make_value<Point>(start_pos));
+                return rect_node;
+            }
+        );
+        if (get_index() && !get_index()->null())
+            get_canvas()->set_active_node(get_index());
         return false;
     }
-
-    void rectangle_drawn(QPointF a, QPointF b) {
-        auto rect_node = core::make_node_with_name<core::Node<Geom::Rectangle>>("RectangleAB");
-        rect_node->set_property("a", core::make_value<Geom::Point>(a.x(), a.y()));
-        rect_node->set_property("b", core::make_value<Geom::Point>(b.x(), b.y()));
-        write_shape(rect_node);
-    }
-
-private:
-    QRect get_rect(QPoint a, QPoint b) {
-        return {
-            std::min(a.x(), b.x()),
-            std::min(a.y(), b.y()),
-            std::abs(a.x()-b.x()),
-            std::abs(a.y()-b.y())
-        };
-    }
-
-private:
-    bool is_drawing = false;
-    QPoint rect_start;
-    QRubberBand* rubber_band;
 };
 
-} // namespace tools
+} // namespace rainynite::studio::tools
 
+namespace rainynite::studio {
 REGISTER_CANVAS_TOOL(tools::Rectangle, Canvas, 0x12);
-
 } // namespace rainynite::studio

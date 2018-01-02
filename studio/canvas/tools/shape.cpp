@@ -1,5 +1,5 @@
 /*  shape.cpp - base for shape creating tools
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@
 #include <core/action_stack.h>
 #include <core/exceptions.h>
 #include <core/renderable.h>
+#include <core/node_tree_transform.h>
 
+#include <util/geom.h>
 #include "shape.h"
 
 namespace rainynite::studio::tools {
@@ -38,6 +40,20 @@ bool Shape::canvas_event(QEvent* event) {
         }
     }
     return Base::canvas_event(event);
+}
+
+void Shape::new_shape_at(QPointF const& pos, MakeShape f) {
+    if (auto ctx = get_canvas()->get_context()) {
+        if (auto node = ctx->get_active_node_index()) {
+            if (auto node_tree = ctx->tree()) {
+                if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(node)) {
+                    auto affine = calculate_tr->get_transform(ctx->get_context());
+                    auto node = f(util::point(pos) * affine.inverse());
+                    write_shape(node);
+                }
+            }
+        }
+    }
 }
 
 bool Shape::draw_shape_event(QEvent* event) {
@@ -84,13 +100,24 @@ void Shape::write_shape(shared_ptr<core::AbstractValue> shape) {
     if (action_stack == nullptr)
         throw NullPointerException("Cannot write to empty action stack.");
 
-    auto value = get_canvas()->get_context()->get_active_node();
+    auto ctx = get_canvas()->get_context();
+    if (ctx == nullptr)
+        throw NullPointerException("Cannot write when context is empty.");
+
+    auto tree = get_canvas()->get_context()->tree();
+    if (tree == nullptr)
+        throw NullPointerException("Tree is null");
+
+    auto node_index = ctx->get_active_node_index();
+    auto value = ctx->get_active_node();
+
     auto name = node_name(*value);
     auto node = dynamic_pointer_cast<AbstractNode>(value);
 
     // TODO: modularize, support replacing shapes
     if (name == "RenderShape") {
         action_stack->emplace<actions::SetProperty>(node, "shape", shape);
+        target_node_index = tree->index(node_index, node->get_name_id("shape"));
     } else if (value->get_type() == typeid(vector<Renderable>)) {
         if (auto layers = dynamic_pointer_cast<AbstractListLinked>(std::move(value))) {
             add_renderable_to_list(action_stack, layers, shape);
