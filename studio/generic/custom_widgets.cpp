@@ -1,5 +1,5 @@
 /*  custom_widgets.cpp - widgets for value editing
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
 
 namespace rainynite::studio {
 
-QWidget* new_custom_widget(std::type_index type) {
+unique_ptr<QWidget> new_custom_widget(std::type_index type) {
     try {
-        return class_init::type_info<CustomWidgetFactory, QWidget*>(type);
+        return class_init::type_info<AbstractFactory<QWidget>, unique_ptr<QWidget>>(type);
     } catch (class_init::RuntimeTypeError const&) {
         return nullptr;
     }

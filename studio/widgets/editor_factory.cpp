@@ -1,5 +1,5 @@
 /*  editor_factory.cpp - value editors factory instances
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include <QPushButton>
 
 #include <core/class_init.h>
@@ -35,8 +34,11 @@
 
 namespace rainynite::studio {
 
-REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, (NodeEditorWidget<ColorButton, core::colors::Color>));
-REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, (NodeEditorWidget<PointValueEditor, Geom::Point>));
+using ColorEditWidget = NodeEditorWidget<ColorButton, core::colors::Color>;
+REGISTER_CUSTOM_WIDGET(ColorEdit, core::colors::Color, ColorEditWidget);
+
+using PointValueEditWidget = NodeEditorWidget<PointValueEditor, Geom::Point>;
+REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, PointValueEditWidget);
 
 REGISTER_CANVAS_EDITOR(Canvas, BezierEditor, Geom::BezierKnots);
 REGISTER_CANVAS_EDITOR(Canvas, PointEditor, Geom::Point);

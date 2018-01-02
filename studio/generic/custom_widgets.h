@@ -1,5 +1,5 @@
 /*  custom_widgets.h - widgets for value editing
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,26 +22,19 @@
 
 #include <QWidget>
 
+#include <core/abstract_factory.h>
+
 namespace rainynite::studio {
 
-class CustomWidgetFactory {
-public:
-    virtual QWidget* operator()() const = 0;
-};
-
-QWidget* new_custom_widget(std::type_index type);
+unique_ptr<QWidget> new_custom_widget(std::type_index type);
 
 } // namespace rainynite::studio
 
-#define REGISTER_CUSTOM_WIDGET(Name, Type, Widget) \
-class Name##Factory : \
-    public CustomWidgetFactory, \
-    class_init::Registered<Name##Factory, Type, CustomWidgetFactory> \
+#define REGISTER_CUSTOM_WIDGET(Name, Type, WidgetType) \
+struct Name##Factory : \
+    public AbstractFactoryImpl<QWidget, WidgetType>, \
+    class_init::Registered<Name##Factory, Type, AbstractFactory<QWidget>> \
 { \
-public: \
-    QWidget* operator()() const override { \
-        return new Widget(); \
-    } \
 }
 
 #endif
