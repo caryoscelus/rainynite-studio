@@ -39,6 +39,7 @@ target_sources(rainynite-studio
         widgets/point_value_editor.h
         widgets/boolean_editor.cpp
         widgets/multiline_editor.cpp
+        widgets/bezier_editor.cpp
 
         canvas/abstract_canvas.h
         canvas/abstract_canvas.cpp
