@@ -1,5 +1,5 @@
 /*  main_window.cpp - main window
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -293,9 +293,8 @@ void MainWindow::setup_tools() {
         }
     );
     ui->canvas->load_registered_tools();
-    for (auto const& e : ui->canvas->list_tools()) {
-        auto const& name = e.first;
-        auto tool = e.second;
+    for (auto tool : ui->canvas->list_tools()) {
+        auto name = tool->name();
         auto action = ui->tools_bar->addAction(
             QIcon::fromTheme(util::str(tool->icon())),
             util::str(name),

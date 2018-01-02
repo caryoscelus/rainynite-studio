@@ -1,5 +1,5 @@
 /*  registry.h - canvas registry & non-template tool/editor add functions
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -48,15 +48,20 @@ struct CanvasToolsInfoInstance :
     >
 {
     vector<AbstractFactory<CanvasTool>*> operator()() const override {
-        auto const& factory_map = get_canvas_tools<CanvasT>();
+        auto factory_list = get_canvas_tools<CanvasT>();
         vector<AbstractFactory<CanvasTool>*> result;
-        std::transform(
-            factory_map.begin(),
-            factory_map.end(),
-            std::back_inserter(result),
-            [](auto const& e) {
-                return e.second;
+        std::sort(
+            factory_list.begin(),
+            factory_list.end(),
+            [](auto a, auto b) {
+                return a->priority() < b->priority();
             }
+        );
+        std::transform(
+            factory_list.begin(),
+            factory_list.end(),
+            std::back_inserter(result),
+            [](auto const& e) { return e; }
         );
         return result;
     }

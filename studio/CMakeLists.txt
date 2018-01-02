@@ -90,8 +90,11 @@ target_sources(rainynite-studio
         generic/action.h
         generic/action_menu.cpp
 
+        actions/process_node.h
+        actions/import.h
         actions/external_player.cpp
         actions/import.cpp
+        actions/import_soundtrack.cpp
 
         models/model_filter.h
         models/node_model.cpp

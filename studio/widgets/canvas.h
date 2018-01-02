@@ -1,5 +1,5 @@
 /*  canvas.h - main canvas widget
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ class QGraphicsScene;
 class QGraphicsItem;
 class QGraphicsRectItem;
 class QSlider;
+class QToolButton;
 
 namespace rainynite::studio {
 
@@ -47,6 +48,7 @@ private:
     unique_ptr<QGraphicsRectItem> image_border;
 
     observer_ptr<QSlider> zoom_slider;
+    observer_ptr<QToolButton> zoom_reset;
 };
 
 REGISTER_CANVAS(Canvas);

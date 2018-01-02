@@ -38,15 +38,17 @@ class PointItem : public QGraphicsEllipseItem {
 public:
     using Callback = std::function<void(double, double)>;
 
-    static const int radius = 2;
+    static const int radius = 3;
 
-public:
     PointItem(Callback callback);
 
     void paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) override;
-public:
+
     void set_readonly(bool ro);
     void set_pos(double x, double y);
+
+    void set_color(QColor const& color);
+
 protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 private:

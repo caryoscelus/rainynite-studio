@@ -75,7 +75,7 @@ void AboutDialog::play_video() {
 
     player->setVideoOutput(video);
 
-    player->setMedia(QUrl{"qrc:/video/pulse.webm"});
+    player->setMedia(QUrl{"qrc:/video/helloworld.webm"});
     player->play();
 }
 

@@ -1,5 +1,5 @@
 /*  abstract_canvas.h - generic canvas which can be edited with tools
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ public:
     void clear_editors();
 
     /// Get available tool names list
-    map<string, observer_ptr<CanvasTool>> const& list_tools() const;
+    vector<observer_ptr<CanvasTool>> list_tools() const;
 
     /// Switch to tool
     void use_tool(string const& name);

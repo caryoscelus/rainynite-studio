@@ -34,15 +34,14 @@ namespace rainynite::studio {
 class TimeItem : public QGraphicsRectItem {
 public:
     using Callback = std::function<void(core::Time)>;
-public:
+
     TimeItem(Callback callback_);
-public:
+
     QVariant itemChange(GraphicsItemChange change, QVariant const& value) override;
-public:
+    QRectF boundingRect() const override;
+
     void move_to(core::Time time);
-    void set_fps(core::Time::fps_type fps_) {
-        fps = fps_;
-    }
+    void set_fps(core::Time::fps_type fps_);
     void set_readonly(bool ro);
     void set_pos_height(int y, int height);
 private:

@@ -16,6 +16,7 @@
  */
 
 #include <cstdlib>
+#include <thread>
 
 #include <fmt/format.h>
 
@@ -32,7 +33,7 @@ namespace rainynite::studio::actions {
  *
  * TODO: configuration: UI & store
  */
-class LaunchExternalPlayer : CONTEXT_ACTION(LaunchExternalPlayer) {
+class LaunchExternalPlayer : public UiAction, public ContextListener {
     ACTION_NAME("Launch external player")
 public:
     void process() override {
@@ -40,20 +41,47 @@ public:
             string audio_file;
             if (auto audio_node = core::abstract_node_cast(ctx->get_document()->get_property("soundtrack")))
                 audio_file = audio_node->get_property_value<string>("file_path", ctx).value_or("");
-            if (audio_file.empty())
-                audio_file = "__NOAUDIO__";
             auto command = fmt::format(
-                player_command,
-                "audio_file"_a=audio_file,
+                player_command(),
+                "audio_command"_a=audio_command(audio_file),
                 "lst_file"_a="renders/rendered.lst",
                 "fps"_a=ctx->get_fps()
             );
-            std::system(command.c_str());
+            std::thread t([command]() {
+                std::system(command.c_str());
+            });
+            t.detach();
         }
     }
+protected:
+    virtual string player_command() const = 0;
+    virtual string audio_command(string const& fname) const = 0;
+};
 
-private:
-    string player_command = "mpv -audio-file {audio_file} -mf-fps {fps} mf://@{lst_file}";
+class LaunchMpv : public LaunchExternalPlayer, REGISTERED_ACTION(LaunchMpv) {
+    ACTION_NAME("Launch external player (mpv)")
+protected:
+    string player_command() const override {
+        return "mpv {audio_command} -mf-fps {fps} mf://@{lst_file}";
+    }
+    string audio_command(string const& fname) const override {
+        if (fname.empty())
+            return "";
+        return "-audio-file '"+fname+"'";
+    }
+};
+
+class FfmpegToWebm : public LaunchExternalPlayer, REGISTERED_ACTION(FfmpegToWebm) {
+    ACTION_NAME("Encode render results to webm (ffmpeg)")
+protected:
+    string player_command() const override {
+        return R"(cat {lst_file} | sed -e "s/^/file '/" -e "s/$/'/" > renders/rendered_ffmpeg.lst && ffmpeg -f concat -safe 0 -r {fps} -i renders/rendered_ffmpeg.lst {audio_command} result.webm)";
+    }
+    string audio_command(string const& fname) const override {
+        if (fname.empty())
+            return "";
+        return "-i '"+fname+"'";
+    }
 };
 
 } // namespace rainynite::studio::actions

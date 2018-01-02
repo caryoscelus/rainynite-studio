@@ -124,10 +124,13 @@ void BezierEditor::init() {
                         action_stack->close();
                     }
                 );
-                if (parent)
+                if (parent) {
                     e->setParentItem(parent);
-                else
+                    e->set_color({0xff, 0xff, 0x88});
+                } else {
                     scene->addItem(e);
+                    e->set_color({0xff, 0x66, 0x66});
+                }
                 auto point = path.knots[i].*pref;
                 e->set_pos(point.x(), point.y());
                 e->set_readonly(readonly);
