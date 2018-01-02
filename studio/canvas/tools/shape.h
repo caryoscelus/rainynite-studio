@@ -68,9 +68,6 @@ protected:
     }
 
 private:
-    void add_renderable_to_list(shared_ptr<core::ActionStack> action_stack, shared_ptr<core::AbstractListLinked> list, shared_ptr<core::AbstractValue> shape);
-
-private:
     core::NodeTree::Index target_node_index;
 };
 

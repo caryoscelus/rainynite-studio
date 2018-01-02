@@ -114,33 +114,35 @@ void Shape::write_shape(shared_ptr<core::AbstractValue> shape) {
     auto name = node_name(*value);
     auto node = dynamic_pointer_cast<AbstractNode>(value);
 
+    auto add_renderable_to_list = [this, &tree, &action_stack](auto layers, auto layers_index, auto shape) {
+        using namespace core;
+        auto render_shape = make_node_with_name<RenderableNode>("RenderShape");
+        render_shape->set_property("shape", shape);
+        action_stack->emplace<actions::ListPush>(layers, render_shape);
+        target_node_index = tree->index(layers_index, layers->link_count()-1);
+    };
+
     // TODO: modularize, support replacing shapes
     if (name == "RenderShape") {
         action_stack->emplace<actions::SetProperty>(node, "shape", shape);
         target_node_index = tree->index(node_index, node->get_name_id("shape"));
     } else if (value->get_type() == typeid(vector<Renderable>)) {
-        if (auto layers = dynamic_pointer_cast<AbstractListLinked>(std::move(value))) {
-            add_renderable_to_list(action_stack, layers, shape);
+        if (auto layers = list_cast(std::move(value))) {
+            add_renderable_to_list(layers, node_index, shape);
         } else {
             throw std::runtime_error("Has vector<Renderable> type, but isn't list: "+name);
         }
     } else if (name == "Composite") {
         auto layers_node = node->get_property("layers");
-        if (auto layers = dynamic_pointer_cast<AbstractListLinked>(layers_node)) {
-            return add_renderable_to_list(action_stack, layers, shape);
+        if (auto layers = list_cast(layers_node)) {
+            auto layers_index = tree->index(node_index, node->get_name_id("layers"));
+            return add_renderable_to_list(layers, layers_index, shape);
         } else {
             throw std::runtime_error("Can't add layer to Composite node");
         }
     } else {
         throw std::runtime_error("Can't add shape to "+name);
     }
-}
-
-void Shape::add_renderable_to_list(shared_ptr<core::ActionStack> action_stack, shared_ptr<core::AbstractListLinked> layers, shared_ptr<core::AbstractValue> shape) {
-    using namespace core;
-    auto render_shape = make_node_with_name<RenderableNode>("RenderShape");
-    render_shape->set_property("shape", shape);
-    action_stack->emplace<actions::ListPush>(layers, render_shape);
 }
 
 } // namespace rainynite::studio::tools
