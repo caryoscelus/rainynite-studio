@@ -1,5 +1,5 @@
 /*  geom.h - Qt <-> 2geom conversions
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #define STUDIO_UTIL_GEOM_H_FB758F4A_2FB3_527A_81CE_74C1E91A4DFF
 
 #include <QPoint>
+#include <QMatrix>
 
 #include <2geom/point.h>
 
