@@ -1,5 +1,5 @@
 /*  bezier_editor.cpp - edit beziers on canvas
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
+#include <core/nullptr.h>
 
 #include <util/strings.h>
 #include <util/pen.h>
@@ -38,7 +39,6 @@ namespace rainynite::studio {
 
 BezierEditor::BezierEditor() {
     set_curve_pen(pens::cosmetic_dash());
-    init();
 }
 
 BezierEditor::~BezierEditor() {
@@ -48,8 +48,11 @@ BezierEditor::~BezierEditor() {
 void BezierEditor::set_display_tags(bool display_tags_) {
     if (display_tags != display_tags_) {
         display_tags = display_tags_;
-        uninit();
-        init();
+        if (display_tags) {
+            add_tags();
+        } else {
+            remove_tags();
+        }
     }
 }
 
@@ -73,9 +76,11 @@ struct BezierEditor::EventFilter : public QObject {
 
 void BezierEditor::setup_canvas() {
     uninit();
-    init();
 
     if (auto canvas = get_canvas()) {
+        if (get_bezier_node()) {
+            init();
+        }
         event_filter = make_unique<EventFilter>(this);
         canvas->installEventFilter(event_filter.get());
     }
@@ -102,6 +107,8 @@ bool BezierEditor::canvas_event(QEvent* event) {
                                 node,
                                 path
                             );
+                            add_knot_editor(path.size()-1);
+                            reset_curve(path);
                         }
                     }
 //                     return true;
@@ -155,95 +162,105 @@ void BezierEditor::redraw() {
 }
 
 void BezierEditor::init() {
-    if (auto scene = get_scene()) {
-        if (auto bezier_node = get_bezier_node()) {
-            bool readonly = !bezier_node->can_set();
+    auto bezier_node = no_null(get_bezier_node());
 
-            Geom::BezierKnots path;
-            try {
-                path = bezier_node->value(get_core_context());
-            } catch (std::exception const& ex) {
-                qDebug() << util::str("Uncaught exception while getting path: {}"_format(ex.what()));
-                return;
-            }
+    auto path = get_path();
 
-            old_size = path.size();
+    old_size = path.size();
 
-            curve_item.reset(scene->addPath(util::path_to_qt(path)));
-            curve_item->setPen(curve_pen);
+    reset_curve(path);
 
-            auto add_point_editor = [
-                this,
-                scene,
-                readonly,
-                bezier_node,
-                &path
-            ](size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent = nullptr) {
-                auto e = new PointItem(
-                    [this, i, bezier_node, pref](double x, double y) {
-                        auto path = bezier_node->mod();
-                        auto& point = path.knots[i].*pref;
-                        point.x() = x;
-                        point.y() = y;
-
-                        auto action_stack = get_context()->action_stack();
-                        action_stack->emplace<core::actions::ChangeValue>(
-                            bezier_node,
-                            path
-                        );
-                        action_stack->close();
-                    }
-                );
-                if (parent) {
-                    e->setParentItem(parent);
-                    e->set_color({0xff, 0xff, 0x88});
-                } else {
-                    scene->addItem(e);
-                    e->set_color({0xff, 0x66, 0x66});
-                }
-                auto point = path.knots[i].*pref;
-                e->set_pos(point.x(), point.y());
-                e->set_readonly(readonly);
-                return e;
-            };
-
-            size_t i = 0;
-            for (auto const& knot : path.knots) {
-                auto pos = add_point_editor(i, &Geom::Knot::pos);
-                add_point_editor(i, &Geom::Knot::tg1, pos);
-                add_point_editor(i, &Geom::Knot::tg2, pos);
-                knot_items.emplace_back(pos);
-
-                if (!knot.uid.empty() && display_tags) {
-                    auto e = scene->addText(util::str(knot.uid));
-                    e->setX(knot.pos.x());
-                    e->setY(knot.pos.y());
-                    knot_items.emplace_back(e);
-                }
-
-                ++i;
-            }
+    if (bezier_node->can_set()) {
+        for (ptrdiff_t i = 0; i < old_size; ++i) {
+            add_knot_editor(i);
         }
     }
+
+    if (display_tags) {
+        add_tags();
+    }
+}
+
+void BezierEditor::add_tags() {
+    auto path = get_path();
+    for (auto const& knot : path.knots) {
+        if (!knot.uid.empty()) {
+            auto e = no_null(get_scene())->addText(util::str(knot.uid));
+            e->setX(knot.pos.x());
+            e->setY(knot.pos.y());
+            tag_items.emplace_back(e);
+        }
+    }
+}
+
+QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent /*= nullptr*/) {
+    auto bezier_node = no_null(get_bezier_node());
+    auto e = new PointItem(
+        [this, i, bezier_node, pref](double x, double y) {
+            auto path = bezier_node->mod();
+            auto& point = path.knots[i].*pref;
+            point.x() = x;
+            point.y() = y;
+
+            auto action_stack = get_context()->action_stack();
+            action_stack->emplace<core::actions::ChangeValue>(
+                bezier_node,
+                path
+            );
+            action_stack->close();
+        }
+    );
+    if (parent) {
+        e->setParentItem(parent);
+        e->set_color({0xff, 0xff, 0x88});
+    } else {
+        no_null(get_scene())->addItem(e);
+        e->set_color({0xff, 0x66, 0x66});
+    }
+    auto point = bezier_node->mod().knots[i].*pref;
+    e->set_pos(point.x(), point.y());
+    e->set_readonly(false);
+    return e;
+}
+
+void BezierEditor::add_knot_editor(size_t i) {
+    auto pos = add_point_editor(i, &Geom::Knot::pos);
+    add_point_editor(i, &Geom::Knot::tg1, pos);
+    add_point_editor(i, &Geom::Knot::tg2, pos);
+    knot_items.emplace_back(pos);
+}
+
+void BezierEditor::reset_curve(Geom::BezierKnots const& path) {
+    auto scene = no_null(get_scene());
+    curve_item.reset(scene->addPath(util::path_to_qt(path)));
+    curve_item->setPen(curve_pen);
 }
 
 void BezierEditor::uninit() {
     old_size = -1;
-    if (auto canvas = get_canvas()) {
-        for (auto const& e : knot_items) {
-            canvas->scene()->removeItem(e.get());
-        }
-        knot_items.clear();
+    if (auto scene = get_scene()) {
+        for (auto const& e : knot_items)
+            scene->removeItem(e.get());
     }
+    knot_items.clear();
     curve_item.reset();
+    remove_tags();
 }
 
-shared_ptr<core::BaseValue<Geom::BezierKnots>> BezierEditor::get_bezier_node() {
-    return dynamic_pointer_cast<core::BaseValue<Geom::BezierKnots>>(get_node());
+void BezierEditor::remove_tags() {
+    if (auto scene = get_scene()) {
+        for (auto const& e : tag_items)
+            scene->removeItem(e.get());
+    }
+    tag_items.clear();
 }
 
-Geom::BezierKnots BezierEditor::get_path() {
-    return get_bezier_node()->value(get_core_context());
+shared_ptr<core::BaseValue<Geom::BezierKnots>> BezierEditor::get_bezier_node() const {
+    return get_node_as<Geom::BezierKnots>();
+}
+
+Geom::BezierKnots BezierEditor::get_path() const {
+    return no_null(get_bezier_node())->value(get_core_context());
 }
 
 } // namespace rainynite::studio

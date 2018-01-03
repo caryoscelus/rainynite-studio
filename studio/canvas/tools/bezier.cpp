@@ -62,7 +62,7 @@ protected:
             } else {
                 new_shape_at(
                     get_canvas()->mapToScene(pos),
-                    [this] (Geom::Point start_pos) {
+                    [this] (Geom::Point /*start_pos*/) {
                         path_node = make_shared<core::Value<Geom::BezierKnots>>();
 //                         path_node
                         return path_node;
