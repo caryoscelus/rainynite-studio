@@ -1,5 +1,5 @@
 /*  boolean_editor.cpp - edit booleans
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@ public:
     virtual void write_action() = 0;
 };
 
-REGISTER_CUSTOM_WIDGET(BooleanEdit, bool, (NodeEditorWidget<BooleanEditor, bool>));
+using BooleanEditWidget = NodeEditorWidget<BooleanEditor, bool>;
+REGISTER_CUSTOM_WIDGET(BooleanEdit, bool, BooleanEditWidget);
 
 } // namespace rainynite::studio

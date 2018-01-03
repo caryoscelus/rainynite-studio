@@ -1,5 +1,5 @@
 /*  docks/node_edit.h - widget-based node editing dock
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ private:
 
 private:
     unique_ptr<Ui::NodeEditDock> ui;
-    QWidget* custom_widget = nullptr;
+    unique_ptr<QWidget> custom_widget;
 
     core::NodeTree::Index active_node;
 };

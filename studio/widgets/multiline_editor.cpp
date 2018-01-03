@@ -1,5 +1,5 @@
 /*  multiline_editor.cpp - edit string with multi-line text editor
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ protected:
     }
 };
 
-REGISTER_CUSTOM_WIDGET(MultilineTextEdit, string, (NodeEditorWidget<MultilineEditor, string>));
+using MultilineTextEditWidget = NodeEditorWidget<MultilineEditor, string>;
+REGISTER_CUSTOM_WIDGET(MultilineTextEdit, string, MultilineTextEditWidget);
 
 } // namespace rainynite::studio
