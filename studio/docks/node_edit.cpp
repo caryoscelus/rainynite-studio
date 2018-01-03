@@ -60,7 +60,7 @@ void NodeEditDock::active_node_index_changed(core::NodeTree::Index index) {
     if (!index)
         return;
     update_generic();
-//     setup_custom_widget(node);
+    setup_custom_widget(get_node());
 }
 
 void NodeEditDock::time_changed(core::Time time) {
