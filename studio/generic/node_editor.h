@@ -78,6 +78,9 @@ private:
     boost::signals2::connection node_connection;
 };
 
+/// Calculate transform helper
+Geom::Affine get_transform(NodeEditor const& editor);
+
 class NodeEditorShowChildren {
 public:
     virtual bool operator()() const = 0;

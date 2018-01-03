@@ -15,6 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <core/node_tree_transform.h>
+
 #include "node_editor.h"
 
 namespace rainynite::studio {
@@ -30,6 +32,14 @@ void NodeEditor::set_node(core::NodeTree::Index index) {
     node_connection = node->subscribe([this]() {
         node_update();
     });
+}
+
+Geom::Affine get_transform(NodeEditor const& editor) {
+    if (auto ctx = editor.get_context()) {
+        if (auto tree = ctx->tree())
+            return core::get_transform(ctx->get_context(), *tree, editor.get_node_index());
+    }
+    return {};
 }
 
 } // namespace rainynite::studio
