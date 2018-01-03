@@ -56,6 +56,8 @@ public:
 
     bool canvas_event(QEvent* event) override;
 
+    bool is_readonly() const;
+
 private:
     void add_knot_editor(size_t i);
 

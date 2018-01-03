@@ -89,46 +89,26 @@ void BezierEditor::setup_canvas() {
 bool BezierEditor::canvas_event(QEvent* event) {
     if (!appending)
         return false;
-    qDebug() << event->type();
     if (auto mouse_event = dynamic_cast<QMouseEvent*>(event)) {
         auto pos = convert_pos(mouse_event->pos());
-        switch (mouse_event->type()) {
-            case QEvent::MouseButtonPress: {
-                qDebug() << "hello";
-                if (mouse_event->button() == Qt::LeftButton) {
-                    drawing = true;
-                    if (auto node = get_bezier_node()) {
-                        if (node->is_const()) {
-                            // TODO: support editing non-const
-                            auto path = node->mod();
-                            path.emplace_back(pos);
-                            auto action_stack = get_context()->action_stack();
-                            action_stack->emplace<core::actions::ChangeValue>(
-                                node,
-                                path
-                            );
-                            add_knot_editor(path.size()-1);
-                            reset_curve(path);
-                        }
+        if (mouse_event->type() == QEvent::MouseButtonPress) {
+            if (mouse_event->button() == Qt::LeftButton) {
+                drawing = true;
+                if (auto node = get_bezier_node()) {
+                    if (node->is_const()) {
+                        // TODO: support editing non-const
+                        auto path = node->mod();
+                        path.emplace_back(pos);
+                        auto action_stack = get_context()->action_stack();
+                        action_stack->emplace<core::actions::ChangeValue>(
+                            node,
+                            path
+                        );
+                        add_knot_editor(path.size()-1);
+                        reset_curve(path);
                     }
-//                     return true;
-
-                    return false;
                 }
             }
-            case QEvent::MouseMove: {
-                if (drawing) {
-                    return true;
-                }
-            }
-            case QEvent::MouseButtonRelease: {
-                if (drawing) {
-                    //
-                    return true;
-                }
-            }
-            default:
-                break;
         }
     }
     return false;
@@ -147,13 +127,17 @@ void BezierEditor::time_changed(core::Time) {
     redraw();
 }
 
+bool BezierEditor::is_readonly() const {
+    return !get_scene() || !get_bezier_node() || !get_bezier_node()->is_const();
+}
+
 void BezierEditor::redraw() {
     if (get_scene() && get_bezier_node()) {
         auto path = get_path();
         // NOTE: this is to avoid full redraw while editing
         // TODO: make sure it gets properly updated on non-editing changes
-        if ((ptrdiff_t)path.size() == old_size) {
-            curve_item->setPath(util::path_to_qt(path));
+        if ((ptrdiff_t)path.size() == old_size && is_readonly()) {
+            reset_curve(path);
         } else {
             uninit();
             init();
