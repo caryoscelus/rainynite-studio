@@ -34,6 +34,17 @@ public:
     virtual ~BezierEditorWidget() {
     }
 
+    void node_update() override {
+        if (auto node = get_node_as<Geom::BezierKnots>()) {
+            ui->is_closed->setCheckable(node->is_const());
+            ui->is_closed->setChecked(node->value(get_core_context()).closed);
+        } else {
+            // error
+            ui->is_closed->setCheckable(false);
+            ui->is_closed->setChecked(false);
+        }
+    }
+
 protected:
     void set_closed(bool closed) {
         if (auto action_stack = get_context()->action_stack()) {
