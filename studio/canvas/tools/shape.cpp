@@ -39,6 +39,7 @@ bool Shape::canvas_event(QEvent* event) {
             }
         }
     }
+    return false;
     return Base::canvas_event(event);
 }
 

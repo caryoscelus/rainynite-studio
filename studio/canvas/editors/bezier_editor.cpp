@@ -19,6 +19,7 @@
 
 #include <QGraphicsItem>
 #include <QDebug>
+#include <QMouseEvent>
 
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
@@ -26,6 +27,7 @@
 #include <util/strings.h>
 #include <util/pen.h>
 #include <util/qt_path.h>
+#include <util/geom.h>
 #include <widgets/canvas.h>
 #include "point_item.h"
 #include "bezier_editor.h"
@@ -57,9 +59,77 @@ void BezierEditor::set_curve_pen(QPen const& pen) {
         curve_item->setPen(curve_pen);
 }
 
+struct BezierEditor::EventFilter : public QObject {
+    EventFilter(BezierEditor* parent_) :
+        parent(parent_)
+    {}
+
+    bool eventFilter(QObject* /*target*/, QEvent* event) override {
+        return parent->canvas_event(event);
+    }
+
+    BezierEditor* parent;
+};
+
 void BezierEditor::setup_canvas() {
     uninit();
     init();
+
+    if (auto canvas = get_canvas()) {
+        event_filter = make_unique<EventFilter>(this);
+        canvas->installEventFilter(event_filter.get());
+    }
+}
+
+bool BezierEditor::canvas_event(QEvent* event) {
+    if (!appending)
+        return false;
+    qDebug() << event->type();
+    if (auto mouse_event = dynamic_cast<QMouseEvent*>(event)) {
+        auto pos = convert_pos(mouse_event->pos());
+        switch (mouse_event->type()) {
+            case QEvent::MouseButtonPress: {
+                qDebug() << "hello";
+                if (mouse_event->button() == Qt::LeftButton) {
+                    drawing = true;
+                    if (auto node = get_bezier_node()) {
+                        if (node->is_const()) {
+                            // TODO: support editing non-const
+                            auto path = node->mod();
+                            path.emplace_back(pos);
+                            auto action_stack = get_context()->action_stack();
+                            action_stack->emplace<core::actions::ChangeValue>(
+                                node,
+                                path
+                            );
+                        }
+                    }
+//                     return true;
+
+                    return false;
+                }
+            }
+            case QEvent::MouseMove: {
+                if (drawing) {
+                    return true;
+                }
+            }
+            case QEvent::MouseButtonRelease: {
+                if (drawing) {
+                    //
+                    return true;
+                }
+            }
+            default:
+                break;
+        }
+    }
+    return false;
+}
+
+Geom::Point BezierEditor::convert_pos(QPoint const& src) const {
+    // TODO: transforms
+    return util::point(get_canvas()->mapToScene(src));
 }
 
 void BezierEditor::node_update() {

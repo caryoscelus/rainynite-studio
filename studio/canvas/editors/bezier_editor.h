@@ -47,19 +47,32 @@ public:
     void init();
     void uninit();
 
+    void set_appending(bool value) {
+        appending = value;
+    }
+
     void set_display_tags(bool display_tags_);
     void set_curve_pen(QPen const& pen);
+
+    bool canvas_event(QEvent* event) override;
 
 private:
     shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node();
     Geom::BezierKnots get_path();
 
+    Geom::Point convert_pos(QPoint const& src) const;
+
 private:
+    struct EventFilter;
+    unique_ptr<EventFilter> event_filter;
+
     vector<unique_ptr<QGraphicsItem>> knot_items;
     unique_ptr<QGraphicsPathItem> curve_item;
     ptrdiff_t old_size = -1;
     bool display_tags = true;
     QPen curve_pen;
+    bool appending = false;
+    bool drawing = false;
 };
 
 } // namespace rainynite::studio

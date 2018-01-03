@@ -60,42 +60,31 @@ protected:
                 old_path = path_node->mod();
                 path_node->set({});
             } else {
-                path_node = make_shared<core::Value<Geom::BezierKnots>>();
+                new_shape_at(
+                    get_canvas()->mapToScene(pos),
+                    [this] (Geom::Point start_pos) {
+                        path_node = make_shared<core::Value<Geom::BezierKnots>>();
+//                         path_node
+                        return path_node;
+                    }
+                );
             }
             path.reset(&path_node->mod());
             path->closed = false;
-            editor = make_unique<BezierEditor>();
-            editor->set_canvas(get_canvas());
-//             editor->set_node(path_node);
-            path->emplace_back(convert_pos(pos));
+            auto editors = add_canvas_node_editor(*get_canvas(), get_index());
+//             editor = make_unique<BezierEditor>();
+//             editor->set_canvas(get_canvas());
+//             editor->set_node(get_index());
+            dynamic_pointer_cast<BezierEditor>(editors.front())->set_appending(true);
+//             return false;
+//             path->emplace_back(convert_pos(pos));
         }
         is_pressed = true;
-        return true;
-    }
-    bool mouse_move(QPoint const& pos) override {
-        if (is_drawing) {
-            auto p = convert_pos(pos);
-            auto& knot = path->last();
-            if (is_pressed) {
-                knot.tg1 = knot.pos-p;
-                knot.tg2 = p-knot.pos;
-                editor->redraw();
-            } else {
-                knot.pos = p;
-                editor->redraw();
-            }
-        }
-        return is_drawing;
-    }
-    bool mouse_release(QPoint const& pos) override {
-        if (is_drawing) {
-            path->emplace_back(convert_pos(pos));
-            is_pressed = false;
-            return true;
-        }
         return false;
     }
     bool editing_done() override {
+        is_drawing = false;
+        return false;
         if (is_drawing) {
             // Remove last knot that appears due to double-click..
             path->knots.pop_back();
