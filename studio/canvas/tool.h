@@ -29,7 +29,6 @@ namespace rainynite::studio {
 
 class CanvasTool : public QObject, public CanvasAttachable {
 public:
-    virtual bool canvas_event(QEvent* event) = 0;
     virtual string icon() const = 0;
     virtual string name() const = 0;
 

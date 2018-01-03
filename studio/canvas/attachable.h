@@ -1,5 +1,5 @@
 /*  attachable.h - attachable to canvas interface
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #define STUDIO_CANVAS_ATTACHABLE_H_3B57A84F_8276_545C_8A78_11812A0ECA88
 
 class QGraphicsScene;
+class QEvent;
 
 namespace rainynite::studio {
 
@@ -29,6 +30,11 @@ public:
     virtual ~CanvasAttachable() = default;
 
     void set_canvas(AbstractCanvas* canvas_);
+
+    /// Called by canvas on mouse event
+    virtual bool canvas_event(QEvent* /*event*/) {
+        return false;
+    }
 
 protected:
     virtual void detach_canvas() {}

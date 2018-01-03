@@ -163,6 +163,10 @@ void AbstractCanvas::method(Event* event) { \
         if (current_tool->eventFilter(this, event)) \
             return; \
     } \
+    if (auto editor = latest_editor()) { \
+        if (editor->canvas_event(event)) \
+            return; \
+    } \
     QGraphicsView::method(event); \
 }
 #define MOUSE_HANDLER(method) EVENT_HANDLER(method, QMouseEvent)
