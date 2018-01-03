@@ -1,5 +1,5 @@
 /*  node_editor.h - abstract node editor class
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public:
     }
 
     template <typename T>
-    optional<T> get_value() {
+    optional<T> get_value() const {
         if (auto node = get_node_as<T>()) {
             return node->value(get_core_context());
         }
@@ -66,7 +66,7 @@ public:
     }
 
     template <typename T>
-    shared_ptr<core::BaseValue<T>> get_node_as() {
+    shared_ptr<core::BaseValue<T>> get_node_as() const {
         return dynamic_pointer_cast<core::BaseValue<T>>(get_node());
     }
 
