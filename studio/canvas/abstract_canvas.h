@@ -104,8 +104,6 @@ Q_SIGNALS:
     void tool_changed(string const& tool);
 
 protected:
-    void active_node_index_changed(core::NodeTree::Index index) override;
-
     void mouseDoubleClickEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
@@ -114,6 +112,8 @@ protected:
     void wheelEvent(QWheelEvent* event) override;
 
     double zoom_level();
+
+    core::NodeTree::Index active_node_index;
 
 private:
     void add_tool(unique_ptr<CanvasTool> tool);
@@ -126,7 +126,6 @@ private:
     vector<unique_ptr<CanvasTool>> tools;
     map<string, observer_ptr<CanvasTool>> named_tools;
     observer_ptr<CanvasTool> current_tool;
-    core::NodeTree::Index active_node_index;
 };
 
 } // namespace rainynite::studio

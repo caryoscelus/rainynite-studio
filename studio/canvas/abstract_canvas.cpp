@@ -147,15 +147,6 @@ void AbstractCanvas::scroll_by(QPointF delta) {
     translate(delta.x(), delta.y());
 }
 
-void AbstractCanvas::active_node_index_changed(core::NodeTree::Index index) {
-    if (active_node_index != index) {
-        // TODO: handle selection
-        active_node_index = index;
-        clear_editors();
-        add_canvas_node_editor(*this, index);
-    }
-}
-
 // Unfortunately, mouse events are not sent to filter..
 #define EVENT_HANDLER(method, Event) \
 void AbstractCanvas::method(Event* event) { \

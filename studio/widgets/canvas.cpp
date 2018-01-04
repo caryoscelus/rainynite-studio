@@ -106,6 +106,15 @@ void Canvas::set_context(shared_ptr<EditorContext> context) {
     update_border();
 }
 
+void Canvas::active_node_index_changed(core::NodeTree::Index index) {
+    if (active_node_index != index) {
+        // TODO: handle selection
+        active_node_index = index;
+        clear_editors();
+        add_canvas_node_editor(*this, index);
+    }
+}
+
 void Canvas::resizeEvent(QResizeEvent* event) {
     auto pos = event->size();
     zoom_slider->setGeometry({
