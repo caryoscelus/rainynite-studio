@@ -72,7 +72,7 @@ void NodeTreeDock::active_node_index_changed(core::NodeTree::Index index) {
     ContextListener::active_node_index_changed(index);
     auto selection_model = ui->tree_view->selectionModel();
     auto qt_index = model->from_inner_index(index);
-    selection_model->select(qt_index, QItemSelectionModel::SelectCurrent);
+    selection_model->select(qt_index, QItemSelectionModel::Current);
     ui->tree_view->scrollTo(qt_index);
 }
 
