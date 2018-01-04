@@ -1,5 +1,5 @@
 /*  main.cpp - studio main
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,10 +17,15 @@
 
 #include <QApplication>
 
+#include <kcrash.h>
+
 #include "main_window.h"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
+
+    KCrash::setDrKonqiEnabled(true);
+
     rainynite::studio::MainWindow window;
     window.show();
 

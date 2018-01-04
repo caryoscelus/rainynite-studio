@@ -49,9 +49,6 @@ public:
 public:
     void set_context(shared_ptr<EditorContext> context_) override;
 
-Q_SIGNALS:
-    void activated(shared_ptr<core::AbstractValue> node);
-
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 

@@ -1,4 +1,4 @@
-/*  rectangle_editor.h - edit rectangles on canvas
+/*  canvas_editor.h - canvas editor
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -15,30 +15,22 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STUDIO_CANVAS_EDITORS_RECTANGLE_EDITOR_H_5FBB15E0_F217_5146_81A4_7B6D6DA85EC3
-#define STUDIO_CANVAS_EDITORS_RECTANGLE_EDITOR_H_5FBB15E0_F217_5146_81A4_7B6D6DA85EC3
+#ifndef GENERIC_CANVAS_EDITOR_H_2A8A29CC_A76A_5226_BA88_A39F61B5F43E
+#define GENERIC_CANVAS_EDITOR_H_2A8A29CC_A76A_5226_BA88_A39F61B5F43E
 
 #include <core/std/memory.h>
+#include <core/class_init.h>
 
-#include <generic/node_editor.h>
-#include <canvas/editor.h>
-#include <generic/context_listener.h>
+#include <canvas/abstract_editor.h>
 
-class QGraphicsRectItem;
+class QTransform;
 
 namespace rainynite::studio {
 
-class RectangleEditor : public NodeEditor, public CanvasEditor {
+class CanvasEditor : public AbstractCanvasEditor {
 public:
-    RectangleEditor();
-    virtual ~RectangleEditor();
-public:
-    void setup_canvas() override;
-    void node_update() override;
-    void time_changed(core::Time time) override;
-private:
-    void update_position();
-    unique_ptr<QGraphicsRectItem> rectangle_item;
+    /// Set editor base transform
+    virtual void set_transform(QTransform const& /*transform*/) {}
 };
 
 } // namespace rainynite::studio

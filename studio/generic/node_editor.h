@@ -1,5 +1,5 @@
 /*  node_editor.h - abstract node editor class
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -47,14 +47,18 @@ public:
     virtual void node_update() {
     }
 
-    void set_node(shared_ptr<core::AbstractValue> node_);
+    void set_node(core::NodeTree::Index index);
 
-    shared_ptr<core::AbstractValue> get_node() {
-        return node;
+    shared_ptr<core::AbstractValue> get_node() const {
+        return get_context()->get_node(get_node_index());
+    }
+
+    core::NodeTree::Index get_node_index() const {
+        return node_index;
     }
 
     template <typename T>
-    optional<T> get_value() {
+    optional<T> get_value() const {
         if (auto node = get_node_as<T>()) {
             return node->value(get_core_context());
         }
@@ -62,7 +66,7 @@ public:
     }
 
     template <typename T>
-    shared_ptr<core::BaseValue<T>> get_node_as() {
+    shared_ptr<core::BaseValue<T>> get_node_as() const {
         return dynamic_pointer_cast<core::BaseValue<T>>(get_node());
     }
 
@@ -70,16 +74,19 @@ protected:
     bool update_enabled = true;
 
 private:
-    shared_ptr<core::AbstractValue> node = nullptr;
+    core::NodeTree::Index node_index;
     boost::signals2::connection node_connection;
 };
+
+/// Calculate transform helper
+Geom::Affine get_transform(NodeEditor const& editor);
 
 class NodeEditorShowChildren {
 public:
     virtual bool operator()() const = 0;
 };
 
-#define REGISTER_NODE_EDITOR_SHOW_CHILDREN(Name, node_name, value) \
+#define REGISTER_NODE_EDITOR_SHOW_CHILDREN_NAMED(Name, node_name, value) \
 class Name##ShowChildren : \
     public NodeEditorShowChildren, \
     private class_init::StringRegistered<Name##ShowChildren, NodeEditorShowChildren> \
@@ -93,6 +100,9 @@ public: \
         return value; \
     } \
 }
+
+#define REGISTER_NODE_EDITOR_SHOW_CHILDREN(Name, value) \
+REGISTER_NODE_EDITOR_SHOW_CHILDREN_NAMED(Name, #Name, value)
 
 #define REGISTER_TEMPLATE_NODE_EDITOR_SHOW_CHILDREN(Name, node_name, value) \
 template <typename T> \

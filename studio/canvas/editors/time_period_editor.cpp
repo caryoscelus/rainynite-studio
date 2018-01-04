@@ -103,6 +103,6 @@ private:
 };
 
 REGISTER_CANVAS_EDITOR(TimelineArea, TimePeriodEditor, core::TimePeriod);
-REGISTER_NODE_EDITOR_SHOW_CHILDREN(CompositeTimePeriod, "CompositeTimePeriod", true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(CompositeTimePeriod, true);
 
 }

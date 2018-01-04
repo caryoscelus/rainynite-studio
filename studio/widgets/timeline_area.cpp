@@ -39,7 +39,7 @@ void TimelineArea::zoom_time_by(double factor) {
     Q_EMIT zoomed();
 }
 
-void TimelineArea::add_misc_editor(shared_ptr<CanvasEditor> editor) {
+void TimelineArea::add_misc_editor(shared_ptr<AbstractCanvasEditor> editor) {
     misc_editors.push_back(editor);
 }
 

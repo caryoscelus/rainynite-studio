@@ -43,7 +43,7 @@ target_sources(rainynite-studio
 
         canvas/abstract_canvas.h
         canvas/abstract_canvas.cpp
-        canvas/editor.h
+        canvas/abstract_editor.h
         canvas/editor.cpp
         canvas/tool.h
         canvas/tool.cpp
@@ -63,11 +63,9 @@ target_sources(rainynite-studio
         canvas/editors/point_item.h
         canvas/editors/point_item.cpp
         canvas/editors/point_editor.cpp
-        canvas/editors/point_editor.h
         canvas/editors/bezier_editor.cpp
         canvas/editors/bezier_editor.h
         canvas/editors/rectangle_editor.cpp
-        canvas/editors/rectangle_editor.h
 
         canvas/editors/time_item.h
         canvas/editors/time_item.cpp
@@ -87,6 +85,7 @@ target_sources(rainynite-studio
         generic/context_listener.h
         generic/editor_context.cpp
         generic/editor_context.h
+        generic/canvas_editor.h
         generic/timeline_editor.h
         generic/dock_registry.h
         generic/action.h
@@ -120,6 +119,7 @@ target_link_libraries(rainynite-studio
     Qt5::Multimedia
     Qt5::MultimediaWidgets
     KF5::ItemModels
+    KF5::Crash
     ColorWidgets-qt5
     nodes
     filters

@@ -30,7 +30,8 @@
 #include <core/node/abstract_value.h>
 #include <core/document.h>
 
-#include <canvas/editor.h>
+#include <generic/canvas_editor.h>
+#include <generic/node_editor.h>
 #include <util/pen.h>
 #include "canvas.h"
 

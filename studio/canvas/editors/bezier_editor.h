@@ -1,5 +1,5 @@
 /*  bezier_editor.h - edit beziers on canvas
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include <geom_helpers/knots.h>
 
 #include <generic/node_editor.h>
-#include <canvas/editor.h>
+#include <generic/canvas_editor.h>
 #include <generic/context_listener.h>
 
 class QGraphicsItem;
@@ -47,19 +47,44 @@ public:
     void init();
     void uninit();
 
+    void set_appending(bool value) {
+        appending = value;
+    }
+
     void set_display_tags(bool display_tags_);
     void set_curve_pen(QPen const& pen);
 
-private:
-    shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node();
-    Geom::BezierKnots get_path();
+    bool canvas_event(QEvent* event) override;
+
+    bool is_readonly() const;
 
 private:
+    void add_knot_editor(size_t i);
+
+    void reset_curve(Geom::BezierKnots const& path);
+
+    QGraphicsItem* add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, Geom::Point Geom::Knot::* pref_s = nullptr, QGraphicsItem* parent = nullptr);
+
+    void add_tags();
+    void remove_tags();
+
+    shared_ptr<core::BaseValue<Geom::BezierKnots>> get_bezier_node() const;
+    Geom::BezierKnots get_path() const;
+
+    Geom::Point convert_pos(QPoint const& src) const;
+
+private:
+    struct EventFilter;
+    unique_ptr<EventFilter> event_filter;
+
     vector<unique_ptr<QGraphicsItem>> knot_items;
+    vector<unique_ptr<QGraphicsItem>> tag_items;
     unique_ptr<QGraphicsPathItem> curve_item;
     ptrdiff_t old_size = -1;
     bool display_tags = true;
     QPen curve_pen;
+    bool appending = false;
+    bool drawing = false;
 };
 
 } // namespace rainynite::studio

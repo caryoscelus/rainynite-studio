@@ -51,89 +51,29 @@ public:
 protected:
     void setup_canvas() override {
         get_canvas()->viewport()->setMouseTracking(true);
+        is_drawing = false;
     }
 
     bool mouse_press(QPoint const& pos) override {
         if (!is_drawing) {
             is_drawing = true;
-            if (inplace) {
-                old_path = path_node->mod();
-                path_node->set({});
-            } else {
-                path_node = make_shared<core::Value<Geom::BezierKnots>>();
-            }
+            new_shape_at(
+                get_canvas()->mapToScene(pos),
+                [this] (Geom::Point /*start_pos*/) {
+                    path_node = make_shared<core::Value<Geom::BezierKnots>>();
+                    return path_node;
+                }
+            );
             path.reset(&path_node->mod());
             path->closed = false;
-            editor = make_unique<BezierEditor>();
-            editor->set_canvas(get_canvas());
-            editor->set_node(path_node);
-            path->emplace_back(convert_pos(pos));
-        }
-        is_pressed = true;
-        return true;
-    }
-    bool mouse_move(QPoint const& pos) override {
-        if (is_drawing) {
-            auto p = convert_pos(pos);
-            auto& knot = path->last();
-            if (is_pressed) {
-                knot.tg1 = knot.pos-p;
-                knot.tg2 = p-knot.pos;
-                editor->redraw();
-            } else {
-                knot.pos = p;
-                editor->redraw();
-            }
-        }
-        return is_drawing;
-    }
-    bool mouse_release(QPoint const& pos) override {
-        if (is_drawing) {
-            path->emplace_back(convert_pos(pos));
-            is_pressed = false;
-            return true;
+            auto editors = add_canvas_node_editor(*get_canvas(), get_index());
+            dynamic_pointer_cast<BezierEditor>(editors.front())->set_appending(true);
         }
         return false;
     }
     bool editing_done() override {
-        if (is_drawing) {
-            // Remove last knot that appears due to double-click..
-            path->knots.pop_back();
-            // ..and the one created by mouse move
-            path->knots.pop_back();
-            write_shape(path_node);
-            editor.reset();
-            is_drawing = false;
-            return true;
-        }
+        is_drawing = false;
         return false;
-    }
-
-    bool accept(shared_ptr<core::AbstractValue> node) override {
-        // TODO: universal fix
-        if (Shape::accept(node))
-            return true;
-        if (auto bezier_node = dynamic_pointer_cast<core::Value<Geom::BezierKnots>>(std::move(node))) {
-            path_node = std::move(bezier_node);
-            inplace = true;
-            return true;
-        }
-        return false;
-    }
-
-    void write_shape(shared_ptr<core::AbstractValue> shape) override {
-        if (inplace) {
-            auto action_stack = get_canvas()->get_context()->action_stack();
-            if (action_stack == nullptr)
-                throw NullPointerException("Cannot write to empty action stack.");
-            // restore old value for undo
-            auto new_path = path_node->mod();
-            path_node->set(old_path);
-            action_stack->emplace<core::actions::ChangeValue>(path_node, new_path);
-            action_stack->close();
-        } else {
-            Shape::write_shape(shape);
-        }
     }
 
 private:
@@ -143,13 +83,8 @@ private:
 
 private:
     bool is_drawing = false;
-    bool is_pressed = false;
-    unique_ptr<BezierEditor> editor;
     shared_ptr<core::Value<Geom::BezierKnots>> path_node;
-    Geom::BezierKnots old_path;
-    bool inplace = false;
     observer_ptr<Geom::BezierKnots> path;
-    Geom::Point next_pos;
 };
 
 } // namespace rainynite::studio::tools

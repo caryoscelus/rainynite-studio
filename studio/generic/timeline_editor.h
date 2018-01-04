@@ -21,11 +21,11 @@
 #include <core/std/memory.h>
 #include <core/class_init.h>
 
-#include <canvas/editor.h>
+#include <canvas/abstract_editor.h>
 
 namespace rainynite::studio {
 
-class TimelineEditor : public CanvasEditor {
+class TimelineEditor : public AbstractCanvasEditor {
 public:
     /// Set editor preferred vertical position and size
     virtual void set_position_hint(int /*y*/, int /*height*/) {

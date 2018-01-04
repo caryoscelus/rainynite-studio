@@ -1,4 +1,4 @@
-/*  editor.h - abstract canvas editor
+/*  abstract_editor.h - abstract canvas editor
  *  Copyright (C) 2017 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -15,12 +15,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STUDIO_CANVAS_EDITOR_H_78E5E734_53ED_511D_B6F7_AD0003B70709
-#define STUDIO_CANVAS_EDITOR_H_78E5E734_53ED_511D_B6F7_AD0003B70709
+#ifndef STUDIO_CANVAS_ABSTRACT_EDITOR_H_78E5E734_53ED_511D_B6F7_AD0003B70709
+#define STUDIO_CANVAS_ABSTRACT_EDITOR_H_78E5E734_53ED_511D_B6F7_AD0003B70709
 
 #include <core/std/vector.h>
 #include <core/abstract_factory.h>
 #include <core/class_init.h>
+#include <core/node_tree.h>
 
 #include "attachable.h"
 
@@ -30,44 +31,44 @@ class AbstractValue;
 
 namespace rainynite::studio {
 
-class CanvasEditor : public CanvasAttachable {
+class AbstractCanvasEditor : public CanvasAttachable {
 };
 
-struct AbstractCanvasEditorFactory : public AbstractFactory<CanvasEditor> {
+struct AbstractAbstractCanvasEditorFactory : public AbstractFactory<AbstractCanvasEditor> {
 };
 
 template <class CanvasT>
-struct CanvasEditorFactory : public AbstractCanvasEditorFactory {
+struct AbstractCanvasEditorFactory : public AbstractAbstractCanvasEditorFactory {
 };
 
 template <class CanvasT, class EditorT>
-struct CanvasEditorFactoryI : public CanvasEditorFactory<CanvasT>
+struct AbstractCanvasEditorFactoryI : public AbstractCanvasEditorFactory<CanvasT>
 {
-    unique_ptr<CanvasEditor> operator()() const override {
+    unique_ptr<AbstractCanvasEditor> operator()() const override {
         return make_unique<EditorT>();
     }
 };
 
 template <class CanvasT, class EditorT, class Type>
-struct CanvasEditorFactoryInstance :
-    public CanvasEditorFactoryI<CanvasT, EditorT>,
+struct AbstractCanvasEditorFactoryInstance :
+    public AbstractCanvasEditorFactoryI<CanvasT, EditorT>,
     private class_init::Registered<
-        CanvasEditorFactoryInstance<CanvasT, EditorT, Type>,
+        AbstractCanvasEditorFactoryInstance<CanvasT, EditorT, Type>,
         Type,
-        CanvasEditorFactory<CanvasT>
+        AbstractCanvasEditorFactory<CanvasT>
     >
 {
 };
 
 #define REGISTER_CANVAS_EDITOR(CanvasT, EditorT, Type) \
-template struct CanvasEditorFactoryInstance<CanvasT, EditorT, Type>
+template struct AbstractCanvasEditorFactoryInstance<CanvasT, EditorT, Type>
 
 #define REGISTER_CANVAS_EDITOR_NAME(CanvasT, EditorT, Name) \
-struct Name##CanvasEditorNameInfoInstance : \
-    public CanvasEditorFactoryI<CanvasT, EditorT>, \
+struct Name##AbstractCanvasEditorNameInfoInstance : \
+    public AbstractCanvasEditorFactoryI<CanvasT, EditorT>, \
     private class_init::StringRegistered< \
-        Name##CanvasEditorNameInfoInstance, \
-        AbstractCanvasEditorFactory \
+        Name##AbstractCanvasEditorNameInfoInstance, \
+        AbstractAbstractCanvasEditorFactory \
     > \
 { \
     static string name() { \
@@ -76,15 +77,15 @@ struct Name##CanvasEditorNameInfoInstance : \
 }
 
 template <class CanvasT>
-unique_ptr<CanvasEditor> make_canvas_editor(Type type) {
-    return class_init::type_info<CanvasEditorFactory<CanvasT>,unique_ptr<CanvasEditor>>(type);
+unique_ptr<AbstractCanvasEditor> make_canvas_editor(Type type) {
+    return class_init::type_info<AbstractCanvasEditorFactory<CanvasT>,unique_ptr<AbstractCanvasEditor>>(type);
 }
 
 /// Create & add canvas editor by name
-shared_ptr<CanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name);
+shared_ptr<AbstractCanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name);
 
 /// Create & add canvas node editor to canvas
-vector<shared_ptr<CanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, shared_ptr<core::AbstractValue> node);
+vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, core::NodeTree::Index index);
 
 } // namespace rainynite::studio
 

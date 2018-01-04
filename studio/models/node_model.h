@@ -112,7 +112,6 @@ public:
 
     size_t get_node_index(QModelIndex const& index) const;
 
-private:
     core::NodeTree::Index get_inner_index(QModelIndex const& parent, size_t i) const;
     core::NodeTree::Index get_inner_index(QModelIndex const& index) const;
 

@@ -42,7 +42,7 @@ public:
         editor->set_canvas(nullptr);
     }
     void node_update() override {
-        editor->set_node(get_node());
+        editor->set_node(get_node_index());
     }
 
     void set_context(shared_ptr<EditorContext> context) override {

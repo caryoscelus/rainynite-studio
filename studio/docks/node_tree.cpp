@@ -85,8 +85,7 @@ void NodeTreeDock::apply_filter(QString const& s) {
 }
 
 void NodeTreeDock::activate(QModelIndex const& index) {
-    auto node = model->get_node(index);
-    Q_EMIT activated(node);
+    set_active_node(model->get_inner_index(index));
 }
 
 } // namespace rainynite::studio

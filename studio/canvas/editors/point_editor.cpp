@@ -22,57 +22,79 @@
 
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
+#include <core/node_tree_transform.h>
 
+#include <generic/node_editor.h>
+#include <generic/canvas_editor.h>
+#include <generic/context_listener.h>
 #include <widgets/canvas.h>
+#include <util/geom.h>
 #include "point_item.h"
-#include "point_editor.h"
 
 namespace rainynite::studio {
 
-PointEditor::PointEditor() = default;
+/// Simple on-canvas point editor, based on PointItem.
+class PointEditor : public NodeEditor, public CanvasEditor {
+public:
+    virtual ~PointEditor() = default;
 
-PointEditor::~PointEditor() = default;
-
-void PointEditor::setup_canvas() {
-    point_item = make_unique<PointItem>(
-        [this](double x, double y) {
-            save_position(x, y);
-        }
-    );
-    get_scene()->addItem(point_item.get());
-    update_position();
-}
-
-void PointEditor::node_update() {
-    update_position();
-}
-
-void PointEditor::time_changed(core::Time time) {
-    ContextListener::time_changed(time);
-    update_position();
-}
-
-void PointEditor::update_position() {
-    if (point_item == nullptr)
-        return;
-    if (auto maybe_point = get_value<Geom::Point>()) {
-        auto point = *maybe_point;
-        point_item->set_pos(point.x(), point.y());
-        point_item->set_readonly(!get_node()->is_const());
+    void setup_canvas() override {
+        point_item.reset(new PointItem(
+            [this](double x, double y) {
+                save_position(x, y);
+            }
+        ));
+        // GroupItem blocks movement, just Item is abstract, so using
+        // an empty Pixmap item.
+        item_group = make_unique<QGraphicsPixmapItem>();
+        get_scene()->addItem(item_group.get());
+        point_item->setParentItem(item_group.get());
+        update_position();
     }
-}
+    void node_update() override {
+        update_position();
+    }
+    void time_changed(core::Time time) override {
+        ContextListener::time_changed(time);
+        update_position();
+    }
 
-void PointEditor::save_position(double x, double y) {
-    if (auto node = get_node_as<Geom::Point>()) {
-        if (node->can_set()) {
-            auto action_stack = get_context()->action_stack();
-            action_stack->emplace<core::actions::ChangeValue>(
-                node,
-                Geom::Point{x, y}
-            );
-            action_stack->close();
+private:
+    void update_position() {
+        if (point_item == nullptr)
+            return;
+        if (auto maybe_point = get_value<Geom::Point>()) {
+            auto point = *maybe_point;
+            point_item->set_pos(point.x(), point.y());
+            point_item->set_readonly(!get_node()->is_const());
+        }
+        if (auto node_tree = get_context()->tree()) {
+            if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(get_node_index())) {
+                auto affine = calculate_tr->get_transform(get_core_context());
+                item_group->setTransform(QTransform{util::matrix(affine)});
+            }
         }
     }
-}
+
+    void save_position(double x, double y) {
+        if (auto node = get_node_as<Geom::Point>()) {
+            if (node->can_set()) {
+                auto action_stack = get_context()->action_stack();
+                action_stack->emplace<core::actions::ChangeValue>(
+                    node,
+                    Geom::Point{x, y}
+                );
+                action_stack->close();
+            }
+        }
+    }
+
+private:
+    observer_ptr<PointItem> point_item;
+    unique_ptr<QGraphicsItem> item_group;
+};
+
+
+REGISTER_CANVAS_EDITOR(Canvas, PointEditor, Geom::Point);
 
 } // namespace rainynite::studio

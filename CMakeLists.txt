@@ -17,6 +17,7 @@ add_definitions(-DQT_NO_KEYWORDS)   ## avoid slots/signals definition conflict
 
 find_package(Qt5 COMPONENTS Core Widgets Multimedia MultimediaWidgets REQUIRED)
 find_package(KF5ItemModels REQUIRED)
+find_package(KF5Crash REQUIRED)
 
 find_package(geom_helpers REQUIRED)
 find_package(rainynite_core REQUIRED)

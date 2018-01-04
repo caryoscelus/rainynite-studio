@@ -27,8 +27,6 @@
 #include <generic/node_editor_widget.h>
 #include "color_button.h"
 #include "point_value_editor.h"
-#include <canvas/editors/point_editor.h>
-#include <canvas/editors/rectangle_editor.h>
 #include <canvas/editors/bezier_editor.h>
 #include <widgets/canvas.h>
 
@@ -41,12 +39,14 @@ using PointValueEditWidget = NodeEditorWidget<PointValueEditor, Geom::Point>;
 REGISTER_CUSTOM_WIDGET(PointValueEdit, Geom::Point, PointValueEditWidget);
 
 REGISTER_CANVAS_EDITOR(Canvas, BezierEditor, Geom::BezierKnots);
-REGISTER_CANVAS_EDITOR(Canvas, PointEditor, Geom::Point);
-REGISTER_CANVAS_EDITOR(Canvas, RectangleEditor, Geom::Rectangle);
 
-REGISTER_NODE_EDITOR_SHOW_CHILDREN(RectangleAB, "RectangleAB", true);
-REGISTER_NODE_EDITOR_SHOW_CHILDREN(RenderShape, "RenderShape", true);
-REGISTER_NODE_EDITOR_SHOW_CHILDREN(PathXY, "PathXY", true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(RectangleAB, true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(CirclePR, true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(RenderShape, true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(PathXY, true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(Translate, true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(Rotate, true);
+REGISTER_NODE_EDITOR_SHOW_CHILDREN(Scale, true);
 
 REGISTER_TEMPLATE_NODE_EDITOR_SHOW_CHILDREN(Frame, "Frame", true)
 REGISTER_TEMPLATE_NODE_EDITOR_SHOW_CHILDREN(List, "List", true)

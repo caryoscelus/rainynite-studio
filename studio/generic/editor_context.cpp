@@ -21,11 +21,18 @@
 
 namespace rainynite::studio {
 
-void EditorContext::set_active_node(shared_ptr<core::AbstractValue> node) {
-    if (node == active_node)
+void EditorContext::set_active_node(core::NodeTree::Index index) {
+    if (index == active_node)
         return;
-    active_node = node;
-    changed_active_node()(node);
+    active_node = index;
+    changed_active_node()(index);
+}
+
+shared_ptr<core::NodeTree> EditorContext::tree() const {
+    if (auto document = get_context()->get_document()) {
+        return document->get_tree();
+    }
+    return nullptr;
 }
 
 shared_ptr<core::ActionStack> EditorContext::action_stack() const {

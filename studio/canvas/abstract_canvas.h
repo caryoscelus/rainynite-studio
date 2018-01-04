@@ -32,7 +32,7 @@ class QGraphicsItem;
 
 namespace rainynite::studio {
 
-class CanvasEditor;
+class AbstractCanvasEditor;
 class CanvasTool;
 
 /**
@@ -61,13 +61,16 @@ public:
     void load_registered_tools();
 
     /// Add new editor
-    void add_editor(shared_ptr<CanvasEditor> editor);
+    virtual void add_editor(shared_ptr<AbstractCanvasEditor> editor);
 
     /// Remove editor
-    void remove_editor(shared_ptr<CanvasEditor> editor);
+    void remove_editor(shared_ptr<AbstractCanvasEditor> editor);
 
     /// Remove all editors
     void clear_editors();
+
+    /// Get latest editor, if any
+    shared_ptr<AbstractCanvasEditor> latest_editor() const;
 
     /// Get available tool names list
     vector<observer_ptr<CanvasTool>> list_tools() const;
@@ -101,7 +104,7 @@ Q_SIGNALS:
     void tool_changed(string const& tool);
 
 protected:
-    void active_node_changed(shared_ptr<core::AbstractValue> node) override;
+    void active_node_index_changed(core::NodeTree::Index index) override;
 
     void mouseDoubleClickEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
@@ -119,11 +122,11 @@ private:
 private:
     unique_ptr<QGraphicsScene> const the_scene;
     unique_ptr<QGraphicsPixmapItem> const image;
-    vector<shared_ptr<CanvasEditor>> editors;
+    vector<shared_ptr<AbstractCanvasEditor>> editors;
     vector<unique_ptr<CanvasTool>> tools;
     map<string, observer_ptr<CanvasTool>> named_tools;
     observer_ptr<CanvasTool> current_tool;
-    shared_ptr<core::AbstractValue> active_node;
+    core::NodeTree::Index active_node_index;
 };
 
 } // namespace rainynite::studio
