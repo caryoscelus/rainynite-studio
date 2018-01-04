@@ -117,9 +117,9 @@ void Shape::write_shape(shared_ptr<core::AbstractValue> shape) {
 
     auto add_renderable_to_list = [this, &tree, &action_stack](auto layers, auto layers_index, auto shape) {
         using namespace core;
-        auto render_shape = make_node_with_name<RenderableNode>("RenderShape");
+        auto render_shape = make_node_with_name<AbstractNode>("RenderShape");
         render_shape->set_property("shape", shape);
-        action_stack->emplace<actions::ListPush>(layers, render_shape);
+        action_stack->emplace<actions::ListPush>(layers, abstract_value_cast(render_shape));
         target_node_index = tree->index(layers_index, layers->link_count()-1);
     };
 
