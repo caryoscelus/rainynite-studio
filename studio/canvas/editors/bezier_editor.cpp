@@ -24,6 +24,7 @@
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
 #include <core/nullptr.h>
+#include <core/node_tree_transform.h>
 
 #include <util/strings.h>
 #include <util/pen.h>
@@ -115,8 +116,8 @@ bool BezierEditor::canvas_event(QEvent* event) {
 }
 
 Geom::Point BezierEditor::convert_pos(QPoint const& src) const {
-    // TODO: transforms
-    return util::point(get_canvas()->mapToScene(src));
+    auto affine = get_transform(*this);
+    return util::point(no_null(get_canvas())->mapToScene(src)) * affine.inverse();
 }
 
 void BezierEditor::node_update() {
@@ -177,7 +178,7 @@ void BezierEditor::add_tags() {
     }
 }
 
-QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent /*= nullptr*/) {
+QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent) {
     auto bezier_node = no_null(get_bezier_node());
     auto e = new PointItem(
         [this, i, bezier_node, pref](double x, double y) {
@@ -198,7 +199,7 @@ QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::
         e->setParentItem(parent);
         e->set_color({0xff, 0xff, 0x88});
     } else {
-        no_null(get_scene())->addItem(e);
+        e->setParentItem(no_null(curve_item.get()));
         e->set_color({0xff, 0x66, 0x66});
     }
     auto point = bezier_node->mod().knots[i].*pref;
@@ -216,19 +217,28 @@ void BezierEditor::add_knot_editor(size_t i) {
 
 void BezierEditor::reset_curve(Geom::BezierKnots const& path) {
     auto scene = no_null(get_scene());
-    curve_item.reset(scene->addPath(util::path_to_qt(path)));
+    if (!curve_item)
+        curve_item.reset(scene->addPath(util::path_to_qt(path)));
+    else
+        curve_item->setPath(util::path_to_qt(path));
     curve_item->setPen(curve_pen);
+    auto affine = get_transform(*this);
+    curve_item->setTransform(QTransform{util::matrix(affine)});
 }
 
 void BezierEditor::uninit() {
     old_size = -1;
+    for (auto const& e : knot_items) {
+        e->setParentItem(nullptr);
+    }
     if (auto scene = get_scene()) {
         for (auto const& e : knot_items)
             scene->removeItem(e.get());
+        scene->removeItem(curve_item.get());
     }
     knot_items.clear();
-    curve_item.reset();
     remove_tags();
+    curve_item.reset();
 }
 
 void BezierEditor::remove_tags() {
