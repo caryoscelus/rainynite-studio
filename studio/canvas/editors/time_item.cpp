@@ -1,5 +1,5 @@
 /*  time_item.cpp - time editing item
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,9 +23,8 @@
 
 namespace rainynite::studio {
 
-TimeItem::TimeItem(Callback callback_) :
-    QGraphicsRectItem {0, 0, 0.25, 80},
-    callback(callback_)
+TimeItem::TimeItem() :
+    QGraphicsRectItem {0, 0, 0.25, 80}
 {
     auto brush = QGuiApplication::palette().text();
     auto color = brush.color();
@@ -77,7 +76,7 @@ void TimeItem::set_pos_height(int y, int height) {
 
 double TimeItem::change_pos(double x) {
     int frames = x * fps;
-    callback(core::Time(0, fps, frames));
+    position_changed(core::Time(0, fps, frames));
     return (double)frames / fps;
 }
 

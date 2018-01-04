@@ -1,5 +1,5 @@
 /*  time_editor.cpp - time editing widget
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,33 +27,33 @@
 
 namespace rainynite::studio {
 
+class TimeEditor;
+
+class TimeEditorItem : public TimeItem {
+public:
+    TimeEditorItem(TimeEditor* parent) :
+        p(parent)
+    {}
+protected:
+    void position_changed(core::Time time) override;
+private:
+    observer_ptr<TimeEditor> p;
+};
+
 class TimeEditor :
     public TimelineEditor,
     public NodeEditor
 {
 public:
     void setup_canvas() override {
-        time_item = make_unique<TimeItem>(
-            [this](core::Time time) {
-                if (auto node = get_node_as<core::Time>()) {
-                    ignore_time_change = true;
-                    if (node->can_set()) {
-                        if (auto action_stack = get_context()->action_stack()) {
-                            using core::actions::ChangeValue;
-                            action_stack->emplace<ChangeValue>(node, time);
-                        }
-                    }
-                    ignore_time_change = false;
-                }
-            }
-        );
+        time_item = make_unique<TimeEditorItem>(this);
         get_scene()->addItem(time_item.get());
         node_update();
     }
     void set_position_hint(int y, int height) override {
         time_item->set_pos_height(y, height);
     }
-public:
+
     void node_update() override {
         update_position();
         auto node = get_node_as<core::Time>();
@@ -65,6 +65,20 @@ public:
         ContextListener::time_changed(time);
         update_position();
     }
+
+    void moved(core::Time time) {
+        if (auto node = get_node_as<core::Time>()) {
+            ignore_time_change = true;
+            if (node->can_set()) {
+                if (auto action_stack = get_context()->action_stack()) {
+                    using core::actions::ChangeValue;
+                    action_stack->emplace<ChangeValue>(node, time);
+                }
+            }
+            ignore_time_change = false;
+        }
+    }
+
 private:
     void update_position() {
         if (time_item && !ignore_time_change) {
@@ -79,6 +93,10 @@ private:
     unique_ptr<TimeItem> time_item;
     bool ignore_time_change = false;
 };
+
+void TimeEditorItem::position_changed(core::Time time) {
+    p->moved(time);
+}
 
 REGISTER_CANVAS_EDITOR(TimelineArea, TimeEditor, core::Time);
 

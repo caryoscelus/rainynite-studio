@@ -1,5 +1,5 @@
 /*  time_item.h - time editing item
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,8 +18,6 @@
 #ifndef STUDIO_CANVAS_EDITORS_TIME_ITEM_H_E6E1B74E_13BE_5F5F_B46E_771E4C2E09A3
 #define STUDIO_CANVAS_EDITORS_TIME_ITEM_H_E6E1B74E_13BE_5F5F_B46E_771E4C2E09A3
 
-#include <functional>
-
 #include <QGraphicsRectItem>
 
 #include <core/time/time.h>
@@ -33,9 +31,9 @@ namespace rainynite::studio {
  */
 class TimeItem : public QGraphicsRectItem {
 public:
-    using Callback = std::function<void(core::Time)>;
-
-    TimeItem(Callback callback_);
+    TimeItem();
+    virtual ~TimeItem() {
+    }
 
     QVariant itemChange(GraphicsItemChange change, QVariant const& value) override;
     QRectF boundingRect() const override;
@@ -44,10 +42,14 @@ public:
     void set_fps(core::Time::fps_type fps_);
     void set_readonly(bool ro);
     void set_pos_height(int y, int height);
+
+protected:
+    virtual void position_changed(core::Time time) = 0;
+
 private:
     double change_pos(double x);
+
 private:
-    Callback callback;
     core::Time::fps_type fps = 1;
 };
 

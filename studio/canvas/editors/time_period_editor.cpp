@@ -1,5 +1,5 @@
 /*  time_period_editor.cpp - time period editing widget
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,41 +27,33 @@
 
 namespace rainynite::studio {
 
+class TimePeriodEditor;
+
+class TimePeriodItem : public TimeItem {
+public:
+    using Setter = void (core::TimePeriod::*)(core::Time);
+
+    TimePeriodItem(TimePeriodEditor* parent, Setter setter_) :
+        p(parent),
+        setter(setter_)
+    {}
+
+protected:
+    void position_changed(core::Time time) override;
+
+private:
+    observer_ptr<TimePeriodEditor> p;
+    Setter setter;
+};
+
 class TimePeriodEditor :
     public TimelineEditor,
     public NodeEditor
 {
 public:
     void setup_canvas() override {
-        /**
-         * TODO: generalize and move out
-         */
-        auto item_lambda = [this](auto mod_timeperiod) {
-            return [this, mod_timeperiod](core::Time time) {
-                if (auto node = get_node_as<core::TimePeriod>()) {
-                    ignore_time_change = true;
-                    if (node->can_set()) {
-                        if (auto action_stack = get_context()->action_stack()) {
-                            using core::actions::ChangeValue;
-                            auto value = node->mod();
-                            mod_timeperiod(value, time);
-                            action_stack->emplace<ChangeValue>(node, value);
-                        }
-                    }
-                    ignore_time_change = false;
-                }
-            };
-        };
-        first_item = make_unique<TimeItem>(
-            item_lambda([](auto& period, auto time) {
-                period.set_first(time);
-            })
-        );
-        last_item = make_unique<TimeItem>(
-            item_lambda([](auto& period, auto time) {
-                period.set_first(time);
-            })
-        );
+        first_item = make_unique<TimePeriodItem>(this, &core::TimePeriod::set_first);
+        last_item = make_unique<TimePeriodItem>(this, &core::TimePeriod::set_last);
         get_scene()->addItem(first_item.get());
         get_scene()->addItem(last_item.get());
         node_update();
@@ -70,7 +62,7 @@ public:
         first_item->set_pos_height(y, height);
         last_item->set_pos_height(y, height);
     }
-public:
+
     void node_update() override {
         update_position();
         auto node = get_node_as<core::TimePeriod>();
@@ -84,6 +76,22 @@ public:
         ContextListener::time_changed(time);
         update_position();
     }
+
+    void item_moved(core::Time time, TimePeriodItem::Setter setter) {
+        if (auto node = get_node_as<core::TimePeriod>()) {
+            ignore_time_change = true;
+            if (node->can_set()) {
+                if (auto action_stack = get_context()->action_stack()) {
+                    using core::actions::ChangeValue;
+                    auto value = node->mod();
+                    (value.*setter)(time);
+                    action_stack->emplace<ChangeValue>(node, value);
+                }
+            }
+            ignore_time_change = false;
+        }
+    }
+
 private:
     void update_position() {
         if (first_item && !ignore_time_change) {
@@ -97,10 +105,14 @@ private:
         }
     }
 private:
-    unique_ptr<TimeItem> first_item;
-    unique_ptr<TimeItem> last_item;
+    unique_ptr<TimePeriodItem> first_item;
+    unique_ptr<TimePeriodItem> last_item;
     bool ignore_time_change = false;
 };
+
+void TimePeriodItem::position_changed(core::Time time) {
+    p->item_moved(time, setter);
+}
 
 REGISTER_CANVAS_EDITOR(TimelineArea, TimePeriodEditor, core::TimePeriod);
 REGISTER_NODE_EDITOR_SHOW_CHILDREN(CompositeTimePeriod, true);

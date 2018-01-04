@@ -1,5 +1,5 @@
 /*  timeline_cursor.cpp - timeline cursor widget
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,20 +24,28 @@
 
 namespace rainynite::studio {
 
+class TimelineCursor;
+
 class CursorItem : public TimeItem {
 public:
-    CursorItem(Callback callback) :
-        TimeItem(callback)
+    CursorItem(TimelineCursor* parent) :
+        p(parent)
     {
         set_readonly(false);
         setFlag(QGraphicsItem::ItemIsSelectable, false);
     }
 
-    void mousePressEvent(QGraphicsSceneMouseEvent* /*event*/) {
+    void mousePressEvent(QGraphicsSceneMouseEvent* /*event*/) override {
         if (auto canvas = scene()) {
             canvas->clearSelection();
         }
     }
+
+protected:
+    void position_changed(core::Time time) override;
+
+private:
+    observer_ptr<TimelineCursor> p;
 };
 
 /**
@@ -52,17 +60,11 @@ class TimelineCursor :
 {
 public:
     void setup_canvas() override {
-        time_item = make_unique<CursorItem>(
-            [this](core::Time time) {
-                ignore_time_change = true;
-                get_core_context()->set_time(time);
-                ignore_time_change = false;
-            }
-        );
+        time_item = make_unique<CursorItem>(this);
         get_scene()->addItem(time_item.get());
         time_item->set_pos_height(0, 1024); // "infinitely" big
     }
-public:
+
     void time_changed(core::Time time) override {
         ContextListener::time_changed(time);
         if (time_item && !ignore_time_change)
@@ -73,10 +75,21 @@ public:
         if (time_item)
             time_item->set_fps(fps);
     }
+
+    void cursor_moved(core::Time time) {
+        ignore_time_change = true;
+        get_core_context()->set_time(time);
+        ignore_time_change = false;
+    }
+
 private:
     unique_ptr<CursorItem> time_item;
     bool ignore_time_change = false;
 };
+
+void CursorItem::position_changed(core::Time time) {
+    p->cursor_moved(time);
+}
 
 REGISTER_CANVAS_EDITOR_NAME(TimelineArea, TimelineCursor, TimelineCursor);
 
