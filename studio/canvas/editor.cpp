@@ -49,10 +49,10 @@ vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& 
 
     if (editor != nullptr) {
         canvas.add_editor(editor);
-        if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
-            node_editor->set_node(index);
         if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
             context_listener->set_context(canvas.get_context());
+        if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
+            node_editor->set_node(index);
         added_editors.push_back(editor);
     }
 
