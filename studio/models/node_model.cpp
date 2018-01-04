@@ -153,6 +153,10 @@ core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& index) const
     return make_observer(static_cast<core::NodeTreeIndex*>(index.internalPointer()));
 }
 
+QModelIndex NodeModel::from_inner_index(core::NodeTree::Index index) const {
+    return createIndex(index->index, 0, (void*)index.get());
+}
+
 bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
     if (get_node_as<core::AbstractNode>(parent))
         return true;

@@ -1,5 +1,5 @@
 /*  docks/node_tree.h - Dock with node tree
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -48,6 +48,8 @@ public:
 
 public:
     void set_context(shared_ptr<EditorContext> context_) override;
+
+    void active_node_index_changed(core::NodeTree::Index index) override;
 
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;

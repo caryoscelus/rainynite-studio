@@ -68,6 +68,14 @@ void NodeTreeDock::set_context(shared_ptr<EditorContext> context_) {
     apply_filter(ui->filter->text());
 }
 
+void NodeTreeDock::active_node_index_changed(core::NodeTree::Index index) {
+    ContextListener::active_node_index_changed(index);
+    auto selection_model = ui->tree_view->selectionModel();
+    auto qt_index = model->from_inner_index(index);
+    selection_model->select(qt_index, QItemSelectionModel::SelectCurrent);
+    ui->tree_view->scrollTo(qt_index);
+}
+
 void NodeTreeDock::contextMenuEvent(QContextMenuEvent* event) {
     auto selection_model = ui->tree_view->selectionModel();
     if (menu = node_context_menu(model.get(), selection_model, get_time())) {

@@ -1,5 +1,5 @@
 /*  node_model.h - node tree model wrapper
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ public:
     shared_ptr<T> get_node_as(QModelIndex const& index) const {
         return dynamic_pointer_cast<T>(get_node(index));
     }
-    inline shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const {
+    shared_ptr<core::AbstractListLinked> get_list_node(QModelIndex const& index) const {
         return get_node_as<core::AbstractListLinked>(index);
     }
 
@@ -114,6 +114,8 @@ public:
 
     core::NodeTree::Index get_inner_index(QModelIndex const& parent, size_t i) const;
     core::NodeTree::Index get_inner_index(QModelIndex const& index) const;
+
+    QModelIndex from_inner_index(core::NodeTree::Index index) const;
 
 private:
     core::AbstractReference root;
