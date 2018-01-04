@@ -63,7 +63,7 @@ private:
 
     void reset_curve(Geom::BezierKnots const& path);
 
-    QGraphicsItem* add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent = nullptr);
+    QGraphicsItem* add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, Geom::Point Geom::Knot::* pref_s = nullptr, QGraphicsItem* parent = nullptr);
 
     void add_tags();
     void remove_tags();

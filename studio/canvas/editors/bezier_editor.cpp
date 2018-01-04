@@ -178,14 +178,21 @@ void BezierEditor::add_tags() {
     }
 }
 
-QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, QGraphicsItem* parent) {
+QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, Geom::Point Geom::Knot::* pref_s, QGraphicsItem* parent) {
     auto bezier_node = no_null(get_bezier_node());
+    bool enable_symmetric = (bool)parent;
     auto e = new PointItem(
-        [this, i, bezier_node, pref](double x, double y) {
+        [this, i, bezier_node, pref, pref_s, enable_symmetric](double x, double y) {
             auto path = bezier_node->mod();
             auto& point = path.knots[i].*pref;
             point.x() = x;
             point.y() = y;
+
+            // currently only enabled symmetric while appending..
+            if (enable_symmetric && appending) {
+                auto& point_s = path.knots[i].*pref_s;
+                point_s = -point;
+            }
 
             auto action_stack = get_context()->action_stack();
             action_stack->emplace<core::actions::ChangeValue>(
@@ -210,8 +217,8 @@ QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::
 
 void BezierEditor::add_knot_editor(size_t i) {
     auto pos = add_point_editor(i, &Geom::Knot::pos);
-    add_point_editor(i, &Geom::Knot::tg1, pos);
-    add_point_editor(i, &Geom::Knot::tg2, pos);
+    add_point_editor(i, &Geom::Knot::tg1, &Geom::Knot::tg2, pos);
+    add_point_editor(i, &Geom::Knot::tg2, &Geom::Knot::tg1, pos);
     knot_items.emplace_back(pos);
 }
 
