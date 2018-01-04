@@ -49,6 +49,11 @@ public:
 
     void set_node(core::NodeTree::Index index);
 
+    /// Make node associated with this editor active/current
+    void activate_node() {
+        get_context()->set_active_node(get_node_index());
+    }
+
     shared_ptr<core::AbstractValue> get_node() const {
         return get_context()->get_node(get_node_index());
     }
