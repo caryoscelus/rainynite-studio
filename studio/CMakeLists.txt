@@ -119,6 +119,7 @@ target_link_libraries(rainynite-studio
     Qt5::Multimedia
     Qt5::MultimediaWidgets
     KF5::ItemModels
+    KF5::Crash
     ColorWidgets-qt5
     nodes
     filters
