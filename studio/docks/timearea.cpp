@@ -48,10 +48,9 @@ TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     ui->timeline->use_tool("Default");
     ui->node_list->setModel(node_list_model.get());
 
-    connect(node_list_model.get(), &QAbstractItemModel::layoutChanged, this, &TimeareaDock::update_editors);
-    connect(node_list_model.get(), &QAbstractItemModel::rowsInserted, this, &TimeareaDock::update_editors);
-    connect(node_list_model.get(), &QAbstractItemModel::rowsMoved, this, &TimeareaDock::update_editors);
-    connect(node_list_model.get(), &QAbstractItemModel::rowsRemoved, this, &TimeareaDock::update_editors);
+    connect(node_list_model.get(), &QAbstractItemModel::rowsInserted, this, &TimeareaDock::add_editors);
+    connect(node_list_model.get(), &QAbstractItemModel::rowsMoved, this, &TimeareaDock::reload_editors);
+    connect(node_list_model.get(), &QAbstractItemModel::rowsRemoved, this, &TimeareaDock::reload_editors);
 
     ui->timeline->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->node_list->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -139,9 +138,15 @@ void TimeareaDock::load_pinned_from_file(shared_ptr<core::AbstractDocument> new_
 //     );
 }
 
-void TimeareaDock::update_editors() {
+void TimeareaDock::reload_editors() {
     ui->timeline->clear_editors();
-    for (int i = 0; i < node_list_model->rowCount(); ++i) {
+    editor_count = 0;
+    add_editors();
+}
+
+void TimeareaDock::add_editors() {
+    for (int i = editor_count; i < node_list_model->rowCount(); ++i) {
+        ++editor_count;
         auto index = node_list_model->index(i, 0);
         auto inner_index = node_list_model->get_inner_index(index);
         auto editors = add_canvas_node_editor(*ui->timeline, inner_index);

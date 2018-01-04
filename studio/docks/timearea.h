@@ -50,7 +50,8 @@ public:
     void set_context(shared_ptr<EditorContext> context) override;
 
 protected:
-    void update_editors();
+    void reload_editors();
+    void add_editors();
     void update_ruler();
     void load_pinned_from_file(shared_ptr<core::AbstractDocument> new_document);
 
@@ -59,6 +60,7 @@ private:
     unique_ptr<NodeListModel> node_list_model;
     weak_ptr<core::AbstractDocument> document;
     bool pinned = false;
+    size_t editor_count = 0;
 };
 
 REGISTER_DOCK("Timeline", TimeareaDock, Qt::BottomDockWidgetArea);
