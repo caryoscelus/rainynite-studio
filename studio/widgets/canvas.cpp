@@ -28,6 +28,7 @@
 #include <geom_helpers/knots.h>
 
 #include <core/node/abstract_value.h>
+#include <core/node/abstract_node.h>
 #include <core/document.h>
 
 #include <generic/canvas_editor.h>
@@ -91,9 +92,13 @@ Canvas::~Canvas() {
 void Canvas::set_context(shared_ptr<EditorContext> context) {
     ContextListener::set_context(context);
     // TODO: listen to document change
-    // TODO: listen to size node change
     // TODO: possible *nullptr
-    get_core_context()->get_document()->get_size()->subscribe(
+    get_core_context()->get_document_node()->get_property("size")->subscribe(
+        [this]() {
+            update_border();
+        }
+    );
+    list_cast(get_core_context()->get_document())->subscribe_to_link_change(
         [this]() {
             update_border();
         }
@@ -118,7 +123,7 @@ void Canvas::resizeEvent(QResizeEvent* event) {
 }
 
 void Canvas::update_border() {
-    auto size = get_core_context()->get_document()->get_size()->value(get_core_context());
+    auto size = get_core_context()->get_document_node()->get_property_value<Geom::Point>("size", get_core_context()).value_or(Geom::Point{});
     auto w = size.x();
     auto h = size.y();
     image_border->setRect(0, 0, w, h);

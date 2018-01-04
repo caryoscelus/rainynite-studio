@@ -1,5 +1,5 @@
 /*  main_window.h - main window
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ private:
     unique_ptr<AudioPlayer> audio_player;
     unique_ptr<Ui::MainWindow> ui;
     unique_ptr<QErrorMessage> error_box;
-    shared_ptr<core::Document> document;
+    shared_ptr<core::AbstractDocument> document;
     shared_ptr<core::AbstractValue> active_node;
     unique_ptr<QActionGroup> tool_actions;
     map<string, observer_ptr<QAction>> tool_actions_named;

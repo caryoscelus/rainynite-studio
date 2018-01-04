@@ -106,7 +106,7 @@ MainWindow::MainWindow(QWidget* parent) :
 MainWindow::~MainWindow() = default;
 
 void MainWindow::new_document() {
-    document = make_shared<core::Document>();
+    document = core::make_document();
     set_core_context(document->get_default_context());
     set_fname("");
 }
@@ -123,7 +123,7 @@ void MainWindow::reload() {
     // TODO: proper filter modularization
     unique_ptr<core::DocumentReader> yaml_reader = make_unique<core::filters::YamlReader>();
     vector<string> errors;
-    shared_ptr<core::Document> new_document;
+    shared_ptr<core::AbstractDocument> new_document;
     for (auto&& reader : { std::move(yaml_reader) }) {
         try {
             std::ifstream in(fname);

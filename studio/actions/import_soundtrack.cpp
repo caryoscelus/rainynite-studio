@@ -1,5 +1,5 @@
 /*  import_soundtrack.cpp - import soundtrack action
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  */
 
 #include <core/node_info.h>
+#include <core/node/make.h>
 #include <core/action_stack.h>
 #include <core/actions/change_link.h>
 

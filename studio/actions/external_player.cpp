@@ -1,5 +1,5 @@
 /*  external_player.cpp - play animation in external player
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include <fmt/format.h>
 
 #include <core/document.h>
+#include <core/node/abstract_node.h>
+#include <core/node/abstract_value.h>
 
 #include <generic/action.h>
 
@@ -39,7 +41,7 @@ public:
     void process() override {
         if (auto ctx = get_core_context()) {
             string audio_file;
-            if (auto audio_node = core::abstract_node_cast(ctx->get_document()->get_property("soundtrack")))
+            if (auto audio_node = abstract_node_cast(ctx->get_document_node()->get_property("soundtrack")))
                 audio_file = audio_node->get_property_value<string>("file_path", ctx).value_or("");
             auto command = fmt::format(
                 player_command(),

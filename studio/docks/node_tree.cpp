@@ -1,5 +1,5 @@
 /*  docks/node_tree.cpp - Dock with node tree
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ NodeTreeDock::~NodeTreeDock() {
 void NodeTreeDock::set_context(shared_ptr<EditorContext> context_) {
     ContextListener::set_context(context_);
     if (auto document = get_core_context()->get_document()) {
-        model = make_unique<NodeModel>(document, document->get_action_stack());
+        model = make_unique<NodeModel>(abstract_value_cast(document), document->get_action_stack());
     } else {
         model = make_unique<NodeModel>(nullptr, nullptr);
     }

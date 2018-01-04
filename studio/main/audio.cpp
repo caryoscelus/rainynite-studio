@@ -1,5 +1,5 @@
 /*  audio.cpp - audio player
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #include <QFileInfo>
 
 #include <core/node/abstract_node.h>
-#include <core/document.h>
+#include <core/node/abstract_value.h>
 
 #include <util/strings.h>
 #include "audio.h"
@@ -41,7 +41,7 @@ void AudioPlayer::set_context(shared_ptr<EditorContext> context) {
     if (node_connection.connected())
         node_connection.disconnect();
     audio_node = nullptr;
-    if (auto doc = get_core_context()->get_document()) {
+    if (auto doc = get_core_context()->get_document_node()) {
         if (auto value = doc->get_property("soundtrack")) {
             node_connection = value->subscribe([this]() {
                 update_audio();

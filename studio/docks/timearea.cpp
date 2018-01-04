@@ -1,5 +1,5 @@
 /*  docks/timearea.cpp - time area / timeline dock
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     );
 }
 
-void TimeareaDock::load_pinned_from_file(shared_ptr<core::Document> new_document) {
+void TimeareaDock::load_pinned_from_file(shared_ptr<core::AbstractDocument> new_document) {
 //     core::traverse_once<bool>(
 //         new_document,
 //         [this](core::AbstractReference value) -> optional<bool> {

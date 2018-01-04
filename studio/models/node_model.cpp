@@ -1,5 +1,5 @@
 /*  node_model.cpp - node tree model wrapper
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack
     root(root_),
     action_stack(action_stack_)
 {
-    if (auto document = dynamic_cast<core::Document*>(root.get())) {
+    if (auto document = dynamic_cast<core::AbstractDocument*>(root.get())) {
         tree = document->get_tree();
     } else {
         tree = root_ ? make_shared<core::NodeTree>(root_, action_stack_) : nullptr;

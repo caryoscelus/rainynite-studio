@@ -1,5 +1,5 @@
-/*  import.cpp - "import" actions base
- *  Copyright (C) 2017 caryoscelus
+/*  import.h - "import" actions base
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,8 @@
 
 #include <QFileDialog>
 
-#include <core/document.h>
+#include <core/node/abstract_list.h>
+#include <core/node/abstract_node.h>
 
 #include <generic/action.h>
 #include <util/strings.h>
@@ -41,8 +42,8 @@ public:
                 }
             }
         }
-        if (auto doc = ctx->get_context()->get_document()) {
-            for (auto child : doc->get_links()) {
+        if (auto doc = ctx->get_context()->get_document_node()) {
+            for (auto child : list_cast(doc)->get_links()) {
                 if (auto r = check_target(child, ctx))
                     return r;
             }
