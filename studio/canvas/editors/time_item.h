@@ -45,6 +45,7 @@ public:
 
 protected:
     virtual void position_changed(core::Time time) = 0;
+    virtual void selected_changed(bool /*is_selected*/) {}
 
 private:
     double change_pos(double x);

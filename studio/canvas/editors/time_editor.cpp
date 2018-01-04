@@ -36,6 +36,7 @@ public:
     {}
 protected:
     void position_changed(core::Time time) override;
+    void selected_changed(bool is_selected) override;
 private:
     observer_ptr<TimeEditor> p;
 };
@@ -96,6 +97,11 @@ private:
 
 void TimeEditorItem::position_changed(core::Time time) {
     p->moved(time);
+}
+
+void TimeEditorItem::selected_changed(bool is_selected) {
+    if (is_selected)
+        p->activate_node();
 }
 
 REGISTER_CANVAS_EDITOR(TimelineArea, TimeEditor, core::Time);

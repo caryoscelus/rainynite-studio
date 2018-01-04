@@ -43,6 +43,9 @@ QVariant TimeItem::itemChange(GraphicsItemChange change, QVariant const& value) 
         auto new_x = change_pos(pos.x());
         return QGraphicsItem::itemChange(change, QPointF{ new_x, y() });
     }
+    if (change == ItemSelectedHasChanged) {
+        selected_changed(value.toBool());
+    }
     return QGraphicsItem::itemChange(change, value);
 }
 
