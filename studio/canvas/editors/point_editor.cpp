@@ -1,5 +1,5 @@
 /*  point_editor.cpp - edit points on canvas
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,16 +34,16 @@
 namespace rainynite::studio {
 
 /// Simple on-canvas point editor, based on PointItem.
-class PointEditor : public NodeEditor, public CanvasEditor {
+class PointEditor :
+    public NodeEditor,
+    public CanvasEditor,
+    public PointItemListener
+{
 public:
     virtual ~PointEditor() = default;
 
     void setup_canvas() override {
-        point_item.reset(new PointItem(
-            [this](double x, double y) {
-                save_position(x, y);
-            }
-        ));
+        point_item.reset(new ListenerPointItem(this));
         // GroupItem blocks movement, just Item is abstract, so using
         // an empty Pixmap item.
         item_group = make_unique<QGraphicsPixmapItem>();
@@ -76,21 +76,25 @@ private:
         }
     }
 
-    void save_position(double x, double y) {
+    void point_moved(size_t /*id*/, QPointF const& pos) override {
         if (auto node = get_node_as<Geom::Point>()) {
             if (node->can_set()) {
                 auto action_stack = get_context()->action_stack();
                 action_stack->emplace<core::actions::ChangeValue>(
                     node,
-                    Geom::Point{x, y}
+                    util::point(pos)
                 );
-                action_stack->close();
             }
         }
     }
 
+    void point_stopped_moving(size_t /*id*/) override {
+        if (auto action_stack = get_context()->action_stack())
+            action_stack->close();
+    }
+
 private:
-    observer_ptr<PointItem> point_item;
+    observer_ptr<ListenerPointItem> point_item;
     unique_ptr<QGraphicsItem> item_group;
 };
 

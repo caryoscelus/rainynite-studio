@@ -25,6 +25,7 @@
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>
 #include <generic/context_listener.h>
+#include "point_item.h"
 
 class QGraphicsItem;
 class QGraphicsPathItem;
@@ -34,7 +35,11 @@ namespace rainynite::studio {
 /**
  * On-canvas bezier path editor
  */
-class BezierEditor : public NodeEditor, public CanvasEditor {
+class BezierEditor :
+    public NodeEditor,
+    public CanvasEditor,
+    public PointItemListener
+{
 public:
     BezierEditor();
     virtual ~BezierEditor();
@@ -56,14 +61,24 @@ public:
 
     bool canvas_event(QEvent* event) override;
 
+    void point_moved(size_t point_id, QPointF const& pos) override;
+    void point_stopped_moving(size_t point_id) override;
+
     bool is_readonly() const;
+
+    enum BezierPointFlag {
+        Point = 0,
+        Tg1,
+        Tg2,
+        Count
+    };
 
 private:
     void add_knot_editor(size_t i);
 
     void reset_curve(Geom::BezierKnots const& path);
 
-    QGraphicsItem* add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, Geom::Point Geom::Knot::* pref_s = nullptr, QGraphicsItem* parent = nullptr);
+    QGraphicsItem* add_point_editor(size_t i, BezierPointFlag what, QGraphicsItem* parent = nullptr);
 
     void add_tags();
     void remove_tags();

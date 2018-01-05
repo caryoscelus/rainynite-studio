@@ -1,5 +1,5 @@
 /*  point_item.cpp - point item reporting its position changes
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,15 +25,14 @@
 
 namespace rainynite::studio {
 
-PointItem::PointItem(Callback callback) :
-    QGraphicsEllipseItem(-radius, -radius, radius*2, radius*2),
-    position_callback(callback)
+AbstractPointItem::AbstractPointItem() :
+    QGraphicsEllipseItem(-radius, -radius, radius*2, radius*2)
 {
     setPen(pens::cosmetic_solid());
     setBrush(QGuiApplication::palette().text());
 }
 
-void PointItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) {
+void AbstractPointItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) {
     // Set correct size if view was zooomed..
     // NOTE: this dirty hack relies on the scene being used only by one view
     auto t = painter->transform();
@@ -43,22 +42,34 @@ void PointItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* option,
     QGraphicsEllipseItem::paint(painter, option, widget);
 }
 
-void PointItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
-    QGraphicsEllipseItem::mouseReleaseEvent(event);
-    position_callback(pos().x(), pos().y());
+QVariant AbstractPointItem::itemChange(GraphicsItemChange change, QVariant const& value) {
+    if (change == ItemPositionChange && !recursion_protection) {
+        recursion_protection = true;
+        auto new_pos = value.toPointF();
+        if (new_pos != pos())
+            moved(new_pos);
+    } else if (change == ItemPositionHasChanged) {
+        recursion_protection = false;
+    }
+    return QGraphicsItem::itemChange(change, value);
 }
 
-void PointItem::set_readonly(bool ro) {
+void AbstractPointItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
+    QGraphicsEllipseItem::mouseReleaseEvent(event);
+    stopped_moving();
+}
+
+void AbstractPointItem::set_readonly(bool ro) {
     setFlag(QGraphicsItem::ItemIsMovable, !ro);
     setFlag(QGraphicsItem::ItemIsSelectable, !ro);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, !ro);
 }
 
-void PointItem::set_pos(double x, double y) {
+void AbstractPointItem::set_pos(double x, double y) {
     setPos(x, y);
 }
 
-void PointItem::set_color(QColor const& color) {
+void AbstractPointItem::set_color(QColor const& color) {
     setBrush(color);
 }
 

@@ -137,7 +137,7 @@ void BezierEditor::redraw() {
         auto path = get_path();
         // NOTE: this is to avoid full redraw while editing
         // TODO: make sure it gets properly updated on non-editing changes
-        if ((ptrdiff_t)path.size() == old_size && is_readonly()) {
+        if ((ptrdiff_t)path.size() == old_size) {
             reset_curve(path);
         } else {
             uninit();
@@ -178,30 +178,46 @@ void BezierEditor::add_tags() {
     }
 }
 
-QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::* pref, Geom::Point Geom::Knot::* pref_s, QGraphicsItem* parent) {
+Geom::Point& flag_to_ref(Geom::Knot& source, BezierEditor::BezierPointFlag flag) {
+    switch (flag) {
+        case BezierEditor::Point: return source.pos;
+        case BezierEditor::Tg1: return source.tg1;
+        case BezierEditor::Tg2: return source.tg2;
+        default: throw std::logic_error("Invalid BezierPointFlag value");
+    }
+}
+
+void BezierEditor::point_moved(size_t point_id, QPointF const& pos) {
     auto bezier_node = no_null(get_bezier_node());
-    bool enable_symmetric = (bool)parent;
-    auto e = new PointItem(
-        [this, i, bezier_node, pref, pref_s, enable_symmetric](double x, double y) {
-            auto path = bezier_node->mod();
-            auto& point = path.knots[i].*pref;
-            point.x() = x;
-            point.y() = y;
+    auto path = bezier_node->mod();
 
-            // currently only enabled symmetric while appending..
-            if (enable_symmetric && appending) {
-                auto& point_s = path.knots[i].*pref_s;
-                point_s = -point;
-            }
+    size_t i = point_id / BezierPointFlag::Count;
+    auto flag = (BezierPointFlag) (point_id % BezierPointFlag::Count);
 
-            auto action_stack = get_context()->action_stack();
-            action_stack->emplace<core::actions::ChangeValue>(
-                bezier_node,
-                path
-            );
-            action_stack->close();
-        }
+    auto& point = flag_to_ref(path.knots[i], flag);
+    point = util::point(pos);
+
+    // currently only enabled symmetric while appending..
+    if (appending && flag > Point) {
+        auto opposite = flag == Tg1 ? Tg2 : Tg1;
+        auto& point_s = flag_to_ref(path.knots[i], opposite);
+        point_s = -point;
+    }
+
+    auto action_stack = get_context()->action_stack();
+    action_stack->emplace<core::actions::ChangeValue>(
+        bezier_node,
+        path
     );
+}
+
+void BezierEditor::point_stopped_moving(size_t /*point_id*/) {
+    get_context()->action_stack()->close();
+}
+
+QGraphicsItem* BezierEditor::add_point_editor(size_t i, BezierPointFlag what, QGraphicsItem* parent) {
+    auto bezier_node = no_null(get_bezier_node());
+    auto e = new ListenerPointItem(this, i*BezierPointFlag::Count+what);
     if (parent) {
         e->setParentItem(parent);
         e->set_color({0xff, 0xff, 0x88});
@@ -209,16 +225,16 @@ QGraphicsItem* BezierEditor::add_point_editor(size_t i, Geom::Point Geom::Knot::
         e->setParentItem(no_null(curve_item.get()));
         e->set_color({0xff, 0x66, 0x66});
     }
-    auto point = bezier_node->mod().knots[i].*pref;
+    auto point = flag_to_ref(bezier_node->mod().knots[i], what);
     e->set_pos(point.x(), point.y());
     e->set_readonly(false);
     return e;
 }
 
 void BezierEditor::add_knot_editor(size_t i) {
-    auto pos = add_point_editor(i, &Geom::Knot::pos);
-    add_point_editor(i, &Geom::Knot::tg1, &Geom::Knot::tg2, pos);
-    add_point_editor(i, &Geom::Knot::tg2, &Geom::Knot::tg1, pos);
+    auto pos = add_point_editor(i, Point);
+    add_point_editor(i, Tg1, pos);
+    add_point_editor(i, Tg2, pos);
     knot_items.emplace_back(pos);
 }
 
