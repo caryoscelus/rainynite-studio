@@ -42,20 +42,21 @@ public:
     explicit TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     virtual ~TimeareaDock();
 
-public:
     bool eventFilter(QObject* object, QEvent* event) override;
     void contextMenuEvent(QContextMenuEvent* event) override;
 
-public:
     void set_context(shared_ptr<EditorContext> context) override;
 
 protected:
     void reload_editors();
     void add_editors();
+    void remove_editors(QModelIndex const& parent, int first, int last);
+
     void update_ruler();
     void load_pinned_from_file(shared_ptr<core::AbstractDocument> new_document);
 
 private:
+    vector<vector<shared_ptr<AbstractCanvasEditor>>> editor_list;
     unique_ptr<Ui::TimeareaDock> ui;
     unique_ptr<NodeListModel> node_list_model;
     weak_ptr<core::AbstractDocument> document;
