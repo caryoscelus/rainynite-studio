@@ -1,11 +1,8 @@
 RainyNite studio
 ================
 
-RainyNite is a free/libre software vector animation tool, currently in early
+RainyNite is a free/libre software 2d vector animation tool in active
 development.
-
-It is not really usable by end users at the moment, but developers are highly
-welcome.
 
 Usage examples
 ==============
@@ -54,6 +51,7 @@ Core:
 Editor:
 
 - [qt](https://www.qt.io/)
+- [KDE Frameworks][https://kde.org/]
 - [Qt-Color-Widgets](https://github.com/mbasaglia/Qt-Color-Widgets) (bundled as git module)
 
 Runtime renderer dependency:
