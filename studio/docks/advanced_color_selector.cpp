@@ -1,5 +1,5 @@
 /*  docks/advanced_color_selector.cpp - Advanced color selector dock
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ void AdvancedColorDock::write_color(QColor c) {
             (unsigned char)c.green(),
             (unsigned char)c.blue(),
             // temporary fix for #41
-            node->get(get_core_context()).a
+            node->value(get_core_context()).a
         };
         if (node->can_set_any(color)) {
             // TODO: use generic color conversion

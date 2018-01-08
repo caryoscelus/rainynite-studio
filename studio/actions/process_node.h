@@ -18,7 +18,7 @@
 #ifndef STUDIO_ACTIONS_PROCESS_NODE_H_D9E2969B_5C37_5085_828C_4708ED7EC469
 #define STUDIO_ACTIONS_PROCESS_NODE_H_D9E2969B_5C37_5085_828C_4708ED7EC469
 
-#include <core/class_init.h>
+#include <core/util/class_init.h>
 #include <core/abstract_factory.h>
 
 #include <generic/context_listener.h>

@@ -23,7 +23,7 @@
 
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
-#include <core/nullptr.h>
+#include <core/util/nullptr.h>
 #include <core/node_tree_transform.h>
 
 #include <util/strings.h>

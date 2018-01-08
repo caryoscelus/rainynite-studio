@@ -19,7 +19,7 @@
 #define GENERIC_CANVAS_EDITOR_H_2A8A29CC_A76A_5226_BA88_A39F61B5F43E
 
 #include <core/std/memory.h>
-#include <core/class_init.h>
+#include <core/util/class_init.h>
 
 #include <canvas/abstract_editor.h>
 

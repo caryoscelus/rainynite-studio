@@ -19,7 +19,7 @@
 #define STUDIO_GENERIC_NODE_EDITOR_WIDGET_H_825E9422_9018_587A_82D1_1ECB634E35EF
 
 #include <core/std/traits.h>
-#include <core/type_info.h>
+#include <core/util/type_info.h>
 #include <core/action_stack.h>
 
 #include "node_editor.h"

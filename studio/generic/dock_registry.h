@@ -22,7 +22,7 @@
 
 #include <Qt>
 
-#include <core/class_init.h>
+#include <core/util/class_init.h>
 
 class QDockWidget;
 

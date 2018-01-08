@@ -18,7 +18,7 @@
 #ifndef STUDIO_GENERIC_ACTION_H_EAC1E4D4_361B_5C94_BB73_9EB2953E2613
 #define STUDIO_GENERIC_ACTION_H_EAC1E4D4_361B_5C94_BB73_9EB2953E2613
 
-#include <core/class_init.h>
+#include <core/util/class_init.h>
 
 #include "context_listener.h"
 

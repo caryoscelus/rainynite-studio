@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <core/class_init.h>
+#include <core/util/class_init.h>
 
 #include "custom_widgets.h"
 

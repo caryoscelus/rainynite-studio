@@ -17,10 +17,10 @@
 
 #include <fmt/format.h>
 
-#include <core/node_info.h>
+#include <core/node_info/node_info.h>
 #include <core/node/make.h>
 #include <core/node/abstract_node.h>
-#include <core/nothing.h>
+#include <core/util/nothing.h>
 #include <core/serialize/node_writer.h>
 #include <core/action_stack.h>
 #include <core/document.h>

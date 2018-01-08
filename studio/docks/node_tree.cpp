@@ -22,7 +22,7 @@
 #include <QInputDialog>
 
 #include <core/document.h>
-#include <core/node_info.h>
+#include <core/node_info/node_info.h>
 
 #include <util/strings.h>
 #include <models/node_model.h>

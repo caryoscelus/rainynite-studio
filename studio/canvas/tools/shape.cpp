@@ -15,11 +15,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <core/node_info.h>
+#include <core/node_info/node_info.h>
 #include <core/actions/list.h>
 #include <core/actions/change_link.h>
 #include <core/action_stack.h>
-#include <core/exceptions.h>
+#include <core/util/exceptions.h>
 #include <core/renderable.h>
 #include <core/node_tree_transform.h>
 

@@ -21,7 +21,7 @@
 #include <QObject>
 
 #include <core/abstract_factory.h>
-#include <core/class_init.h>
+#include <core/util/class_init.h>
 
 #include "attachable.h"
 

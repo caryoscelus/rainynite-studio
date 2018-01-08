@@ -20,7 +20,7 @@
 
 #include <QAbstractItemModel>
 
-#include <core/node_info.h>
+#include <core/node_info/node_info.h>
 #include <core/node/traverse.h>
 #include <core/node_tree.h>
 

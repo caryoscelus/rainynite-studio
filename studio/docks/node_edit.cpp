@@ -18,7 +18,7 @@
 #include <fmt/format.h>
 
 #include <core/document.h>
-#include <core/type_info.h>
+#include <core/util/type_info.h>
 #include <core/serialize/node_writer.h>
 
 #include <util/strings.h>

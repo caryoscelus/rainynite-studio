@@ -20,7 +20,7 @@
 #include <core/node/abstract_value.h>
 #include <core/node/node.h>
 #include <core/node/make.h>
-#include <core/node_info.h>
+#include <core/node_info/node_info.h>
 
 #include <geom_helpers/rectangle.h>
 

@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <core/node_info.h>
+#include <core/node_info/node_info.h>
 #include <core/node/make.h>
 #include <core/action_stack.h>
 #include <core/actions/change_link.h>

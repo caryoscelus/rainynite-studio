@@ -19,7 +19,7 @@
 #define STUDIO_GENERIC_TIMELINE_EDITOR_H_805B2CB8_423E_5B86_BC21_F2CA9ABFA520
 
 #include <core/std/memory.h>
-#include <core/class_init.h>
+#include <core/util/class_init.h>
 
 #include <canvas/abstract_editor.h>
 

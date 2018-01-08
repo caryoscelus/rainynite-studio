@@ -20,10 +20,10 @@
 #include <core/node/abstract_value.h>
 #include <core/node/node.h>
 #include <core/node/make.h>
-#include <core/node_info.h>
+#include <core/node_info/node_info.h>
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
-#include <core/exceptions.h>
+#include <core/util/exceptions.h>
 
 #include <geom_helpers/knots.h>
 
