@@ -181,8 +181,9 @@ bool NodeModel::is_custom_property(QModelIndex const& index) const {
 void NodeModel::remove_custom_property(QModelIndex const& index) {
     if (auto parent = get_node_as<core::AbstractNode>(index.parent())) {
         auto i = index.row();
+        beginRemoveRows(index.parent(), i, i);
         action_stack->emplace<core::actions::RemoveCustomProperty>(parent, parent->get_name_at(i));
-        // TODO: remove rows
+        endRemoveRows();
     }
 }
 
