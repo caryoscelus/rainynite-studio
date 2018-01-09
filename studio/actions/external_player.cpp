@@ -64,7 +64,7 @@ class LaunchMpv : public LaunchExternalPlayer, REGISTERED_ACTION(LaunchMpv) {
     ACTION_NAME("Launch external player (mpv)")
 protected:
     string player_command() const override {
-        return "mpv {audio_command} -mf-fps {fps} mf://@{lst_file}";
+        return "mpv -loop {audio_command} -mf-fps {fps} mf://@{lst_file}";
     }
     string audio_command(string const& fname) const override {
         if (fname.empty())
