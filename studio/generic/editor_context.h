@@ -20,7 +20,7 @@
 
 #include <core/std/string.h>
 #include <core/context.h>
-#include <core/node_tree.h>
+#include <core/node_tree/node_tree.h>
 
 namespace rainynite::core {
 class AbstractValue;
@@ -58,6 +58,8 @@ public:
     }
 
     shared_ptr<core::AbstractValue> get_node(core::NodeTree::Index index) const {
+        if (!index)
+            return nullptr;
         if (auto node_tree = tree())
             return node_tree->get_node(index);
         return nullptr;

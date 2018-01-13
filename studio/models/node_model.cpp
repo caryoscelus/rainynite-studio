@@ -46,7 +46,7 @@ NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack
     if (auto document = dynamic_cast<core::AbstractDocument*>(root.get())) {
         tree = document->get_tree();
     } else {
-        tree = root_ ? make_shared<core::NodeTree>(root_, action_stack_) : nullptr;
+        tree = root_ ? make_shared<core::NodeTree>(root_) : nullptr;
     }
 }
 
@@ -128,12 +128,12 @@ QVariant NodeModel::headerData(int section, Qt::Orientation orientation, int rol
 }
 
 QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) const {
-    return createIndex(row, column, (void*)get_inner_index(parent, row).get());
+    return createIndex(row, column, (size_t)get_inner_index(parent, row));
 }
 
 core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& parent, size_t i) const {
     if (tree == nullptr)
-        return nullptr;
+        return {};
     if (!parent.isValid()) {
         if (i == 0)
             return tree->get_root_index();
@@ -145,16 +145,15 @@ core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& parent, size
 }
 
 core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& index) const {
-    if (tree == nullptr)
-        return nullptr;
-    if (!index.isValid()) {
-        return tree->get_null_index();
-    }
-    return make_observer(static_cast<core::NodeTreeIndex*>(index.internalPointer()));
+    if (!index.isValid())
+        return {};
+    return index.internalId();
 }
 
 QModelIndex NodeModel::from_inner_index(core::NodeTree::Index index) const {
-    return createIndex(index->index, 0, (void*)index.get());
+    if (!index)
+        return {};
+    return createIndex(tree->link_index(index), 0, (size_t)index);
 }
 
 bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
@@ -365,22 +364,11 @@ size_t NodeModel::get_node_index(QModelIndex const& index) const {
 }
 
 QModelIndex NodeModel::parent(QModelIndex const& index) const {
-    if (!index.isValid())
-        return {};
-    if (auto id = get_inner_index(index)) {
-        if (auto parent = id->parent) {
-            if (!parent->null())
-                return createIndex(parent->index, 0, (void*)parent.get());
-        }
-        return {};
-    }
-    return {};
+    return from_inner_index(tree->parent(get_inner_index(index)));
 }
 
 int NodeModel::rowCount(QModelIndex const& parent) const {
-    if (auto id = get_inner_index(parent))
-        return tree->children_count(id);
-    return 0;
+    return tree->children_count(get_inner_index(parent));
 }
 
 int NodeModel::columnCount(QModelIndex const& /*parent*/) const {

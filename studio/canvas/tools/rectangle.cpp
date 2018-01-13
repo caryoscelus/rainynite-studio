@@ -62,7 +62,7 @@ protected:
                 return rect_node;
             }
         );
-        if (get_index() && !get_index()->null())
+        if (get_index())
             get_canvas()->set_active_node(get_index());
         return false;
     }

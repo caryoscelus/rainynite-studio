@@ -21,7 +21,7 @@
 #include <core/action_stack.h>
 #include <core/util/exceptions.h>
 #include <core/renderable.h>
-#include <core/node_tree_transform.h>
+#include <core/node_tree/transform.h>
 
 #include <util/geom.h>
 #include "shape.h"

@@ -22,7 +22,7 @@
 
 #include <core/node_info/node_info.h>
 #include <core/node/traverse.h>
-#include <core/node_tree.h>
+#include <core/node_tree/node_tree.h>
 
 #include <generic/context_listener.h>
 
@@ -38,13 +38,11 @@ public:
 
     QVariant data(QModelIndex const& index, int role) const override;
     Qt::ItemFlags flags(QModelIndex const& index) const override;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                        int role = Qt::DisplayRole) const override;
-    QModelIndex index(int row, int column,
-                      QModelIndex const& parent = QModelIndex()) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QModelIndex index(int row, int column, QModelIndex const& parent = {}) const override;
     QModelIndex parent(QModelIndex const& index) const override;
-    int rowCount(QModelIndex const& parent = QModelIndex()) const override;
-    int columnCount(QModelIndex const& parent = QModelIndex()) const override;
+    int rowCount(QModelIndex const& parent = {}) const override;
+    int columnCount(QModelIndex const& parent = {}) const override;
 
     void time_changed(core::Time time) override;
 
