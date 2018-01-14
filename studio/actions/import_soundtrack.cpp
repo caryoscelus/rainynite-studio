@@ -31,12 +31,14 @@ using ImportSoundProcessor = ProcessNode<string, ImportSoundTag>;
 
 class SetSoundtrack : public ProcessNode<string, ImportSoundTag> {
 public:
-    bool accept(core::AbstractValue const& node) const override {
-        return node_name(node) == "AudioFromFile";
+    bool accept(core::NodeTree::Index node) const override {
+        auto tree = get_context()->tree();
+        return node_name(*tree->get_node(node)) == "AudioFromFile";
     }
     void feed(string const& s) override {
         auto string_node = core::make_value<string>(std::move(s));
-        get_context()->action_stack()->emplace<core::actions::SetProperty>(abstract_node_cast(get_node()), "file_path", string_node);
+        auto ctx = get_context();
+        ctx->action_stack()->emplace<core::actions::SetProperty>(ctx->tree(), get_node_index(), "file_path", string_node);
     }
 };
 

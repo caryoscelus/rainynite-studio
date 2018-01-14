@@ -22,6 +22,7 @@
 
 #include <core/node/abstract_list.h>
 #include <core/node/abstract_node.h>
+#include <core/util/nullptr.h>
 
 #include <generic/action.h>
 #include <util/strings.h>
@@ -31,33 +32,35 @@ namespace rainynite::studio::actions {
 template <typename Processor>
 class FindTargetNode {
 public:
-    unique_ptr<Processor> find_appropriate_target(shared_ptr<EditorContext> ctx) {
-        if (auto active_node = ctx->get_active_node()) {
-            if (auto r = check_target(active_node, ctx))
+    unique_ptr<Processor> find_appropriate_target(core::NodeTree const& tree, shared_ptr<EditorContext> ctx) {
+        if (auto node = ctx->get_active_node_index()) {
+            if (auto r = check_target(node, ctx))
                 return r;
-            if (auto list = list_cast(active_node)) {
-                for (auto child : list->get_links()) {
-                    if (auto r = check_target(child, ctx))
-                        return r;
-                }
-            }
-        }
-        if (auto doc = ctx->get_context()->get_document_node()) {
-            for (auto child : list_cast(doc)->get_links()) {
-                if (auto r = check_target(child, ctx))
+            for (size_t i = 0; i < tree.children_count(node); ++i) {
+                if (auto r = check_target(tree.index(node, i), ctx))
                     return r;
             }
-            if (auto root = list_cast(doc->get_property("root"))) {
-                for (auto child : root->get_links()) {
-                    if (auto r = check_target(child, ctx))
-                        return r;
-                }
-            }
+        }
+        auto doc_root = tree.get_root_index();
+        for (size_t i = 0; i < tree.children_count(doc_root); ++i) {
+            if (auto r = check_target(tree.index(doc_root, i), ctx))
+                return r;
+        }
+
+        core::NodeTree::Index root;
+        try {
+            root = tree.index_of_property(doc_root, "root");
+        } catch (...) {
+            return nullptr;
+        }
+        for (size_t i = 0; i < tree.children_count(root); ++i) {
+            if (auto r = check_target(tree.index(root, i), ctx))
+                return r;
         }
         return {};
     }
 
-    unique_ptr<Processor> check_target(shared_ptr<core::AbstractValue> node, shared_ptr<EditorContext> ctx) const {
+    unique_ptr<Processor> check_target(core::NodeTree::Index node, shared_ptr<EditorContext> ctx) const {
         using namespace class_init;
         for (auto factory : class_list_registry<AbstractFactory<Processor>>()) {
             auto r = (*factory)();
@@ -87,7 +90,7 @@ class ImportFiles :
 public:
     void process() override {
         if (auto ctx = get_context()) {
-            if (auto target = this->find_appropriate_target(ctx)) {
+            if (auto target = this->find_appropriate_target(*no_null(ctx->tree()), ctx)) {
                 // TODO: filter images
                 auto strings = QFileDialog::getOpenFileNames(nullptr, "Import layers");
                 target->start_list();

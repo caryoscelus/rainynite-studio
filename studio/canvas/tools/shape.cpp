@@ -125,7 +125,7 @@ void Shape::write_shape(shared_ptr<core::AbstractValue> shape) {
 
     // TODO: modularize, support replacing shapes
     if (name == "RenderShape") {
-        action_stack->emplace<actions::SetProperty>(node, "shape", shape);
+        action_stack->emplace<actions::SetProperty>(tree, node_index, "shape", shape);
         target_node_index = tree->index(node_index, node->get_name_id("shape"));
     } else if (value->get_type() == typeid(vector<Renderable>)) {
         if (auto layers = list_cast(std::move(value))) {

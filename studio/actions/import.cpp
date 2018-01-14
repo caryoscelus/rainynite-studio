@@ -36,8 +36,8 @@ using ImportSvgLayersProcessor = ProcessNode<string, ImportSvgLayersTag>;
 
 class FillStringList : public ProcessNode<string, ImportFilesTag> {
 public:
-    bool accept(core::AbstractValue const& node) const override {
-        return node.get_type() == typeid(vector<string>);
+    bool accept(core::NodeTree::Index node) const override {
+        return get_context()->tree()->type_of(node).accept(typeid(vector<string>));
     }
     void feed(string const& s) override {
         auto string_node = core::make_value<string>(std::move(s));
@@ -49,8 +49,8 @@ REGISTER_PROCESS_NODE(FillStringList, string, ImportFilesTag)
 
 class FillRenderableList : public ProcessNode<string, ImportFilesTag> {
 public:
-    bool accept(core::AbstractValue const& node) const override {
-        return node.get_type() == typeid(vector<core::Renderable>);
+    bool accept(core::NodeTree::Index node) const override {
+        return get_context()->tree()->type_of(node).accept(typeid(vector<core::Renderable>));
     }
     void feed(string const& s) override {
         auto string_node = core::make_value<string>(std::move(s));
@@ -65,8 +65,8 @@ REGISTER_PROCESS_NODE(FillRenderableList, string, ImportFilesTag)
 
 class AddFramedAnimationToRenderableList : public ProcessNode<string, ImportFramesTag> {
 public:
-    bool accept(core::AbstractValue const& node) const override {
-        return node.get_type() == typeid(vector<core::Renderable>);
+    bool accept(core::NodeTree::Index node) const override {
+        return get_context()->tree()->type_of(node).accept(typeid(vector<core::Renderable>));
     }
     void start_list() override {
         file_name_list_node = core::make_node_with_name<core::AbstractListLinked>("List/String");
@@ -94,8 +94,8 @@ REGISTER_PROCESS_NODE(AddFramedAnimationToRenderableList, string, ImportFramesTa
 
 class FillRenderableListWithSvgs : public ProcessNode<string, ImportSvgLayersTag> {
 public:
-    bool accept(core::AbstractValue const& node) const override {
-        return node.get_type() == typeid(vector<core::Renderable>);
+    bool accept(core::NodeTree::Index node) const override {
+        return get_context()->tree()->type_of(node).accept(typeid(vector<core::Renderable>));
     }
     void feed(string const& s) override {
         auto string_node = core::make_value<string>(std::move(s));

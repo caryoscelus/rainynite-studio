@@ -28,25 +28,29 @@ namespace rainynite::studio::actions {
 template <typename T, typename Tag>
 class ProcessNode : public ContextListener {
 public:
-    virtual bool accept(core::AbstractValue const& node) const = 0;
+    virtual bool accept(core::NodeTree::Index index) const = 0;
     virtual void feed(T const& argument) = 0;
     virtual void start_list() {}
     virtual void end_list() {}
 
-    bool set_node(shared_ptr<core::AbstractValue> node_) {
-        if (accept(*node_)) {
-            node = node_;
+    bool set_node(core::NodeTree::Index index_) {
+        if (accept(index_)) {
+            index = index_;
             return true;
         }
         return false;
     }
 
+    core::NodeTree::Index get_node_index() const {
+        return index;
+    }
+
     shared_ptr<core::AbstractValue> get_node() const {
-        return node;
+        return get_context()->tree()->get_node(index);
     }
 
 private:
-    shared_ptr<core::AbstractValue> node;
+    core::NodeTree::Index index;
 };
 
 template <class P, typename T, typename Tag>

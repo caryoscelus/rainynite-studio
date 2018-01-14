@@ -163,10 +163,8 @@ bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
 }
 
 void NodeModel::add_empty_custom_property(QModelIndex const& parent, string const& name) {
-    if (auto parent_node = get_node_as<core::AbstractNode>(parent)) {
-        action_stack->emplace<core::actions::AddCustomProperty>(parent_node, name, core::make_value<Nothing>());
-        // TODO: add rows
-    }
+    action_stack->emplace<core::actions::AddCustomProperty>(tree, get_inner_index(parent), name, core::make_value<Nothing>());
+    // TODO: add rows
 }
 
 bool NodeModel::is_custom_property(QModelIndex const& index) const {
@@ -181,7 +179,7 @@ void NodeModel::remove_custom_property(QModelIndex const& index) {
     if (auto parent = get_node_as<core::AbstractNode>(index.parent())) {
         auto i = index.row();
         beginRemoveRows(index.parent(), i, i);
-        action_stack->emplace<core::actions::RemoveCustomProperty>(parent, parent->get_name_at(i));
+        action_stack->emplace<core::actions::RemoveCustomProperty>(tree, get_inner_index(index.parent()), parent->get_name_at(i));
         endRemoveRows();
     }
 }
@@ -300,7 +298,7 @@ void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference n
         else if (new_rows < old_rows)
             beginRemoveRows(index, new_rows, old_rows-1);
 
-        action_stack->emplace<core::actions::ChangeLink>(parent, index.row(), node);
+        action_stack->emplace<core::actions::ChangeLink>(tree, get_inner_index(index), node);
 
         Q_EMIT dataChanged(index, index);
 
