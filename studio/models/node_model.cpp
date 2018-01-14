@@ -38,6 +38,16 @@ namespace rainynite::studio {
 
 static const size_t MAX_VALUE_LENGTH = 32;
 
+template <typename T, typename F>
+T report_tree_errors(F f) {
+    try {
+        return f();
+    } catch (core::NodeTreeError const&) {
+        // TODO: report
+        return {};
+    }
+}
+
 NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
     QAbstractItemModel(parent),
     root(root_),
@@ -140,7 +150,9 @@ core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& parent, size
         else
             return tree->get_null_index();
     } else {
-        return tree->index(get_inner_index(parent), i);
+        return report_tree_errors<core::NodeTree::Index>([&]() {
+            return tree->index(get_inner_index(parent), i);
+        });
     }
 }
 
@@ -153,7 +165,9 @@ core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& index) const
 QModelIndex NodeModel::from_inner_index(core::NodeTree::Index index) const {
     if (!index)
         return {};
-    return createIndex(tree->link_index(index), 0, (size_t)index);
+    return report_tree_errors<QModelIndex>([&]() {
+        return createIndex(tree->link_index(index), 0, (size_t)index);
+    });
 }
 
 bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
@@ -362,11 +376,15 @@ size_t NodeModel::get_node_index(QModelIndex const& index) const {
 }
 
 QModelIndex NodeModel::parent(QModelIndex const& index) const {
-    return from_inner_index(tree->parent(get_inner_index(index)));
+    return report_tree_errors<QModelIndex>([&]() {
+        return from_inner_index(tree->parent(get_inner_index(index)));
+    });
 }
 
 int NodeModel::rowCount(QModelIndex const& parent) const {
-    return tree->children_count(get_inner_index(parent));
+    return report_tree_errors<int>([&]() {
+        return tree->children_count(get_inner_index(parent));
+    });
 }
 
 int NodeModel::columnCount(QModelIndex const& /*parent*/) const {
