@@ -21,7 +21,7 @@
 #include <core/std/vector.h>
 #include <core/abstract_factory.h>
 #include <core/util/class_init.h>
-#include <core/node_tree.h>
+#include <core/node_tree/node_tree.h>
 
 #include "attachable.h"
 

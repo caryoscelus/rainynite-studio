@@ -38,6 +38,16 @@ namespace rainynite::studio {
 
 static const size_t MAX_VALUE_LENGTH = 32;
 
+template <typename T, typename F>
+T report_tree_errors(F f) {
+    try {
+        return f();
+    } catch (core::NodeTreeError const&) {
+        // TODO: report
+        return {};
+    }
+}
+
 NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack> action_stack_, QObject* parent) :
     QAbstractItemModel(parent),
     root(root_),
@@ -46,7 +56,7 @@ NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack
     if (auto document = dynamic_cast<core::AbstractDocument*>(root.get())) {
         tree = document->get_tree();
     } else {
-        tree = root_ ? make_shared<core::NodeTree>(root_, action_stack_) : nullptr;
+        tree = root_ ? make_shared<core::NodeTree>(root_) : nullptr;
     }
 }
 
@@ -128,33 +138,36 @@ QVariant NodeModel::headerData(int section, Qt::Orientation orientation, int rol
 }
 
 QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) const {
-    return createIndex(row, column, (void*)get_inner_index(parent, row).get());
+    return createIndex(row, column, (size_t)get_inner_index(parent, row));
 }
 
 core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& parent, size_t i) const {
     if (tree == nullptr)
-        return nullptr;
+        return {};
     if (!parent.isValid()) {
         if (i == 0)
             return tree->get_root_index();
         else
             return tree->get_null_index();
     } else {
-        return tree->index(get_inner_index(parent), i);
+        return report_tree_errors<core::NodeTree::Index>([&]() {
+            return tree->index(get_inner_index(parent), i);
+        });
     }
 }
 
 core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& index) const {
-    if (tree == nullptr)
-        return nullptr;
-    if (!index.isValid()) {
-        return tree->get_null_index();
-    }
-    return make_observer(static_cast<core::NodeTreeIndex*>(index.internalPointer()));
+    if (!index.isValid())
+        return {};
+    return index.internalId();
 }
 
 QModelIndex NodeModel::from_inner_index(core::NodeTree::Index index) const {
-    return createIndex(index->index, 0, (void*)index.get());
+    if (!index)
+        return {};
+    return report_tree_errors<QModelIndex>([&]() {
+        return createIndex(tree->link_index(index), 0, (size_t)index);
+    });
 }
 
 bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
@@ -164,10 +177,8 @@ bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
 }
 
 void NodeModel::add_empty_custom_property(QModelIndex const& parent, string const& name) {
-    if (auto parent_node = get_node_as<core::AbstractNode>(parent)) {
-        action_stack->emplace<core::actions::AddCustomProperty>(parent_node, name, core::make_value<Nothing>());
-        // TODO: add rows
-    }
+    action_stack->emplace<core::actions::AddCustomProperty>(tree, get_inner_index(parent), name, core::make_value<Nothing>());
+    // TODO: add rows
 }
 
 bool NodeModel::is_custom_property(QModelIndex const& index) const {
@@ -182,7 +193,7 @@ void NodeModel::remove_custom_property(QModelIndex const& index) {
     if (auto parent = get_node_as<core::AbstractNode>(index.parent())) {
         auto i = index.row();
         beginRemoveRows(index.parent(), i, i);
-        action_stack->emplace<core::actions::RemoveCustomProperty>(parent, parent->get_name_at(i));
+        action_stack->emplace<core::actions::RemoveCustomProperty>(tree, get_inner_index(index.parent()), parent->get_name_at(i));
         endRemoveRows();
     }
 }
@@ -301,7 +312,7 @@ void NodeModel::replace_node(QModelIndex const& index, core::AbstractReference n
         else if (new_rows < old_rows)
             beginRemoveRows(index, new_rows, old_rows-1);
 
-        action_stack->emplace<core::actions::ChangeLink>(parent, index.row(), node);
+        action_stack->emplace<core::actions::ChangeLink>(tree, get_inner_index(index), node);
 
         Q_EMIT dataChanged(index, index);
 
@@ -365,22 +376,15 @@ size_t NodeModel::get_node_index(QModelIndex const& index) const {
 }
 
 QModelIndex NodeModel::parent(QModelIndex const& index) const {
-    if (!index.isValid())
-        return {};
-    if (auto id = get_inner_index(index)) {
-        if (auto parent = id->parent) {
-            if (!parent->null())
-                return createIndex(parent->index, 0, (void*)parent.get());
-        }
-        return {};
-    }
-    return {};
+    return report_tree_errors<QModelIndex>([&]() {
+        return from_inner_index(tree->parent(get_inner_index(index)));
+    });
 }
 
 int NodeModel::rowCount(QModelIndex const& parent) const {
-    if (auto id = get_inner_index(parent))
-        return tree->children_count(id);
-    return 0;
+    return report_tree_errors<int>([&]() {
+        return tree->children_count(get_inner_index(parent));
+    });
 }
 
 int NodeModel::columnCount(QModelIndex const& /*parent*/) const {

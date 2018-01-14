@@ -22,7 +22,7 @@
 
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
-#include <core/node_tree_transform.h>
+#include <core/node_tree/transform.h>
 
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>

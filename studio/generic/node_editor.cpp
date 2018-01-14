@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <core/node_tree_transform.h>
+#include <core/node_tree/transform.h>
 
 #include "node_editor.h"
 
