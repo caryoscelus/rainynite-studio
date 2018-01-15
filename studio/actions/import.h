@@ -49,7 +49,7 @@ public:
 
         core::NodeTree::Index root;
         try {
-            root = tree.index_of_property(doc_root, "root");
+            root = index_of_property(tree, doc_root, "root");
         } catch (...) {
             return nullptr;
         }

@@ -41,7 +41,8 @@ public:
     }
     void feed(string const& s) override {
         auto string_node = core::make_value<string>(std::move(s));
-        get_context()->action_stack()->emplace<core::actions::ListPush>(list_cast(get_node()), string_node);
+        auto ctx = no_null(get_context());
+        ctx->action_stack()->emplace<core::actions::ListPush>(ctx->tree(), get_node_index(), string_node);
     }
 };
 
@@ -57,7 +58,8 @@ public:
         auto image_node = core::make_node_with_name<core::AbstractNode>("Image");
         image_node->set_property("file_path", string_node);
         // TODO: set size
-        get_context()->action_stack()->emplace<core::actions::ListPush>(list_cast(get_node()), abstract_value_cast(image_node));
+        auto ctx = no_null(get_context());
+        ctx->action_stack()->emplace<core::actions::ListPush>(ctx->tree(), get_node_index(), abstract_value_cast(image_node));
     }
 };
 
@@ -84,7 +86,8 @@ public:
         file_name_node->set_property("n", abstract_value_cast(linear_node));
         image_node->set_property("file_path", abstract_value_cast(file_name_node));
 
-        get_context()->action_stack()->emplace<core::actions::ListPush>(list_cast(get_node()), abstract_value_cast(image_node));
+        auto ctx = get_context();
+        ctx->action_stack()->emplace<core::actions::ListPush>(ctx->tree(), get_node_index(), abstract_value_cast(image_node));
     }
 private:
     shared_ptr<core::AbstractListLinked> file_name_list_node;
@@ -101,7 +104,8 @@ public:
         auto string_node = core::make_value<string>(std::move(s));
         auto image_node = core::make_node_with_name<core::AbstractNode>("EmbedSvg");
         image_node->set_property("file_path", string_node);
-        get_context()->action_stack()->emplace<core::actions::ListPush>(list_cast(get_node()), abstract_value_cast(image_node));
+        auto ctx = get_context();
+        ctx->action_stack()->emplace<core::actions::ListPush>(ctx->tree(), get_node_index(), abstract_value_cast(image_node));
     }
 };
 

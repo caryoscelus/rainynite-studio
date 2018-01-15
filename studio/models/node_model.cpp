@@ -20,6 +20,7 @@
 #include <core/node_info/node_info.h>
 #include <core/node/make.h>
 #include <core/node/abstract_node.h>
+#include <core/node_tree/exceptions.h>
 #include <core/util/nothing.h>
 #include <core/serialize/node_writer.h>
 #include <core/action_stack.h>
@@ -205,20 +206,23 @@ bool NodeModel::can_add_element(QModelIndex const& parent) const {
 }
 
 void NodeModel::add_empty_element(QModelIndex const& parent) {
-    if (auto node = get_list_node(parent)) {
-        auto last = node->link_count();
+    if (auto node = get_inner_index(parent)) {
+        auto last = tree->children_count(node);
         beginInsertRows(parent, last, last);
-        action_stack->emplace<core::actions::ListPushNew>(node);
+        action_stack->emplace<core::actions::ListPushNew>(tree, node);
         endInsertRows();
-        Q_EMIT dataChanged(index(last, 0, parent), index(last, 1, parent));
     }
 }
 
-void NodeModel::remove_list_item(QModelIndex const& parent, size_t index) {
+void NodeModel::remove_list_item(QModelIndex const& parent, size_t position) {
     if (auto node = get_node_as<core::AbstractListLinked>(parent)) {
         if (node->is_editable_list()) {
-            beginRemoveRows(parent, index, index);
-            action_stack->emplace<core::actions::ListRemoveElement>(node, index);
+            beginRemoveRows(parent, position, position);
+            action_stack->emplace<core::actions::ListRemoveElement>(
+                tree,
+                get_inner_index(parent),
+                position
+            );
             endRemoveRows();
         }
     }
