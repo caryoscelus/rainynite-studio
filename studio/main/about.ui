@@ -50,7 +50,7 @@
        <item>
         <widget class="QLabel" name="about_label">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;RainyNite - vector animation studio. Version {} &amp;quot;{}&amp;quot;.&lt;br/&gt;&lt;a href=&quot;https://notabug.org/caryoscelus/rainynite-studio&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;https://notabug.org/caryoscelus/rainynite-studio&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Copyright (C) 2017 caryoscelus&lt;/p&gt;&lt;p&gt;RainyNite is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;RainyNite - vector animation studio. Version {} &amp;quot;{}&amp;quot;.&lt;br/&gt;&lt;a href=&quot;https://notabug.org/caryoscelus/rainynite-studio&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;https://notabug.org/caryoscelus/rainynite-studio&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Copyright (C) 2017-2018 caryoscelus&lt;/p&gt;&lt;p&gt;RainyNite is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -137,11 +137,7 @@
        <item>
         <widget class="QTextBrowser" name="license_text">
          <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Could not find license text. Your installation may be corrupted. You can read full license text at &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.en.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;https://www.gnu.org/licenses/gpl-3.0.en.html&lt;/span&gt;&lt;/a&gt; instead.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Could not find license text. Your installation may be corrupted. You can read full license text at &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.en.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;https://www.gnu.org/licenses/gpl-3.0.en.html&lt;/span&gt;&lt;/a&gt; instead.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textInteractionFlags">
           <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -161,13 +157,10 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QTextBrowser" name="third_party_text">
          <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Could not find credits file. Your installation may be corrupted.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can check third party credits &lt;a href=&quot;https://notabug.org/caryoscelus/rainynite-studio/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>
+&lt;html&gt;&lt;head/&gt;&lt;body&gt;Could not find credits file. Your installation may be corrupted.&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;You can check third party credits &lt;a href=&quot;https://notabug.org/caryoscelus/rainynite-studio/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="openExternalLinks">
           <bool>true</bool>
