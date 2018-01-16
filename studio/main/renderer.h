@@ -47,6 +47,8 @@ public:
 
     void set_context(shared_ptr<EditorContext> context_) override;
 
+    void set_output_scale(double factor);
+
 public Q_SLOTS:
     /// Render active period
     void render();
@@ -76,6 +78,7 @@ private:
     string fname;
     bool extra_style = true;
     bool auto_redraw = true;
+    double output_scale;
 
     std::thread render_thread;
     shared_ptr<core::renderers::SvgRenderer> renderer;

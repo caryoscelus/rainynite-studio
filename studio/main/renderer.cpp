@@ -109,6 +109,7 @@ void Renderer::render_period(core::TimePeriod const& period) {
         rsettings.keep_alive = true;
         rsettings.extra_style = extra_style;
         rsettings.path = fname;
+        rsettings.output_scale = output_scale;
         get_core_context()->mod_render_settings() = rsettings;
         auto ctx = *get_core_context();
         ctx.set_period(period);
@@ -116,6 +117,11 @@ void Renderer::render_period(core::TimePeriod const& period) {
         std::lock_guard<std::mutex> lock(renderer_mutex);
         renderer_queue.push(ctx);
     }
+}
+
+void Renderer::set_output_scale(double factor) {
+    output_scale = factor;
+    canvas->set_bg_transform(QTransform::fromScale(1.0/factor, 1.0/factor));
 }
 
 void Renderer::render() {
@@ -153,10 +159,12 @@ void Renderer::toggle_auto_redraw(bool checked) {
 
 void Renderer::set_mainarea_image(string const& fname) {
     QPixmap pixmap;
-    if (pixmap.load(util::str(fname)))
+    if (pixmap.load(util::str(fname))) {
         canvas->set_background_image(pixmap);
-    else
+    } else {
+        // Try again
         QTimer::singleShot(64, this, &Renderer::redraw);
+    }
 }
 
 void Renderer::quit() {

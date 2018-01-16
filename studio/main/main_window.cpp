@@ -26,6 +26,8 @@
 #include <QDockWidget>
 #include <QActionGroup>
 #include <QCloseEvent>
+#include <QWidgetAction>
+#include <QDoubleSpinBox>
 #include <QDebug>
 
 #include <core/document.h>
@@ -89,6 +91,22 @@ MainWindow::MainWindow(QWidget* parent) :
         &QAction::toggled,
         [this](bool value) {
             ui->canvas->mirror_horizontally(value);
+        }
+    );
+
+    // TODO: better ui, properly update, etc
+    auto render_zoom_action = new QWidgetAction(this);
+    auto render_zoom_widget = new QDoubleSpinBox();
+    render_zoom_widget->setValue(1.0);
+    render_zoom_widget->setDecimals(4);
+    render_zoom_action->setDefaultWidget(render_zoom_widget);
+    ui->menu_render->addSeparator();
+    ui->menu_render->addAction(render_zoom_action);
+    connect(
+        render_zoom_widget,
+        (void (QDoubleSpinBox::*)(double))&QDoubleSpinBox::valueChanged,
+        [this](double value) {
+            renderer->set_output_scale(value);
         }
     );
 
