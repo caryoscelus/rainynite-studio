@@ -24,6 +24,8 @@ target_sources(rainynite-studio
         docks/advanced_color_selector.cpp
         docks/undo_history.h
         docks/undo_history.cpp
+        docks/log.h
+        docks/log.cpp
 
         widgets/editor_factory.cpp
 
