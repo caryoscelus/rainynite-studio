@@ -90,11 +90,11 @@ void NodeEditDock::update_generic() {
 }
 
 void NodeEditDock::update_custom() {
-    if (auto node_editor = dynamic_cast<NodeEditor*>(custom_widget.get())) {
-        node_editor->set_node(active_node);
-    }
     if (auto listener = dynamic_cast<ContextListener*>(custom_widget.get())) {
         listener->set_context(get_context());
+    }
+    if (auto node_editor = dynamic_cast<NodeEditor*>(custom_widget.get())) {
+        node_editor->set_node(active_node);
     }
 }
 
