@@ -1,5 +1,5 @@
 /*  renderer.h - renderer
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ private:
     string fname;
     bool extra_style = true;
     bool auto_redraw = true;
-    double output_scale;
+    double output_scale = 1.0;
 
     std::thread render_thread;
     shared_ptr<core::renderers::SvgRenderer> renderer;
