@@ -16,6 +16,7 @@
  */
 
 #include <core/node_info/node_info.h>
+#include <core/node_tree/exceptions.h>
 
 #include <util/strings.h>
 #include "node_list.h"
@@ -34,12 +35,18 @@ QVariant NodeListModel::data(QModelIndex const& index, int role) const {
     if (!index.isValid() || index.column() != 0 || index.parent().isValid())
         return {};
 
-    switch (role) {
-        case Qt::DisplayRole: {
-            return util::str(core::node_name(*get_node(index)));
-        } break;
-        default:
-            return {};
+    try {
+        switch (role) {
+            case Qt::DisplayRole:
+                return util::str(core::node_name(*get_node(index)));
+            default:
+                return {};
+        }
+    } catch (core::NodeTreeError const&) {
+        // TODO: report
+        return {};
+    } catch (...) {
+        return {};
     }
 }
 
