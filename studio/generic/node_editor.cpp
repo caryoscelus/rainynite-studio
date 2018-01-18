@@ -16,6 +16,8 @@
  */
 
 #include <core/node_tree/transform.h>
+#include <core/action_stack.h>
+#include <core/util/nullptr.h>
 
 #include "node_editor.h"
 
@@ -40,6 +42,19 @@ Geom::Affine get_transform(NodeEditor const& editor) {
             return core::get_transform(ctx->get_context(), *tree, editor.get_node_index());
     }
     return {};
+}
+
+void NodeEditor::write_value(any value) {
+    auto action_stack = no_null(get_context()->action_stack());
+    action_stack->emplace<core::actions::ChangeValue>(
+        get_node(),
+        value
+    );
+}
+
+void NodeEditor::close_action() {
+    auto action_stack = no_null(get_context()->action_stack());
+    action_stack->close();
 }
 
 } // namespace rainynite::studio

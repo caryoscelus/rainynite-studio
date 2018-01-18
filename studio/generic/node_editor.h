@@ -75,6 +75,9 @@ public:
         return dynamic_pointer_cast<core::BaseValue<T>>(get_node());
     }
 
+    void write_value(any value);
+    void close_action();
+
 protected:
     bool update_enabled = true;
 
