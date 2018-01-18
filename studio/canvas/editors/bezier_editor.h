@@ -63,6 +63,7 @@ public:
 
     void point_moved(size_t point_id, QPointF const& pos) override;
     void point_stopped_moving(size_t point_id) override;
+    void point_double_clicked(size_t point_id) override;
 
     bool is_readonly() const;
 
@@ -87,6 +88,9 @@ private:
     Geom::BezierKnots get_path() const;
 
     Geom::Point convert_pos(QPoint const& src) const;
+
+    pair<BezierPointFlag, size_t> point_id_to_fn(size_t src) const;
+    size_t point_id_from_fn(BezierPointFlag flag, size_t n) const;
 
 private:
     struct EventFilter;

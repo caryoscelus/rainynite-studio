@@ -18,10 +18,10 @@
 #include <fmt/format.h>
 
 #include <QGraphicsItem>
-#include <QDebug>
 #include <QMouseEvent>
+#include <QInputDialog>
+#include <QLineEdit>
 
-#include <core/action_stack.h>
 #include <core/actions/change_value.h>
 #include <core/util/nullptr.h>
 #include <core/node_tree/transform.h>
@@ -100,11 +100,7 @@ bool BezierEditor::canvas_event(QEvent* event) {
                         // TODO: support editing non-const
                         auto path = node->mod();
                         path.emplace_back(pos);
-                        auto action_stack = get_context()->action_stack();
-                        action_stack->emplace<core::actions::ChangeValue>(
-                            node,
-                            path
-                        );
+                        write_value(path);
                         add_knot_editor(path.size()-1);
                         reset_curve(path);
                     }
@@ -191,8 +187,7 @@ void BezierEditor::point_moved(size_t point_id, QPointF const& pos) {
     auto bezier_node = no_null(get_bezier_node());
     auto path = bezier_node->mod();
 
-    size_t i = point_id / BezierPointFlag::Count;
-    auto flag = (BezierPointFlag) (point_id % BezierPointFlag::Count);
+    auto [flag, i] = point_id_to_fn(point_id);
 
     auto& point = flag_to_ref(path.knots[i], flag);
     point = util::point(pos);
@@ -204,20 +199,28 @@ void BezierEditor::point_moved(size_t point_id, QPointF const& pos) {
         point_s = -point;
     }
 
-    auto action_stack = get_context()->action_stack();
-    action_stack->emplace<core::actions::ChangeValue>(
-        bezier_node,
-        path
-    );
+    write_value(path);
 }
 
 void BezierEditor::point_stopped_moving(size_t /*point_id*/) {
-    get_context()->action_stack()->close();
+    close_action();
+}
+
+void BezierEditor::point_double_clicked(size_t point_id) {
+    if (is_readonly())
+        return;
+    // TODO: different action for tangent points
+    auto path = get_path();
+    auto [_, i] = point_id_to_fn(point_id);
+    auto& point = path.knots[i];
+    auto tag = QInputDialog::getText(nullptr, "Bezier point tag", "Edit bezier point tag", QLineEdit::Normal, util::str(point.uid));
+    point.uid = util::str(tag);
+    write_value(path);
 }
 
 QGraphicsItem* BezierEditor::add_point_editor(size_t i, BezierPointFlag what, QGraphicsItem* parent) {
     auto bezier_node = no_null(get_bezier_node());
-    auto e = new ListenerPointItem(this, i*BezierPointFlag::Count+what);
+    auto e = new ListenerPointItem(this, point_id_from_fn(what, i));
     if (parent) {
         e->setParentItem(parent);
         e->set_color({0xff, 0xff, 0x88});
@@ -278,6 +281,17 @@ shared_ptr<core::BaseValue<Geom::BezierKnots>> BezierEditor::get_bezier_node() c
 
 Geom::BezierKnots BezierEditor::get_path() const {
     return no_null(get_bezier_node())->value(get_core_context());
+}
+
+pair<BezierEditor::BezierPointFlag, size_t> BezierEditor::point_id_to_fn(size_t point_id) const {
+    return {
+        (BezierPointFlag) (point_id % BezierPointFlag::Count),
+        point_id / BezierPointFlag::Count
+    };
+}
+
+size_t BezierEditor::point_id_from_fn(BezierPointFlag flag, size_t n) const {
+    return n*BezierPointFlag::Count+flag;
 }
 
 } // namespace rainynite::studio
