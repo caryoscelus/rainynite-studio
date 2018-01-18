@@ -1,5 +1,5 @@
 /*  docks/undo_history.h - undo/redo history dock
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ private:
     unique_ptr<UndoModel> model;
 };
 
-REGISTER_DOCK("Undo history", UndoHistoryDock, Qt::RightDockWidgetArea);
+REGISTER_CONTEXT_DOCK("Undo history", UndoHistoryDock, Qt::RightDockWidgetArea);
 
 } // namespace rainynite::studio
 

@@ -66,7 +66,7 @@ private:
     unique_ptr<QMenu> menu;
 };
 
-REGISTER_DOCK("Node tree", NodeTreeDock, Qt::LeftDockWidgetArea);
+REGISTER_CONTEXT_DOCK("Node tree", NodeTreeDock, Qt::LeftDockWidgetArea);
 
 } // namespace rainynite::studio
 

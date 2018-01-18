@@ -1,5 +1,5 @@
 /*  dock_registry.h - Dock registry
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -50,22 +50,27 @@ inline map<std::string, DockFactory*> const& get_all_docks() {
 
 } // namespace rainynite::studio
 
-#define REGISTER_DOCK(Name, Dock, position) \
+#define ABSTRACT_REGISTER_DOCK(Name, Dock, init, position) \
 class Dock##Factory : \
     public DockFactory, \
     private class_init::StringRegistered<Dock##Factory, DockFactory> \
 { \
 public: \
-    static std::string name() { \
+    static string name() { \
         return Name; \
     } \
-public: \
     unique_ptr<QDockWidget> operator()(shared_ptr<EditorContext> context) const override { \
-        return unique_ptr<QDockWidget>(static_cast<QDockWidget*>(new Dock(std::move(context)))); \
+        return init(std::move(context)); \
     } \
     Qt::DockWidgetArea preferred_area() const override { \
         return position; \
     } \
 }
+
+#define REGISTER_CONTEXT_DOCK(Name, Dock, position) \
+    ABSTRACT_REGISTER_DOCK(Name, Dock, make_unique<Dock>, position)
+
+#define REGISTER_DOCK(Name, Dock, position) \
+    ABSTRACT_REGISTER_DOCK(Name, Dock, [](auto) { return make_unique<Dock>(); }, position)
 
 #endif

@@ -56,7 +56,7 @@ private:
     core::NodeTree::Index active_node;
 };
 
-REGISTER_DOCK("Node editor", NodeEditDock, Qt::LeftDockWidgetArea);
+REGISTER_CONTEXT_DOCK("Node editor", NodeEditDock, Qt::LeftDockWidgetArea);
 
 } // namespace rainynite::studio
 

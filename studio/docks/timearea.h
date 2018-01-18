@@ -64,7 +64,7 @@ private:
     size_t editor_count = 0;
 };
 
-REGISTER_DOCK("Timeline", TimeareaDock, Qt::BottomDockWidgetArea);
+REGISTER_CONTEXT_DOCK("Timeline", TimeareaDock, Qt::BottomDockWidgetArea);
 
 } // namespace rainynite::studio
 

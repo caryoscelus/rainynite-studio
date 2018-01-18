@@ -1,5 +1,5 @@
 /*  docks/advanced_color_selector.h - Advanced color selector dock
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ private:
     unique_ptr<Ui::AdvancedColorDock> ui;
 };
 
-REGISTER_DOCK("Advanced Color Dock", AdvancedColorDock, Qt::RightDockWidgetArea);
+REGISTER_CONTEXT_DOCK("Advanced Color Dock", AdvancedColorDock, Qt::RightDockWidgetArea);
 
 } // namespace rainynite::studio
 

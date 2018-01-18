@@ -1,5 +1,5 @@
 /*  dock/playback.h - playback controls dock
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -64,8 +64,8 @@ private:
     bool is_looping = false;
 };
 
-REGISTER_DOCK("Playback", PlaybackDock, Qt::BottomDockWidgetArea);
+REGISTER_CONTEXT_DOCK("Playback", PlaybackDock, Qt::BottomDockWidgetArea);
 
-}
+} // namespace rainynite::studio
 
 #endif
