@@ -59,6 +59,11 @@ void AbstractPointItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
     stopped_moving();
 }
 
+void AbstractPointItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
+    QGraphicsEllipseItem::mouseDoubleClickEvent(event);
+    double_clicked();
+}
+
 void AbstractPointItem::set_readonly(bool ro) {
     setFlag(QGraphicsItem::ItemIsMovable, !ro);
     setFlag(QGraphicsItem::ItemIsSelectable, !ro);

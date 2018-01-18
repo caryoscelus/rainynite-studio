@@ -22,12 +22,6 @@
 
 namespace rainynite::studio {
 
-class PointItemListener {
-public:
-    virtual void point_moved(size_t point_id, QPointF const& pos) = 0;
-    virtual void point_stopped_moving(size_t point_id) = 0;
-};
-
 /**
  * On-canvas item for displaying "point" handles.
  *
@@ -51,14 +45,28 @@ public:
 protected:
     QVariant itemChange(GraphicsItemChange change, QVariant const& value) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
     virtual void moved(QPointF const& pos) = 0;
     virtual void stopped_moving() = 0;
+    virtual void double_clicked() = 0;
 
 private:
     static const int radius = 3;
     bool recursion_protection = false;
 };
+
+
+/**
+ * Interface for editors that use point items
+ */
+class PointItemListener {
+public:
+    virtual void point_moved(size_t point_id, QPointF const& pos) = 0;
+    virtual void point_stopped_moving(size_t point_id) = 0;
+    virtual void point_double_clicked(size_t /*point_id*/) {}
+};
+
 
 /**
  * Point item that takes `parent` PointItemListener and calls methods on it.
@@ -76,6 +84,9 @@ protected:
     }
     void stopped_moving() override {
         p->point_stopped_moving(id);
+    }
+    void double_clicked() override {
+        p->point_double_clicked(id);
     }
 
 private:
