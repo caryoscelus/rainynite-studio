@@ -96,9 +96,8 @@ bool BezierEditor::canvas_event(QEvent* event) {
             if (mouse_event->button() == Qt::LeftButton) {
                 drawing = true;
                 if (auto node = get_bezier_node()) {
-                    if (node->is_const()) {
-                        // TODO: support editing non-const
-                        auto path = node->mod();
+                    if (node->can_set()) {
+                        auto path = get_path();
                         path.emplace_back(pos);
                         write_value(path);
                         add_knot_editor(path.size()-1);

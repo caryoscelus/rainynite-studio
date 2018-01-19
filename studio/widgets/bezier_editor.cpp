@@ -36,7 +36,7 @@ public:
 
     void node_update() override {
         if (auto node = get_node_as<Geom::BezierKnots>()) {
-            ui->is_closed->setCheckable(node->is_const());
+            ui->is_closed->setCheckable(node->can_set());
             ui->is_closed->setChecked(node->value(get_core_context()).closed);
         } else {
             // error
@@ -49,11 +49,13 @@ protected:
     void set_closed(bool closed) {
         if (auto action_stack = get_context()->action_stack()) {
             if (auto node = get_node_as<Geom::BezierKnots>()) {
-                if (node->is_const()) {
-                    auto value = node->mod();
-                    value.closed = closed;
-                    action_stack->emplace<core::actions::ChangeValue>(node, value);
-                    action_stack->close();
+                if (node->can_set()) {
+                    if (auto maybe_path = get_value<Geom::BezierKnots>()) {
+                        auto path = *std::move(maybe_path);
+                        path.closed = closed;
+                        write_value(path);
+                        close_action();
+                    }
                 }
             }
         }
