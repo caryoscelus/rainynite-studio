@@ -139,7 +139,7 @@ public:
     }
 
     bool is_readonly(ValueNodeType* node) const {
-        return !node->is_const();
+        return !node->can_set();
     }
 };
 

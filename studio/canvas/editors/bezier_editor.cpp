@@ -125,7 +125,7 @@ void BezierEditor::time_changed(core::Time) {
 }
 
 bool BezierEditor::is_readonly() const {
-    return !get_scene() || !get_bezier_node() || !get_bezier_node()->is_const();
+    return !get_scene() || !get_bezier_node() || !get_bezier_node()->can_set();
 }
 
 void BezierEditor::redraw() {

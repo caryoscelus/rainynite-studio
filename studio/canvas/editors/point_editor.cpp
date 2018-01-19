@@ -66,7 +66,7 @@ private:
         if (auto maybe_point = get_value<Geom::Point>()) {
             auto point = *maybe_point;
             point_item->set_pos(point.x(), point.y());
-            point_item->set_readonly(!get_node()->is_const());
+            point_item->set_readonly(!get_node()->can_set());
         }
         if (auto node_tree = get_context()->tree()) {
             if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(get_node_index())) {
