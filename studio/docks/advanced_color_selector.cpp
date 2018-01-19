@@ -57,7 +57,7 @@ void AdvancedColorDock::active_node_changed(shared_ptr<core::AbstractValue> node
 
 void AdvancedColorDock::write_color(QColor c) {
     using core::base_value_cast;
-    using core::actions::ChangeValue;
+    using core::actions::ChangeValueAt;
     using core::colors::Color;
     if (auto node = base_value_cast<Color>(get_context()->get_active_node())) {
         auto color = Color {
@@ -66,11 +66,12 @@ void AdvancedColorDock::write_color(QColor c) {
             (unsigned char)c.blue(),
             (unsigned char)c.alpha()
         };
-        if (node->can_set_any(color)) {
+        if (node->can_set_any_at()) {
             // TODO: use generic color conversion
-            get_context()->action_stack()->emplace<ChangeValue>(
+            get_context()->action_stack()->emplace<ChangeValueAt>(
                 node,
-                color
+                color,
+                get_core_context()
             );
         }
     }

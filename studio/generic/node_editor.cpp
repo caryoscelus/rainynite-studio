@@ -1,5 +1,5 @@
 /*  node_editor.cpp - abstract node editor widget class
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,9 +46,10 @@ Geom::Affine get_transform(NodeEditor const& editor) {
 
 void NodeEditor::write_value(any value) {
     auto action_stack = no_null(get_context()->action_stack());
-    action_stack->emplace<core::actions::ChangeValue>(
+    action_stack->emplace<core::actions::ChangeValueAt>(
         get_node(),
-        value
+        value,
+        get_core_context()
     );
 }
 

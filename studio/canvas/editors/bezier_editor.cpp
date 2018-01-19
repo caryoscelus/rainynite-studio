@@ -96,7 +96,7 @@ bool BezierEditor::canvas_event(QEvent* event) {
             if (mouse_event->button() == Qt::LeftButton) {
                 drawing = true;
                 if (auto node = get_bezier_node()) {
-                    if (node->can_set()) {
+                    if (node->can_set_any_at()) {
                         auto path = get_path();
                         path.emplace_back(pos);
                         write_value(path);
@@ -124,7 +124,7 @@ void BezierEditor::time_changed(core::Time) {
 }
 
 bool BezierEditor::is_readonly() const {
-    return !get_scene() || !get_bezier_node() || !get_bezier_node()->can_set();
+    return !get_scene() || !get_bezier_node() || !get_bezier_node()->can_set_any_at();
 }
 
 void BezierEditor::redraw() {
@@ -150,7 +150,7 @@ void BezierEditor::init() {
 
     reset_curve(path);
 
-    if (bezier_node->can_set()) {
+    if (bezier_node->can_set_any_at()) {
         for (ptrdiff_t i = 0; i < old_size; ++i) {
             add_knot_editor(i);
         }

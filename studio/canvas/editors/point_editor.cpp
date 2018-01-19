@@ -66,7 +66,7 @@ private:
         if (auto maybe_point = get_value<Geom::Point>()) {
             auto point = *maybe_point;
             point_item->set_pos(point.x(), point.y());
-            point_item->set_readonly(!get_node()->can_set());
+            point_item->set_readonly(!get_node()->can_set_any_at());
         }
         if (auto node_tree = get_context()->tree()) {
             if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(get_node_index())) {
@@ -78,11 +78,12 @@ private:
 
     void point_moved(size_t /*id*/, QPointF const& pos) override {
         if (auto node = get_node_as<Geom::Point>()) {
-            if (node->can_set()) {
+            if (node->can_set_any_at()) {
                 auto action_stack = get_context()->action_stack();
-                action_stack->emplace<core::actions::ChangeValue>(
+                action_stack->emplace<core::actions::ChangeValueAt>(
                     node,
-                    util::point(pos)
+                    util::point(pos),
+                    get_core_context()
                 );
             }
         }

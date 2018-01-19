@@ -66,7 +66,7 @@ public:
     void node_update() override {
         update_position();
         auto node = get_node_as<core::TimePeriod>();
-        bool editable = node && node->can_set();
+        bool editable = node && node->can_set_any_at();
         for (auto item : {first_item.get(), last_item.get()}) {
             item->set_readonly(!editable);
             item->setFlag(QGraphicsItem::ItemIsSelectable, editable);
@@ -80,12 +80,16 @@ public:
     void item_moved(core::Time time, TimePeriodItem::Setter setter) {
         if (auto node = get_node_as<core::TimePeriod>()) {
             ignore_time_change = true;
-            if (node->can_set()) {
+            if (node->can_set_any_at()) {
                 if (auto action_stack = get_context()->action_stack()) {
-                    using core::actions::ChangeValue;
+                    using core::actions::ChangeValueAt;
                     auto value = node->mod();
                     (value.*setter)(time);
-                    action_stack->emplace<ChangeValue>(node, value);
+                    action_stack->emplace<ChangeValueAt>(
+                        node,
+                        value,
+                        get_core_context()
+                    );
                 }
             }
             ignore_time_change = false;

@@ -1,5 +1,5 @@
 /*  node_editor_widget.h - convert widget to node editor
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 #include <core/std/traits.h>
 #include <core/util/type_info.h>
+#include <core/util/nullptr.h>
 #include <core/action_stack.h>
 
 #include "node_editor.h"
@@ -129,8 +130,13 @@ public:
             // TODO
             return;
         }
-        this->get_context()->action_stack()->template emplace<core::actions::ChangeValue>(this->get_node(), value);
-        this->get_context()->action_stack()->close();
+        auto context = no_null(this->get_context());
+        context->action_stack()->template emplace<core::actions::ChangeValueAt>(
+            this->get_node(),
+            value,
+            context->get_context()
+        );
+        context->action_stack()->close();
     }
 
     /// This function forwards update_value call
@@ -139,7 +145,7 @@ public:
     }
 
     bool is_readonly(ValueNodeType* node) const {
-        return !node->can_set();
+        return !node->can_set_any_at();
     }
 };
 
@@ -172,8 +178,13 @@ public:
             if (vnode->mod() == Widget::value())
                 return;
         }
-        this->get_context()->action_stack()->template emplace<core::actions::ChangeValue>(this->get_node(), Widget::value());
-        this->get_context()->action_stack()->close();
+        auto context = no_null(this->get_context());
+        context->action_stack()->template emplace<core::actions::ChangeValueAt>(
+            this->get_node(),
+            Widget::value(),
+            context->get_context()
+        );
+        context->action_stack()->close();
     }
 
     /// This function forwards update_value call
