@@ -64,8 +64,7 @@ void AdvancedColorDock::write_color(QColor c) {
             (unsigned char)c.red(),
             (unsigned char)c.green(),
             (unsigned char)c.blue(),
-            // temporary fix for #41
-            node->value(get_core_context()).a
+            (unsigned char)c.alpha()
         };
         if (node->can_set_any(color)) {
             // TODO: use generic color conversion
