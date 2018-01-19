@@ -136,7 +136,7 @@ void Canvas::update_border() {
     auto w = size.x();
     auto h = size.y();
     image_border->setRect(0, 0, w, h);
-    setSceneRect(-w, -h, w*3, h*3);
+    setSceneRect(-w*2, -h*2, w*5, h*5);
 }
 
 } // namespace rainynite::studio
