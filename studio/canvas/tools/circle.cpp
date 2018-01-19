@@ -76,11 +76,11 @@ protected:
 private:
     void circle_drawn(QPointF a, QPointF b) {
         using namespace core;
-        auto circle_node = make_node_with_name<Node<Geom::Circle>>("CirclePR");
+        auto circle_node = make_node_with_name<AbstractNode>("CirclePR");
         circle_node->set_property("position", make_value<Geom::Point>(a.x(), a.y()));
         auto radius = get_radius(a, b);
         circle_node->set_property("radius", make_value<double>(radius));
-        write_shape(circle_node);
+        write_shape(abstract_value_cast(circle_node));
     }
 
     double get_radius(QPointF const& a, QPointF const& b) {
