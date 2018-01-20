@@ -58,6 +58,7 @@ protected:
 
 private:
     void activate(QModelIndex const& index);
+    void reload_model();
 
 private:
     unique_ptr<Ui::NodeTreeDock> ui;

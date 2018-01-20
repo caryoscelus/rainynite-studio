@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>208</width>
-    <height>147</height>
+    <height>152</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,11 +31,25 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QLineEdit" name="filter">
-      <property name="clearButtonEnabled">
-       <bool>true</bool>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="layout">
+      <item>
+       <widget class="QToolButton" name="reload_model">
+        <property name="text">
+         <string>reload</string>
+        </property>
+        <property name="icon">
+         <iconset theme="view-refresh"/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="filter">
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QTreeView" name="tree_view">

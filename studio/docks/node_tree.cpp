@@ -23,6 +23,7 @@
 
 #include <core/document.h>
 #include <core/node_info/node_info.h>
+#include <core/util/nullptr.h>
 
 #include <util/strings.h>
 #include <models/node_model.h>
@@ -48,6 +49,8 @@ NodeTreeDock::NodeTreeDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     connect(ui->tree_view, &QAbstractItemView::clicked, this, &NodeTreeDock::activate);
 
     connect(ui->filter, &QLineEdit::textEdited, this, &NodeTreeDock::apply_filter);
+
+    connect(ui->reload_model, &QAbstractButton::clicked, this, &NodeTreeDock::reload_model);
 
     set_context(get_context());
 }
@@ -94,6 +97,11 @@ void NodeTreeDock::apply_filter(QString const& s) {
 
 void NodeTreeDock::activate(QModelIndex const& index) {
     set_active_node(model->get_inner_index(index));
+}
+
+void NodeTreeDock::reload_model() {
+    auto tree = no_null(get_context()->tree());
+    tree->reload_children(tree->get_root_index());
 }
 
 } // namespace rainynite::studio
