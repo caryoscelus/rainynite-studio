@@ -1,5 +1,5 @@
 /*  editor_context.cpp - editor Context
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,7 +15,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+
 #include <core/document.h>
+#include <core/node_tree/exceptions.h>
 
 #include "editor_context.h"
 
@@ -26,6 +29,20 @@ void EditorContext::set_active_node(core::NodeTree::Index index) {
         return;
     active_node = index;
     changed_active_node()(index);
+}
+
+shared_ptr<core::AbstractValue> EditorContext::get_node(core::NodeTree::Index index) const {
+    if (!index)
+        return nullptr;
+    if (auto node_tree = tree()) {
+        try {
+            return node_tree->get_node(index);
+        } catch (core::NodeTreeError const& ex) {
+            qWarning() << ex.what();
+            return nullptr;
+        }
+    }
+    return nullptr;
 }
 
 shared_ptr<core::NodeTree> EditorContext::tree() const {

@@ -1,5 +1,5 @@
 /*  editor_context.h - editor Context
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -57,13 +57,7 @@ public:
         return dynamic_pointer_cast<T>(get_active_node());
     }
 
-    shared_ptr<core::AbstractValue> get_node(core::NodeTree::Index index) const {
-        if (!index)
-            return nullptr;
-        if (auto node_tree = tree())
-            return node_tree->get_node(index);
-        return nullptr;
-    }
+    shared_ptr<core::AbstractValue> get_node(core::NodeTree::Index index) const;
 
     // Get tree
     shared_ptr<core::NodeTree> tree() const;
