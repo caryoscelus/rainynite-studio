@@ -183,8 +183,7 @@ Geom::Point& flag_to_ref(Geom::Knot& source, BezierEditor::BezierPointFlag flag)
 }
 
 void BezierEditor::point_moved(size_t point_id, QPointF const& pos) {
-    auto bezier_node = no_null(get_bezier_node());
-    auto path = bezier_node->mod();
+    auto path = get_path();
 
     auto [flag, i] = point_id_to_fn(point_id);
 
