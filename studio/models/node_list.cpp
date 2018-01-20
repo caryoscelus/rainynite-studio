@@ -17,6 +17,7 @@
 
 #include <core/node_info/node_info.h>
 #include <core/node_tree/exceptions.h>
+#include <core/util/nullptr.h>
 
 #include <util/strings.h>
 #include "node_list.h"
@@ -38,7 +39,7 @@ QVariant NodeListModel::data(QModelIndex const& index, int role) const {
     try {
         switch (role) {
             case Qt::DisplayRole:
-                return util::str(core::node_name(*get_node(index)));
+                return util::str(core::node_name(*no_null(get_node(index))));
             default:
                 return {};
         }

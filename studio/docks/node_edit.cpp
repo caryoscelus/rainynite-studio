@@ -75,6 +75,8 @@ void NodeEditDock::update_value() {
 }
 
 void NodeEditDock::setup_custom_widget(shared_ptr<core::AbstractValue> node) {
+    if (!node)
+        return;
     auto widget = new_custom_widget(node->get_type());
     if (!widget) {
         widget = make_unique<QWidget>();
