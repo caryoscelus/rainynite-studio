@@ -26,7 +26,8 @@
 namespace rainynite::studio {
 
 TimelineArea::TimelineArea(QWidget* parent) :
-    AbstractCanvas(parent)
+    AbstractCanvas(parent),
+    context_menu(make_unique<QMenu>())
 {
     setDragMode(QGraphicsView::RubberBandDrag);
     setSceneRect(-5, 0, 65, 30);
@@ -42,10 +43,10 @@ void TimelineArea::contextMenuEvent(QContextMenuEvent* event) {
         auto pos = mapToScene(cm_event->pos());
         // TODO: find editor at this y
         for (auto editor : list_editors()) {
-            QMenu menu;
             if (auto timeline_editor = dynamic_cast<TimelineEditor*>(editor.get())) {
-                if (timeline_editor->call_context_menu(pos.y(), pos.x(), menu)) {
-                    menu.popup(event->globalPos());
+                context_menu->clear();
+                if (timeline_editor->call_context_menu(pos.y(), pos.x(), *context_menu)) {
+                    context_menu->popup(event->globalPos());
                     event->accept();
                 }
             }

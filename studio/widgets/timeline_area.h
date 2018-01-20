@@ -28,6 +28,7 @@
 #include <canvas/registry.h>
 
 class QGraphicsScene;
+class QMenu;
 
 namespace rainynite::studio {
 
@@ -46,6 +47,7 @@ public:
 
 private:
     vector<shared_ptr<AbstractCanvasEditor>> misc_editors;
+    unique_ptr<QMenu> context_menu;
 };
 
 REGISTER_CANVAS(TimelineArea);
