@@ -218,7 +218,6 @@ void BezierEditor::point_double_clicked(size_t point_id) {
 }
 
 QGraphicsItem* BezierEditor::add_point_editor(size_t i, BezierPointFlag what, QGraphicsItem* parent) {
-    auto bezier_node = no_null(get_bezier_node());
     auto e = new ListenerPointItem(this, point_id_from_fn(what, i));
     if (parent) {
         e->setParentItem(parent);
@@ -227,7 +226,8 @@ QGraphicsItem* BezierEditor::add_point_editor(size_t i, BezierPointFlag what, QG
         e->setParentItem(no_null(curve_item.get()));
         e->set_color({0xff, 0x66, 0x66});
     }
-    auto point = flag_to_ref(bezier_node->mod().knots[i], what);
+    auto path = get_path();
+    auto point = flag_to_ref(path.knots[i], what);
     e->set_pos(point.x(), point.y());
     e->set_readonly(false);
     return e;
