@@ -47,6 +47,7 @@ void TimelineArea::contextMenuEvent(QContextMenuEvent* event) {
                 if (timeline_editor->call_context_menu(pos.y(), pos.x(), *context_menu)) {
                     context_menu->popup(event->globalPos());
                     event->accept();
+                    break;
                 }
             }
         }
