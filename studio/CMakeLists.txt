@@ -76,6 +76,7 @@ target_sources(rainynite-studio
         canvas/editors/time_period_editor.cpp
         canvas/editors/time_bezier.cpp
         canvas/editors/waveform.cpp
+        canvas/editors/animated.cpp
 
         generic/node_menu.cpp
         generic/node_menu.h
