@@ -18,6 +18,7 @@
 #include <fmt/format.h>
 
 #include <core/node_info/node_info.h>
+#include <core/node_info/copy.h>
 #include <core/node/make.h>
 #include <core/node/abstract_node.h>
 #include <core/node_tree/exceptions.h>
