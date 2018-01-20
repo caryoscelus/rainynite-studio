@@ -15,7 +15,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+
 #include <core/node_info/node_info.h>
+#include <core/node_tree/exceptions.h>
 
 #include <generic/node_editor.h>
 #include "abstract_editor.h"
@@ -82,7 +85,14 @@ vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& 
         // NOTE: this may lead to infinite recursion if node tree is looped
         if (auto tree = canvas.get_context()->tree()) {
             for (size_t i = 0; i < tree->children_count(index); ++i) {
-                auto child_idx = tree->index(index, i);
+                core::NodeTree::Index child_idx;
+                try {
+                    child_idx = tree->index(index, i);
+                } catch (core::NodeTreeError const&) {
+                    // TODO: better report
+                    qWarning() << "adding child failed";
+                    break;
+                }
                 auto children_editors = add_canvas_node_editor(canvas, child_idx);
                 added_editors.insert(
                     added_editors.end(),
