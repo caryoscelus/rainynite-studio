@@ -1,5 +1,5 @@
 /*  timeline_editor.h - timeline editing widgets
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,13 +23,31 @@
 
 #include <canvas/abstract_editor.h>
 
+class QMenu;
+
 namespace rainynite::studio {
 
+/**
+ * Timeline editor: specialization of AbstractCanvasEditor for timeline.
+ */
 class TimelineEditor : public AbstractCanvasEditor {
 public:
     /// Set editor preferred vertical position and size
-    virtual void set_position_hint(int /*y*/, int /*height*/) {
+    virtual void set_position_hint(int y, int height) {
+        editor_y = y;
+        editor_height = height;
     }
+
+    bool call_context_menu(double y, double seconds, QMenu& menu);
+
+    /// Context menu
+    virtual bool context_menu(double /*seconds*/, QMenu& /*menu*/) {
+        return false;
+    }
+
+protected:
+    int editor_y = 0;
+    int editor_height = 0;
 };
 
 } // namespace rainynite::studio

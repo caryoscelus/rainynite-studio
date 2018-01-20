@@ -16,6 +16,8 @@
  */
 
 #include <QGraphicsScene>
+#include <QContextMenuEvent>
+#include <QMenu>
 
 #include <generic/timeline_editor.h>
 
@@ -32,6 +34,24 @@ TimelineArea::TimelineArea(QWidget* parent) :
 }
 
 TimelineArea::~TimelineArea() {
+}
+
+void TimelineArea::contextMenuEvent(QContextMenuEvent* event) {
+    if (event->type() == QEvent::ContextMenu) {
+        auto cm_event = static_cast<QContextMenuEvent*>(event);
+        auto pos = mapToScene(cm_event->pos());
+        // TODO: find editor at this y
+        for (auto editor : list_editors()) {
+            QMenu menu;
+            if (auto timeline_editor = dynamic_cast<TimelineEditor*>(editor.get())) {
+                if (timeline_editor->call_context_menu(pos.y(), pos.x(), menu)) {
+                    menu.popup(event->globalPos());
+                    event->accept();
+                }
+            }
+        }
+    }
+    return AbstractCanvas::contextMenuEvent(event);
 }
 
 void TimelineArea::zoom_time_by(double factor) {

@@ -89,6 +89,7 @@ target_sources(rainynite-studio
         generic/editor_context.h
         generic/canvas_editor.h
         generic/timeline_editor.h
+        generic/timeline_editor.cpp
         generic/dock_registry.h
         generic/action.h
         generic/action_menu.cpp
