@@ -56,6 +56,22 @@ vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& 
         added_editors.push_back(editor);
     }
 
+    editor.reset();
+    try {
+        editor = make_canvas_node_editor_for(canvas, typeid(*node));
+    } catch (class_init::TypeLookupError const&) {
+    }
+
+    if (editor != nullptr) {
+        // TODO: avoid code duplication
+        canvas.add_editor(editor);
+        if (auto context_listener = dynamic_cast<ContextListener*>(editor.get()))
+            context_listener->set_context(canvas.get_context());
+        if (auto node_editor = dynamic_cast<NodeEditor*>(editor.get()))
+            node_editor->set_node(index);
+        added_editors.push_back(editor);
+    }
+
     bool show_children = false;
     try {
         show_children = class_init::name_info<NodeEditorShowChildren>(core::node_name(*node))();
@@ -63,10 +79,8 @@ vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& 
     }
 
     if (show_children) {
-        if (auto tree = canvas.get_context()->tree()) {
-
         // NOTE: this may lead to infinite recursion if node tree is looped
-//         if (auto parent = dynamic_cast<core::AbstractListLinked*>(node.get())) {
+        if (auto tree = canvas.get_context()->tree()) {
             for (size_t i = 0; i < tree->children_count(index); ++i) {
                 auto child_idx = tree->index(index, i);
                 auto children_editors = add_canvas_node_editor(canvas, child_idx);

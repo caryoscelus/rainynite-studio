@@ -38,6 +38,10 @@ struct AbstractCanvasEditorsInfo {
     virtual unique_ptr<AbstractCanvasEditor> operator()(Type type) const = 0;
 };
 
+struct AbstractCanvasNodeEditorsInfo {
+    virtual unique_ptr<AbstractCanvasEditor> operator()(std::type_index node_type) const = 0;
+};
+
 template <class CanvasT>
 struct CanvasToolsInfoInstance :
     public CanvasToolsInfo,
@@ -81,9 +85,24 @@ struct AbstractCanvasEditorsInfoInstance :
     }
 };
 
+template <class CanvasT>
+struct AbstractCanvasNodeEditorsInfoInstance :
+    public AbstractCanvasNodeEditorsInfo,
+    private class_init::Registered<
+        AbstractCanvasNodeEditorsInfoInstance<CanvasT>,
+        CanvasT,
+        AbstractCanvasNodeEditorsInfo
+    >
+{
+    unique_ptr<AbstractCanvasEditor> operator()(std::type_index node_type) const override {
+        return make_canvas_node_editor<CanvasT>(node_type);
+    }
+};
+
 #define REGISTER_CANVAS(CanvasT) \
 template struct CanvasToolsInfoInstance<CanvasT>; \
-template struct AbstractCanvasEditorsInfoInstance<CanvasT>
+template struct AbstractCanvasEditorsInfoInstance<CanvasT>; \
+template struct AbstractCanvasNodeEditorsInfoInstance<CanvasT>
 
 inline vector<AbstractFactory<CanvasTool>*> get_canvas_tools_by_type(Type type) {
     return class_init::type_info<CanvasToolsInfo,vector<AbstractFactory<CanvasTool>*>>(type);
@@ -91,6 +110,10 @@ inline vector<AbstractFactory<CanvasTool>*> get_canvas_tools_by_type(Type type) 
 
 inline unique_ptr<AbstractCanvasEditor> make_canvas_editor_for(AbstractCanvas const& canvas, Type type) {
     return class_init::type_info<AbstractCanvasEditorsInfo,unique_ptr<AbstractCanvasEditor>>(typeid(canvas), type);
+}
+
+inline unique_ptr<AbstractCanvasEditor> make_canvas_node_editor_for(AbstractCanvas const& canvas, std::type_index node_type) {
+    return class_init::type_info<AbstractCanvasNodeEditorsInfo,unique_ptr<AbstractCanvasEditor>>(typeid(canvas), node_type);
 }
 
 } // namespace rainynite::studio
