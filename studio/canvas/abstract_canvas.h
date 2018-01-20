@@ -113,6 +113,10 @@ protected:
 
     double zoom_level();
 
+    vector<shared_ptr<AbstractCanvasEditor>> const& list_editors() const {
+        return editors;
+    }
+
     core::NodeTree::Index active_node_index;
 
 private:
