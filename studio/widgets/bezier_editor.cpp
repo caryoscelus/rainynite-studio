@@ -52,6 +52,8 @@ protected:
                 if (node->can_set_any_at()) {
                     if (auto maybe_path = get_value<Geom::BezierKnots>()) {
                         auto path = *std::move(maybe_path);
+                        if (path.closed == closed)
+                            return;
                         path.closed = closed;
                         write_value(path);
                         close_action();
