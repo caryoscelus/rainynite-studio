@@ -161,9 +161,10 @@ void MainWindow::reload() {
         auto msg = util::str(std::accumulate(errors.begin(), errors.end(), string("\n\n")));
         qDebug() << msg;
         error_box->showMessage(msg);
+    } else {
+        document = new_document;
+        renderer->render_frame();
     }
-    document = new_document;
-    renderer->render_frame();
 }
 
 bool MainWindow::save_as() {
