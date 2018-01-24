@@ -17,6 +17,8 @@
 
 #include <fmt/format.h>
 
+#include <QDebug>
+
 #include <core/node_info/node_info.h>
 #include <core/node_info/copy.h>
 #include <core/node/make.h>
@@ -58,7 +60,22 @@ NodeModel::NodeModel(core::AbstractReference root_, shared_ptr<core::ActionStack
     if (auto document = dynamic_cast<core::AbstractDocument*>(root.get())) {
         tree = document->get_tree();
     } else {
+        qWarning() << "NodeModel: creating new tree. .this probably shouldn't happen";
         tree = root_ ? make_shared<core::NodeTree>(root_) : nullptr;
+    }
+    if (tree) {
+        tree->connect_boost(tree->start_reload_signal, [this](auto parent) {
+            auto parent_idx = from_inner_index(parent);
+            beginRemoveRows(parent_idx, 0, tree->children_count(parent)-1);
+        });
+        tree->connect_boost(tree->start_adding_signal, [this](auto parent, size_t count) {
+            endRemoveRows();
+            auto parent_idx = from_inner_index(parent);
+            beginInsertRows(parent_idx, 0, count-1);
+        });
+        tree->connect_boost(tree->end_reload_signal, [this]() {
+            endInsertRows();
+        });
     }
 }
 
