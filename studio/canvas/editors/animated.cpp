@@ -41,8 +41,6 @@ public:
                     auto nctx = make_shared<core::Context>(*ctx);
                     nctx->set_seconds(seconds);
                     node->set_any_at(node->get_any(nctx), nctx);
-                    // animated nodes add new frames and it's not being reflected in tree
-                    get_context()->tree()->reload_children(get_node_index());
                 }
             }
         });
