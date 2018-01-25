@@ -22,7 +22,7 @@
 
 #include <core/node_info/node_info.h>
 #include <core/node/traverse.h>
-#include <core/node_tree/node_tree.h>
+#include <core/node_tree/index.h>
 
 #include <generic/context_listener.h>
 
@@ -110,10 +110,10 @@ public:
 
     size_t get_node_index(QModelIndex const& index) const;
 
-    core::NodeTree::Index get_inner_index(QModelIndex const& parent, size_t i) const;
-    core::NodeTree::Index get_inner_index(QModelIndex const& index) const;
+    core::NodeTreeIndex get_inner_index(QModelIndex const& parent, size_t i) const;
+    core::NodeTreeIndex get_inner_index(QModelIndex const& index) const;
 
-    QModelIndex from_inner_index(core::NodeTree::Index index) const;
+    QModelIndex from_inner_index(core::NodeTreeIndex index) const;
 
 private:
     core::AbstractReference root;

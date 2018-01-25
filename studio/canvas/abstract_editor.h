@@ -21,7 +21,7 @@
 #include <core/std/vector.h>
 #include <core/abstract_factory.h>
 #include <core/util/class_init.h>
-#include <core/node_tree/node_tree.h>
+#include <core/node_tree/index.h>
 #include <core/node_info/node_info.h>
 
 #include "attachable.h"
@@ -134,7 +134,7 @@ unique_ptr<AbstractCanvasEditor> make_canvas_node_editor(std::type_index node_ty
 shared_ptr<AbstractCanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas, string const& name);
 
 /// Create & add canvas node editor to canvas
-vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, core::NodeTree::Index index);
+vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, core::NodeTreeIndex index);
 
 } // namespace rainynite::studio
 

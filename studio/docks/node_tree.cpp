@@ -23,6 +23,7 @@
 
 #include <core/document.h>
 #include <core/node_info/node_info.h>
+#include <core/node_tree/node_tree.h>
 #include <core/util/nullptr.h>
 
 #include <util/strings.h>
@@ -71,7 +72,7 @@ void NodeTreeDock::set_context(shared_ptr<EditorContext> context_) {
     apply_filter(ui->filter->text());
 }
 
-void NodeTreeDock::active_node_index_changed(core::NodeTree::Index index) {
+void NodeTreeDock::active_node_index_changed(core::NodeTreeIndex index) {
     ContextListener::active_node_index_changed(index);
     auto selection_model = ui->tree_view->selectionModel();
     auto qt_index = model->from_inner_index(index);

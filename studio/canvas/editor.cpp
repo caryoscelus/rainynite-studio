@@ -19,6 +19,7 @@
 
 #include <core/node_info/node_info.h>
 #include <core/node_tree/exceptions.h>
+#include <core/node_tree/node_tree.h>
 
 #include <generic/node_editor.h>
 #include "abstract_editor.h"
@@ -38,7 +39,7 @@ shared_ptr<AbstractCanvasEditor> add_canvas_named_editor(AbstractCanvas& canvas,
     }
 }
 
-vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, core::NodeTree::Index index) {
+vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& canvas, core::NodeTreeIndex index) {
     auto node = canvas.get_context()->get_node(index);
     if (node == nullptr)
         return {};
@@ -85,7 +86,7 @@ vector<shared_ptr<AbstractCanvasEditor>> add_canvas_node_editor(AbstractCanvas& 
         // NOTE: this may lead to infinite recursion if node tree is looped
         if (auto tree = canvas.get_context()->tree()) {
             for (size_t i = 0; i < tree->children_count(index); ++i) {
-                core::NodeTree::Index child_idx;
+                core::NodeTreeIndex child_idx;
                 try {
                     child_idx = tree->index(index, i);
                 } catch (core::NodeTreeError const&) {

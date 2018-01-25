@@ -160,7 +160,7 @@ QModelIndex NodeModel::index(int row, int column, QModelIndex const& parent) con
     return createIndex(row, column, (size_t)get_inner_index(parent, row));
 }
 
-core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& parent, size_t i) const {
+core::NodeTreeIndex NodeModel::get_inner_index(QModelIndex const& parent, size_t i) const {
     if (tree == nullptr)
         return {};
     if (!parent.isValid()) {
@@ -169,19 +169,19 @@ core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& parent, size
         else
             return tree->get_null_index();
     } else {
-        return report_tree_errors<core::NodeTree::Index>([&]() {
+        return report_tree_errors<core::NodeTreeIndex>([&]() {
             return tree->index(get_inner_index(parent), i);
         });
     }
 }
 
-core::NodeTree::Index NodeModel::get_inner_index(QModelIndex const& index) const {
+core::NodeTreeIndex NodeModel::get_inner_index(QModelIndex const& index) const {
     if (!index.isValid())
         return {};
     return index.internalId();
 }
 
-QModelIndex NodeModel::from_inner_index(core::NodeTree::Index index) const {
+QModelIndex NodeModel::from_inner_index(core::NodeTreeIndex index) const {
     if (!index)
         return {};
     return report_tree_errors<QModelIndex>([&]() {

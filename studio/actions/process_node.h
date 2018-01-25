@@ -28,12 +28,12 @@ namespace rainynite::studio::actions {
 template <typename T, typename Tag>
 class ProcessNode : public ContextListener {
 public:
-    virtual bool accept(core::NodeTree::Index index) const = 0;
+    virtual bool accept(core::NodeTreeIndex index) const = 0;
     virtual void feed(T const& argument) = 0;
     virtual void start_list() {}
     virtual void end_list() {}
 
-    bool set_node(core::NodeTree::Index index_) {
+    bool set_node(core::NodeTreeIndex index_) {
         if (accept(index_)) {
             index = index_;
             return true;
@@ -41,7 +41,7 @@ public:
         return false;
     }
 
-    core::NodeTree::Index get_node_index() const {
+    core::NodeTreeIndex get_node_index() const {
         return index;
     }
 
@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    core::NodeTree::Index index;
+    core::NodeTreeIndex index;
 };
 
 template <class P, typename T, typename Tag>

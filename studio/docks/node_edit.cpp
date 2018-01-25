@@ -54,7 +54,7 @@ NodeEditDock::NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent) 
 NodeEditDock::~NodeEditDock() {
 }
 
-void NodeEditDock::active_node_index_changed(core::NodeTree::Index index) {
+void NodeEditDock::active_node_index_changed(core::NodeTreeIndex index) {
     set_node(index);
     active_node = index;
     if (!index)

@@ -49,7 +49,7 @@ public:
 public:
     void set_context(shared_ptr<EditorContext> context_) override;
 
-    void active_node_index_changed(core::NodeTree::Index index) override;
+    void active_node_index_changed(core::NodeTreeIndex index) override;
 
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;

@@ -1,5 +1,5 @@
 /*  node_list.h - node list model
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,23 +42,23 @@ public:
     bool removeRows(int row, int count, QModelIndex const& parent={}) override;
 
     /// Insert node at position
-    void insert_node(core::NodeTree::Index node, int position=-1);
+    void insert_node(core::NodeTreeIndex node, int position=-1);
 
     /**
      * Insert node only if it isn't already in model
      * @return true if node was added
      */
-    bool insert_unique_node(core::NodeTree::Index node, int position=-1);
+    bool insert_unique_node(core::NodeTreeIndex node, int position=-1);
 
     /// Get list of all nodes
 //     vector<shared_ptr<core::AbstractValue>> const& get_all_nodes() const {
 //         return nodes;
 //     }
     shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
-    core::NodeTree::Index get_inner_index(QModelIndex const& index) const;
+    core::NodeTreeIndex get_inner_index(QModelIndex const& index) const;
 
 private:
-    vector<core::NodeTree::Index> nodes;
+    vector<core::NodeTreeIndex> nodes;
 };
 
 } // namespace rainynite::studio

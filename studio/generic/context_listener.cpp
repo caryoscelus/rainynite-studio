@@ -65,11 +65,11 @@ void ContextListener::clear_undo_history() {
     get_context()->action_stack()->clear();
 }
 
-void ContextListener::set_active_node(core::NodeTree::Index index) {
+void ContextListener::set_active_node(core::NodeTreeIndex index) {
     get_context()->set_active_node(index);
 }
 
-void ContextListener::active_node_index_changed(core::NodeTree::Index index) {
+void ContextListener::active_node_index_changed(core::NodeTreeIndex index) {
     active_node_changed(get_context()->get_node(index));
 }
 

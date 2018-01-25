@@ -63,12 +63,12 @@ protected:
     virtual void write_shape(shared_ptr<core::AbstractValue> node);
 
     /// Get target node index
-    core::NodeTree::Index get_index() const {
+    core::NodeTreeIndex get_index() const {
         return target_node_index;
     }
 
 private:
-    core::NodeTree::Index target_node_index;
+    core::NodeTreeIndex target_node_index;
 };
 
 } // namespace rainynite::studio::tools

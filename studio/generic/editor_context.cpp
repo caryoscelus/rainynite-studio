@@ -19,19 +19,20 @@
 
 #include <core/document.h>
 #include <core/node_tree/exceptions.h>
+#include <core/node_tree/node_tree.h>
 
 #include "editor_context.h"
 
 namespace rainynite::studio {
 
-void EditorContext::set_active_node(core::NodeTree::Index index) {
+void EditorContext::set_active_node(core::NodeTreeIndex index) {
     if (index == active_node)
         return;
     active_node = index;
     changed_active_node()(index);
 }
 
-shared_ptr<core::AbstractValue> EditorContext::get_node(core::NodeTree::Index index) const {
+shared_ptr<core::AbstractValue> EditorContext::get_node(core::NodeTreeIndex index) const {
     if (!index)
         return nullptr;
     if (auto node_tree = tree()) {

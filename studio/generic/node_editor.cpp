@@ -23,7 +23,7 @@
 
 namespace rainynite::studio {
 
-void NodeEditor::set_node(core::NodeTree::Index index) {
+void NodeEditor::set_node(core::NodeTreeIndex index) {
     if (node_connection.connected())
         node_connection.disconnect();
     node_index = index;

@@ -23,6 +23,7 @@
 #include <QWidget>
 
 #include <core/abstract_factory.h>
+#include <core/util/class_init.h>
 
 namespace rainynite::studio {
 

@@ -117,7 +117,7 @@ protected:
         return editors;
     }
 
-    core::NodeTree::Index active_node_index;
+    core::NodeTreeIndex active_node_index;
 
 private:
     void add_tool(unique_ptr<CanvasTool> tool);

@@ -20,7 +20,7 @@
 
 #include <core/std/string.h>
 #include <core/context.h>
-#include <core/node_tree/node_tree.h>
+#include <core/node_tree/index.h>
 
 namespace rainynite::core {
 class AbstractValue;
@@ -42,9 +42,9 @@ public:
         return context;
     }
 
-    void set_active_node(core::NodeTree::Index index);
+    void set_active_node(core::NodeTreeIndex index);
 
-    core::NodeTree::Index get_active_node_index() const {
+    core::NodeTreeIndex get_active_node_index() const {
         return active_node;
     }
 
@@ -57,7 +57,7 @@ public:
         return dynamic_pointer_cast<T>(get_active_node());
     }
 
-    shared_ptr<core::AbstractValue> get_node(core::NodeTree::Index index) const;
+    shared_ptr<core::AbstractValue> get_node(core::NodeTreeIndex index) const;
 
     // Get tree
     shared_ptr<core::NodeTree> tree() const;
@@ -81,7 +81,7 @@ public:
         return context->changed_fps;
     }
 
-    Signal<void(core::NodeTree::Index)>& changed_active_node() {
+    Signal<void(core::NodeTreeIndex)>& changed_active_node() {
         return changed_active_node_;
     }
 
@@ -89,10 +89,10 @@ public:
 
 private:
     shared_ptr<core::Context> context;
-    core::NodeTree::Index active_node;
+    core::NodeTreeIndex active_node;
     string file_name;
 
-    Signal<void(core::NodeTree::Index)> changed_active_node_;
+    Signal<void(core::NodeTreeIndex)> changed_active_node_;
 };
 
 shared_ptr<EditorContext> global_dummy_context();

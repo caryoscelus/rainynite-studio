@@ -38,7 +38,7 @@ public:
 
 protected:
     void set_context(shared_ptr<EditorContext> context) override;
-    void active_node_index_changed(core::NodeTree::Index index) override;
+    void active_node_index_changed(core::NodeTreeIndex index) override;
 
     void resizeEvent(QResizeEvent* event) override;
 

@@ -47,7 +47,7 @@ public:
     virtual void node_update() {
     }
 
-    void set_node(core::NodeTree::Index index);
+    void set_node(core::NodeTreeIndex index);
 
     /// Make node associated with this editor active/current
     void activate_node() {
@@ -58,7 +58,7 @@ public:
         return get_context()->get_node(get_node_index());
     }
 
-    core::NodeTree::Index get_node_index() const {
+    core::NodeTreeIndex get_node_index() const {
         return node_index;
     }
 
@@ -82,7 +82,7 @@ protected:
     bool update_enabled = true;
 
 private:
-    core::NodeTree::Index node_index;
+    core::NodeTreeIndex node_index;
     boost::signals2::connection node_connection;
 };
 

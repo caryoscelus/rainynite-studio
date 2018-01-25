@@ -40,7 +40,7 @@ public:
     explicit NodeEditDock(shared_ptr<EditorContext> context_, QWidget* parent = nullptr);
     ~NodeEditDock();
 
-    void active_node_index_changed(core::NodeTree::Index index) override;
+    void active_node_index_changed(core::NodeTreeIndex index) override;
     void time_changed(core::Time time) override;
 
 private:
@@ -53,7 +53,7 @@ private:
     unique_ptr<Ui::NodeEditDock> ui;
     unique_ptr<QWidget> custom_widget;
 
-    core::NodeTree::Index active_node;
+    core::NodeTreeIndex active_node;
 };
 
 REGISTER_CONTEXT_DOCK("Node editor", NodeEditDock, Qt::LeftDockWidgetArea);

@@ -31,7 +31,7 @@ using ImportSoundProcessor = ProcessNode<string, ImportSoundTag>;
 
 class SetSoundtrack : public ProcessNode<string, ImportSoundTag> {
 public:
-    bool accept(core::NodeTree::Index node) const override {
+    bool accept(core::NodeTreeIndex node) const override {
         auto tree = get_context()->tree();
         return node_name(*tree->get_node(node)) == "AudioFromFile";
     }

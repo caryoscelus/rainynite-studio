@@ -47,7 +47,7 @@ public:
                 return r;
         }
 
-        core::NodeTree::Index root;
+        core::NodeTreeIndex root;
         try {
             root = index_of_property(tree, doc_root, "root");
         } catch (...) {
@@ -60,7 +60,7 @@ public:
         return {};
     }
 
-    unique_ptr<Processor> check_target(core::NodeTree::Index node, shared_ptr<EditorContext> ctx) const {
+    unique_ptr<Processor> check_target(core::NodeTreeIndex node, shared_ptr<EditorContext> ctx) const {
         using namespace class_init;
         for (auto factory : class_list_registry<AbstractFactory<Processor>>()) {
             auto r = (*factory)();

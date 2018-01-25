@@ -106,7 +106,7 @@ void Canvas::set_context(shared_ptr<EditorContext> context) {
     update_border();
 }
 
-void Canvas::active_node_index_changed(core::NodeTree::Index index) {
+void Canvas::active_node_index_changed(core::NodeTreeIndex index) {
     if (active_node_index != index) {
         // TODO: handle selection
         active_node_index = index;
