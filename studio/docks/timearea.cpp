@@ -77,7 +77,7 @@ bool TimeareaDock::eventFilter(QObject* object, QEvent* event) {
 
 void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
     auto index = ui->node_list->selectionModel()->currentIndex();
-    if (index.isValid()) {
+    if (ui->node_list->underMouse() && index.isValid()) {
         QMenu menu(this);
         if (index.row() == node_list_model->rowCount()-1 && !pinned) {
             menu.addAction(
