@@ -21,9 +21,15 @@
 #include <QAbstractItemModel>
 
 #include <generic/context_listener.h>
+#include <core/node_tree/path.h>
 
 namespace rainynite::studio {
 
+/**
+ * Node list model - stores list of node paths
+ *
+ * TODO: hide details in pimpl?
+ */
 class NodeListModel : public QAbstractItemModel, public ContextListener {
 public:
     explicit NodeListModel(QObject* parent = nullptr);
@@ -41,9 +47,6 @@ public:
 public:
     bool removeRows(int row, int count, QModelIndex const& parent={}) override;
 
-    /// Insert node at position
-    void insert_node(core::NodeTreeIndex node, int position=-1);
-
     /**
      * Insert node only if it isn't already in model
      * @return true if node was added
@@ -57,8 +60,12 @@ public:
     shared_ptr<core::AbstractValue> get_node(QModelIndex const& index) const;
     core::NodeTreeIndex get_inner_index(QModelIndex const& index) const;
 
+protected:
+    /// Insert node at position
+    void insert_node(core::NodeTreePath const& node, int position=-1);
+
 private:
-    vector<core::NodeTreeIndex> nodes;
+    vector<core::NodeTreePath> nodes;
 };
 
 } // namespace rainynite::studio

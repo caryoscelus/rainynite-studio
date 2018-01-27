@@ -88,7 +88,7 @@ bool NodeListModel::removeRows(int row, int count, QModelIndex const& parent) {
     return true;
 }
 
-void NodeListModel::insert_node(core::NodeTreeIndex node, int position) {
+void NodeListModel::insert_node(core::NodeTreePath const& node, int position) {
     if (position < 0)
         position = nodes.size();
     beginInsertRows({}, position, position+1);
@@ -96,9 +96,10 @@ void NodeListModel::insert_node(core::NodeTreeIndex node, int position) {
     endInsertRows();
 }
 
-bool NodeListModel::insert_unique_node(core::NodeTreeIndex node, int position) {
-    if (std::find(nodes.begin(), nodes.end(), node) == nodes.end()) {
-        insert_node(node, position);
+bool NodeListModel::insert_unique_node(core::NodeTreeIndex idx, int position) {
+    auto path = tree_index_to_path(*get_context()->tree(), idx);
+    if (std::find(nodes.begin(), nodes.end(), path) == nodes.end()) {
+        insert_node(path, position);
         return true;
     }
     return false;
@@ -109,7 +110,7 @@ shared_ptr<core::AbstractValue> NodeListModel::get_node(QModelIndex const& index
 }
 
 core::NodeTreeIndex NodeListModel::get_inner_index(QModelIndex const& index) const {
-    return nodes[index.row()];
+    return tree_path_to_index(*get_context()->tree(), nodes[index.row()]);
 }
 
 } // namespace rainynite::studio
