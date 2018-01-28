@@ -83,11 +83,8 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
             menu.addAction(
                 QIcon::fromTheme("list-add"),
                 "Pin to timeline area",
-                [this, index]() {
+                [this]() {
                     pinned = true;
-                    // TODO: check for existing property, etc
-                    if (auto node = abstract_node_cast(node_list_model->get_node(index)))
-                        node->set_property("_pin_in_timeline", core::make_value<bool>(true));
                 }
             );
         } else {
@@ -96,8 +93,6 @@ void TimeareaDock::contextMenuEvent(QContextMenuEvent* event) {
                 "Remove from timeline area",
                 [this, index]() {
                     node_list_model->removeRow(index.row());
-                    if (auto node = abstract_node_cast(node_list_model->get_node(index)))
-                        node->remove_property("_pin_in_timeline");
                 }
             );
         }
@@ -124,18 +119,8 @@ void TimeareaDock::set_context(shared_ptr<EditorContext> context) {
     );
 }
 
-void TimeareaDock::load_pinned_from_file(shared_ptr<core::AbstractDocument> new_document) {
-//     core::traverse_once<bool>(
-//         new_document,
-//         [this](core::AbstractReference value) -> optional<bool> {
-//             // TODO: support dynamic _pin_in_timeline
-//             if (auto node = abstract_node_cast(value)) {
-//                 if (node->get_property_value<bool>("_pin_in_timeline", get_core_context()).value_or(false))
-//                     node_list_model->insert_unique_node(value);
-//             }
-//             return {};
-//         }
-//     );
+void TimeareaDock::load_pinned_from_file(shared_ptr<core::AbstractDocument> /*new_document*/) {
+    // TODO
 }
 
 void TimeareaDock::reload_editors() {
