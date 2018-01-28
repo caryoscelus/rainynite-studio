@@ -127,6 +127,8 @@ void MainWindow::new_document() {
     document = core::make_document();
     set_core_context(document->get_default_context());
     set_fname("");
+    // Renaming to is_modified would make more sense here...
+    is_saved = true;
 }
 
 void MainWindow::open() {
