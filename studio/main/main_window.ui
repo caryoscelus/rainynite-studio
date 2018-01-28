@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>{status}{file} - RainyNite {version} &quot;{codename}&quot;</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/images/icon.png</normaloff>:/images/icon.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>

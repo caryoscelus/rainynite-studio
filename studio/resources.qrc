@@ -3,6 +3,7 @@
     <file>helloworld.webm</file>
   </qresource>
   <qresource prefix="images">
+    <file>icon.png</file>
     <file>helloworld.png</file>
     <file>transparency.png</file>
   </qresource>
