@@ -55,7 +55,7 @@ public:
     }
     void feed(string const& s) override {
         auto string_node = core::make_value<string>(std::move(s));
-        auto image_node = core::make_node_with_name<core::AbstractNode>("Image");
+        auto image_node = core::make_node_with_name_as<core::AbstractNode>("Image");
         image_node->set_property("file_path", string_node);
         // TODO: set size
         auto ctx = no_null(get_context());
@@ -71,15 +71,15 @@ public:
         return get_context()->tree()->type_of(node).accept(typeid(vector<core::Renderable>));
     }
     void start_list() override {
-        file_name_list_node = core::make_node_with_name<core::AbstractListLinked>("List/String");
+        file_name_list_node = core::make_node_with_name_as<core::AbstractListLinked>("List/String");
     }
     void feed(string const& s) override {
         push_value(file_name_list_node, std::move(s));
     }
     void end_list() override {
-        auto image_node = core::make_node_with_name<core::AbstractNode>("Image");
-        auto file_name_node = core::make_node_with_name<core::AbstractNode>("ListElement/String");
-        auto linear_node = core::make_node_with_name<core::AbstractNode>("Linear");
+        auto image_node = core::make_node_with_name_as<core::AbstractNode>("Image");
+        auto file_name_node = core::make_node_with_name_as<core::AbstractNode>("ListElement/String");
+        auto linear_node = core::make_node_with_name_as<core::AbstractNode>("Linear");
 
         linear_node->set_property("speed", core::make_value<double>(get_core_context()->get_fps()));
         file_name_node->set_property("source", abstract_value_cast(file_name_list_node));
@@ -102,7 +102,7 @@ public:
     }
     void feed(string const& s) override {
         auto string_node = core::make_value<string>(std::move(s));
-        auto image_node = core::make_node_with_name<core::AbstractNode>("EmbedSvg");
+        auto image_node = core::make_node_with_name_as<core::AbstractNode>("EmbedSvg");
         image_node->set_property("file_path", string_node);
         auto ctx = get_context();
         ctx->action_stack()->emplace<core::actions::ListPush>(ctx->tree(), get_node_index(), abstract_value_cast(image_node));

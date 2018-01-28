@@ -249,7 +249,7 @@ void NodeModel::remove_list_item(QModelIndex const& parent, size_t position) {
 void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info) {
     if (auto parent_node = get_list_node(index.parent())) {
         auto node = get_node(index);
-        auto new_node = core::make_node_with_name<core::AbstractValue>(node_info->name(), node, get_core_context());
+        auto new_node = core::make_node_with_name_as<core::AbstractValue>(node_info->name(), node, get_core_context());
 
         replace_node(index, new_node);
     }

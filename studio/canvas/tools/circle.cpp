@@ -76,7 +76,7 @@ protected:
 private:
     void circle_drawn(QPointF a, QPointF b) {
         using namespace core;
-        auto circle_node = make_node_with_name<AbstractNode>("CirclePR");
+        auto circle_node = make_node_with_name_as<AbstractNode>("CirclePR");
         circle_node->set_property("position", make_value<Geom::Point>(a.x(), a.y()));
         auto radius = get_radius(a, b);
         circle_node->set_property("radius", make_value<double>(radius));

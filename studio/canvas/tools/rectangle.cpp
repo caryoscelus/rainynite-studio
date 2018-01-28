@@ -56,7 +56,7 @@ protected:
                 using namespace core;
                 using util::point;
                 using Geom::Rectangle, Geom::Point;
-                auto rect_node = make_node_with_name<Node<Rectangle>>("RectangleAB");
+                auto rect_node = make_node_with_name_as<Node<Rectangle>>("RectangleAB");
                 rect_node->set_property("a", make_value<Point>(start_pos));
                 rect_node->set_property("b", make_value<Point>(start_pos));
                 return rect_node;
