@@ -217,6 +217,20 @@ void NodeModel::remove_custom_property(QModelIndex const& index) {
     }
 }
 
+bool NodeModel::can_clear_list(QModelIndex const& list) const {
+    // TODO
+    if (auto list_node = get_node_as<core::AbstractListLinked>(list))
+        return list_node->is_editable_list();
+    return false;
+}
+
+void NodeModel::clear_list(QModelIndex const& list) {
+    if (auto idx = get_inner_index(list)) {
+        using core::actions::ListClear;
+        action_stack->emplace<ListClear>(tree, idx);
+    }
+}
+
 bool NodeModel::can_add_element(QModelIndex const& parent) const {
     if (auto node = get_list_node(parent))
         return node->is_editable_list();

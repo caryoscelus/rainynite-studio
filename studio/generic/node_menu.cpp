@@ -1,5 +1,5 @@
 /*  node_menu.cpp - node context menu
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -105,6 +105,16 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
         connect(on_off_action, &QAction::toggled, [this](bool value) {
             model->node_set_enabled(index, value);
         });
+
+        if (model->can_clear_list(index)) {
+            addAction(
+                QIcon::fromTheme("edit-clear"),
+                "Clear list",
+                [this]() {
+                    model->clear_list(index);
+                }
+            );
+        }
 
         if (model->can_add_element(index)) {
             addAction(
