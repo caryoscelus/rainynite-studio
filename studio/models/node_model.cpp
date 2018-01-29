@@ -240,9 +240,7 @@ bool NodeModel::can_add_element(QModelIndex const& parent) const {
 void NodeModel::add_empty_element(QModelIndex const& parent) {
     if (auto node = get_inner_index(parent)) {
         auto last = tree->children_count(node);
-        beginInsertRows(parent, last, last);
         action_stack->emplace<core::actions::ListPushNew>(tree, node);
-        endInsertRows();
     }
 }
 
@@ -263,7 +261,7 @@ void NodeModel::remove_list_item(QModelIndex const& parent, size_t position) {
 void NodeModel::convert_node(QModelIndex const& index, core::NodeInfo const* node_info) {
     if (auto parent_node = get_list_node(index.parent())) {
         auto node = get_node(index);
-        auto new_node = core::make_node_with_name_as<core::AbstractValue>(node_info->name(), node, get_core_context());
+        auto new_node = core::make_node_with_name(node_info->name(), node, get_core_context());
 
         replace_node(index, new_node);
     }
