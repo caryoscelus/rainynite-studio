@@ -29,7 +29,7 @@ struct ImportSoundTag {};
 
 using ImportSoundProcessor = ProcessNode<string, ImportSoundTag>;
 
-class SetSoundtrack : public ProcessNode<string, ImportSoundTag> {
+class SetSoundtrack : public ImportSoundProcessor {
 public:
     bool accept(core::NodeTreeIndex node) const override {
         auto tree = get_context()->tree();
@@ -42,7 +42,7 @@ public:
     }
 };
 
-REGISTER_PROCESS_NODE(SetSoundtrack, string, ImportSoundTag)
+REGISTER_PROCESS_NODE(SetSoundtrack, ImportSoundProcessor)
 
 namespace actions {
 

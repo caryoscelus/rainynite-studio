@@ -53,17 +53,17 @@ private:
     core::NodeTreeIndex index;
 };
 
-template <class P, typename T, typename Tag>
+template <class P, typename Base>
 struct ProcessNodeFactoryImpl :
-    public AbstractFactoryImpl<ProcessNode<T, Tag>, P>,
+    public AbstractFactoryImpl<Base, P>,
     private class_init::ListRegistered<
-        ProcessNodeFactoryImpl<P, T, Tag>,
-        AbstractFactory<ProcessNode<T, Tag>>
+        ProcessNodeFactoryImpl<P, Base>,
+        AbstractFactory<Base>
     >
 {};
 
-#define REGISTER_PROCESS_NODE(Processor, Type, Tag) \
-template struct ProcessNodeFactoryImpl<Processor, Type, Tag>;
+#define REGISTER_PROCESS_NODE(Processor, Base) \
+template struct ProcessNodeFactoryImpl<Processor, Base>;
 
 template <typename Processor>
 class FindTargetNode {

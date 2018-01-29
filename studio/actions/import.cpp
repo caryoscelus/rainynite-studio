@@ -34,7 +34,7 @@ using ImportFilesProcessor = ProcessNode<string, ImportFilesTag>;
 using ImportFramesProcessor = ProcessNode<string, ImportFramesTag>;
 using ImportSvgLayersProcessor = ProcessNode<string, ImportSvgLayersTag>;
 
-class FillStringList : public ProcessNode<string, ImportFilesTag> {
+class FillStringList : public ImportFilesProcessor {
 public:
     bool accept(core::NodeTreeIndex node) const override {
         return get_context()->tree()->type_of(node).accept(typeid(vector<string>));
@@ -46,9 +46,9 @@ public:
     }
 };
 
-REGISTER_PROCESS_NODE(FillStringList, string, ImportFilesTag)
+REGISTER_PROCESS_NODE(FillStringList, ImportFilesProcessor)
 
-class FillRenderableList : public ProcessNode<string, ImportFilesTag> {
+class FillRenderableList : public ImportFilesProcessor {
 public:
     bool accept(core::NodeTreeIndex node) const override {
         return get_context()->tree()->type_of(node).accept(typeid(vector<core::Renderable>));
@@ -63,9 +63,9 @@ public:
     }
 };
 
-REGISTER_PROCESS_NODE(FillRenderableList, string, ImportFilesTag)
+REGISTER_PROCESS_NODE(FillRenderableList, ImportFilesProcessor)
 
-class AddFramedAnimationToRenderableList : public ProcessNode<string, ImportFramesTag> {
+class AddFramedAnimationToRenderableList : public ImportFramesProcessor {
 public:
     bool accept(core::NodeTreeIndex node) const override {
         return get_context()->tree()->type_of(node).accept(typeid(vector<core::Renderable>));
@@ -93,9 +93,9 @@ private:
     shared_ptr<core::AbstractListLinked> file_name_list_node;
 };
 
-REGISTER_PROCESS_NODE(AddFramedAnimationToRenderableList, string, ImportFramesTag)
+REGISTER_PROCESS_NODE(AddFramedAnimationToRenderableList, ImportFramesProcessor)
 
-class FillRenderableListWithSvgs : public ProcessNode<string, ImportSvgLayersTag> {
+class FillRenderableListWithSvgs : public ImportSvgLayersProcessor {
 public:
     bool accept(core::NodeTreeIndex node) const override {
         return get_context()->tree()->type_of(node).accept(typeid(vector<core::Renderable>));
@@ -109,7 +109,7 @@ public:
     }
 };
 
-REGISTER_PROCESS_NODE(FillRenderableListWithSvgs, string, ImportSvgLayersTag)
+REGISTER_PROCESS_NODE(FillRenderableListWithSvgs, ImportSvgLayersProcessor)
 
 
 namespace actions {
