@@ -1,5 +1,5 @@
 /*  process_node.h - node processor
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 #include <generic/context_listener.h>
 
-namespace rainynite::studio::actions {
+namespace rainynite::studio {
 
 template <typename T, typename Tag>
 class ProcessNode : public ContextListener {
@@ -65,6 +65,6 @@ struct ProcessNodeFactoryImpl :
 #define REGISTER_PROCESS_NODE(Processor, Type, Tag) \
 template struct ProcessNodeFactoryImpl<Processor, Type, Tag>;
 
-} // namespace rainynite::studio::actions
+} // namespace rainynite::studio
 
 #endif

@@ -21,10 +21,10 @@
 #include <core/actions/list.h>
 #include <core/renderable.h>
 
-#include "process_node.h"
+#include <generic/process_node.h>
 #include "import.h"
 
-namespace rainynite::studio::actions {
+namespace rainynite::studio {
 
 struct ImportFilesTag {};
 struct ImportFramesTag {};
@@ -111,6 +111,9 @@ public:
 
 REGISTER_PROCESS_NODE(FillRenderableListWithSvgs, string, ImportSvgLayersTag)
 
+
+namespace actions {
+
 /**
  * Import file paths as Image layers
  */
@@ -141,4 +144,6 @@ class ImportSvgLayers :
     ACTION_NAME("Import svg layers")
 };
 
-} // namespace rainynite::studio::actions
+} // namespace actions
+
+} // namespace rainynite::studio

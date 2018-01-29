@@ -94,8 +94,8 @@ target_sources(rainynite-studio
         generic/dock_registry.h
         generic/action.h
         generic/action_menu.cpp
+        generic/process_node.h
 
-        actions/process_node.h
         actions/import.h
         actions/external_player.cpp
         actions/import.cpp

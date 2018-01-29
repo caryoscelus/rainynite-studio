@@ -20,10 +20,10 @@
 #include <core/action_stack.h>
 #include <core/actions/change_link.h>
 
-#include "process_node.h"
+#include <generic/process_node.h>
 #include "import.h"
 
-namespace rainynite::studio::actions {
+namespace rainynite::studio {
 
 struct ImportSoundTag {};
 
@@ -44,6 +44,8 @@ public:
 
 REGISTER_PROCESS_NODE(SetSoundtrack, string, ImportSoundTag)
 
+namespace actions {
+
 /**
  * Import file paths as Image layers
  */
@@ -54,4 +56,6 @@ class ImportSoundtrack :
     ACTION_NAME("Import soundtrack")
 };
 
-} // namespace rainynite::studio::actions
+} // namespace actions
+
+} // namespace rainynite::studio
