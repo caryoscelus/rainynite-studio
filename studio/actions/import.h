@@ -25,52 +25,10 @@
 #include <core/util/nullptr.h>
 
 #include <generic/action.h>
+#include <generic/process_node.h>
 #include <util/strings.h>
 
 namespace rainynite::studio::actions {
-
-template <typename Processor>
-class FindTargetNode {
-public:
-    unique_ptr<Processor> find_appropriate_target(core::NodeTree const& tree, shared_ptr<EditorContext> ctx) {
-        if (auto node = ctx->get_active_node_index()) {
-            if (auto r = check_target(node, ctx))
-                return r;
-            for (size_t i = 0; i < tree.children_count(node); ++i) {
-                if (auto r = check_target(tree.index(node, i), ctx))
-                    return r;
-            }
-        }
-        auto doc_root = tree.get_root_index();
-        for (size_t i = 0; i < tree.children_count(doc_root); ++i) {
-            if (auto r = check_target(tree.index(doc_root, i), ctx))
-                return r;
-        }
-
-        core::NodeTreeIndex root;
-        try {
-            root = index_of_property(tree, doc_root, "root");
-        } catch (...) {
-            return nullptr;
-        }
-        for (size_t i = 0; i < tree.children_count(root); ++i) {
-            if (auto r = check_target(tree.index(root, i), ctx))
-                return r;
-        }
-        return {};
-    }
-
-    unique_ptr<Processor> check_target(core::NodeTreeIndex node, shared_ptr<EditorContext> ctx) const {
-        using namespace class_init;
-        for (auto factory : class_list_registry<AbstractFactory<Processor>>()) {
-            auto r = (*factory)();
-            r->set_context(ctx);
-            if (r->set_node(node))
-                return r;
-        }
-        return nullptr;
-    }
-};
 
 struct ImportError : public std::runtime_error {
     ImportError(string const& msg) :
