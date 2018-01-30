@@ -1,5 +1,6 @@
 build*/
 *~
+renders/
 
 # ide files
 *.kdev4
