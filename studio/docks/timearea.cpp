@@ -52,6 +52,8 @@ TimeareaDock::TimeareaDock(shared_ptr<EditorContext> context_, QWidget* parent) 
     connect(node_list_model.get(), &QAbstractItemModel::rowsMoved, this, &TimeareaDock::reload_editors);
     connect(node_list_model.get(), &QAbstractItemModel::rowsRemoved, this, &TimeareaDock::remove_editors);
 
+    connect(ui->reload, &QAbstractButton::clicked, this, &TimeareaDock::reload_editors);
+
     ui->timeline->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->node_list->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     connect(ui->timeline->verticalScrollBar(), &QScrollBar::valueChanged, ui->node_list->verticalScrollBar(), &QScrollBar::setValue);
