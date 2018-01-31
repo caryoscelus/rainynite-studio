@@ -34,16 +34,20 @@ class AnimatedEditor :
 {
 public:
     virtual bool context_menu(double seconds, QMenu& menu) {
-        menu.addAction(QIcon::fromTheme("frame-insert"), "Insert frame", [this, seconds]() {
-            if (auto node = get_node()) {
-                if (node->can_set_any_at()) {
-                    auto ctx = no_null(get_core_context());
-                    auto nctx = make_shared<core::Context>(*ctx);
-                    nctx->set_seconds(seconds);
-                    node->set_any_at(node->get_any(nctx), nctx);
+        menu.addAction(
+            QIcon::fromTheme("list-add"),
+            "Insert frame",
+            [this, seconds]() {
+                if (auto node = get_node()) {
+                    if (node->can_set_any_at()) {
+                        auto ctx = no_null(get_core_context());
+                        auto nctx = make_shared<core::Context>(*ctx);
+                        nctx->set_seconds(seconds);
+                        node->set_any_at(node->get_any(nctx), nctx);
+                    }
                 }
             }
-        });
+        );
         return true;
     }
 };
