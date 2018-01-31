@@ -60,7 +60,7 @@ target_sources(rainynite-studio
         canvas/tools/rectangle.cpp
         canvas/tools/circle.cpp
         canvas/tools/bezier.cpp
-        canvas/tools/transform_move.cpp
+#         canvas/tools/transform_move.cpp
         canvas/tools/time_default.cpp
 
         canvas/editors/point_item.h
