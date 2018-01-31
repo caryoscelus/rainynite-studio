@@ -17,12 +17,14 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsEllipseItem>
+#include <QDebug>
 
 #include <2geom/point.h>
 
 #include <core/action_stack.h>
 #include <core/actions/change_value.h>
 #include <core/node_tree/transform.h>
+#include <core/util/nullptr.h>
 
 #include <generic/node_editor.h>
 #include <generic/canvas_editor.h>
@@ -61,18 +63,24 @@ public:
 
 private:
     void update_position() {
-        if (point_item == nullptr)
-            return;
-        if (auto maybe_point = get_value<Geom::Point>()) {
-            auto point = *maybe_point;
-            point_item->set_pos(point.x(), point.y());
-            point_item->set_readonly(!get_node()->can_set_any_at());
-        }
-        if (auto node_tree = get_context()->tree()) {
-            if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(get_node_index())) {
-                auto affine = calculate_tr->get_transform(get_core_context());
-                item_group->setTransform(QTransform{util::matrix(affine)});
+        try {
+            if (point_item == nullptr)
+                return;
+            auto node = get_node();
+            if (auto maybe_point = get_value<Geom::Point>()) {
+                no_null(node);
+                auto point = *maybe_point;
+                point_item->set_pos(point.x(), point.y());
+                point_item->set_readonly(!node->can_set_any_at());
             }
+            if (auto node_tree = get_context()->tree()) {
+                if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(get_node_index())) {
+                    auto affine = calculate_tr->get_transform(get_core_context());
+                    item_group->setTransform(QTransform{util::matrix(affine)});
+                }
+            }
+        } catch (std::exception const& ex) {
+            qWarning() << "Exception in PointEditor" << ex.what();
         }
     }
 
