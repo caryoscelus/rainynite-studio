@@ -110,7 +110,11 @@ shared_ptr<core::AbstractValue> NodeListModel::get_node(QModelIndex const& index
 }
 
 core::NodeTreeIndex NodeListModel::get_inner_index(QModelIndex const& index) const {
-    return tree_path_to_index(*get_context()->tree(), nodes[index.row()]);
+    try {
+        return tree_path_to_index(*get_context()->tree(), nodes[index.row()]);
+    } catch (...) {
+        return {};
+    }
 }
 
 } // namespace rainynite::studio
