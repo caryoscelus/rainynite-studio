@@ -1,10 +1,10 @@
 <RCC>
   <qresource prefix="video">
-    <file>helloworld.webm</file>
+    <file>imperfect_wave.webm</file>
   </qresource>
   <qresource prefix="images">
     <file>icon.png</file>
-    <file>helloworld.png</file>
+    <file>imperfect_wave.png</file>
     <file>transparency.png</file>
   </qresource>
   <qresource prefix="text">
