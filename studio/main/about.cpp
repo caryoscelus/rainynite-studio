@@ -1,5 +1,5 @@
 /*  about.cpp - about dialog
- *  Copyright (C) 2017 caryoscelus
+ *  Copyright (C) 2017-2018 caryoscelus
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include <QFile>
 #include <QVideoWidget>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 #include <version.h>
 #include <util/strings.h>
@@ -75,7 +76,11 @@ void AboutDialog::play_video() {
 
     player->setVideoOutput(video);
 
-    player->setMedia(QUrl{"qrc:/video/helloworld.webm"});
+    auto list = new QMediaPlaylist();
+    list->addMedia(QUrl{"qrc:/video/imperfect_wave.webm"});
+    list->setPlaybackMode(QMediaPlaylist::Loop);
+
+    player->setPlaylist(list);
     player->play();
 }
 

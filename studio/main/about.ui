@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>652</width>
-    <height>650</height>
+    <width>505</width>
+    <height>655</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../resources.qrc">:/images/helloworld.png</pixmap>
+        <pixmap resource="../resources.qrc">:/images/imperfect_wave.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>false</bool>
