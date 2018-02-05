@@ -15,10 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QRubberBand>
-
-#include <core/node/abstract_value.h>
-#include <core/node/node.h>
+#include <core/node/abstract_node.h>
 #include <core/node/make.h>
 #include <core/node_info/node_info.h>
 
@@ -56,10 +53,10 @@ protected:
                 using namespace core;
                 using util::point;
                 using Geom::Rectangle, Geom::Point;
-                auto rect_node = make_node_with_name_as<Node<Rectangle>>("RectangleAB");
+                auto rect_node = make_node_with_name_as<AbstractNode>("RectangleAB");
                 rect_node->set_property("a", make_value<Point>(start_pos));
                 rect_node->set_property("b", make_value<Point>(start_pos));
-                return rect_node;
+                return abstract_value_cast(rect_node);
             }
         );
         if (get_index())

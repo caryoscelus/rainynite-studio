@@ -17,6 +17,7 @@
 
 #include <core/node_info/node_info.h>
 #include <core/node/make.h>
+#include <core/node/list.h>
 #include <core/action_stack.h>
 #include <core/actions/list.h>
 #include <core/renderable.h>

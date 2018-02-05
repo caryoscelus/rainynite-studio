@@ -31,9 +31,8 @@
 #include <QDebug>
 
 #include <core/document.h>
+#include <core/fs/document_loader.h>
 #include <core/action_stack.h>
-#include <core/filters/yaml_reader.h>
-#include <core/filters/yaml_writer.h>
 
 #include <version.h>
 #include <util/strings.h>
@@ -55,7 +54,8 @@ MainWindow::MainWindow(QWidget* parent) :
     audio_player(make_unique<AudioPlayer>()),
     ui(make_unique<Ui::MainWindow>()),
     error_box(make_unique<QErrorMessage>()),
-    tool_actions(make_unique<QActionGroup>(this))
+    tool_actions(make_unique<QActionGroup>(this)),
+    document_loader(core::DocumentLoader::instance())
 {
     setWindowState(Qt::WindowMaximized);
     ui->setupUi(this);
@@ -140,31 +140,10 @@ void MainWindow::open() {
 void MainWindow::reload() {
     if (fname.empty())
         return;
-    // TODO: proper filter modularization
-    unique_ptr<core::DocumentReader> yaml_reader = make_unique<core::filters::YamlReader>();
-    vector<string> errors;
-    shared_ptr<core::AbstractDocument> new_document;
-    for (auto&& reader : { std::move(yaml_reader) }) {
-        try {
-            std::ifstream in(fname);
-            new_document = reader->read_document(in);
-            if (new_document == nullptr)
-                throw std::runtime_error("Unknown parse failure");
-            set_core_context(new_document->get_default_context());
-            in.close();
-            break;
-        } catch (std::exception const& ex) {
-            errors.push_back("Uncaught exception in filter:\n{}"_format(ex.what()));
-        } catch (...) {
-            errors.push_back("Unknown error while trying to open document via filter\n");
-        }
-    }
-    if (new_document == nullptr) {
-        auto msg = util::str(std::accumulate(errors.begin(), errors.end(), string("\n\n")));
-        qDebug() << msg;
-        error_box->showMessage(msg);
-    } else {
+    auto new_document = document_loader->get_document(core::fs::Path{fname});
+    if (new_document != nullptr) {
         document = new_document;
+        set_core_context(document->get_default_context());
         renderer->render_frame();
     }
 }
@@ -200,18 +179,10 @@ bool MainWindow::save(QString format) {
     if (format.isEmpty())
         format = "yaml";
 
-    // TODO: proper filter modularization
-    unique_ptr<core::DocumentWriter> writer;
-    if (format == "yaml") {
-        writer.reset(new core::filters::YamlWriter());
-    } else {
-        error_box->showMessage("Unknown save format");
-        return false;
-    }
-
     try {
-        std::ofstream out(fname);
-        writer->write_document(out, document);
+        auto path = core::fs::Path{fname};
+        document_loader->register_document(path, document, util::str(format));
+        document_loader->write_document(path);
         saved_format = util::str(format);
         is_saved = true;
         update_title();

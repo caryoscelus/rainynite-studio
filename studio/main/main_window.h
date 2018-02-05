@@ -35,6 +35,10 @@ class MainWindow;
 class QErrorMessage;
 class QActionGroup;
 
+namespace rainynite::core {
+class DocumentLoader;
+}
+
 namespace rainynite::studio {
 
 class AudioPlayer;
@@ -82,6 +86,8 @@ private:
     shared_ptr<core::AbstractValue> active_node;
     unique_ptr<QActionGroup> tool_actions;
     map<string, observer_ptr<QAction>> tool_actions_named;
+
+    observer_ptr<core::DocumentLoader> document_loader;
 
     string fname;
     string saved_format;

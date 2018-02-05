@@ -18,7 +18,7 @@
 #include <QGraphicsEllipseItem>
 
 #include <core/node/abstract_value.h>
-#include <core/node/node.h>
+#include <core/node/abstract_node.h>
 #include <core/node/make.h>
 #include <core/node_info/node_info.h>
 
