@@ -19,7 +19,6 @@
 
 #include <QMenu>
 #include <QContextMenuEvent>
-#include <QInputDialog>
 
 #include <core/document.h>
 #include <core/node_info/node_info.h>
