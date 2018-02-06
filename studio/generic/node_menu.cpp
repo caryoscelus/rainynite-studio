@@ -99,6 +99,23 @@ NodeContextMenu::NodeContextMenu(NodeModel* model_, QItemSelectionModel* selecti
             );
         }
 
+        if (model->can_rename(index)) {
+            // TODO: inline renaming..
+            addAction(
+                QIcon::fromTheme("edit-rename"),
+                "Rename",
+                [this]() {
+                    model->set_name(index, QInputDialog::getText(
+                        nullptr,
+                        "Rename node",
+                        "Node name:",
+                        QLineEdit::Normal,
+                        model->get_name(index)
+                    ));
+                }
+            );
+        }
+
         auto on_off_action = addAction("Enabled");
         on_off_action->setCheckable(true);
         on_off_action->setChecked(model->node_enabled(index));

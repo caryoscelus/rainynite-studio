@@ -100,9 +100,15 @@ QVariant NodeModel::data(QModelIndex const& index, int role) const {
                 else if (parent(index).isValid())
                     node_role = "{}"_format(index.row());
                 string type_name = "<Bad node!>";
-                if (auto node = get_node(index))
+                string maybe_name;
+                if (auto node = get_node(index)) {
                     type_name = core::node_name(*node);
-                return util::str("{}: {}"_format(node_role, type_name));
+                    if (auto node_node = abstract_node_cast(node)) {
+                        if (auto name = node_node->name(); !name.empty())
+                            maybe_name = "[{}] "_format(name);
+                    }
+                }
+                return util::str("{}{}: {}"_format(maybe_name, node_role, type_name));
             } break;
             case Qt::ToolTipRole: {
                 // TODO: node role documentation
@@ -187,6 +193,18 @@ QModelIndex NodeModel::from_inner_index(core::NodeTreeIndex index) const {
     return report_tree_errors<QModelIndex>([&]() {
         return createIndex(tree->link_index(index), 0, (size_t)index);
     });
+}
+
+bool NodeModel::can_rename(QModelIndex const& index) const {
+    return get_node_as<core::AbstractNode>(index) != nullptr;
+}
+
+QString NodeModel::get_name(QModelIndex const& index) const {
+    return util::str(no_null(get_node_as<core::AbstractNode>(index))->name());
+}
+
+void NodeModel::set_name(QModelIndex const& index, QString const& name) {
+    no_null(get_node_as<core::AbstractNode>(index))->set_name(util::str(name));
 }
 
 bool NodeModel::can_add_custom_property(QModelIndex const& parent) const {
