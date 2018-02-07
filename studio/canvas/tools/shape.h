@@ -20,6 +20,8 @@
 
 #include <2geom/point.h>
 
+#include <core/node_tree/path.h>
+
 #include "base.h"
 
 namespace rainynite::studio::tools {
@@ -63,12 +65,10 @@ protected:
     virtual void write_shape(shared_ptr<core::AbstractValue> node);
 
     /// Get target node index
-    core::NodeTreeIndex get_index() const {
-        return target_node_index;
-    }
+    core::NodeTreeIndex get_index() const;
 
 private:
-    core::NodeTreeIndex target_node_index;
+    core::NodeTreePath target_node_index;
 };
 
 } // namespace rainynite::studio::tools

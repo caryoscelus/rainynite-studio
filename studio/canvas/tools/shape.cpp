@@ -119,14 +119,15 @@ void Shape::write_shape(shared_ptr<core::AbstractValue> shape) {
         using namespace core;
         auto render_shape = make_node_with_name_as<AbstractNode>("RenderShape");
         render_shape->set_property("shape", shape);
+        auto layers_path = tree_index_to_path(*tree, layers_index);
         action_stack->emplace<actions::ListPush>(tree, layers_index, abstract_value_cast(render_shape));
-        target_node_index = tree->index(layers_index, layers->link_count()-1);
+        target_node_index = tree_index_to_path(*tree, tree->index(tree_path_to_index(*tree, layers_path), layers->link_count()-1));
     };
 
     // TODO: modularize, support replacing shapes
     if (name == "RenderShape") {
         action_stack->emplace<actions::SetProperty>(tree, node_index, "shape", shape);
-        target_node_index = tree->index(node_index, node->get_name_id("shape"));
+        target_node_index = tree_index_to_path(*tree, tree->index(node_index, node->get_name_id("shape")));
     } else if (value->get_type() == typeid(vector<Renderable>)) {
         if (auto layers = list_cast(std::move(value))) {
             add_renderable_to_list(layers, node_index, shape);
@@ -144,6 +145,11 @@ void Shape::write_shape(shared_ptr<core::AbstractValue> shape) {
     } else {
         throw std::runtime_error("Can't add shape to "+name);
     }
+}
+
+core::NodeTreeIndex Shape::get_index() const {
+    auto tree = no_null(get_canvas()->get_context()->tree());
+    return tree_path_to_index(*tree, target_node_index);
 }
 
 } // namespace rainynite::studio::tools
