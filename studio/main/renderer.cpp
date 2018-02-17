@@ -110,7 +110,7 @@ void Renderer::render_period(core::TimePeriod const& period) {
         rsettings.extra_style = extra_style;
         rsettings.path = fname;
         rsettings.output_scale = output_scale;
-        get_core_context()->mod_render_settings() = rsettings;
+        get_core_context()->set_render_settings(rsettings);
         auto ctx = *get_core_context();
         ctx.set_period(period);
 
