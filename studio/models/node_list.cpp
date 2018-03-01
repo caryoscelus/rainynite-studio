@@ -97,11 +97,16 @@ void NodeListModel::insert_node(core::NodeTreePath const& node, int position) {
 }
 
 bool NodeListModel::insert_unique_node(core::NodeTreeIndex idx, int position) {
-    auto path = tree_index_to_path(*get_context()->tree(), idx);
-    if (std::find(nodes.begin(), nodes.end(), path) == nodes.end()) {
-        insert_node(path, position);
-        return true;
+    try {
+        auto path = tree_index_to_path(*get_context()->tree(), idx);
+        if (std::find(nodes.begin(), nodes.end(), path) == nodes.end()) {
+            insert_node(path, position);
+            return true;
+        }
+    } catch (...) {
+        // TODO
     }
+
     return false;
 }
 
