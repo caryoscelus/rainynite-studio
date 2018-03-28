@@ -128,7 +128,7 @@ target_link_libraries(rainynite-studio
     ColorWidgets-qt5
     nodes
     filters
-    renderers
+    svg_renderer
     fmt
     boost_system
     boost_filesystem
