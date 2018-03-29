@@ -42,6 +42,8 @@ target_sources(rainynite-studio
         widgets/boolean_editor.cpp
         widgets/multiline_editor.cpp
         widgets/bezier_editor.cpp
+        widgets/file_path_editor.h
+        widgets/file_path_editor.cpp
 
         canvas/abstract_canvas.h
         canvas/abstract_canvas.cpp
