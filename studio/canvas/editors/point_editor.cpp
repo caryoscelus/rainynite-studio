@@ -74,10 +74,8 @@ private:
                 point_item->set_readonly(!node->can_set_any_at());
             }
             if (auto node_tree = get_context()->tree()) {
-                if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(get_node_index())) {
-                    auto affine = calculate_tr->get_transform(get_core_context());
-                    item_group->setTransform(QTransform{util::matrix(affine)});
-                }
+                auto affine = core::get_transform(get_core_context(), *node_tree, get_node_index());
+                item_group->setTransform(QTransform{util::matrix(affine)});
             }
         } catch (std::exception const& ex) {
             qWarning() << "Exception in PointEditor" << ex.what();

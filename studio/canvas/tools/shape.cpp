@@ -47,11 +47,9 @@ void Shape::new_shape_at(QPointF const& pos, MakeShape f) {
     if (auto ctx = get_canvas()->get_context()) {
         if (auto node = ctx->get_active_node_index()) {
             if (auto node_tree = ctx->tree()) {
-                if (auto calculate_tr = node_tree->get_element<core::TreeCalculateTransform>(node)) {
-                    auto affine = calculate_tr->get_transform(ctx->get_context());
-                    auto node = f(util::point(pos) * affine.inverse());
-                    write_shape(node);
-                }
+                auto affine = core::get_transform(ctx->get_context(), *node_tree, node);
+                auto node = f(util::point(pos) * affine.inverse());
+                write_shape(node);
             }
         }
     }
