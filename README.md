@@ -1,8 +1,18 @@
 RainyNite studio
 ================
 
-RainyNite is a free/libre software 2d vector animation tool in active
-development.
+RainyNite is a free/libre software 2d vector animation tool in development.
+
+STATUS
+======
+
+Over the course of RN development i've come to conclusion that a large part of
+it was needlessly reinvented DSL, ineffectively implemented in C++. At this
+point i'm considering option of porting it to Haskell or possibly another
+functional platform. In case you have an existing files that you'd like to
+preserve, please contact me.
+
+New version will be announced here as soon as it is available.
 
 Usage examples
 ==============
